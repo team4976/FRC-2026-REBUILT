@@ -1,76 +1,204 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
+//test
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
-//import frc.robot.subsystems.DriveSubsystem;
+import static edu.wpi.first.units.Units.*;
 
+import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.swerve.SwerveRequest;
+import frc.robot.commands.Drive;
 
-import com.pathplanner.lib.commands.PathPlannerAuto;
-
-import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and trigger mappings) should be declared here.
- */
+import frc.robot.commands.ToggleIntake;
+
+import frc.robot.generated.TurretTunerConstants;
+import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.ElasticData;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.PhotonVision;
+import frc.robot.subsystems.Pneumatics;
+import frc.robot.subsystems.VisionData;
+import frc.robot.commands.ClimbBackward;
+import frc.robot.commands.ClimbForward;
+
+
 public class RobotContainer {
-    //private final SendableChooser<Command> autoChooser;
-  // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  //private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
+    private double MaxSpeed = 1.0 * TurretTunerConstants.kSpeedAt12Volts.in(MetersPerSecond) / 3.5; // kSpeedAt12Volts desired top speed
+    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    //MaxSpeed * 
+    /* Setting up bindings for necessary control of the swerve drive platform */
+    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+            .withDeadband(MaxSpeed * 0.2).withRotationalDeadband(MaxAngularRate * 0.2) // Add a 10% deadband
+            .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+            private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+    private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+    private final Telemetry logger = new Telemetry(MaxSpeed);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
+    private PhotonVision vision = new PhotonVision("testingCamera");
 
-    //autoChooser = AutoBuilder.buildAutoChooser();
-    //SmartDashboard.putData("Auto Chooser", autoChooser);
+    private ElasticData elasticData = new ElasticData(logger, vision);
 
-    // Configure the trigger bindings
-    configureBindings();
-  }
+    private final double MaxYaw = 32;
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
-  private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
+    private final double speedDamper = 3.5;
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-  }
+    private final double desiredDistance = 2;
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
+    private final double MaxDistance = 32;
+
+    private double driveWithAprilTag = 1;
+
+    private double driveWithStick = 0;
+
+    private final Intake intake = new Intake();
   
-  public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    //return autoChooser.getSelected();
-    return new PathPlannerAuto("Spin a motor");
-  }
+    private final Pneumatics Pneumatics = new Pneumatics();
+
+    private final ClimberSubsystem climber = new ClimberSubsystem();
+
+    private final CommandXboxController joystick = new CommandXboxController(0);
+    private final CommandXboxController operatorController = new CommandXboxController(1);
+
+
+    final ToggleIntake activation = new ToggleIntake(Pneumatics, intake);
+
+    public final CommandSwerveDrivetrain drivetrain = TurretTunerConstants.createDrivetrain();
+
+    public RobotContainer() {
+        configureBindings();
+    }
+
+    private void configureBindings() {
+        // Note that X is defined as forward according to WPILib convention,
+        // and Y is defined as to the left according to WPILib convention.
+        drivetrain.setDefaultCommand(
+            // Drivetrain will execute this command periodically
+            drivetrain.applyRequest(() ->
+                drive.withVelocityX(Math.max(-MaxSpeed, Math.min((((((vision.getDistance() - desiredDistance) / MaxDistance) * driveWithAprilTag) + (-joystick.getLeftY() * driveWithStick)) * MaxSpeed), MaxSpeed))) //Drive forward with negative Y (forward)
+                    .withVelocityY(((((-vision.getAnyYaw()/MaxYaw) * driveWithAprilTag) + (-joystick.getLeftX() * driveWithStick)) * MaxSpeed) / speedDamper) //Drive left with negative X (left)
+                    .withRotationalRate(((((1 - (vision.getZRotation()/Math.PI)) * driveWithAprilTag ) + (-joystick.getRightX() * driveWithStick)) * MaxAngularRate) / speedDamper) // Don't rotate Drive counterclockwise with negative X (left)
+                )       
+        );
+
+        // Idle while the robot is disabled. This ensures the configured
+        // neutral mode is applied to the drive motors while disabled.
+        final var idle = new SwerveRequest.Idle();
+        RobotModeTriggers.disabled().whileTrue(
+            drivetrain.applyRequest(() -> idle).ignoringDisable(true)
+        );
+
+        joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        joystick.b().whileTrue(drivetrain.applyRequest(() ->
+            point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
+        ));
+
+        // Run SysId routines when holding back/start and X/Y.
+        // Note that each routine should be run exactly once in a single log.
+        joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        joystick.x().onTrue(pipelineSwitcher());
+        joystick.y().onTrue(toggleJoystix());
+        //joystick.leftTrigger(0.5).whileTrue(moveAprilTagLeft());
+        //joystick.rightTrigger(0.5).whileTrue(moveAprilTagRight());
+        operatorController.a().whileTrue(new ClimbBackward(climber));
+        operatorController.b().whileTrue(new ClimbForward(climber));
+        operatorController.x().whileTrue(new Drive(intake));
+        operatorController.y().onTrue(activation);//onTrue(getAutonomousCommand());//(new Activation(Pneumatics));
+
+
+
+        // Reset the field-centric heading on left bumper press.
+        joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+
+        drivetrain.registerTelemetry(logger::telemeterize);
+    }
+
+    public Command getAutonomousCommand() {
+        // Simple drive forward auton
+        final var idle = new SwerveRequest.Idle();
+        return Commands.sequence(
+            // Reset our field centric heading to match the robot
+            // facing away from our alliance station wall (0 deg).
+            drivetrain.runOnce(() -> drivetrain.seedFieldCentric(Rotation2d.kZero)),
+            // Then slowly drive forward (away from us) for 5 seconds.
+            drivetrain.applyRequest(() ->
+                drive.withVelocityX(0.5)
+                    .withVelocityY(0)
+                    .withRotationalRate(0)
+            )
+            .withTimeout(5.0),
+            // Finally idle for the rest of auton
+            drivetrain.applyRequest(() -> idle)
+        );
+    }
+    public Command moveAprilTagLeft() {
+        if ((vision.getAnyYaw() <= 10) && (vision.getAnyYaw() >= -10)) {
+            return Commands.sequence(
+                drivetrain.applyRequest(() ->
+                drive.withRotationalRate(-1 * MaxAngularRate) // Drive so that april tag is left 
+                // Note ** prolly change -1 and 1 in the next Command to a variable
+                            )
+            ); //Rotate the robot right
+        } else {
+            return Commands.sequence(); //Do nothing     
+        }
+    }
+    public Command moveAprilTagRight() {
+       if ((vision.getAnyYaw() <= 10) && (vision.getAnyYaw() >= -10)) {
+            return Commands.sequence(
+                
+                drivetrain.applyRequest(() ->
+                drive.withRotationalRate(1 * MaxAngularRate) // Drive so that april tag is right
+                            )
+            ); //Rotate the robot left
+        } else {
+            return Commands.sequence(); //Do nothing     
+        }
+    }
+
+    public Command toggleJoystix(){
+        return Commands.runOnce(()->{
+            System.out.println("Toggle Runs");
+            if (driveWithAprilTag == 1) {
+                driveWithAprilTag = 0;
+                driveWithStick = 1;
+                System.out.println("Controller Controls");
+            } else {
+                driveWithStick = 0;
+                driveWithAprilTag = 1;
+                System.out.println("April Tag Controls");
+                //This is a toggle button in between the two, I use 1 and 0 instead of true and false because it is a number that is multiplyed by the different speeds.
+            }
+        });
+    }
+
+    public Command pipelineSwitcher(){
+        VisionData visionData = new VisionData("testingCamera");
+        return Commands.runOnce(()->{
+            if (visionData.getPipelineMethod() == 0) {
+                visionData.pipelineSwitcher(1);
+                SmartDashboard.putNumber("Pipeline",visionData.getPipelineMethod());
+            }
+            else{
+                visionData.pipelineSwitcher(0);
+                SmartDashboard.putNumber("Pipeline",visionData.getPipelineMethod());
+            }
+        });
+        
+        
+        
+    }
 }
