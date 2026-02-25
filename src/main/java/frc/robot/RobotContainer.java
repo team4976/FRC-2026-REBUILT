@@ -79,9 +79,9 @@ public class RobotContainer {
 
     private final double MaxDistance = 32;
 
-    private double driveWithAprilTag = 1;
+    private double driveWithAprilTag = 0;
 
-    private double driveWithStick = 0;
+    private double driveWithStick = 1;
 
     private final Intake intake = new Intake();
   
@@ -143,12 +143,12 @@ public class RobotContainer {
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        driverController.back().and(driverController.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        driverController.back().and(driverController.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        driverController.start().and(driverController.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        driverController.start().and(driverController.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-        driverController.x().onTrue(pipelineSwitcher());
-        driverController.y().onTrue(toggleJoystix());
+        //driverController.back().and(driverController.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        //driverController.back().and(driverController.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        //driverController.start().and(driverController.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        //driverController.start().and(driverController.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        //driverController.x().onTrue(pipelineSwitcher());
+        //driverController.y().onTrue(toggleJoystix());
         //driverController.leftTrigger(0.5).whileTrue(moveAprilTagLeft());
         //driverController.rightTrigger(0.5).whileTrue(moveAprilTagRight());
         operatorController.a().whileTrue(new ClimbBackward(climber));
@@ -169,6 +169,7 @@ public class RobotContainer {
         // Spin flywheel and start hood
         operatorController.a().onTrue(new FlywheelCommand(flywheelSubsystem, 20).andThen(new HoodCommand(hoodSubsystem, false, 0)));
     
+        //Planned Button Mapping: Driver: Joysticks to drive, Right Bumper is shoot, Left Bumper: brake, B:drive relative. Operator: Climb: Y, Intake: A, Flywheel: X, Manual Overides: Hood up and down d-pad,  
 
         // Manual hood override
         operatorController.povUp().onTrue(new HoodCommand(hoodSubsystem, true, 0.1));
