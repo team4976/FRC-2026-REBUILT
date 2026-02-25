@@ -97,7 +97,7 @@ public class RobotContainer {
     public HoodSubsystem hoodSubsystem = new HoodSubsystem();
     public IndexAndSpindexSubsystem InSSubsystem = new IndexAndSpindexSubsystem();
 
-    public static final CommandXboxController joystick = new CommandXboxController(0);
+    public static final CommandXboxController driverController = new CommandXboxController(0);
     public static final CommandXboxController operatorController = new CommandXboxController(1);
 
     final ToggleIntake activation = new ToggleIntake(Pneumatics, intake);
@@ -123,9 +123,9 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(Math.max(-MaxSpeed, Math.min((((((vision.getDistance() - desiredDistance) / MaxDistance) * driveWithAprilTag) + (-joystick.getLeftY() * driveWithStick)) * MaxSpeed), MaxSpeed))) //Drive forward with negative Y (forward)
-                    .withVelocityY(((((-vision.getAnyYaw()/MaxYaw) * driveWithAprilTag) + (-joystick.getLeftX() * driveWithStick)) * MaxSpeed) / speedDamper) //Drive left with negative X (left)
-                    .withRotationalRate(((((1 - (vision.getZRotation()/Math.PI)) * driveWithAprilTag ) + (-joystick.getRightX() * driveWithStick)) * MaxAngularRate) / speedDamper) // Don't rotate Drive counterclockwise with negative X (left)
+                drive.withVelocityX(Math.max(-MaxSpeed, Math.min((((((vision.getDistance() - desiredDistance) / MaxDistance) * driveWithAprilTag) + (-driverController.getLeftY() * driveWithStick)) * MaxSpeed), MaxSpeed))) //Drive forward with negative Y (forward)
+                    .withVelocityY(((((-vision.getAnyYaw()/MaxYaw) * driveWithAprilTag) + (-driverController.getLeftX() * driveWithStick)) * MaxSpeed) / speedDamper) //Drive left with negative X (left)
+                    .withRotationalRate(((((1 - (vision.getZRotation()/Math.PI)) * driveWithAprilTag ) + (-driverController.getRightX() * driveWithStick)) * MaxAngularRate) / speedDamper) // Don't rotate Drive counterclockwise with negative X (left)
                 )       
         );
 
@@ -136,35 +136,35 @@ public class RobotContainer {
             drivetrain.applyRequest(() -> idle).ignoringDisable(true)
         );
 
-        joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
-        joystick.b().whileTrue(drivetrain.applyRequest(() ->
-            point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
+        driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        driverController.b().whileTrue(drivetrain.applyRequest(() ->
+            point.withModuleDirection(new Rotation2d(-driverController.getLeftY(), -driverController.getLeftX()))
         ));
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-        joystick.x().onTrue(pipelineSwitcher());
-        joystick.y().onTrue(toggleJoystix());
-        //joystick.leftTrigger(0.5).whileTrue(moveAprilTagLeft());
-        //joystick.rightTrigger(0.5).whileTrue(moveAprilTagRight());
+        driverController.back().and(driverController.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        driverController.back().and(driverController.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        driverController.start().and(driverController.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        driverController.start().and(driverController.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        driverController.x().onTrue(pipelineSwitcher());
+        driverController.y().onTrue(toggleJoystix());
+        //driverController.leftTrigger(0.5).whileTrue(moveAprilTagLeft());
+        //driverController.rightTrigger(0.5).whileTrue(moveAprilTagRight());
         operatorController.a().whileTrue(new ClimbBackward(climber));
         operatorController.b().whileTrue(new ClimbForward(climber));
         operatorController.x().whileTrue(new Drive(intake));
         operatorController.y().onTrue(activation);//onTrue(getAutonomousCommand());//(new Activation(Pneumatics));
-        joystick.a().onTrue(elastic.fieldWidget.getAuto("Test Wait Command"));
-        //joystick.b().onTrue(elastic.fieldWidget.getAuto("First Test"));
-        joystick.x().onTrue(elastic.fieldWidget.getAuto("Test Auto"));
-        joystick.y().onTrue(elastic.fieldWidget.getAuto("HPR"));
-        joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
-        joystick.leftTrigger().onTrue(new TurretScan(m_turretvision, m_shooter));
+        driverController.a().onTrue(elastic.fieldWidget.getAuto("Test Wait Command"));
+        //driverController.b().onTrue(elastic.fieldWidget.getAuto("First Test"));
+        driverController.x().onTrue(elastic.fieldWidget.getAuto("Test Auto"));
+        driverController.y().onTrue(elastic.fieldWidget.getAuto("HPR"));
+        driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+        driverController.leftTrigger().onTrue(new TurretScan(m_turretvision, m_shooter));
         // calls the method that turns the stopButton for Scan to true
-        joystick.rightTrigger().onTrue(m_shooter.runOnce(()->m_shooter.getStopCommand()));
-        joystick.povLeft().whileTrue(new TurretLeft(m_turretvision, m_shooter));
-        joystick.povRight().whileTrue(new TurretRight(m_turretvision, m_shooter));
+        driverController.rightTrigger().onTrue(m_shooter.runOnce(()->m_shooter.getStopCommand()));
+        driverController.povLeft().whileTrue(new TurretLeft(m_turretvision, m_shooter));
+        driverController.povRight().whileTrue(new TurretRight(m_turretvision, m_shooter));
 
         // Spin flywheel and start hood
         operatorController.a().onTrue(new FlywheelCommand(flywheelSubsystem, 20).andThen(new HoodCommand(hoodSubsystem, false, 0)));
@@ -177,13 +177,13 @@ public class RobotContainer {
         operatorController.povDown().onFalse(new HoodCommand(hoodSubsystem, true, 0));
 
         // Regular Shooting
-        joystick.x().onTrue(new IndexAndSpindexCommand(InSSubsystem, false));
+        driverController.x().onTrue(new IndexAndSpindexCommand(InSSubsystem, false));
 
         // Force Shoot
         operatorController.b().onTrue(new IndexAndSpindexCommand(InSSubsystem, true));
 
         // Reset the field-centric heading on left bumper press.
-        joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+        driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

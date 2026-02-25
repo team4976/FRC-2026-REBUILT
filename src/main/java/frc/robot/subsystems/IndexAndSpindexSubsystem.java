@@ -33,10 +33,10 @@ public class IndexAndSpindexSubsystem extends SubsystemBase{
     public void periodic() {
         if (hoodSubsystem.getHoodState() == "readyToShoot" 
         && shooterSubsystem.getShooterState() == "readyToShoot") {
-            RobotContainer.joystick.setRumble(GenericHID.RumbleType.kBothRumble, 100);
+            RobotContainer.driverController.setRumble(GenericHID.RumbleType.kBothRumble, 100);
         }
         else {
-            RobotContainer.joystick.setRumble(GenericHID.RumbleType.kBothRumble, 0);
+            RobotContainer.driverController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
         }
     }
 }
