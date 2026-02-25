@@ -28,9 +28,29 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.VisionData;
-import frc.robot.commands.ClimbBackward;
+//import frc.robot.subsystems.SmartDashboardHub;
+import frc.robot.commands.ClimbBackward;   
 import frc.robot.commands.ClimbForward;
 
+//import edu.wpi.first.wpilibj.DigitalInput;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.wpilibj2.command.Command;
+//import edu.wpi.first.wpilibj2.command.Commands;
+//import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+//import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
+//import edu.wpi.first.wpilibj2.command.button.Trigger;
+//import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.HoodCommand;
+import frc.robot.commands.IndexAndSpindexCommand;
+import frc.robot.commands.FlywheelCommand;
+import frc.robot.commands.TurretLeft;
+import frc.robot.commands.TurretRight;
+import frc.robot.commands.TurretScan;
+import frc.robot.subsystems.HoodSubsystem;
+import frc.robot.subsystems.IndexAndSpindexSubsystem;
+import frc.robot.subsystems.FlywheelSubsystem;
+import frc.robot.subsystems.TurretMovement;
+import frc.robot.subsystems.TurretVision;
 
 public class RobotContainer {
     private double MaxSpeed = 1.0 * TurretTunerConstants.kSpeedAt12Volts.in(MetersPerSecond) / 3.5; // kSpeedAt12Volts desired top speed
@@ -66,16 +86,30 @@ public class RobotContainer {
     private final Pneumatics Pneumatics = new Pneumatics();
 
     private final ClimberSubsystem climber = new ClimberSubsystem();
+    //private final SmartDashboardHub smartDashboardSubsystem = new SmartDashboardHub();
 
-    private final CommandXboxController joystick = new CommandXboxController(0);
-    private final CommandXboxController operatorController = new CommandXboxController(1);
 
+    private final TurretMovement m_shooter = new TurretMovement();
+    private final TurretVision m_turretvision = new TurretVision();
+    public FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
+    public HoodSubsystem hoodSubsystem = new HoodSubsystem();
+    public IndexAndSpindexSubsystem InSSubsystem = new IndexAndSpindexSubsystem();
+
+    public static final CommandXboxController joystick = new CommandXboxController(0);
+    public static final CommandXboxController operatorController = new CommandXboxController(1);
 
     final ToggleIntake activation = new ToggleIntake(Pneumatics, intake);
 
     public final CommandSwerveDrivetrain drivetrain = TurretTunerConstants.createDrivetrain();
 
     public RobotContainer() {
+        SmartDashboard.putNumber("flywheelSpeed", 0);
+        SmartDashboard.putNumber("hood target position", 0);
+
+        SmartDashboard.putNumber("kV", 0.1);
+        SmartDashboard.putNumber("kP", 0.4);
+        SmartDashboard.putNumber("kI", 0.0);
+        SmartDashboard.putNumber("kD", 0.0);
         configureBindings();
     }
 
@@ -118,7 +152,27 @@ public class RobotContainer {
         operatorController.x().whileTrue(new Drive(intake));
         operatorController.y().onTrue(activation);//onTrue(getAutonomousCommand());//(new Activation(Pneumatics));
 
+        joystick.leftTrigger().onTrue(new TurretScan(m_turretvision, m_shooter));
+        // calls the method that turns the stopButton for Scan to true
+        joystick.rightTrigger().onTrue(m_shooter.runOnce(()->m_shooter.getStopCommand()));
+        joystick.povLeft().whileTrue(new TurretLeft(m_turretvision, m_shooter));
+        joystick.povRight().whileTrue(new TurretRight(m_turretvision, m_shooter));
 
+        // Spin flywheel and start hood
+        operatorController.a().onTrue(new FlywheelCommand(flywheelSubsystem, 20).andThen(new HoodCommand(hoodSubsystem, false, 0)));
+    
+
+        // Manual hood override
+        operatorController.povUp().onTrue(new HoodCommand(hoodSubsystem, true, 0.1));
+        operatorController.povUp().onFalse(new HoodCommand(hoodSubsystem, true, 0));
+        operatorController.povDown().onTrue(new HoodCommand(hoodSubsystem, true, -0.1));
+        operatorController.povDown().onFalse(new HoodCommand(hoodSubsystem, true, 0));
+
+        // Regular Shooting
+        joystick.x().onTrue(new IndexAndSpindexCommand(InSSubsystem, false));
+
+        // Force Shoot
+        operatorController.b().onTrue(new IndexAndSpindexCommand(InSSubsystem, true));
 
         // Reset the field-centric heading on left bumper press.
         joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
