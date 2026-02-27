@@ -155,10 +155,10 @@ public class RobotContainer {
         operatorController.b().whileTrue(new ClimbForward(climber));
         operatorController.x().whileTrue(new Drive(intake));
         operatorController.y().onTrue(activation);//onTrue(getAutonomousCommand());//(new Activation(Pneumatics));
-        driverController.a().onTrue(elastic.fieldWidget.getAuto("Test Wait Command"));
+       // driverController.a().onTrue(elastic.fieldWidget.getAuto("Test Wait Command"));
         //driverController.b().onTrue(elastic.fieldWidget.getAuto("First Test"));
-        driverController.x().onTrue(elastic.fieldWidget.getAuto("Test Auto"));
-        driverController.y().onTrue(elastic.fieldWidget.getAuto("HPR"));
+      //  driverController.x().onTrue(elastic.fieldWidget.getAuto("Test Auto"));
+      //  driverController.y().onTrue(elastic.fieldWidget.getAuto("HPR"));
         driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
         driverController.leftTrigger().onTrue(new TurretScan(m_turretvision, m_shooter));
         // calls the method that turns the stopButton for Scan to true

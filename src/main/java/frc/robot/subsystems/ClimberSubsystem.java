@@ -16,10 +16,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class ClimberSubsystem extends SubsystemBase {
 
    // Compressor connected to a PCM with a default CAN ID (0)
-  public static final PneumaticsControlModule pneumaticsControlModule = new PneumaticsControlModule(32);
+  public static final PneumaticsControlModule pneumaticsControlModule = new PneumaticsControlModule(34);
   //creates the pcm10
-   private final Compressor m_compressor = new Compressor(32, PneumaticsModuleType.CTREPCM);
-private final DoubleSolenoid solenoid = new DoubleSolenoid(32, PneumaticsModuleType.CTREPCM, 1,0);
+   private final Compressor m_compressor = new Compressor(11, PneumaticsModuleType.CTREPCM);
+private final DoubleSolenoid solenoid = new DoubleSolenoid(13, PneumaticsModuleType.CTREPCM, 1, 0);
 //creates channel. forward channel is 1. backward channel is 0
   /** Creates a new can ball!!!!!
    * 

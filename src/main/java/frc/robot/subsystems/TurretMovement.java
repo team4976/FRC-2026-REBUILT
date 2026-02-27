@@ -13,8 +13,8 @@ import frc.robot.Constants;
 
 public class TurretMovement extends SubsystemBase{
     private TalonFX leftLeader;
-    private static DigitalInput RightSwitch = new DigitalInput(1);
-    private static DigitalInput LeftSwitch = new DigitalInput(0);
+    private static DigitalInput RightSwitch = new DigitalInput(11);
+    private static DigitalInput LeftSwitch = new DigitalInput(12);
     int leftTriggerPressed;
 
     public TurretMovement(){
