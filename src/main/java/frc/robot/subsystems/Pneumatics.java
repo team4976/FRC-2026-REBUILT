@@ -15,10 +15,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 @SuppressWarnings("unused")
 public class Pneumatics extends SubsystemBase {
-    public static final PneumaticsControlModule pneumaticsControlModule = new PneumaticsControlModule(10);
-      private final Compressor compressor = new Compressor(10, PneumaticsModuleType.CTREPCM);
+    public static final PneumaticsControlModule pneumaticsControlModule = new PneumaticsControlModule(32);
+      private final Compressor compressor = new Compressor(32, PneumaticsModuleType.CTREPCM);
 // DoubleSolenoid(channelForward, channelReverse)
-    private final DoubleSolenoid solenoid = new DoubleSolenoid(10,
+    private final DoubleSolenoid solenoid = new DoubleSolenoid(32,
             PneumaticsModuleType.CTREPCM, 1, 0);
 
     private final DoubleSolenoid solenoid2 = new DoubleSolenoid(2,
