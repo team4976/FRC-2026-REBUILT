@@ -8,26 +8,35 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClimberSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class ClimbBackward extends Command {
+public class Climb extends Command {
   /**
    * Creates a new ExampleCommand.
+
+
    *
    * @param subsystem The subsystem used by this command.
    */
-  ClimberSubsystem Pneumatics;
-    private boolean interrupted;
-    public ClimbBackward(ClimberSubsystem Pneumatics) {
+  ClimberSubsystem climber;
+    //private boolean interrupted;
+    private boolean isClimbed = false;
+    public Climb(ClimberSubsystem climber) {
       // Use addRequirements() here to declare subsystem dependencies.
-      this.Pneumatics = Pneumatics;
-      addRequirements(Pneumatics);
+        this.climber = climber;
+        addRequirements(climber);
     }
   
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-      Pneumatics.backward();
+      if (isClimbed == false) {
+        climber.forward();
+        isClimbed = true;
+      } else {
+        climber.backward();
+        isClimbed = false;
+      }
     }
-  
+  //creates command
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {}

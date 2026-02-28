@@ -12,37 +12,37 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class TurretMovement extends SubsystemBase{
-    private TalonFX leftLeader;
+    private TalonFX turretSpin;
     private static DigitalInput RightSwitch = new DigitalInput(11);
     private static DigitalInput LeftSwitch = new DigitalInput(12);
     int leftTriggerPressed;
 
     public TurretMovement(){
-        leftLeader = new TalonFX(31);  
-        leftLeader.setVoltage(0);
+        turretSpin = new TalonFX(Constants.Turret_ID);  
+        turretSpin.setVoltage(0);
         leftTriggerPressed = 0;
 
     }
 
     //When called it turns the motor tho the right
     public void turnRight(double voltage) {
-    leftLeader.setVoltage(voltage);
+    turretSpin.setVoltage(voltage);
     System.out.println("right switch: " + RightSwitch.get());
     }
 
     //When called it turns the motor to the left
     public void turnLeft(double voltage) {
-    leftLeader.setVoltage(voltage*-1);
+    turretSpin.setVoltage(voltage*-1);
     System.out.println("left switch: " + LeftSwitch.get());
     }
 
     public void lockedOn(double voltage){
-        leftLeader.setVoltage(voltage);
+        turretSpin.setVoltage(voltage);
     }
 
     //When called it stops the motor
     public void stopTurn() {
-        leftLeader.setVoltage(0);
+        turretSpin.setVoltage(0);
         System.out.println("STOP MOVING");
     }
 
