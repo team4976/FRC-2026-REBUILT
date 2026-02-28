@@ -4,12 +4,10 @@
 //test
 package frc.robot;
 
-import static edu.wpi.first.units.Units.*;
-
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
-import frc.robot.commands.Drive;
 
+import static edu.wpi.first.units.Units.*;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,10 +15,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.commands.ToggleIntake;
-
+import frc.robot.commands.Drive;
+import frc.robot.generated.OldTunerConstants;
 import frc.robot.generated.TurretTunerConstants;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -28,19 +26,8 @@ import frc.robot.subsystems.ElasticData;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.Pneumatics;
-import frc.robot.subsystems.VisionData;
-//import frc.robot.subsystems.SmartDashboardHub;
-import frc.robot.commands.ClimbBackward;   
-import frc.robot.commands.ClimbForward;
-
-//import edu.wpi.first.wpilibj.DigitalInput;
-//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-//import edu.wpi.first.wpilibj2.command.Command;
-//import edu.wpi.first.wpilibj2.command.Commands;
-//import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-//import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
-//import edu.wpi.first.wpilibj2.command.button.Trigger;
-//import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.subsystems.VisionData; 
+import frc.robot.commands.Climb;
 import frc.robot.commands.HoodCommand;
 import frc.robot.commands.IndexAndSpindexCommand;
 import frc.robot.commands.FlywheelCommand;
@@ -55,64 +42,51 @@ import frc.robot.subsystems.TurretVision;
 import frc.robot.Elastic.ElasticContainer;
 
 public class RobotContainer {
-    private double MaxSpeed = 1.0 * TurretTunerConstants.kSpeedAt12Volts.in(MetersPerSecond) / 3.5; // kSpeedAt12Volts desired top speed
+
+    private double MaxSpeed = 1.0 * OldTunerConstants.kSpeedAt12Volts.in(MetersPerSecond) / 3.5; // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
-    //MaxSpeed * 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.2).withRotationalDeadband(MaxAngularRate * 0.2) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
             private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+    public final CommandSwerveDrivetrain drivetrain = OldTunerConstants.createDrivetrain();
 
-    private final Telemetry logger = new Telemetry(MaxSpeed);
-
+    //Vision Objects, may be good idea to merge into one class and just have dif objects
     private PhotonVision vision = new PhotonVision("testingCamera");
+    private final TurretVision m_turretvision = new TurretVision();
 
-    private ElasticData elasticData = new ElasticData(logger, vision);
-
+    //The variables made for vision testing, may not be needed anymore
     private final double MaxYaw = 32;
-
     private final double speedDamper = 3.5;
-
     private final double desiredDistance = 2;
-
     private final double MaxDistance = 32;
-
     private double driveWithAprilTag = 0;
-
     private double driveWithStick = 1;
 
+    //Subsystem Objects/Subsystem Initialization
     private final Intake intake = new Intake();
-  
     private final Pneumatics Pneumatics = new Pneumatics();
-
     private final ClimberSubsystem climber = new ClimberSubsystem();
-    //private final SmartDashboardHub smartDashboardSubsystem = new SmartDashboardHub();
-
-
     private final TurretMovement m_shooter = new TurretMovement();
-    private final TurretVision m_turretvision = new TurretVision();
+    final ToggleIntake activation = new ToggleIntake(Pneumatics, intake);
     public FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
     public HoodSubsystem hoodSubsystem = new HoodSubsystem();
     public IndexAndSpindexSubsystem InSSubsystem = new IndexAndSpindexSubsystem();
 
+    //Controller Objects
     public static final CommandXboxController driverController = new CommandXboxController(0);
     public static final CommandXboxController operatorController = new CommandXboxController(1);
 
-    final ToggleIntake activation = new ToggleIntake(Pneumatics, intake);
+    //logging and elastic/smartdashboard intialization
+    private final Telemetry logger = new Telemetry(MaxSpeed);
+    private ElasticData elasticData = new ElasticData(logger, vision);
 
-    public final CommandSwerveDrivetrain drivetrain = TurretTunerConstants.createDrivetrain();
+    //for the elastic folder, gonna be merged to elastic data later
     public final ElasticContainer elastic;
 
     public RobotContainer() {
-        SmartDashboard.putNumber("flywheelSpeed", 0);
-        SmartDashboard.putNumber("hood target position", 0);
-
-        SmartDashboard.putNumber("kV", 0.1);
-        SmartDashboard.putNumber("kP", 0.4);
-        SmartDashboard.putNumber("kI", 0.0);
-        SmartDashboard.putNumber("kD", 0.0);
         elastic = new ElasticContainer(this,logger);
         configureBindings();
     }
@@ -135,7 +109,6 @@ public class RobotContainer {
         RobotModeTriggers.disabled().whileTrue(
             drivetrain.applyRequest(() -> idle).ignoringDisable(true)
         );
-
         driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
         driverController.b().whileTrue(drivetrain.applyRequest(() ->
             point.withModuleDirection(new Rotation2d(-driverController.getLeftY(), -driverController.getLeftX()))
@@ -143,22 +116,9 @@ public class RobotContainer {
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        //driverController.back().and(driverController.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        //driverController.back().and(driverController.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        //driverController.start().and(driverController.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        //driverController.start().and(driverController.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-        //driverController.x().onTrue(pipelineSwitcher());
-        //driverController.y().onTrue(toggleJoystix());
-        //driverController.leftTrigger(0.5).whileTrue(moveAprilTagLeft());
-        //driverController.rightTrigger(0.5).whileTrue(moveAprilTagRight());
-        operatorController.a().whileTrue(new ClimbBackward(climber));
-        operatorController.b().whileTrue(new ClimbForward(climber));
+        operatorController.b().whileTrue(new Climb(climber));
         operatorController.x().whileTrue(new Drive(intake));
-        operatorController.y().onTrue(activation);//onTrue(getAutonomousCommand());//(new Activation(Pneumatics));
-       // driverController.a().onTrue(elastic.fieldWidget.getAuto("Test Wait Command"));
-        //driverController.b().onTrue(elastic.fieldWidget.getAuto("First Test"));
-      //  driverController.x().onTrue(elastic.fieldWidget.getAuto("Test Auto"));
-      //  driverController.y().onTrue(elastic.fieldWidget.getAuto("HPR"));
+        operatorController.y().onTrue(activation);
         driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
         driverController.leftTrigger().onTrue(new TurretScan(m_turretvision, m_shooter));
         // calls the method that turns the stopButton for Scan to true
@@ -209,61 +169,21 @@ public class RobotContainer {
             drivetrain.applyRequest(() -> idle)
         );
     }
-    public Command moveAprilTagLeft() {
-        if ((vision.getAnyYaw() <= 10) && (vision.getAnyYaw() >= -10)) {
-            return Commands.sequence(
-                drivetrain.applyRequest(() ->
-                drive.withRotationalRate(-1 * MaxAngularRate) // Drive so that april tag is left 
-                // Note ** prolly change -1 and 1 in the next Command to a variable
-                            )
-            ); //Rotate the robot right
-        } else {
-            return Commands.sequence(); //Do nothing     
-        }
-    }
-    public Command moveAprilTagRight() {
-       if ((vision.getAnyYaw() <= 10) && (vision.getAnyYaw() >= -10)) {
-            return Commands.sequence(
-                
-                drivetrain.applyRequest(() ->
-                drive.withRotationalRate(1 * MaxAngularRate) // Drive so that april tag is right
-                            )
-            ); //Rotate the robot left
-        } else {
-            return Commands.sequence(); //Do nothing     
-        }
-    }
 
-    public Command toggleJoystix(){
-        return Commands.runOnce(()->{
-            System.out.println("Toggle Runs");
-            if (driveWithAprilTag == 1) {
-                driveWithAprilTag = 0;
-                driveWithStick = 1;
-                System.out.println("Controller Controls");
-            } else {
-                driveWithStick = 0;
-                driveWithAprilTag = 1;
-                System.out.println("April Tag Controls");
-                //This is a toggle button in between the two, I use 1 and 0 instead of true and false because it is a number that is multiplyed by the different speeds.
-            }
-        });
-    }
 
-    public Command pipelineSwitcher(){
-        VisionData visionData = new VisionData("testingCamera");
-        return Commands.runOnce(()->{
-            if (visionData.getPipelineMethod() == 0) {
-                visionData.pipelineSwitcher(1);
-                SmartDashboard.putNumber("Pipeline",visionData.getPipelineMethod());
-            }
-            else{
-                visionData.pipelineSwitcher(0);
-                SmartDashboard.putNumber("Pipeline",visionData.getPipelineMethod());
-            }
-        });
-        
-        
-        
-    }
+//PRE ORGANIZATION COMMENTS, PROBABLY USELESS
+
+    //driverController.back().and(driverController.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+    //driverController.back().and(driverController.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+    //driverController.start().and(driverController.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+    //driverController.start().and(driverController.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+    //driverController.x().onTrue(pipelineSwitcher());
+    //driverController.y().onTrue(toggleJoystix());
+    //driverController.leftTrigger(0.5).whileTrue(moveAprilTagLeft());
+    //driverController.rightTrigger(0.5).whileTrue(moveAprilTagRight());
+    //driverController.a().onTrue(elastic.fieldWidget.getAuto("Test Wait Command"));
+    //driverController.b().onTrue(elastic.fieldWidget.getAuto("First Test"));
+    //driverController.x().onTrue(elastic.fieldWidget.getAuto("Test Auto"));
+    //driverController.y().onTrue(elastic.fieldWidget.getAuto("HPR"));
+    //onTrue(getAutonomousCommand());//(new Activation(Pneumatics));
 }

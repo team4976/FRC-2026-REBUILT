@@ -39,8 +39,15 @@ public class ElasticData extends SubsystemBase{
                 builder.addDoubleProperty("Robot Angle", () -> telemetry.m_poseArray[2], null);
             } 
         });
-
+        SmartDashboard.putNumber("flywheelSpeed", 0);
+        SmartDashboard.putNumber("hood target position", 0);
+        SmartDashboard.putNumber("kV", 0.1);
+        SmartDashboard.putNumber("kP", 0.4);
+        SmartDashboard.putNumber("kI", 0.0);
+        SmartDashboard.putNumber("kD", 0.0);
     }
+
+
     @Override
     public void periodic(){
         double MaxSpeed = 1.0 * OldTunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
