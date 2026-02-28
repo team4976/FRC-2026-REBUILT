@@ -43,7 +43,7 @@ public class FlywheelSubsystem extends SubsystemBase{
 
     public void spinShooter(double targetRPS){
         System.out.println("targetRPS: " + targetRPS);
-        ShooterMotorLeader.setControl(shooterVelocityVoltage.withVelocity(targetRPS).withFeedForward(targetRPS/10));
+        ShooterMotorLeader.setControl(shooterVelocityVoltage.withVelocity(-targetRPS));
         this.targetRPS = targetRPS;
     }
 

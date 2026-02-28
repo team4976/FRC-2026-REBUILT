@@ -25,15 +25,15 @@ public final class Constants {
   public static final int Hood_ID = 48;
   public static final int Flywheel_Lead_ID = 46;
   public static final int Flywheel_Follower_ID = 47;
-  public static final int Index_ID = 30;
-  public static final int Spindex_ID = 31;
+  public static final int Index_ID = 31;
+  public static final int Spindex_ID = 40;
   public static final int Turret_ID = 43;
   public static final int Intake_ID = 41;
 
 
   public static final int kDriverControllerPort = 0;
     public static final int LEFT_LEADER_ID = 1;
-    public static double turnVoltage = .3;
+    public static double turnVoltage = .8;
     public static boolean stopbutton = false;
     public static double yaw;
     public static double targetYaw = 0.0;

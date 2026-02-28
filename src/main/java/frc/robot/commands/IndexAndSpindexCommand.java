@@ -36,6 +36,7 @@ public class IndexAndSpindexCommand extends Command{
             }
         }
         else {
+            System.out.println("Move feeder");
             InSSubsystem.moveFeeder();
         }
     }
@@ -45,7 +46,7 @@ public class IndexAndSpindexCommand extends Command{
     }
     @Override
     public boolean isFinished() {
-        if (RobotContainer.driverController.x().getAsBoolean() == false && ForceSpin == false 
+        if (RobotContainer.driverController.x().getAsBoolean() == false && ForceSpin == false
         || RobotContainer.operatorController.b().getAsBoolean() == false && ForceSpin == true) {
             return true;
         }

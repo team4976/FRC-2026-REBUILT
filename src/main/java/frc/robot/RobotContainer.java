@@ -119,7 +119,7 @@ public class RobotContainer {
         driverController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
 
         // Spin flywheel and start hood
-        operatorController.a().onTrue(new FlywheelCommand(flywheelSubsystem, 20).andThen(new HoodCommand(hoodSubsystem, false, 0)));
+        operatorController.a().onTrue(new FlywheelCommand(flywheelSubsystem, 20));
     
         //Planned Button Mapping: Driver: Joysticks to drive, Right Bumper is shoot, Left Bumper: brake, B:drive relative. Operator: Climb: Y, Intake: A, Flywheel: X, Manual Overides: Hood up and down d-pad,  
 

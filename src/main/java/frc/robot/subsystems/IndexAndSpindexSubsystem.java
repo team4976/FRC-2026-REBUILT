@@ -4,6 +4,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -25,8 +26,10 @@ public class IndexAndSpindexSubsystem extends SubsystemBase{
     }
 
     public void moveFeeder(){
-        indexMotor.set(0.1);
+        System.out.println("AHHHHHHH");
+        indexMotor.set(-0.5);
         spindexMotor.set(0.5);
+        System.out.println("BANANA");
     }
 
     @Override
@@ -38,5 +41,6 @@ public class IndexAndSpindexSubsystem extends SubsystemBase{
         else {
             RobotContainer.driverController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
         }
+        SmartDashboard.putNumber("tmp", indexMotor.getOutputCurrent());
     }
 }
