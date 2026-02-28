@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 
 import frc.robot.commands.intakePneumatic;
 import frc.robot.commands.IntakeMotor;
-import frc.robot.generated.OldTunerConstants;
+import frc.robot.generated.RebuiltTunerConstants;
 import frc.robot.generated.TurretTunerConstants;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -43,7 +43,7 @@ import frc.robot.Elastic.ElasticContainer;
 public class RobotContainer {
 
     //swerve drive variables and objects
-    private double MaxSpeed = 1.0 * OldTunerConstants.kSpeedAt12Volts.in(MetersPerSecond) / 3.5; // kSpeedAt12Volts desired top speed
+    private double MaxSpeed = 1.0 * RebuiltTunerConstants.kSpeedAt12Volts.in(MetersPerSecond) / 3.5; // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -51,7 +51,7 @@ public class RobotContainer {
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
             private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
-    public final CommandSwerveDrivetrain drivetrain = OldTunerConstants.createDrivetrain();
+    public final CommandSwerveDrivetrain drivetrain = RebuiltTunerConstants.createDrivetrain();
 
     //Vision Objects, may be good idea to merge into one class and just have dif objects
     private PhotonVision vision = new PhotonVision("testingCamera");
