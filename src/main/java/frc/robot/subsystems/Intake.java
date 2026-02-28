@@ -2,6 +2,8 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+//This subsystem spins the intake motor
+
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -13,22 +15,22 @@ import frc.robot.Constants;
 
 
 public class Intake extends SubsystemBase {
-  public TalonSRX motor1;
+  public TalonSRX IntakeMotor;
 
   private static DigitalInput m_toplimitSwitch = new DigitalInput(0);
       
   public Intake() {
-    motor1 = new TalonSRX(Constants.Intake_ID);
+    IntakeMotor = new TalonSRX(Constants.Intake_ID); //Defines motor 1
   }   
              
           public void stop() {
-    //        motor1.set(ControlMode.PercentOutput0); 
-            motor1.set(ControlMode.PercentOutput, 0); 
+    //        IntakeMotor.set(ControlMode.PercentOutput0); 
+            IntakeMotor.set(ControlMode.PercentOutput, 0); 
           }
         
           public void runIntake(double speed) {
-  //          motor1.set(ControlMode.PercentOutput,speed);
-            motor1.set(ControlMode.PercentOutput, speed);
+  //          IntakeMotor.set(ControlMode.PercentOutput,speed);
+            IntakeMotor.set(ControlMode.PercentOutput, speed);
           }
         
         public boolean checkswitchstatus() {
@@ -54,7 +56,7 @@ public class Intake extends SubsystemBase {
   public void setFeederRoller(int i) {
     throw new UnsupportedOperationException("Unimplemented method 'setFeederRoller'");
   }
-
+  //Catches errors
     }
 
 
