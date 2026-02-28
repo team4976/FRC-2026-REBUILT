@@ -5,18 +5,18 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.FlywheelSubsystem;
 
 public class FlywheelCommand extends Command{
-    public FlywheelSubsystem shooterSubsystem;
+    public FlywheelSubsystem flywheelSubsystem;
     public double targetRPS;
 
-    public FlywheelCommand(FlywheelSubsystem shooterSubsystem, double targetRPS){
-        this.shooterSubsystem = shooterSubsystem;
+    public FlywheelCommand(FlywheelSubsystem flywheelSubsystem, double targetRPS){
+        this.flywheelSubsystem = flywheelSubsystem;
         this.targetRPS = targetRPS;
-        addRequirements(shooterSubsystem);
+        addRequirements(flywheelSubsystem);
     }
 
     @Override
     public void initialize(){
-        shooterSubsystem.setShooterState();
+        flywheelSubsystem.setShooterState();
         /* 
          * also make the default wind up for flywheel be controller op, but if you try to shoot and it
          * is not spinning then start spinning it.
@@ -25,12 +25,12 @@ public class FlywheelCommand extends Command{
 
     @Override
     public void execute(){
-        switch (shooterSubsystem.getShooterState()) {
+        switch (flywheelSubsystem.getShooterState()) {
             case "windShooter":
-                shooterSubsystem.spinShooter(SmartDashboard.getNumber("flywheelSpeed", targetRPS));
+                flywheelSubsystem.spinShooter(SmartDashboard.getNumber("flywheelSpeed", targetRPS));
                 break;
             case "cantShoot":
-                shooterSubsystem.spinShooter(0);
+                flywheelSubsystem.spinShooter(0);
                 break;
         }
     }

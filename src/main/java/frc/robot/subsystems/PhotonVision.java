@@ -18,7 +18,6 @@ public class PhotonVision extends SubsystemBase{
         vision.update();
     }
 
-
     public double getAmbiguity(){
         return vision.getAmbiguity();
     }

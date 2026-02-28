@@ -11,7 +11,7 @@ import frc.robot.subsystems.Intake;
 /** An example command that uses an example subsystem. 
  * @param <Drive>*/
 @SuppressWarnings("unused")
-public class Drive extends Command {
+public class IntakeMotor extends Command {
 boolean limitSwitchStatus;
 Intake motorSpin;
 /**
@@ -19,7 +19,7 @@ Intake motorSpin;
      *
      * @param subsystem The subsystem used by this command.
      */
-    public Drive(Intake motorSpin) {
+    public IntakeMotor(Intake motorSpin) {
       // Use addRequirements() here to declare subsystem dependencies.
       addRequirements(motorSpin);
       this.motorSpin = motorSpin;

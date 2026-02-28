@@ -11,7 +11,7 @@ import frc.robot.subsystems.Pneumatics;
 /** An example command that uses an example subsystem. 
  * @param <Drive>*/
 @SuppressWarnings("unused")
-public class ToggleIntake extends Command {
+public class intakePneumatic extends Command {
 boolean SolenoidStatus;
 Pneumatics pneumatics;
 Intake intake;
@@ -21,7 +21,7 @@ Intake intake;
        * @param subsystem The subsystem used by this command.
        */
 
-public ToggleIntake(Pneumatics pneumatics, Intake intake) {
+public intakePneumatic(Pneumatics pneumatics, Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
     addRequirements(pneumatics);

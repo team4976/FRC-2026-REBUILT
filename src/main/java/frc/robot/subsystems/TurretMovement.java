@@ -21,7 +21,6 @@ public class TurretMovement extends SubsystemBase{
         turretSpin = new TalonFX(Constants.Turret_ID);  
         turretSpin.setVoltage(0);
         leftTriggerPressed = 0;
-
     }
 
     //When called it turns the motor tho the right

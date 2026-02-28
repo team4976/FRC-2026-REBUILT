@@ -16,8 +16,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 
-import frc.robot.commands.ToggleIntake;
-import frc.robot.commands.Drive;
+import frc.robot.commands.intakePneumatic;
+import frc.robot.commands.IntakeMotor;
 import frc.robot.generated.OldTunerConstants;
 import frc.robot.generated.TurretTunerConstants;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -26,7 +26,6 @@ import frc.robot.subsystems.ElasticData;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.Pneumatics;
-import frc.robot.subsystems.VisionData; 
 import frc.robot.commands.Climb;
 import frc.robot.commands.HoodCommand;
 import frc.robot.commands.IndexAndSpindexCommand;
@@ -43,6 +42,7 @@ import frc.robot.Elastic.ElasticContainer;
 
 public class RobotContainer {
 
+    //swerve drive variables and objects
     private double MaxSpeed = 1.0 * OldTunerConstants.kSpeedAt12Volts.in(MetersPerSecond) / 3.5; // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     /* Setting up bindings for necessary control of the swerve drive platform */
@@ -57,20 +57,12 @@ public class RobotContainer {
     private PhotonVision vision = new PhotonVision("testingCamera");
     private final TurretVision m_turretvision = new TurretVision();
 
-    //The variables made for vision testing, may not be needed anymore
-    private final double MaxYaw = 32;
-    private final double speedDamper = 3.5;
-    private final double desiredDistance = 2;
-    private final double MaxDistance = 32;
-    private double driveWithAprilTag = 0;
-    private double driveWithStick = 1;
-
     //Subsystem Objects/Subsystem Initialization
-    private final Intake intake = new Intake();
     private final Pneumatics Pneumatics = new Pneumatics();
+    private final Intake motorIntake = new Intake();
+    private final intakePneumatic pneumaticIntake = new intakePneumatic(Pneumatics, motorIntake);
     private final ClimberSubsystem climber = new ClimberSubsystem();
-    private final TurretMovement m_shooter = new TurretMovement();
-    final ToggleIntake activation = new ToggleIntake(Pneumatics, intake);
+    private final TurretMovement turretMovement = new TurretMovement();
     public FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
     public HoodSubsystem hoodSubsystem = new HoodSubsystem();
     public IndexAndSpindexSubsystem InSSubsystem = new IndexAndSpindexSubsystem();
@@ -97,10 +89,10 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(Math.max(-MaxSpeed, Math.min((((((vision.getDistance() - desiredDistance) / MaxDistance) * driveWithAprilTag) + (-driverController.getLeftY() * driveWithStick)) * MaxSpeed), MaxSpeed))) //Drive forward with negative Y (forward)
-                    .withVelocityY(((((-vision.getAnyYaw()/MaxYaw) * driveWithAprilTag) + (-driverController.getLeftX() * driveWithStick)) * MaxSpeed) / speedDamper) //Drive left with negative X (left)
-                    .withRotationalRate(((((1 - (vision.getZRotation()/Math.PI)) * driveWithAprilTag ) + (-driverController.getRightX() * driveWithStick)) * MaxAngularRate) / speedDamper) // Don't rotate Drive counterclockwise with negative X (left)
-                )       
+                drive.withVelocityX(-driverController.getLeftY())
+                .withVelocityY(-driverController.getLeftX())
+                .withRotationalRate(-driverController.getRightX())
+            )    
         );
 
         // Idle while the robot is disabled. This ensures the configured
@@ -117,14 +109,14 @@ public class RobotContainer {
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
         operatorController.b().whileTrue(new Climb(climber));
-        operatorController.x().whileTrue(new Drive(intake));
-        operatorController.y().onTrue(activation);
+        operatorController.x().whileTrue(new IntakeMotor(motorIntake));
+        operatorController.y().onTrue(pneumaticIntake);
         driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
-        driverController.leftTrigger().onTrue(new TurretScan(m_turretvision, m_shooter));
+        driverController.leftTrigger().onTrue(new TurretScan(m_turretvision, turretMovement));
         // calls the method that turns the stopButton for Scan to true
-        driverController.rightTrigger().onTrue(m_shooter.runOnce(()->m_shooter.getStopCommand()));
-        driverController.povLeft().whileTrue(new TurretLeft(m_turretvision, m_shooter));
-        driverController.povRight().whileTrue(new TurretRight(m_turretvision, m_shooter));
+        driverController.rightTrigger().onTrue(turretMovement.runOnce(()->turretMovement.getStopCommand()));
+        driverController.povLeft().whileTrue(new TurretLeft(m_turretvision, turretMovement));
+        driverController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
 
         // Spin flywheel and start hood
         operatorController.a().onTrue(new FlywheelCommand(flywheelSubsystem, 20).andThen(new HoodCommand(hoodSubsystem, false, 0)));
