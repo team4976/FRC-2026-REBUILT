@@ -1,23 +1,21 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.generated.TunerConstants;
+import frc.robot.Telemetry;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonUtils;
-import org.photonvision.struct.PhotonTrackedTargetSerde;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
-import java.util.List;
 import java.util.Optional;
 
-import org.photonvision.EstimatedRobotPose;
 
 public class TurretVision extends SubsystemBase {
     private final PhotonPoseEstimator photonEstimator;
@@ -26,21 +24,49 @@ public class TurretVision extends SubsystemBase {
     PhotonUtils turretUtils;
     Pose2d estimateTurret2d;
     boolean hasTargets;
+    Optional<Alliance> ally;
 
     double DistanceX;
     double DistanceY;
     double RedAllianceSqaured;
+    double HubX;
+    double HubY;
 
     double turretAngle;
     double turretDistance;
     double turretTargetAngle;
 
+    double DriveVelocityX;
+    double DriveVelocityY;
+    double ballAirTime;
+    double hubMovedX;
+    double hubMovedY;
+    double hubOrigX;
+    double hubOrigY;
+
     Field2d field2d = new Field2d();
 
-    public TurretVision(){
+    Telemetry logger;
+
+    public TurretVision(Telemetry logger){
+        this.logger = logger;
         // sets up turretCamera
         turretCamera = new PhotonCamera("Turret_Camera");
         photonEstimator = new PhotonPoseEstimator(Constants.kTagLayout, Constants.kRobotToCam);
+        ally = DriverStation.getAlliance();
+
+        if (ally.isPresent()) {
+            if (ally.get() == Alliance.Blue) {
+                hubOrigX = Constants.BlueHubX; 
+                hubOrigY = Constants.BlueHubY;
+                    }
+            if (ally.get() == Alliance.Red) {
+                hubOrigX = Constants.RedHubX; 
+                hubOrigY = Constants.RedHubY;
+            }}
+
+        SmartDashboard.putNumber("HubX", HubX);
+        SmartDashboard.putNumber("HubY", HubY);
     }
 
     // gets the if we have AprilTags in the vision or not
@@ -67,19 +93,41 @@ public class TurretVision extends SubsystemBase {
 
     // gets the robot pose based on two april tags or tries with one
     public Field2d getRobotPose(){
+        // Resetting the hub to its original value
+        HubX = hubOrigX;
+        HubY = hubOrigY;
+
         if (result != null && result.hasTargets()){
             var cameraResult = result.getMultiTagResult();
             if (cameraResult != null && cameraResult.isEmpty() == false) {
                 var fieldToCamera = cameraResult.get().estimatedPose.best;
                 field2d.setRobotPose(new Pose2d(fieldToCamera.getX(), fieldToCamera.getY(), fieldToCamera.getRotation().toRotation2d()));
-
-                // gets the distance between the bot x and the middle of the hub x
-                DistanceX = Constants.BlueHubX - field2d.getRobotPose().getX();
-                // gets the distance between the bot y and the middle of the hub y
-                DistanceY = Constants.BlueHubY - field2d.getRobotPose().getY();
-                // calculates the distance of the bot from the hub
+                
+                // Initial Distance calculation
+                DistanceX = HubX - field2d.getRobotPose().getX();
+                DistanceY = HubY - field2d.getRobotPose().getY();
                 turretDistance = Math.sqrt(DistanceX*DistanceX + DistanceY*DistanceY);
 
+                for (int i = 0; i < 5; i++){
+                    ballAirTime = turretDistance*0.5; // TESTING REMOVE LATER
+                    // update BallAirTime
+                    //turretDistance = driveVelocity*BallAirTime;
+                    hubMovedX = DriveVelocityX*-1*ballAirTime;
+                    hubMovedY = DriveVelocityY*-1*ballAirTime;
+
+                    // Moving the virtual hub
+                    HubX = HubX + hubMovedX;
+                    HubY = HubY + hubMovedY;
+                    // making a new distance based on the virtual hub
+                    DistanceX = HubX - field2d.getRobotPose().getX();
+                    DistanceY = HubY - field2d.getRobotPose().getY();
+                    turretDistance = Math.sqrt(DistanceX*DistanceX + DistanceY*DistanceY);
+
+                }
+
+
+                SmartDashboard.putNumber("Virtual Hub x", HubX);
+                SmartDashboard.putNumber("Virtual Hub x", HubX);
                 // calculates the angle we want to get to
                 turretTargetAngle = Math.atan(DistanceX / DistanceY);
 
@@ -91,9 +139,11 @@ public class TurretVision extends SubsystemBase {
             }
         } else {
             field2d.setRobotPose(new Pose2d());
-        }
+            }
+        
         return field2d;
     }
+
 
     // when called gives you the turret distance calculated previously
     public double getTurretDistance(){
@@ -110,8 +160,31 @@ public class TurretVision extends SubsystemBase {
         return turretTargetAngle;
     }
 
+    public void calculateHubOffset(){
+        for (int i = 0; i < 5; i++){
+        // update BallAirTime
+        //turretDistance = driveVelocity*BallAirTime;
+        hubMovedX = DriveVelocityX*-1*ballAirTime;
+        hubMovedY = DriveVelocityY*-1*ballAirTime;
+
+        HubX = HubX + hubMovedX;
+        HubY = HubY + hubMovedY;
+        DistanceX = HubX - field2d.getRobotPose().getX();
+        DistanceY = HubY - field2d.getRobotPose().getY();
+        turretDistance = Math.sqrt(DistanceX*DistanceX + DistanceY*DistanceY);
+
+    }
+
+    }
+
     @Override
     public void periodic() { 
+        if( logger.driveState != null){
+        double DriveVelocityX = logger.driveState.Speeds.vxMetersPerSecond;
+        double DriveVelocityY = logger.driveState.Speeds.vyMetersPerSecond;
+         SmartDashboard.putNumber("VXSpeeds", logger.driveState.Speeds.vxMetersPerSecond);
+        SmartDashboard.putNumber("VYSpeeds", logger.driveState.Speeds.vyMetersPerSecond);
+        }
 
     }
 }

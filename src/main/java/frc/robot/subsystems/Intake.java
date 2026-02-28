@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Intake extends SubsystemBase {
   public TalonSRX motor1;
 
-  private static DigitalInput m_toplimitSwitch = new DigitalInput(0);
+  private static DigitalInput m_toplimitSwitch = new DigitalInput(3);
       
   public Intake() {
     motor1 = new TalonSRX(30);

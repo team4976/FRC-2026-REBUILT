@@ -92,10 +92,10 @@ public class RobotContainer {
 
 
     private final TurretMovement m_shooter = new TurretMovement();
-    private final TurretVision m_turretvision = new TurretVision();
+    private final TurretVision m_turretvision = new TurretVision(logger);
     public FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
-    public HoodSubsystem hoodSubsystem = new HoodSubsystem();
-    public IndexAndSpindexSubsystem InSSubsystem = new IndexAndSpindexSubsystem();
+    public HoodSubsystem hoodSubsystem = new HoodSubsystem(m_turretvision);
+    public IndexAndSpindexSubsystem InSSubsystem = new IndexAndSpindexSubsystem(m_turretvision);
 
     public static final CommandXboxController driverController = new CommandXboxController(0);
     public static final CommandXboxController operatorController = new CommandXboxController(1);
@@ -114,7 +114,10 @@ public class RobotContainer {
         SmartDashboard.putNumber("kI", 0.0);
         SmartDashboard.putNumber("kD", 0.0);
         elastic = new ElasticContainer(this,logger);
+        
         configureBindings();
+        //Constants.StateSpeeds = logger.driveState.Speeds;
+       
     }
 
     private void configureBindings() {
@@ -178,10 +181,10 @@ public class RobotContainer {
         operatorController.povDown().onFalse(new HoodCommand(hoodSubsystem, true, 0));
 
         // Regular Shooting
-        driverController.x().onTrue(new IndexAndSpindexCommand(InSSubsystem, false));
+        driverController.x().onTrue(new IndexAndSpindexCommand(InSSubsystem, false, hoodSubsystem));
 
         // Force Shoot
-        operatorController.b().onTrue(new IndexAndSpindexCommand(InSSubsystem, true));
+        operatorController.b().onTrue(new IndexAndSpindexCommand(InSSubsystem, true, hoodSubsystem));
 
         // Reset the field-centric heading on left bumper press.
         driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));

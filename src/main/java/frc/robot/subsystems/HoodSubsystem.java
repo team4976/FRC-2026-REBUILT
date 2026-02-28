@@ -15,7 +15,8 @@ public class HoodSubsystem extends SubsystemBase{
     public double targetHoodPos;
     public final MotionMagicVoltage hoodPosVolt = new MotionMagicVoltage(0).withSlot(1);
 
-    public HoodSubsystem(){
+    public HoodSubsystem(TurretVision turretVision){
+        this.turretVision = turretVision;
         var hoodConfig = new TalonFXConfiguration();
 
         var slot1Configs = hoodConfig.Slot1;        
@@ -30,7 +31,7 @@ public class HoodSubsystem extends SubsystemBase{
         motionMagicConfigs.MotionMagicAcceleration = 160; // 160 rps/s acceleration (0.5 seconds)
         motionMagicConfigs.MotionMagicJerk = 1600; // 1600 rps/s^2 jerk (0.1 seconds)
 
-        turretVision = new TurretVision();
+        //turretVision = new TurretVision();
 
         HoodMotor = new TalonFX(Constants.Hood_ID);
         HoodMotor.getConfigurator().apply(hoodConfig, 0.050);

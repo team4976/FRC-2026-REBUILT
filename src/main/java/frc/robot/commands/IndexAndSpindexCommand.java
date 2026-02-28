@@ -10,11 +10,12 @@ import frc.robot.subsystems.HoodSubsystem;
 public class IndexAndSpindexCommand extends Command{
     public IndexAndSpindexSubsystem InSSubsystem;
     public FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
-    public HoodSubsystem hoodSubsystem = new HoodSubsystem();
+    public HoodSubsystem hoodSubsystem;
     public boolean IndexOverride = false;
     public boolean ForceSpin = false;
     
-    public IndexAndSpindexCommand(IndexAndSpindexSubsystem InSSubsystem, boolean ForceSpin){
+    public IndexAndSpindexCommand(IndexAndSpindexSubsystem InSSubsystem, boolean ForceSpin, HoodSubsystem hoodSubsystem){
+        this.hoodSubsystem = hoodSubsystem;
         this.InSSubsystem = InSSubsystem;
         this.ForceSpin = ForceSpin;
         addRequirements(InSSubsystem);

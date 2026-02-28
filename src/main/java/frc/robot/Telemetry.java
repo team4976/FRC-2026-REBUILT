@@ -83,9 +83,10 @@ public class Telemetry {
     };
 
     public final double[] m_poseArray = new double[3];
-
+    public SwerveDriveState driveState;
     /** Accept the swerve drive state and telemeterize it to SmartDashboard and SignalLogger. */
     public void telemeterize(SwerveDriveState state) {
+        driveState = state;
         /* Telemeterize the swerve drive state */
         drivePose.set(state.Pose);
         driveSpeeds.set(state.Speeds);
