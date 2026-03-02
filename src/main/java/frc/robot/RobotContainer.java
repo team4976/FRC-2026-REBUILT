@@ -42,16 +42,8 @@ import frc.robot.Elastic.ElasticContainer;
 
 public class RobotContainer {
 
-    //swerve drive variables and objects
-    private double MaxSpeed = 0.8 * RebuiltTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); //rotations per second max angular velocity
-    /* Setting up bindings for necessary control of the swerve drive platform */
-    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            .withDeadband(MaxSpeed * 0.2).withRotationalDeadband(MaxAngularRate * 0.2) // Add a 10% deadband
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-            private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-    private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
-    public final CommandSwerveDrivetrain drivetrain = RebuiltTunerConstants.createDrivetrain();
+    
+
 //Shooting is op, Intake is drive 
     //Logging
     private final Telemetry logger = new Telemetry(MaxSpeed);
