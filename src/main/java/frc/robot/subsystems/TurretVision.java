@@ -3,9 +3,13 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Telemetry;
 import frc.robot.generated.TunerConstants;
 
 import org.photonvision.PhotonCamera;
@@ -26,6 +30,7 @@ public class TurretVision extends SubsystemBase {
     PhotonUtils turretUtils;
     Pose2d estimateTurret2d;
     boolean hasTargets;
+    Optional<Alliance> ally;
 
     double DistanceX;
     double DistanceY;
@@ -34,10 +39,23 @@ public class TurretVision extends SubsystemBase {
     double turretAngle;
     double turretDistance;
     double turretTargetAngle;
+    double HubX; // final hub X accounting for movement
+    double HubY; // final hub Y accounting for movement
+
+    double DriveVelocityX;
+    double DriveVelocityY;
+    double ballAirTime;
+    double hubMovedX; // How much did the hub move from the real hub to the virtual one
+    double hubMovedY;
+    double hubOrigX; // the original hub position
+    double hubOrigY;
 
     Field2d field2d = new Field2d();
 
-    public TurretVision(){
+    Telemetry logger;
+
+    public TurretVision(Telemetry logger){
+        this.logger = logger;
         // sets up turretCamera
         turretCamera = new PhotonCamera("Turret_Camera");
         photonEstimator = new PhotonPoseEstimator(Constants.kTagLayout, Constants.kRobotToCam);
@@ -78,19 +96,41 @@ public class TurretVision extends SubsystemBase {
     }
 
     // gets the robot pose based on two april tags or tries with one
-    public Field2d getRobotPose(){
+    public Field2d getDistanceAndAngle(){
+         HubX = hubOrigX;
+         HubY = hubOrigY;
+
         if (result != null && result.hasTargets()){
             var cameraResult = result.getMultiTagResult();
             if (cameraResult != null && cameraResult.isEmpty() == false) {
                 var fieldToCamera = cameraResult.get().estimatedPose.best;
                 field2d.setRobotPose(new Pose2d(fieldToCamera.getX(), fieldToCamera.getY(), fieldToCamera.getRotation().toRotation2d()));
 
-                // gets the distance between the bot x and the middle of the hub x
-                DistanceX = Constants.BlueHubX - field2d.getRobotPose().getX();
-                // gets the distance between the bot y and the middle of the hub y
-                DistanceY = Constants.BlueHubY - field2d.getRobotPose().getY();
-                // calculates the distance of the bot from the hub
+                // Initial Distance calculation
+                DistanceX = HubX - field2d.getRobotPose().getX();
+                DistanceY = HubY - field2d.getRobotPose().getY();
                 turretDistance = Math.sqrt(DistanceX*DistanceX + DistanceY*DistanceY);
+
+                for (int i = 0; i < 5; i++){
+                    ballAirTime = turretDistance*0.5; // TESTING REMOVE LATER
+                    // update BallAirTime
+                    //turretDistance = driveVelocity*BallAirTime;
+                    hubMovedX = DriveVelocityX*-1*ballAirTime;
+                    hubMovedY = DriveVelocityY*-1*ballAirTime;
+
+                    // moving the virtual hub
+                    HubX = HubX + hubMovedX;
+                    HubY = HubY + hubMovedY;
+                    // making a new distance based on the virtual hub
+                    DistanceX = HubX - field2d.getRobotPose().getX();
+                    DistanceY = HubY - field2d.getRobotPose().getY();
+                    turretDistance = Math.sqrt(DistanceX*DistanceX + DistanceY*DistanceY);
+
+                }
+
+
+                SmartDashboard.putNumber("Virtual Hub x", HubX);
+                SmartDashboard.putNumber("Virtual Hub x", HubX);
 
                 // calculates the angle we want to get to
                 turretTargetAngle = Math.atan(DistanceX / DistanceY);
@@ -124,6 +164,11 @@ public class TurretVision extends SubsystemBase {
 
     @Override
     public void periodic() { 
-
+        if( logger.driveState != null){
+        DriveVelocityX = logger.driveState.Speeds.vxMetersPerSecond;
+        DriveVelocityY = logger.driveState.Speeds.vyMetersPerSecond;
+        SmartDashboard.putNumber("VXSpeeds", logger.driveState.Speeds.vxMetersPerSecond);
+        SmartDashboard.putNumber("VYSpeeds", logger.driveState.Speeds.vyMetersPerSecond);
+        }
     }
 }

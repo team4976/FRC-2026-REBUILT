@@ -92,7 +92,7 @@ public class TurretScan extends Command {
             }
         }
         else{
-            field2d = m_turretVision.getRobotPose();
+            field2d = m_turretVision.getDistanceAndAngle();
 
             // gets the turret angle relative to the field
             turretAngle = m_turretVision.getTurretAngle();

@@ -7,7 +7,6 @@ import frc.robot.subsystems.TurretVision;
 
 public class HoodCommand extends Command{
     public HoodSubsystem hoodSubsystem;
-    public TurretVision turretVision = new TurretVision();
     public boolean HoodOverride;
     public double hoodSpeed;
     

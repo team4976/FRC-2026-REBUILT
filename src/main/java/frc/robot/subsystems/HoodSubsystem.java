@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.logging.Logger;
+
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -15,7 +17,8 @@ public class HoodSubsystem extends SubsystemBase{
     public double targetHoodPos;
     public final MotionMagicVoltage hoodPosVolt = new MotionMagicVoltage(0).withSlot(1);
 
-    public HoodSubsystem(){
+    public HoodSubsystem(TurretVision turretVision){
+        this.turretVision=turretVision;
         var hoodConfig = new TalonFXConfiguration();
 
         var slot1Configs = hoodConfig.Slot1;        
@@ -29,8 +32,6 @@ public class HoodSubsystem extends SubsystemBase{
         motionMagicConfigs.MotionMagicCruiseVelocity = 80; // 80 rps cruise velocity
         motionMagicConfigs.MotionMagicAcceleration = 160; // 160 rps/s acceleration (0.5 seconds)
         motionMagicConfigs.MotionMagicJerk = 1600; // 1600 rps/s^2 jerk (0.1 seconds)
-
-        turretVision = new TurretVision();
 
         HoodMotor = new TalonFX(Constants.Hood_ID);
         HoodMotor.getConfigurator().apply(hoodConfig, 0.050);

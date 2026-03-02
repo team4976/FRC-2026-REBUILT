@@ -25,13 +25,13 @@ public class TurretMovement extends SubsystemBase{
 
     //When called it turns the motor tho the right
     public void turnRight(double voltage) {
-    turretSpin.setVoltage(voltage);
+    turretSpin.setVoltage(voltage*-1);
     System.out.println("right switch: " + RightSwitch.get());
     }
 
     //When called it turns the motor to the left
     public void turnLeft(double voltage) {
-    turretSpin.setVoltage(voltage*-1);
+    turretSpin.setVoltage(voltage);
     System.out.println("left switch: " + LeftSwitch.get());
     }
 

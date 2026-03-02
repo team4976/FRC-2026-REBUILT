@@ -53,9 +53,12 @@ public class RobotContainer {
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
     public final CommandSwerveDrivetrain drivetrain = RebuiltTunerConstants.createDrivetrain();
 
+    //Logging
+    private final Telemetry logger = new Telemetry(MaxSpeed);
+
     //Vision Objects, may be good idea to merge into one class and just have dif objects
     private PhotonVision vision = new PhotonVision("testingCamera");
-    private final TurretVision m_turretvision = new TurretVision();
+    private final TurretVision m_turretvision = new TurretVision(logger);
 
     //Subsystem Objects/Subsystem Initialization
     private final Pneumatics Pneumatics = new Pneumatics();
@@ -64,15 +67,14 @@ public class RobotContainer {
     private final ClimberSubsystem climber = new ClimberSubsystem();
     private final TurretMovement turretMovement = new TurretMovement();
     public FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
-    public HoodSubsystem hoodSubsystem = new HoodSubsystem();
-    public IndexAndSpindexSubsystem InSSubsystem = new IndexAndSpindexSubsystem();
+    public HoodSubsystem hoodSubsystem = new HoodSubsystem(m_turretvision);
+    public IndexAndSpindexSubsystem InSSubsystem = new IndexAndSpindexSubsystem(m_turretvision);
 
     //Controller Objects
     public static final CommandXboxController driverController = new CommandXboxController(0);
     public static final CommandXboxController operatorController = new CommandXboxController(1);
 
-    //logging and elastic/smartdashboard intialization
-    private final Telemetry logger = new Telemetry(MaxSpeed);
+    //elastic/smartdashboard intialization 
     private ElasticData elasticData = new ElasticData(logger, vision);
 
     //for the elastic folder, gonna be merged to elastic data later
@@ -130,10 +132,10 @@ public class RobotContainer {
         operatorController.povDown().onFalse(new HoodCommand(hoodSubsystem, true, 0));
 
         // Regular Shooting
-        driverController.x().onTrue(new IndexAndSpindexCommand(InSSubsystem, false));
+        driverController.x().onTrue(new IndexAndSpindexCommand(InSSubsystem, false, hoodSubsystem));
 
         // Force Shoot
-        operatorController.b().onTrue(new IndexAndSpindexCommand(InSSubsystem, true));
+        operatorController.b().onTrue(new IndexAndSpindexCommand(InSSubsystem, true, hoodSubsystem));
 
         // Reset the field-centric heading on left bumper press.
         driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
