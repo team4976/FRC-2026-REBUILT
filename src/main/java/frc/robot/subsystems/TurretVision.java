@@ -41,6 +41,18 @@ public class TurretVision extends SubsystemBase {
         // sets up turretCamera
         turretCamera = new PhotonCamera("Turret_Camera");
         photonEstimator = new PhotonPoseEstimator(Constants.kTagLayout, Constants.kRobotToCam);
+
+        ally = DriverStation.getAlliance();
+
+        if (ally.isPresent()) {
+            if (ally.get() == Alliance.Blue) {
+                hubOrigX = Constants.BlueHubX; 
+                hubOrigY = Constants.BlueHubY;
+                    }
+            if (ally.get() == Alliance.Red) {
+                hubOrigX = Constants.RedHubX; 
+                hubOrigY = Constants.RedHubY;
+            }}
     }
 
     // gets the if we have AprilTags in the vision or not

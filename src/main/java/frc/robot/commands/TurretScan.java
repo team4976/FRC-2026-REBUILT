@@ -115,7 +115,7 @@ public class TurretScan extends Command {
             }
 
         //Setting the voltage of the motor to the yaw of the target multiplied by 5
-            m_shooter.lockedOn((turretTargetAngle - turretAngle)/45*0.6);
+            m_shooter.lockedOn((turretTargetAngle - turretAngle)/45*-0.6);
             System.out.println(Constants.turnVoltage);
 
         
