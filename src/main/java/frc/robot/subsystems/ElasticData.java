@@ -9,7 +9,9 @@ import frc.robot.Telemetry;
 import frc.robot.generated.OldTunerConstants;
 import static edu.wpi.first.units.Units.*;
 
-
+//was designed to be the only elastic subsystem/container but it isnt currently
+//the other two can be merged with this one later, gott set it up for multiple camers with some renaming
+//and gotta add all the other stuff.
 
 public class ElasticData extends SubsystemBase{
     private final Telemetry telemetry;
@@ -17,8 +19,12 @@ public class ElasticData extends SubsystemBase{
     Field2d Field2d = new Field2d();
     VisionData VisionData = new VisionData("testingCamera");
     public ElasticData(Telemetry m_telemetry, PhotonVision camera){
+        //objects for the two classes
         telemetry = m_telemetry;
         cameraData = camera;
+
+        //swerve widget based on the values gained from telemetry, 100% needs to be tuned
+        //and maybe even needs to use different telemtry variables. havent gotten a chance to figure that out yet.
         SmartDashboard.putData("Swerve Drive", new Sendable() {
             @Override      
             public void initSendable(SendableBuilder builder) {
@@ -39,6 +45,8 @@ public class ElasticData extends SubsystemBase{
                 builder.addDoubleProperty("Robot Angle", () -> telemetry.m_poseArray[2], null);
             } 
         });
+
+        //Ben T's smartdashboard stuff
         SmartDashboard.putNumber("flywheelSpeed", 0);
         SmartDashboard.putNumber("hood target position", 0);
         SmartDashboard.putNumber("kV", 0.1);
@@ -50,7 +58,7 @@ public class ElasticData extends SubsystemBase{
 
     @Override
     public void periodic(){
-        double MaxSpeed = 1.0 * OldTunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
+        //variables for the non turret camera values
         boolean targetVisible = cameraData.targetVisible();
         double[] targetIDs = cameraData.getIDs().stream()
         .mapToDouble(Double::doubleValue)
@@ -58,10 +66,10 @@ public class ElasticData extends SubsystemBase{
         double yRotation = cameraData.getYRotation();
         double xRotation = cameraData.getXRotation();
         double zRotation = cameraData.getZRotation();
-            //Pose2d.
-            //= new Pose2d(cameraData.getRobotPos().getX(), cameraData.getRobotPos().getY(), cameraData.getRobotPos().getRotation().toRotation2d());
         double ambiguity = cameraData.getAmbiguity();
         double distance = cameraData.getDistance();
+
+        //smartdashboard values putting for non turret camera
         SmartDashboard.putNumber("raw pitch", cameraData.getAnyPitch());
         SmartDashboard.putNumber("raw yaw", cameraData.getAnyYaw());
         SmartDashboard.putNumberArray("Target IDs", targetIDs);
@@ -72,10 +80,8 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Z Rotation", zRotation);
         SmartDashboard.putNumber("Distance", distance);
         SmartDashboard.putData("Field",Field2d);
-        //SmartDashboard.putNumber("Speed", Math.max(-MaxSpeed, Math.min(((((cameraData.getDistance() - 1.5) * 1) + (-1 * 0 )) * MaxSpeed) / 3.5, MaxSpeed)));
         if(cameraData.targetVisible() == true){
-            //VisionData.findRobotPos();
-            SmartDashboard.putData("Robot Position", cameraData.getRobotPos());
+            SmartDashboard.putData("Robot Position Field", cameraData.getRobotPos());
         }
         for(var id : targetIDs){
             double yaw = cameraData
@@ -95,7 +101,7 @@ public class ElasticData extends SubsystemBase{
         }
         
         
-        
+        //updates the 
         SmartDashboard.updateValues();
 
 

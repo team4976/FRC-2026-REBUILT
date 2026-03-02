@@ -37,12 +37,7 @@ public class VisionData{
         }
     }
     
-/*  public void getx(){
-        target = latestResult.getBestTarget();
-
-
-    }
- */
+    //gets the abiguity
     public double getAmbiguity(){
         if (latestResult != null && latestResult.hasTargets()){
             PhotonTrackedTarget target = latestResult.getBestTarget();
@@ -90,6 +85,7 @@ public class VisionData{
         return OptionalDouble.empty();
     }
 
+    //returns the yaw of the target most desired in the pipline, the closest or first one seen I think rn
     public double getAnyYaw(){
         if (latestResult != null && latestResult.hasTargets()){
             var target = latestResult.getBestTarget();
@@ -100,7 +96,8 @@ public class VisionData{
 
     }
 
-        public double getAnyPitch(){
+    //same as any yaw, gets the most desired pitch of the target, both of them work on id's or balls
+    public double getAnyPitch(){
         if (latestResult != null && latestResult.hasTargets()){
             var target = latestResult.getBestTarget();
             return target.getPitch();
@@ -119,6 +116,7 @@ public class VisionData{
         return getTargetYaw(tagID).isPresent();
     }
 
+    //gets and sets robot pose and returns a field with the modified robot pose, may be better to just modify the pose of a preexisting field but this works too
     public Field2d findRobotPos(){
         if (latestResult != null && latestResult.hasTargets()){
             var cameraResult = latestResult.getMultiTagResult();
@@ -133,13 +131,18 @@ public class VisionData{
         }
         return field2d;
     }
+
+    //changes the pipline type, for us thats from apriltag to ball
     public void pipelineSwitcher(int pipelineID){
         camera.setPipelineIndex(pipelineID);
     }
+    
+    //gets the current pipeline and returns it
     public double getPipelineMethod(){
         return camera.getPipelineIndex();
     }
 
+    //gets the Y rotation of the target seen, refer to photon docs to see which axis this moves on
     public double getYRotation(){
         if (latestResult != null && latestResult.hasTargets()){
             var target = latestResult.getBestTarget();
@@ -150,6 +153,7 @@ public class VisionData{
         }
     }
 
+    //gets the X rotation of the target seen, refer to photon docs to see which axis this moves on
     public double getXRotation(){
         if (latestResult != null && latestResult.hasTargets()){
             var target = latestResult.getBestTarget();
@@ -160,6 +164,8 @@ public class VisionData{
         }
     }
 
+    //gets the Z rotation of the target seen, refer to photon docs to see which axis this moves on
+    //returns in radians, centered will flip between -179.99 and 179.99 and they will get closer to 0 as you rotate until it goes back around or cuts out.
     public double getZRotation(){
         if (latestResult != null && latestResult.hasTargets()){
             var target = latestResult.getBestTarget();
@@ -170,6 +176,7 @@ public class VisionData{
         }
     }
 
+    //gets the plain distance of the camera from the apriltag in meters
     public double getDistance(){
         if (latestResult != null && latestResult.hasTargets()){
             var target = latestResult.getBestTarget();
