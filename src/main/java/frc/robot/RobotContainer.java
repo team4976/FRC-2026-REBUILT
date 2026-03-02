@@ -43,8 +43,8 @@ import frc.robot.Elastic.ElasticContainer;
 public class RobotContainer {
 
     //swerve drive variables and objects
-    private double MaxSpeed = 1.0 * RebuiltTunerConstants.kSpeedAt12Volts.in(MetersPerSecond) / 3.5; // kSpeedAt12Volts desired top speed
-    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    private double MaxSpeed = 0.8 * RebuiltTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); //rotations per second max angular velocity
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.2).withRotationalDeadband(MaxAngularRate * 0.2) // Add a 10% deadband
@@ -52,7 +52,7 @@ public class RobotContainer {
             private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
     public final CommandSwerveDrivetrain drivetrain = RebuiltTunerConstants.createDrivetrain();
-
+//Shooting is op, Intake is drive 
     //Logging
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
@@ -91,9 +91,10 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-driverController.getLeftY())
-                .withVelocityY(-driverController.getLeftX())
-                .withRotationalRate(-driverController.getRightX())
+                drive.withVelocityX(-driverController.getLeftY() * MaxSpeed)
+                //((driverController.povUp().getAsBoolean())?-1:(driverController.povDown().getAsBoolean())?1:.0) * MaxSpeed
+                .withVelocityY(-driverController.getLeftX() * MaxSpeed)
+                .withRotationalRate(-driverController.getRightX() * MaxAngularRate)
             )    
         );
 
@@ -110,32 +111,29 @@ public class RobotContainer {
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        operatorController.b().whileTrue(new Climb(climber));
-        operatorController.x().whileTrue(new IntakeMotor(motorIntake));
-        operatorController.y().onTrue(pneumaticIntake);
-        driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
-        driverController.leftTrigger().onTrue(new TurretScan(m_turretvision, turretMovement));
+        //operatorController.b().whileTrue(new Climb(climber));
+        //operatorController.x().whileTrue(new IntakeMotor(motorIntake));
+        //operatorController.x().onTrue(pneumaticIntake);
+        //driverController.leftTrigger().onTrue(new TurretScan(m_turretvision, turretMovement));
         // calls the method that turns the stopButton for Scan to true
-        driverController.rightTrigger().onTrue(turretMovement.runOnce(()->turretMovement.getStopCommand()));
-        driverController.povLeft().whileTrue(new TurretLeft(m_turretvision, turretMovement));
-        driverController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
+        //driverController.rightTrigger().onTrue(turretMovement.runOnce(()->turretMovement.getStopCommand()));
+        //driverController.povLeft().whileTrue(new TurretLeft(m_turretvision, turretMovement));
+        //driverController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
 
         // Spin flywheel and start hood
-        operatorController.a().onTrue(new FlywheelCommand(flywheelSubsystem, 20));
+        //operatorController.a().onTrue(new FlywheelCommand(flywheelSubsystem, 20));
     
-        //Planned Button Mapping: Driver: Joysticks to drive, Right Bumper is shoot, Left Bumper: brake, B:drive relative. Operator: Climb: Y, Intake: A, Flywheel: X, Manual Overides: Hood up and down d-pad,  
-
         // Manual hood override
-        operatorController.povUp().onTrue(new HoodCommand(hoodSubsystem, true, 0.1));
-        operatorController.povUp().onFalse(new HoodCommand(hoodSubsystem, true, 0));
-        operatorController.povDown().onTrue(new HoodCommand(hoodSubsystem, true, -0.1));
-        operatorController.povDown().onFalse(new HoodCommand(hoodSubsystem, true, 0));
+        //operatorController.povUp().onTrue(new HoodCommand(hoodSubsystem, true, 0.1));
+        //operatorController.povUp().onFalse(new HoodCommand(hoodSubsystem, true, 0));
+        //operatorController.povDown().onTrue(new HoodCommand(hoodSubsystem, true, -0.1));
+        //operatorController.povDown().onFalse(new HoodCommand(hoodSubsystem, true, 0));
 
         // Regular Shooting
-        driverController.x().onTrue(new IndexAndSpindexCommand(InSSubsystem, false, hoodSubsystem));
+        //driverController.rightBumper().whileTrue(new IndexAndSpindexCommand(InSSubsystem, false, hoodSubsystem));
 
         // Force Shoot
-        operatorController.b().onTrue(new IndexAndSpindexCommand(InSSubsystem, true, hoodSubsystem));
+        //operatorController.b().whileTrue(new IndexAndSpindexCommand(InSSubsystem, true, hoodSubsystem));
 
         // Reset the field-centric heading on left bumper press.
         driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
@@ -147,8 +145,9 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         // Simple drive forward auton
-        final var idle = new SwerveRequest.Idle();
-        return Commands.sequence(
+        return Commands.print("d");
+        //final var idle = new SwerveRequest.Idle();
+        /*return Commands.sequence(
             // Reset our field centric heading to match the robot
             // facing away from our alliance station wall (0 deg).
             drivetrain.runOnce(() -> drivetrain.seedFieldCentric(Rotation2d.kZero)),
@@ -158,10 +157,12 @@ public class RobotContainer {
                     .withVelocityY(0)
                     .withRotationalRate(0)
             )
-            .withTimeout(5.0),
+            .withTimeout(5.0);
             // Finally idle for the rest of auton
             drivetrain.applyRequest(() -> idle)
+           
         );
+        */
     }
 
 
