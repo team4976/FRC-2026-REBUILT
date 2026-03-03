@@ -7,7 +7,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Telemetry;
 import frc.robot.generated.OldTunerConstants;
+import frc.robot.generated.RebuiltTunerConstants;
 import static edu.wpi.first.units.Units.*;
+import static frc.robot.Constants.Flywheel_Follower_ID;
+import static frc.robot.Constants.Flywheel_Lead_ID;
+import static frc.robot.Constants.Index_ID;
+import static frc.robot.Constants.Intake_ID;
+import static frc.robot.Constants.Spindex_ID;
+import static frc.robot.Constants.Index_ID;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 
 //was designed to be the only elastic subsystem/container but it isnt currently
 //the other two can be merged with this one later, gott set it up for multiple camers with some renaming
@@ -18,6 +28,9 @@ public class ElasticData extends SubsystemBase{
     private final PhotonVision cameraDataMain;
     private final PhotonVision cameraDataTurret;
     Field2d Field2d = new Field2d();
+    double Hubwidth = 0.6;
+    double Radius = 3;
+    boolean fuelMakeIt = false;
     public ElasticData(Telemetry m_telemetry, PhotonVision camera1, PhotonVision camera2){
         //objects for the two classes
         telemetry = m_telemetry;
@@ -79,6 +92,38 @@ public class ElasticData extends SubsystemBase{
             SmartDashboard.putData("Fields/Robot Position Field", cameraDataMain.getRobotPos());
             SmartDashboard.putData("Fields/Turret Position Field", cameraDataTurret.getDistanceAndAngle());
         }
+
+                //AC- Additional Field2d Stuff
+        Field2d.getObject("Hub").setPose(4.6,4,new Rotation2d(0.0));
+        double Rotation =  new TurretMovement().returnMotor().getPosition().getValueAsDouble();
+        SmartDashboard.putBoolean("Will the Fuel make it?", fuelMakeIt);
+        Field2d.getObject("Aim").setPose(Field2d.getRobotPose().getX() +  (Radius * (Math.cos(Rotation))),Field2d.getRobotPose().getY() + (Radius * (Math.sin(Rotation))),new Rotation2d(Rotation));
+        Pose2d AimPose = Field2d.getObject("Aim").getPose();
+        Pose2d HubPose = Field2d.getObject("Hub").getPose();
+        if(AimPose.getX() >= (HubPose.getX()-(Hubwidth/2)) && AimPose.getX() <= (HubPose.getX()+(Hubwidth/2))){
+            if (AimPose.getY() >= (HubPose.getY()-Hubwidth) && AimPose.getY() <= (HubPose.getY()+Hubwidth)) {
+                fuelMakeIt = true;
+            }
+            else{
+                fuelMakeIt = false;
+            }
+        }
+        else{
+            fuelMakeIt = false;
+        }
+                    //Ac - Motor Id's
+            //Ac - Motor Id's
+        String[] motorIDs = {"[FRS Swerve] Motor Id:"+ RebuiltTunerConstants.kFrontRightSteerMotorId,"[FRD Swerve] Motor Id:" + RebuiltTunerConstants.kFrontRightDriveMotorId,"[FLS Swerve] Motor Id:"+RebuiltTunerConstants.kFrontLeftSteerMotorId,
+        "[FLD Swerve] Motor Id:"+RebuiltTunerConstants.kFrontLeftDriveMotorId,"[RRS Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightSteerMotorId,"[RRD Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightDriveMotorId,"[RLS Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftSteerMotorId,"[RLD Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftDriveMotorId,
+        "[Turret Turn] Motor Id:"+ new TurretMovement().returnMotor().getDeviceID(),"[Hood] Motor Id:"+ new HoodSubsystem(cameraDataMain).returnMotor().getDeviceID(),"[Flywheel 1] Motor Id:"+ Flywheel_Lead_ID,"[Flywheel 2] Motor Id:"+ Flywheel_Follower_ID,"[Mid Index] Motor Id:"+ Spindex_ID,
+        "[Final Index] Motor Id:"+ Index_ID,"[Intake] Motor Id:"+Intake_ID,"[PCM] Motor Id:","[Pidgeon] Motor Id:"};
+        SmartDashboard.putStringArray("Motor Id's", motorIDs);
+    }
+
+
+
+
+
         for(var id : targetIDs){
             double yaw = cameraDataMain
             .getTargetYaw((int) id)
