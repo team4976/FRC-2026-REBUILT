@@ -64,13 +64,13 @@ public class RobotContainer {
     public static final CommandXboxController operatorController = new CommandXboxController(1);
 
     //elastic/smartdashboard intialization 
-    private ElasticData elasticData = new ElasticData(logger, vision);
+    private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision);
 
     //for the elastic folder, gonna be merged to elastic data later
     public final ElasticContainer elastic;
 
     public RobotContainer() {
-        elastic = new ElasticContainer(this,logger);
+        elastic = new ElasticContainer();
         configureBindings();
     }
 
