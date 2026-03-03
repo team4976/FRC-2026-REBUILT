@@ -3,6 +3,7 @@ package frc.robot.Elastic;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.Telemetry;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -17,7 +18,7 @@ public class ElasticContainer {
     // Initializes the Elastic subsystems.
 public ElasticContainer(RobotContainer robotContainer, Telemetry _telemetry) {
     telemetry = _telemetry;
-    drivetrain = robotContainer.drivetrain;
+    drivetrain = Constants.drivetrain;
     robotAngle = drivetrain
         .getRotation3d()
         .toRotation2d()
