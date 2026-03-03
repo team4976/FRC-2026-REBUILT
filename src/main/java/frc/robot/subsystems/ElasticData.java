@@ -81,7 +81,7 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putData("Fields/Plain Field", Field2d);
         if(cameraData.targetVisible() == true){
             SmartDashboard.putData("Fields/Robot Position Field", cameraData.getRobotPos());
-            
+            SmartDashboard.putData("Field/Turret Position Field", cameraData.getDistanceAndAngle());
         }
         for(var id : targetIDs){
             double yaw = cameraData
