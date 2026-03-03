@@ -63,10 +63,6 @@ public class ElasticData extends SubsystemBase{
         //Ben T's smartdashboard stuff
         SmartDashboard.putNumber("Testing/Ben T's Stuff/flywheelSpeed", 0);
         SmartDashboard.putNumber("Testing/Ben T's Stuff/hood target position", 0);
-        SmartDashboard.putNumber("Testing/Ben T's Stuff/kV", 0.1);
-        SmartDashboard.putNumber("Testing/Ben T's Stuff/kP", 0.4);
-        SmartDashboard.putNumber("Testing/Ben T's Stuff/kI", 0.0);
-        SmartDashboard.putNumber("Testing/Ben T's Stuff/kD", 0.0);
     }
 
 
@@ -118,12 +114,8 @@ public class ElasticData extends SubsystemBase{
         "[Turret Turn] Motor Id:"+ new TurretMovement().returnMotor().getDeviceID(),"[Hood] Motor Id:"+ new HoodSubsystem(cameraDataMain).returnMotor().getDeviceID(),"[Flywheel 1] Motor Id:"+ Flywheel_Lead_ID,"[Flywheel 2] Motor Id:"+ Flywheel_Follower_ID,"[Mid Index] Motor Id:"+ Spindex_ID,
         "[Final Index] Motor Id:"+ Index_ID,"[Intake] Motor Id:"+Intake_ID,"[PCM] Motor Id:","[Pidgeon] Motor Id:"};
         SmartDashboard.putStringArray("Motor Id's", motorIDs);
-    }
-
-
-
-
-
+    
+    
         for(var id : targetIDs){
             double yaw = cameraDataMain
             .getTargetYaw((int) id)
@@ -150,7 +142,5 @@ public class ElasticData extends SubsystemBase{
     }
 
     
-
-
 
 }

@@ -47,7 +47,7 @@ public class IndexAndSpindexCommand extends Command{
     }
     @Override
     public boolean isFinished() {
-        if (RobotContainer.driverController.x().getAsBoolean() == false && ForceSpin == false
+        if (RobotContainer.driverController.rightBumper().getAsBoolean() == false && ForceSpin == false
         || RobotContainer.operatorController.b().getAsBoolean() == false && ForceSpin == true) {
             return true;
         }
