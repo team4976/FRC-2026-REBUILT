@@ -105,13 +105,12 @@ public class RobotContainer {
         //driverController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
         // Regular Shooting
         //driverController.rightBumper().whileTrue(new IndexAndSpindexCommand(InSSubsystem, false, hoodSubsystem));
-
+        //driverController.x().whileTrue(new IntakeMotor(motorIntake));
+        //driverController.x().onTrue(pneumaticIntake);
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        //operatorController.b().whileTrue(new Climb(climber));
-        //operatorController.x().whileTrue(new IntakeMotor(motorIntake));
-        //operatorController.x().onTrue(pneumaticIntake);
+        operatorController.start().whileTrue(new Climb(climber));
         // Spin flywheel and start hood
         //operatorController.a().onTrue(new FlywheelCommand(flywheelSubsystem, 20));
     
