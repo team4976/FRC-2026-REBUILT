@@ -54,6 +54,10 @@ public class HoodSubsystem extends SubsystemBase{
         return hoodState;
     }
 
+    public TalonFX returnMotor(){
+        return HoodMotor;
+    }
+
     @Override
     public void periodic(){
         if (HoodMotor.getPosition().getValueAsDouble() <= targetHoodPos + 0.01 
