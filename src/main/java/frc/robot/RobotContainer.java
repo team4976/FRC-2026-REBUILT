@@ -39,14 +39,12 @@ import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.TurretMovement;
 import frc.robot.subsystems.TurretVision;
 import frc.robot.Elastic.ElasticContainer;
+import frc.Constants;
 
 public class RobotContainer {
-
-    
-
 //Shooting is op, Intake is drive 
     //Logging
-    private final Telemetry logger = new Telemetry(MaxSpeed);
+    private final Telemetry logger = new Telemetry(Constants.MaxSpeed);
 
     //Vision Objects, may be good idea to merge into one class and just have dif objects
     private PhotonVision vision = new PhotonVision("testingCamera");
@@ -83,10 +81,10 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-driverController.getLeftY() * MaxSpeed)
+                drive.withVelocityX(-driverController.getLeftY() * Constants.MaxSpeed)
                 //((driverController.povUp().getAsBoolean())?-1:(driverController.povDown().getAsBoolean())?1:.0) * MaxSpeed
-                .withVelocityY(-driverController.getLeftX() * MaxSpeed)
-                .withRotationalRate(-driverController.getRightX() * MaxAngularRate)
+                .withVelocityY(-driverController.getLeftX() * Constants.MaxSpeed)
+                .withRotationalRate(-driverController.getRightX() * Constants.MaxAngularRate)
             )    
         );
 
