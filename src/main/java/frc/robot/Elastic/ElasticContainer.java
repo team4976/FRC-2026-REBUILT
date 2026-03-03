@@ -11,18 +11,9 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 public class ElasticContainer {
 
     public FieldWidget fieldWidget = new FieldWidget();
-    public final CommandSwerveDrivetrain drivetrain;
-    Telemetry telemetry;
-    public Double robotAngle;
 
     // Initializes the Elastic subsystems.
-public ElasticContainer(RobotContainer robotContainer, Telemetry _telemetry) {
-    telemetry = _telemetry;
-    drivetrain = Constants.drivetrain;
-    robotAngle = drivetrain
-        .getRotation3d()
-        .toRotation2d()
-        .getRadians();
+public ElasticContainer() {
    
 
     try{
