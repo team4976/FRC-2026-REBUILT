@@ -24,7 +24,7 @@ public class ElasticData extends SubsystemBase{
 
         //swerve widget based on the values gained from telemetry, 100% needs to be tuned
         //and maybe even needs to use different telemtry variables. havent gotten a chance to figure that out yet.
-        SmartDashboard.putData("Swerve Drive", new Sendable() {
+        SmartDashboard.putData("Drive/Swerve Drive", new Sendable() {
             @Override      
             public void initSendable(SendableBuilder builder) {
                 builder.setSmartDashboardType("SwerveDrive");
@@ -46,12 +46,12 @@ public class ElasticData extends SubsystemBase{
         });
 
         //Ben T's smartdashboard stuff
-        SmartDashboard.putNumber("flywheelSpeed", 0);
-        SmartDashboard.putNumber("hood target position", 0);
-        SmartDashboard.putNumber("kV", 0.1);
-        SmartDashboard.putNumber("kP", 0.4);
-        SmartDashboard.putNumber("kI", 0.0);
-        SmartDashboard.putNumber("kD", 0.0);
+        SmartDashboard.putNumber("Testing/Ben T's Stuff/flywheelSpeed", 0);
+        SmartDashboard.putNumber("Testing/Ben T's Stuff/hood target position", 0);
+        SmartDashboard.putNumber("Testing/Ben T's Stuff/kV", 0.1);
+        SmartDashboard.putNumber("Testing/Ben T's Stuff/kP", 0.4);
+        SmartDashboard.putNumber("Testing/Ben T's Stuff/kI", 0.0);
+        SmartDashboard.putNumber("Testing/Ben T's Stuff/kD", 0.0);
     }
 
 
@@ -69,18 +69,19 @@ public class ElasticData extends SubsystemBase{
         double distance = cameraData.getDistance();
 
         //smartdashboard values putting for non turret camera
-        SmartDashboard.putNumber("raw pitch", cameraData.getAnyPitch());
-        SmartDashboard.putNumber("raw yaw", cameraData.getAnyYaw());
-        SmartDashboard.putNumberArray("Target IDs", targetIDs);
-        SmartDashboard.putBoolean("Target Visible", targetVisible);
-        SmartDashboard.putNumber("Ambiguity", ambiguity);
-        SmartDashboard.putNumber("Y Rotation", yRotation);
-        SmartDashboard.putNumber("X Rotation", xRotation);
-        SmartDashboard.putNumber("Z Rotation", zRotation);
-        SmartDashboard.putNumber("Distance", distance);
-        SmartDashboard.putData("Field",Field2d);
+        SmartDashboard.putNumber("Vision/Raw pitch", cameraData.getAnyPitch());
+        SmartDashboard.putNumber("Vision/Raw yaw", cameraData.getAnyYaw());
+        SmartDashboard.putNumberArray("Vision/Target IDs", targetIDs);
+        SmartDashboard.putBoolean("Vision/Target Visible", targetVisible);
+        SmartDashboard.putNumber("Vision/Ambiguity", ambiguity);
+        SmartDashboard.putNumber("Vision/Y Rotation", yRotation);
+        SmartDashboard.putNumber("Vision/X Rotation", xRotation);
+        SmartDashboard.putNumber("Vision/Z Rotation", zRotation);
+        SmartDashboard.putNumber("Vision/Distance", distance);
+        SmartDashboard.putData("Fields/Plain Field", Field2d);
         if(cameraData.targetVisible() == true){
-            SmartDashboard.putData("Robot Position Field", cameraData.getRobotPos());
+            SmartDashboard.putData("Fields/Robot Position Field", cameraData.getRobotPos());
+            
         }
         for(var id : targetIDs){
             double yaw = cameraData
