@@ -15,12 +15,14 @@ import static edu.wpi.first.units.Units.*;
 
 public class ElasticData extends SubsystemBase{
     private final Telemetry telemetry;
-    private final PhotonVision cameraData;
+    private final PhotonVision cameraDataMain;
+    private final PhotonVision cameraDataTurret;
     Field2d Field2d = new Field2d();
-    public ElasticData(Telemetry m_telemetry, PhotonVision camera){
+    public ElasticData(Telemetry m_telemetry, PhotonVision camera1, PhotonVision camera2){
         //objects for the two classes
         telemetry = m_telemetry;
-        cameraData = camera;
+        cameraDataMain = camera1;
+        cameraDataTurret = camera2;
 
         //swerve widget based on the values gained from telemetry, 100% needs to be tuned
         //and maybe even needs to use different telemtry variables. havent gotten a chance to figure that out yet.
@@ -58,45 +60,39 @@ public class ElasticData extends SubsystemBase{
     @Override
     public void periodic(){
         //variables for the non turret camera values
-        boolean targetVisible = cameraData.targetVisible();
-        double[] targetIDs = cameraData.getIDs().stream()
+        double[] targetIDs = cameraDataMain.getIDs().stream()
         .mapToDouble(Double::doubleValue)
         .toArray();
-        double yRotation = cameraData.getYRotation();
-        double xRotation = cameraData.getXRotation();
-        double zRotation = cameraData.getZRotation();
-        double ambiguity = cameraData.getAmbiguity();
-        double distance = cameraData.getDistance();
 
         //smartdashboard values putting for non turret camera
-        SmartDashboard.putNumber("Vision/Raw pitch", cameraData.getAnyPitch());
-        SmartDashboard.putNumber("Vision/Raw yaw", cameraData.getAnyYaw());
-        SmartDashboard.putNumberArray("Vision/Target IDs", targetIDs);
-        SmartDashboard.putBoolean("Vision/Target Visible", targetVisible);
-        SmartDashboard.putNumber("Vision/Ambiguity", ambiguity);
-        SmartDashboard.putNumber("Vision/Y Rotation", yRotation);
-        SmartDashboard.putNumber("Vision/X Rotation", xRotation);
-        SmartDashboard.putNumber("Vision/Z Rotation", zRotation);
-        SmartDashboard.putNumber("Vision/Distance", distance);
+        SmartDashboard.putNumber("Vision/Main Cam/Raw pitch", cameraDataMain.getAnyPitch());
+        SmartDashboard.putNumber("Vision/Main Cam/Raw yaw", cameraDataMain.getAnyYaw());
+        SmartDashboard.putNumberArray("Vision/Main Cam/Target IDs", targetIDs);
+        SmartDashboard.putBoolean("Vision/Main Cam/Target Visible", cameraDataMain.targetVisible());
+        SmartDashboard.putNumber("Vision/Main Cam/Ambiguity", cameraDataMain.getAmbiguity());
+        SmartDashboard.putNumber("Vision/Main Cam/Y Rotation", cameraDataMain.getYRotation());
+        SmartDashboard.putNumber("Vision/Main Cam/X Rotation", cameraDataMain.getXRotation());
+        SmartDashboard.putNumber("Vision/Main Cam/Z Rotation", cameraDataMain.getZRotation());
+        SmartDashboard.putNumber("Vision/Main Cam/Distance", cameraDataMain.getDistance());
         SmartDashboard.putData("Fields/Plain Field", Field2d);
-        if(cameraData.targetVisible() == true){
-            SmartDashboard.putData("Fields/Robot Position Field", cameraData.getRobotPos());
-            SmartDashboard.putData("Field/Turret Position Field", cameraData.getDistanceAndAngle());
+        if(cameraDataMain.targetVisible() == true){
+            SmartDashboard.putData("Fields/Robot Position Field", cameraDataMain.getRobotPos());
+            SmartDashboard.putData("Fields/Turret Position Field", cameraDataTurret.getDistanceAndAngle());
         }
         for(var id : targetIDs){
-            double yaw = cameraData
+            double yaw = cameraDataMain
             .getTargetYaw((int) id)
             .orElse(Double.NaN);
             if (!Double.isNaN(yaw)){
-                SmartDashboard.putNumber("Target" + id + "yaw", yaw);
+                SmartDashboard.putNumber("Vision/Main Cam/Target" + id + "yaw", yaw);
             }
         }
         for(var id : targetIDs){
-            double pitch = cameraData
+            double pitch = cameraDataMain
             .getTargetYaw((int) id)
             .orElse(Double.NaN);
             if (!Double.isNaN(pitch)){
-                SmartDashboard.putNumber("Target" + id + "pitch", pitch);
+                SmartDashboard.putNumber("Vision/Main Cam/Target" + id + "pitch", pitch);
             }
         }
         
