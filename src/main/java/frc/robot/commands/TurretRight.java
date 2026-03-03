@@ -3,14 +3,14 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.TurretMovement;
-import frc.robot.subsystems.TurretVision;
+import frc.robot.subsystems.PhotonVision;
 
 public class TurretRight extends Command {
-    TurretVision m_turretVision;
+    PhotonVision m_turretVision;
     TurretMovement m_shooter;
     boolean stopSwitch;
 
-    public TurretRight(TurretVision turretVision, TurretMovement shooter){
+    public TurretRight(PhotonVision turretVision, TurretMovement shooter){
         m_turretVision = turretVision;
         addRequirements(turretVision);
 
