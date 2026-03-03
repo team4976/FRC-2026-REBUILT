@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Telemetry;
 import frc.robot.generated.OldTunerConstants;
 import static edu.wpi.first.units.Units.*;
+import frc.robot.subsystems.IndexAndSpindexSubsystem;
 
 //was designed to be the only elastic subsystem/container but it isnt currently
 //the other two can be merged with this one later, gott set it up for multiple camers with some renaming
@@ -17,12 +18,14 @@ public class ElasticData extends SubsystemBase{
     private final Telemetry telemetry;
     private final PhotonVision cameraDataMain;
     private final PhotonVision cameraDataTurret;
+    private final IndexAndSpindexSubsystem indexAndSpindexSubsystem;
     Field2d Field2d = new Field2d();
-    public ElasticData(Telemetry m_telemetry, PhotonVision camera1, PhotonVision camera2){
+    public ElasticData(Telemetry m_telemetry, PhotonVision camera1, PhotonVision camera2, IndexAndSpindexSubsystem indexAndSpindexSubsystem){
         //objects for the two classes
         telemetry = m_telemetry;
         cameraDataMain = camera1;
         cameraDataTurret = camera2;
+        this.indexAndSpindexSubsystem = indexAndSpindexSubsystem;
 
         //swerve widget based on the values gained from telemetry, 100% needs to be tuned
         //and maybe even needs to use different telemtry variables. havent gotten a chance to figure that out yet.
@@ -55,7 +58,6 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Testing/Ben T's Stuff/kI", 0.0);
         SmartDashboard.putNumber("Testing/Ben T's Stuff/kD", 0.0);
     }
-
 
     @Override
     public void periodic(){
@@ -96,8 +98,12 @@ public class ElasticData extends SubsystemBase{
             }
         }
         
-        
-        //updates the 
+
+        //some motor stuff
+        SmartDashboard.putNumber("Testing/Index Volatage", indexAndSpindexSubsystem.indexMotor.getAppliedOutput());
+        SmartDashboard.putNumber("Testing/Spindex Volatage", indexAndSpindexSubsystem.spindexMotor.getAppliedOutput());
+
+        //updates the Smartdash board Values
         SmartDashboard.updateValues();
 
 

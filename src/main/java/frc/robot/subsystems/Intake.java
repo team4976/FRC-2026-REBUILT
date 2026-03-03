@@ -11,7 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import static frc.robot.Constants.*;
 
 
 public class Intake extends SubsystemBase {
@@ -20,7 +20,7 @@ public class Intake extends SubsystemBase {
   private static DigitalInput m_toplimitSwitch = new DigitalInput(0);
       
   public Intake() {
-    IntakeMotor = new TalonSRX(Constants.Intake_ID); //Defines motor 1
+    IntakeMotor = new TalonSRX(Intake_ID); //Defines motor 1
   }   
              
           public void stop() {
@@ -31,6 +31,7 @@ public class Intake extends SubsystemBase {
           public void runIntake(double speed) {
   //          IntakeMotor.set(ControlMode.PercentOutput,speed);
             IntakeMotor.set(ControlMode.PercentOutput, speed);
+            System.out.println("running at speed:" + speed);
           }
         
         public boolean checkswitchstatus() {
@@ -53,8 +54,9 @@ public class Intake extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
 
-  public void setFeederRoller(int i) {
-    throw new UnsupportedOperationException("Unimplemented method 'setFeederRoller'");
+  public void setFeederRoller(double percentSpeed) {
+    //throw new UnsupportedOperationException("Unimplemented method 'setFeederRoller'");
+    runIntake(percentSpeed);
   }
   //Catches errors
     }

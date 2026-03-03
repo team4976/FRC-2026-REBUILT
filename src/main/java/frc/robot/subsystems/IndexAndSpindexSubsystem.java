@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkBaseConfig;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,6 +19,7 @@ public class IndexAndSpindexSubsystem extends SubsystemBase{
     public IndexAndSpindexSubsystem(PhotonVision turretVision, HoodSubsystem hoodSubsystem){
         this.hoodSubsystem = hoodSubsystem;
         indexMotor = new SparkMax(Constants.Index_ID, MotorType.kBrushless);
+        indexMotor.setInverted(true);
         spindexMotor = new SparkMax(Constants.Spindex_ID, MotorType.kBrushless);
     }
 
@@ -26,11 +28,10 @@ public class IndexAndSpindexSubsystem extends SubsystemBase{
         spindexMotor.set(0);
     }
 
-    public void moveFeeder(){
-        System.out.println("AHHHHHHH");
-        indexMotor.set(-0.5);
-        spindexMotor.set(0.5);
-        System.out.println("BANANA");
+    public void moveFeeder(double indexSpeed, double spindexSpeed){
+        indexMotor.set(indexSpeed);
+        spindexMotor.set(spindexSpeed);
+        System.out.println("Spinning indexer at:" + indexSpeed + "spinning spindexer at:" + spindexSpeed);
     }
 
     @Override
