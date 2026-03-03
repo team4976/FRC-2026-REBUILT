@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.OptionalDouble;
 
 import org.photonvision.PhotonCamera;
@@ -9,7 +10,15 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
+import frc.robot.Telemetry;
+
+import static frc.robot.Constants.*;
+
 
 public class VisionData{
     //making the variable for the camera used--
@@ -17,31 +26,62 @@ public class VisionData{
     //latest result that gets updated using the update method--
     //inside of a periodic keeping the latest result uniform among--
     //all methods in the file.
+
+    //field (as in the java field not the smartdashboard field) decalrations 
     private PhotonCamera camera;
+    private Telemetry logger;
     private PhotonPipelineResult latestResult;
-    Field2d field2d = new Field2d();
+    private Field2d field2d = new Field2d();
+    private Optional<Alliance> alliance;
+    private double hubOrigX;
+    private double hubOrigY;
+    private double DriveVelocityX;
+    private double DriveVelocityY;
+    private double DistanceX;
+    private double DistanceY;
+    private double turretDistance;
+    private double turretAngle;
+    private double turretTargetAngle;
 
     //the constructor, having the camera as a parameter--
     //means the methods in this class can be used dynamically--
     //with any camera and dont need to be changed if the camera--
     //name gets changed throughout the season.
-    public VisionData(String cameraName){
+    public VisionData(String cameraName, Telemetry logger){
         camera = new PhotonCamera(cameraName);
+        this.logger = logger;
+
+        alliance = DriverStation.getAlliance();
+
+        if (alliance.isPresent()) {
+            if (alliance.get() == Alliance.Blue) {
+                hubOrigX = BlueHubX; 
+                hubOrigY = BlueHubY;
+            }
+            if (alliance.get() == Alliance.Red) {
+                hubOrigX = RedHubX; 
+                hubOrigY = RedHubY;
+            }}
     }
 
-    //called at the top of the periodic, keeps the camera frame used uniform.
+    //called at the top of the periodic in PhotonVision, keeps the camera frame used uniform.
+    //also updates the Drive Velocities and the turrret distance and angle by calling the method but doesnt use the returned value.
     public void update() {
         var results = camera.getAllUnreadResults();
         if (!results.isEmpty()) {
             latestResult = results.get(results.size() - 1);
         }
+        if(logger.driveState != null){
+        DriveVelocityX = logger.driveState.Speeds.vxMetersPerSecond;
+        DriveVelocityY = logger.driveState.Speeds.vyMetersPerSecond;
+        }
+        getDistanceAndAngle();
     }
     
     //gets the abiguity
     public double getAmbiguity(){
         if (latestResult != null && latestResult.hasTargets()){
             PhotonTrackedTarget target = latestResult.getBestTarget();
-
             return target.getPoseAmbiguity();
         } else {
             return -1.0;
@@ -51,6 +91,7 @@ public class VisionData{
 
 
     //returns an array list of all april tag IDs seen by the camera.
+    //turns out there is a better native way to do this with the getBestCameraToTarget and  methods
     public List<Double> getIDs(){
         List<Double> targetIDs = new ArrayList<>();
         if(latestResult != null && latestResult.hasTargets()){
@@ -186,4 +227,68 @@ public class VisionData{
         return 0.0;
     }
 
+    // gets the robot pose based on two april tags or tries with one
+    public Field2d getDistanceAndAngle(){
+        double HubX = hubOrigX;
+        double HubY = hubOrigY;
+
+        if (latestResult != null && latestResult.hasTargets()){
+            var cameraResult = latestResult.getMultiTagResult();
+            if (cameraResult != null && cameraResult.isEmpty() == false) {
+                var fieldToCamera = cameraResult.get().estimatedPose.best;
+                field2d.setRobotPose(new Pose2d(fieldToCamera.getX(), fieldToCamera.getY(), fieldToCamera.getRotation().toRotation2d()));
+            // Initial Distance calculation
+            DistanceX = HubX - field2d.getRobotPose().getX();
+            DistanceY = HubY - field2d.getRobotPose().getY();
+            turretDistance = Math.sqrt(DistanceX*DistanceX + DistanceY*DistanceY);
+
+            for (int i = 0; i < 5; i++){
+                // update BallAirTime
+                double ballAirTime = turretDistance*0.5; // TESTING REMOVE LATER
+                //turretDistance = driveVelocity*BallAirTime;
+                double hubMovedX = DriveVelocityX*-1*ballAirTime;
+                double hubMovedY = DriveVelocityY*-1*ballAirTime;
+
+                // moving the virtual hub
+                HubX = HubX + hubMovedX;
+                HubY = HubY + hubMovedY;
+                // making a new distance based on the virtual hub
+                DistanceX = HubX - field2d.getRobotPose().getX();
+                DistanceY = HubY - field2d.getRobotPose().getY();
+                turretDistance = Math.sqrt(DistanceX*DistanceX + DistanceY*DistanceY);
+            }
+            // calculates the angle we want to get to
+            turretTargetAngle = Math.atan(DistanceX / DistanceY);
+            // calculates the angle of the bot from the middle
+            turretAngle = (fieldToCamera.getRotation().toRotation2d().getDegrees());
+            } else {
+            field2d.setRobotPose(new Pose2d()); //Maybe not such a good idea
+            }
+        } else {
+            field2d.setRobotPose(new Pose2d());
+        }
+        return field2d;
+    }
+
+    // when called gives you the turret distance calculated previously
+    public double getTurretDistance(){
+        return turretDistance;
+    }
+
+    // when called gives you the turret angle calculated previously
+    public double getTurretAngle(){
+        return turretAngle;
+    }
+
+    // when called gives you the targetTurretAngle calculated previously
+    public double getTurretTargetAngle(){
+        return turretTargetAngle;
+    }
+
+
+
+
+
+
 }
+

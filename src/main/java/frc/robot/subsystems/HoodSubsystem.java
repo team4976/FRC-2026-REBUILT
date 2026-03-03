@@ -12,12 +12,12 @@ import frc.robot.Constants;
 
 public class HoodSubsystem extends SubsystemBase{
     public TalonFX HoodMotor;
-    public TurretVision turretVision;
+    public PhotonVision turretVision;
     public String hoodState = "readyToShoot";
     public double targetHoodPos;
     public final MotionMagicVoltage hoodPosVolt = new MotionMagicVoltage(0).withSlot(1);
 
-    public HoodSubsystem(TurretVision turretVision){
+    public HoodSubsystem(PhotonVision turretVision){
         this.turretVision=turretVision;
         var hoodConfig = new TalonFXConfiguration();
 

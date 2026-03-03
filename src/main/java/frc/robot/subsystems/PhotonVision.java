@@ -5,12 +5,13 @@ import java.util.OptionalDouble;
 
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Telemetry;
 
 public class PhotonVision extends SubsystemBase{
     VisionData vision;
 
-    public PhotonVision(String cameraName){
-        vision = new VisionData(cameraName);
+    public PhotonVision(String cameraName, Telemetry logger){
+        vision = new VisionData(cameraName, logger);
     }
 
     @Override
@@ -68,6 +69,22 @@ public class PhotonVision extends SubsystemBase{
 
     public double getDistance(){
         return vision.getDistance();
+    }
+
+    public Field2d getDistanceAndAngle(){
+        return vision.getDistanceAndAngle();
+    }
+
+    public double getTurretAngle(){
+        return vision.getTurretAngle();
+    }
+
+    public double getTurretDistance(){
+        return vision.getTurretDistance();
+    }
+
+    public double getTurretTargetAngle(){
+        return vision.getTurretTargetAngle();
     }
 
 }

@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.TurretMovement;
-import frc.robot.subsystems.TurretVision;
+import frc.robot.subsystems.PhotonVision;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class TurretScan extends Command {
-    TurretVision m_turretVision;
+    PhotonVision m_turretVision;
     TurretMovement m_shooter;
     boolean TurningRight = true;
     boolean hasTargets = false;
@@ -35,11 +35,11 @@ public class TurretScan extends Command {
     double turretTargetAngle;
     double turretAngle;
 
-    public TurretScan(TurretVision turretVision, TurretMovement shooter){
+    public TurretScan(PhotonVision turretVision, TurretMovement shooter){
         m_turretVision = turretVision;
         addRequirements(turretVision);
 
-         m_shooter = shooter;
+        m_shooter = shooter;
         addRequirements(shooter);
 
         turretPose2d = new Pose2d();
@@ -60,7 +60,7 @@ public class TurretScan extends Command {
         SmartDashboard.putBoolean("TurningRight", TurningRight);
          System.err.println("execute works");
         //get if the robot is seeing the april tag
-        hasTargets = m_turretVision.getTags();
+        hasTargets = m_turretVision.targetVisible();
         // set the yaw to what the yaw of the april tag is
 
 

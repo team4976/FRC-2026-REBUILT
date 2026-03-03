@@ -47,8 +47,8 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(Constants.MaxSpeed);
 
     //Vision Objects, may be good idea to merge into one class and just have dif objects
-    private PhotonVision vision = new PhotonVision("testingCamera");
-    private final TurretVision m_turretvision = new TurretVision(logger);
+    private final PhotonVision vision = new PhotonVision("testingCamera", logger);
+    private final PhotonVision m_turretvision = new PhotonVision("testingCamera", logger);
 
     //Subsystem Objects/Subsystem Initialization
     private final Pneumatics Pneumatics = new Pneumatics();
@@ -58,7 +58,7 @@ public class RobotContainer {
     private final TurretMovement turretMovement = new TurretMovement();
     public FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
     public HoodSubsystem hoodSubsystem = new HoodSubsystem(m_turretvision);
-    public IndexAndSpindexSubsystem InSSubsystem = new IndexAndSpindexSubsystem(m_turretvision);
+    public IndexAndSpindexSubsystem InSSubsystem = new IndexAndSpindexSubsystem(m_turretvision, hoodSubsystem);
 
     //Controller Objects
     public static final CommandXboxController driverController = new CommandXboxController(0);

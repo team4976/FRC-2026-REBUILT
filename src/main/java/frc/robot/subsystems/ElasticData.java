@@ -17,7 +17,6 @@ public class ElasticData extends SubsystemBase{
     private final Telemetry telemetry;
     private final PhotonVision cameraData;
     Field2d Field2d = new Field2d();
-    VisionData VisionData = new VisionData("testingCamera");
     public ElasticData(Telemetry m_telemetry, PhotonVision camera){
         //objects for the two classes
         telemetry = m_telemetry;

@@ -15,8 +15,8 @@ public class IndexAndSpindexSubsystem extends SubsystemBase{
     public FlywheelSubsystem shooterSubsystem = new FlywheelSubsystem();
     public HoodSubsystem hoodSubsystem;
 
-    public IndexAndSpindexSubsystem(TurretVision turretVision){
-        hoodSubsystem = new HoodSubsystem(turretVision);
+    public IndexAndSpindexSubsystem(PhotonVision turretVision, HoodSubsystem hoodSubsystem){
+        this.hoodSubsystem = hoodSubsystem;
         indexMotor = new SparkMax(Constants.Index_ID, MotorType.kBrushless);
         spindexMotor = new SparkMax(Constants.Spindex_ID, MotorType.kBrushless);
     }
