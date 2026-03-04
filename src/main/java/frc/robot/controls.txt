@@ -5,5 +5,5 @@ X is intake (toggle)
 Shoot is right bumper (Index and Spindex)
 Operator 
 A is spin up flywheels
-Right Bumper is climb
-Left Joystick is move turret
+Menu button is climb
+Right Joystick is move turret
