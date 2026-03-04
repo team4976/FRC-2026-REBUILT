@@ -33,18 +33,20 @@ public class IndexAndSpindexCommand extends Command{
                 hoodSubsystem.moveHood();
             }
             else if (flywheelSubsystem.getShooterState() == "readyToShoot") {
-                InSSubsystem.moveFeeder();
+                InSSubsystem.moveFeeder(0.3, 0.3);
             }
         }
         else {
             System.out.println("Move feeder");
-            InSSubsystem.moveFeeder();
+            InSSubsystem.moveFeeder(0.3, 0.3);
         }
+            
     }
     @Override
     public void end(boolean interrupted) {
-        InSSubsystem.stopFeeder();
+        InSSubsystem.moveFeeder(0.0, 0.0);
     }
+
     @Override
     public boolean isFinished() {
         if (RobotContainer.driverController.rightBumper().getAsBoolean() == false && ForceSpin == false
@@ -53,6 +55,6 @@ public class IndexAndSpindexCommand extends Command{
         }
         else {
             return false;
-        }
+        }   
     }
 }

@@ -5,20 +5,13 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Telemetry;
-import frc.robot.generated.OldTunerConstants;
-import frc.robot.generated.RebuiltTunerConstants;
-import static edu.wpi.first.units.Units.*;
-import static frc.robot.Constants.Flywheel_Follower_ID;
-import static frc.robot.Constants.Flywheel_Lead_ID;
-import static frc.robot.Constants.Index_ID;
-import static frc.robot.Constants.Intake_ID;
-import static frc.robot.Constants.Spindex_ID;
-import static frc.robot.Constants.Index_ID;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-
+import frc.robot.Telemetry;
+import frc.robot.generated.RebuiltTunerConstants;
+import static edu.wpi.first.units.Units.*;
+import frc.robot.subsystems.IndexAndSpindexSubsystem;
+import frc.robot.Constants;
 //was designed to be the only elastic subsystem/container but it isnt currently
 //the other two can be merged with this one later, gott set it up for multiple camers with some renaming
 //and gotta add all the other stuff.
@@ -27,15 +20,17 @@ public class ElasticData extends SubsystemBase{
     private final Telemetry telemetry;
     private final PhotonVision cameraDataMain;
     private final PhotonVision cameraDataTurret;
-    Field2d Field2d = new Field2d();
+    private final IndexAndSpindexSubsystem indexAndSpindexSubsystem;
     double Hubwidth = 0.6;
     double Radius = 3;
     boolean fuelMakeIt = false;
-    public ElasticData(Telemetry m_telemetry, PhotonVision camera1, PhotonVision camera2){
+    Field2d Field2d = new Field2d();
+    public ElasticData(Telemetry m_telemetry, PhotonVision camera1, PhotonVision camera2, IndexAndSpindexSubsystem indexAndSpindexSubsystem){
         //objects for the two classes
         telemetry = m_telemetry;
         cameraDataMain = camera1;
         cameraDataTurret = camera2;
+        this.indexAndSpindexSubsystem = indexAndSpindexSubsystem;
 
         //swerve widget based on the values gained from telemetry, 100% needs to be tuned
         //and maybe even needs to use different telemtry variables. havent gotten a chance to figure that out yet.
@@ -64,7 +59,6 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Testing/Ben T's Stuff/flywheelSpeed", 0);
         SmartDashboard.putNumber("Testing/Ben T's Stuff/hood target position", 0);
     }
-
 
     @Override
     public void periodic(){
@@ -111,8 +105,8 @@ public class ElasticData extends SubsystemBase{
             //Ac - Motor Id's
         String[] motorIDs = {"[FRS Swerve] Motor Id:"+ RebuiltTunerConstants.kFrontRightSteerMotorId,"[FRD Swerve] Motor Id:" + RebuiltTunerConstants.kFrontRightDriveMotorId,"[FLS Swerve] Motor Id:"+RebuiltTunerConstants.kFrontLeftSteerMotorId,
         "[FLD Swerve] Motor Id:"+RebuiltTunerConstants.kFrontLeftDriveMotorId,"[RRS Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightSteerMotorId,"[RRD Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightDriveMotorId,"[RLS Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftSteerMotorId,"[RLD Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftDriveMotorId,
-        "[Turret Turn] Motor Id:"+ new TurretMovement().returnMotor().getDeviceID(),"[Hood] Motor Id:"+ new HoodSubsystem(cameraDataMain).returnMotor().getDeviceID(),"[Flywheel 1] Motor Id:"+ Flywheel_Lead_ID,"[Flywheel 2] Motor Id:"+ Flywheel_Follower_ID,"[Mid Index] Motor Id:"+ Spindex_ID,
-        "[Final Index] Motor Id:"+ Index_ID,"[Intake] Motor Id:"+Intake_ID,"[PCM] Motor Id:","[Pidgeon] Motor Id:"};
+        "[Turret Turn] Motor Id:"+ new TurretMovement().returnMotor().getDeviceID(),"[Hood] Motor Id:"+ new HoodSubsystem(cameraDataMain).returnMotor().getDeviceID(),"[Flywheel 1] Motor Id:"+ Constants.Flywheel_Lead_ID,"[Flywheel 2] Motor Id:"+ Constants.Flywheel_Follower_ID,"[Mid Index] Motor Id:"+ Constants.Spindex_ID,
+        "[Final Index] Motor Id:"+ Constants.Index_ID,"[Intake] Motor Id:"+ Constants.Intake_ID,"[PCM] Motor Id:","[Pidgeon] Motor Id:"};
         SmartDashboard.putStringArray("Motor Id's", motorIDs);
     
     
@@ -133,8 +127,12 @@ public class ElasticData extends SubsystemBase{
             }
         }
         
-        
-        //updates the 
+
+        //some motor stuff
+        SmartDashboard.putNumber("Testing/Index Volatage", indexAndSpindexSubsystem.indexMotor.getAppliedOutput());
+        SmartDashboard.putNumber("Testing/Spindex Volatage", indexAndSpindexSubsystem.spindexMotor.getAppliedOutput());
+
+        //updates the Smartdash board Values
         SmartDashboard.updateValues();
 
 

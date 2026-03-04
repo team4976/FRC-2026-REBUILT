@@ -13,22 +13,22 @@ import frc.robot.subsystems.Intake;
 @SuppressWarnings("unused")
 public class IntakeMotor extends Command {
 boolean limitSwitchStatus;
-Intake motorSpin;
+Intake intake;
 /**
      * Creates a new ExampleCommand.
      *
      * @param subsystem The subsystem used by this command.
      */
-    public IntakeMotor(Intake motorSpin) {
+    public IntakeMotor(Intake intake) {
       // Use addRequirements() here to declare subsystem dependencies.
-      addRequirements(motorSpin);
-      this.motorSpin = motorSpin;
+      addRequirements(intake);
+      this.intake = intake;
     }
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-      limitSwitchStatus =false;
-      motorSpin.setFeederRoller(5);
+      limitSwitchStatus = true;
+      intake.setFeederRoller(0.3);
 
      System.out.println("Drive Command Initialized");  
     }
@@ -36,18 +36,18 @@ Intake motorSpin;
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   limitSwitchStatus = motorSpin.checkswitchstatus();
+   limitSwitchStatus = intake.checkswitchstatus();
   }
  
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
-    }
+      intake.setFeederRoller(0.0);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return limitSwitchStatus;
+    return false;
   }
 }
