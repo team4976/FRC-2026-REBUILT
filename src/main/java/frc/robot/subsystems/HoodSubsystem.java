@@ -13,11 +13,12 @@ import frc.robot.Constants;
 public class HoodSubsystem extends SubsystemBase{
     public TalonFX HoodMotor;
     public PhotonVision turretVision;
-    public String hoodState = "readyToShoot";
+    public String hoodState;
     public double targetHoodPos;
     public final MotionMagicVoltage hoodPosVolt = new MotionMagicVoltage(0).withSlot(1);
 
     public HoodSubsystem(PhotonVision turretVision){
+        hoodState = "cantShoot";
         this.turretVision=turretVision;
         var hoodConfig = new TalonFXConfiguration();
 
@@ -38,12 +39,13 @@ public class HoodSubsystem extends SubsystemBase{
         HoodMotor.setPosition(0);
     }
 
-    public void moveHood(){
-        targetHoodPos = turretVision.getTurretDistance();
+    public void moveHood(double targetHoodPos){
+        //targetHoodPos = turretVision.getTurretDistance();
         if (targetHoodPos < 0) {
             targetHoodPos = 0;
         }
-        HoodMotor.setControl(hoodPosVolt.withPosition(SmartDashboard.getNumber("hood target position", 0)));
+        HoodMotor.setControl(hoodPosVolt.withPosition(targetHoodPos));
+        this.targetHoodPos = targetHoodPos;
     }
 
     public void forceHoodMove(double speed){
@@ -60,11 +62,12 @@ public class HoodSubsystem extends SubsystemBase{
 
     @Override
     public void periodic(){
-        if (HoodMotor.getPosition().getValueAsDouble() <= targetHoodPos + 0.01 
-        && HoodMotor.getPosition().getValueAsDouble() >= targetHoodPos - 0.01) {
+        if (HoodMotor.getPosition().getValueAsDouble() < targetHoodPos + 1 
+        && HoodMotor.getPosition().getValueAsDouble() > targetHoodPos - 1) {
             hoodState = "readyToShoot";
         }
-        else {
+        else if (HoodMotor.getPosition().getValueAsDouble() > targetHoodPos + 1 
+        && HoodMotor.getPosition().getValueAsDouble() < targetHoodPos - 1) {
             hoodState = "cantShoot";
         }
         SmartDashboard.putString("hood State", hoodState);

@@ -20,10 +20,10 @@ public class FlywheelSubsystem extends SubsystemBase{
     public FlywheelSubsystem(){
         var flywheelConfig = new Slot0Configs();
         flywheelConfig.kS = 0.1; // Add 0.1 V output to overcome static friction
-        flywheelConfig.kV = SmartDashboard.getNumber("kV", 0.001); // A velocity target of 1 rps results in 0.12 V output
-        flywheelConfig.kP = SmartDashboard.getNumber("kP", 0.004); // An error of 1 rps results in 0.11 V output
-        flywheelConfig.kI = SmartDashboard.getNumber("kI", 0.0); // no output for integrated error
-        flywheelConfig.kD = SmartDashboard.getNumber("kD", 0.0); // no output for error derivative
+        flywheelConfig.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
+        flywheelConfig.kP = 0.45; // An error of 1 rps results in 0.11 V output
+        flywheelConfig.kI = 0.0; // no output for integrated error
+        flywheelConfig.kD = 0.0; // no output for error derivative
         
         ShooterMotorLeader = new TalonFX(Constants.Flywheel_Lead_ID);
         ShooterMotorFollower = new TalonFX(Constants.Flywheel_Follower_ID);
@@ -41,10 +41,14 @@ public class FlywheelSubsystem extends SubsystemBase{
         }
     }
 
-    public void spinShooter(double targetRPS){
+    public void spinFlywheel(double targetRPS){
         System.out.println("targetRPS: " + targetRPS);
-        ShooterMotorLeader.setControl(shooterVelocityVoltage.withVelocity(-targetRPS));
+        ShooterMotorLeader.setControl(shooterVelocityVoltage.withVelocity(targetRPS));
         this.targetRPS = targetRPS;
+    }
+
+    public void stopFlywheel(){
+        ShooterMotorLeader.setControl(shooterVelocityVoltage.withVelocity(0));
     }
 
     public double getShooterSpeed(){

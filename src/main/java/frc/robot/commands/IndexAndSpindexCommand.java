@@ -29,8 +29,8 @@ public class IndexAndSpindexCommand extends Command{
     public void execute() {
         if (ForceSpin == false) {
             if (flywheelSubsystem.getShooterState() == "cantShoot") {
-                flywheelSubsystem.spinShooter(SmartDashboard.getNumber("flywheelSpeed", 0));
-                hoodSubsystem.moveHood();
+                flywheelSubsystem.spinFlywheel(SmartDashboard.getNumber("flywheelSpeed", 40));
+                hoodSubsystem.moveHood(SmartDashboard.getNumber("hood target position", 4));
             }
             else if (flywheelSubsystem.getShooterState() == "readyToShoot") {
                 InSSubsystem.moveFeeder(0.3, 0.3);

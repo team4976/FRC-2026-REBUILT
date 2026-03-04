@@ -43,6 +43,5 @@ public class IndexAndSpindexSubsystem extends SubsystemBase{
         else {
             RobotContainer.driverController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
         }
-        SmartDashboard.putNumber("tmp", indexMotor.getOutputCurrent());
     }
 }

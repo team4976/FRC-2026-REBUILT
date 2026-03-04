@@ -17,20 +17,16 @@ public class FlywheelCommand extends Command{
     @Override
     public void initialize(){
         flywheelSubsystem.setShooterState();
-        /* 
-         * also make the default wind up for flywheel be controller op, but if you try to shoot and it
-         * is not spinning then start spinning it.
-         */
     }
 
     @Override
     public void execute(){
         switch (flywheelSubsystem.getShooterState()) {
             case "windShooter":
-                flywheelSubsystem.spinShooter(SmartDashboard.getNumber("flywheelSpeed", targetRPS));
+                flywheelSubsystem.spinFlywheel(SmartDashboard.getNumber("flywheelSpeed", 40));
                 break;
             case "cantShoot":
-                flywheelSubsystem.spinShooter(0);
+                flywheelSubsystem.stopFlywheel();
                 break;
         }
     }
