@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 
 import frc.robot.commands.intakeCommand;
-import frc.robot.commands.IntakeMotor;
 import frc.robot.generated.RebuiltTunerConstants;
 import frc.robot.generated.TurretTunerConstants;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -25,7 +24,6 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ElasticData;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PhotonVision;
-import frc.robot.subsystems.Pneumatics;
 import frc.robot.commands.Climb;
 import frc.robot.commands.HoodCommand;
 import frc.robot.commands.IndexAndSpindexCommand;

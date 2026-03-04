@@ -9,7 +9,11 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.PneumaticsControlModule;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.*;
 
@@ -17,48 +21,43 @@ import static frc.robot.Constants.*;
 public class Intake extends SubsystemBase {
   public TalonSRX IntakeMotor;
 
+  public static final PneumaticsControlModule pneumaticsControlModule = new PneumaticsControlModule(30);
+  private final Compressor compressor = new Compressor(30, PneumaticsModuleType.CTREPCM);
+  private Solenoid solenoid;
   private static DigitalInput m_toplimitSwitch = new DigitalInput(0);
       
   public Intake() {
     IntakeMotor = new TalonSRX(Intake_ID); //Defines motor 1
+
+    compressor.enableDigital(); 
+    solenoid = pneumaticsControlModule.makeSolenoid(2);
+    solenoid.set(false);
   }   
              
-          public void stop() {
-    //        IntakeMotor.set(ControlMode.PercentOutput0); 
-            IntakeMotor.set(ControlMode.PercentOutput, 0); 
-          }
-        
-          public void runIntake(double speed) {
-  //          IntakeMotor.set(ControlMode.PercentOutput,speed);
-            IntakeMotor.set(ControlMode.PercentOutput, speed);
-            System.out.println("running at speed:" + speed);
-          }
-        
-        public boolean checkswitchstatus() {
-            // Limit switch is pressed
-            return (m_toplimitSwitch.get());
-        }
-
-  public boolean exampleCondition() {
-    // Query some boolean state, such as a digital sensor.
-    return false;
+  public void stopIntakeMotor() {
+    IntakeMotor.set(ControlMode.PercentOutput, 0); 
+  }
+    
+  public void runIntakeMotor(double speed) {
+    IntakeMotor.set(ControlMode.PercentOutput, speed);
+    System.out.println("running at speed:" + speed);
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
+  public void forwardSolenoid(){
+    System.out.println("solenoid on");   
+    solenoid.set(true);
   }
 
-  @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
+  public void reverseSolenoid(){
+    System.out.println("solenoid off");
+    solenoid.set(false);
+  }
+  
+  public boolean checkswitchstatus() {
+    // Limit switch is pressed
+    return (m_toplimitSwitch.get());
   }
 
-  public void setFeederRoller(double percentSpeed) {
-    //throw new UnsupportedOperationException("Unimplemented method 'setFeederRoller'");
-    runIntake(percentSpeed);
-  }
-  //Catches errors
-    }
+}
 
 

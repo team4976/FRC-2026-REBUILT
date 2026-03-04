@@ -7,13 +7,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Pneumatics;
 /** An example command that uses an example subsystem. 
  * @param <Drive>*/
 @SuppressWarnings("unused")
 public class intakeCommand extends Command {
 boolean SolenoidStatus;
-Pneumatics pneumatics;
 Intake intake;
 boolean stop;
   /**
@@ -22,27 +20,25 @@ boolean stop;
        * @param subsystem The subsystem used by this command.
        */
 
-public intakeCommand(Pneumatics pneumatics, Intake intake) {
+public intakeCommand(Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intake);
-    addRequirements(pneumatics);
- this.pneumatics = pneumatics;
- this.SolenoidStatus = false;
- this.intake = intake;
+  this.SolenoidStatus = false;
+  this.intake = intake;
+  addRequirements(intake);  
 }
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {  
   
     if (SolenoidStatus == false) {
-      pneumatics.forwardSolenoid();
+      intake.forwardSolenoid();
       SolenoidStatus = true;
-      intake.runIntake(Constants.intakeSpeed);
+      intake.runIntakeMotor(Constants.intakeSpeed);
       stop = false;
     } else if (SolenoidStatus == true) {
-      pneumatics.reverseSolenoid();
+      intake.reverseSolenoid();
       SolenoidStatus = false;
-      intake.stop();
+      intake.stopIntakeMotor();
       stop = true;
     }
   
