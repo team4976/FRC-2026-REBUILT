@@ -34,7 +34,7 @@ public IntakeCommand(Intake intake) {
       intake.forwardSolenoid();
       SolenoidStatus = true;
       intake.runIntakeMotor(Constants.intakeSpeed);
-      stop = false;
+      stop = true;
     } else if (SolenoidStatus == true) {
       intake.reverseSolenoid();
       SolenoidStatus = false;
