@@ -20,7 +20,7 @@ public class TurretMovement extends SubsystemBase{
     public TurretMovement(){
         turretSpin = new TalonFX(Constants.Turret_ID);  
         turretSpin.setVoltage(0);
-        turretSpin.setPosition(0);
+        //turretSpin.setPosition(0);
 
     }
 
@@ -69,6 +69,11 @@ public class TurretMovement extends SubsystemBase{
 
     public TalonFX returnMotor(){
         return turretSpin;
+    }
+
+    @Override
+    public void periodic(){
+        SmartDashboard.putNumber("turretEncoderValue", turretSpin.getPosition().getValueAsDouble());
     }
 
 }

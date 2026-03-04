@@ -63,13 +63,13 @@ public class TurretScan extends Command {
             }
 
             // if the left Switch is being pressed set TurningRight to true
-            if(m_shooter.getLeftSwitch() == false || m_shooter.getEncoderValue() < Constants.turretLimitLeft){
+            if(m_shooter.getLeftSwitch() == false || m_shooter.getEncoderValue() > Constants.turretLimitLeft){
                 TurningRight = true;
                 //System.err.println("getLeftSwitch works");
             }
 
             // if the right Switch is being pressed set TurningRight to false
-            if(m_shooter.getRightSwitch() == false || m_shooter.getEncoderValue() > Constants.turretLimitRight){
+            if(m_shooter.getRightSwitch() == false || m_shooter.getEncoderValue() < Constants.turretLimitRight){
                 TurningRight = false;
                 //System.err.println("getRightSwitch works");
 

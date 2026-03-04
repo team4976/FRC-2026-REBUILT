@@ -66,8 +66,8 @@ public final class Constants {
   public static double BlueHubX = 5.05861111111;
   public static double BlueHubY = 4.41236111111;
 
-  public static final double turretLimitLeft = -135; // software limits on turret motion
-  public static final double turretLimitRight = 135;
+  public static final double turretLimitLeft = 27.656; // software limits on turret motion
+  public static final double turretLimitRight = -8.469;
 
   public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
   public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(0.0, 0.0, 0.635), new Rotation3d(0, 0, 0));
