@@ -1,0 +1,3 @@
+Drive with left joystick
+Drive with right joystick
+X is intake (toggle)

@@ -107,14 +107,14 @@ public class RobotContainer {
         //driverController.rightTrigger().onTrue(turretMovement.runOnce(()->turretMovement.getStopCommand()));
         //driverController.povLeft().whileTrue(new TurretLeft(m_turretvision, turretMovement));
         //driverController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
+        // Reset the field-centric heading on left bumper press.
+        driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
         // Regular Shooting
-        //driverController.rightBumper().whileTrue(new IndexAndSpindexCommand(InSSubsystem, false, hoodSubsystem));
-        driverController.rightBumper().whileTrue(intakeMotorCommand);
-        //driverController.rightBumper().whileTrue(indexAndSpindexCommand);
+        driverController.rightBumper().whileTrue(indexAndSpindexCommand);
         driverController.x().whileTrue(intakePneumatic);
+        driverController.x().whileTrue(intakeMotorCommand);
         //driverController.leftBumper().whileTrue(flywheelCommand);
-        
         //driverController.y().onTrue(pneumaticIntake);
 
         // Run SysId routines when holding back/start and X/Y.
@@ -139,16 +139,8 @@ public class RobotContainer {
         //operatorController.povUp().onFalse(new HoodCommand(hoodSubsystem, true, 0));
         //operatorController.povDown().onTrue(new HoodCommand(hoodSubsystem, true, -0.1));
         //operatorController.povDown().onFalse(new HoodCommand(hoodSubsystem, true, 0));
-
-        // Regular Shooting
-        //driverController.rightBumper().whileTrue(new IndexAndSpindexCommand(InSSubsystem, false, hoodSubsystem));
-
         // Force Shoot
         //operatorController.b().whileTrue(new IndexAndSpindexCommand(InSSubsystem, true, hoodSubsystem));
-
-        // Reset the field-centric heading on left bumper press.
-        driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
-
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
