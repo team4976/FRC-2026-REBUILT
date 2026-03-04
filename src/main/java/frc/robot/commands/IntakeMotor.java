@@ -8,7 +8,7 @@ import javax.naming.LimitExceededException;
 import com.revrobotics.spark.config.LimitSwitchConfig;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
-/** An example command that uses an example subsystem. 
+/** A command for the motor portion of the intake
  * @param <Drive>*/
 @SuppressWarnings("unused")
 public class IntakeMotor extends Command {

@@ -53,12 +53,12 @@ public class RobotContainer {
     //Subsystem Objects/Subsystem Initialization
     private final Pneumatics Pneumatics = new Pneumatics();
     private final Intake motorIntake = new Intake();
-    //private final intakePneumatic pneumaticIntake = new intakePneumatic(Pneumatics, motorIntake);
     private final ClimberSubsystem climber = new ClimberSubsystem();
     private final TurretMovement turretMovement = new TurretMovement();
     public FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
     public HoodSubsystem hoodSubsystem = new HoodSubsystem(m_turretvision);
     public IndexAndSpindexSubsystem InSSubsystem = new IndexAndSpindexSubsystem(m_turretvision, hoodSubsystem);
+    
     public IntakeMotor intakeMotorCommand = new IntakeMotor(motorIntake);
     public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(InSSubsystem, false, hoodSubsystem);
     public intakePneumatic intakePneumatic = new intakePneumatic(Pneumatics, motorIntake);
@@ -69,7 +69,6 @@ public class RobotContainer {
     public static final CommandXboxController operatorController = new CommandXboxController(1);
 
     //elastic/smartdashboard intialization 
-    //private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision);
     private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision, InSSubsystem);
 
     //for the elastic folder, gonna be merged to elastic data later
@@ -108,6 +107,7 @@ public class RobotContainer {
         //driverController.rightTrigger().onTrue(turretMovement.runOnce(()->turretMovement.getStopCommand()));
         //driverController.povLeft().whileTrue(new TurretLeft(m_turretvision, turretMovement));
         //driverController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
+
         // Regular Shooting
         //driverController.rightBumper().whileTrue(new IndexAndSpindexCommand(InSSubsystem, false, hoodSubsystem));
         driverController.rightBumper().whileTrue(intakeMotorCommand);
@@ -176,20 +176,4 @@ public class RobotContainer {
         */
     }
 
-
-//PRE ORGANIZATION COMMENTS, PROBABLY USELESS
-
-    //driverController.back().and(driverController.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-    //driverController.back().and(driverController.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-    //driverController.start().and(driverController.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-    //driverController.start().and(driverController.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-    //driverController.x().onTrue(pipelineSwitcher());
-    //driverController.y().onTrue(toggleJoystix());
-    //driverController.leftTrigger(0.5).whileTrue(moveAprilTagLeft());
-    //driverController.rightTrigger(0.5).whileTrue(moveAprilTagRight());
-    //driverController.a().onTrue(elastic.fieldWidget.getAuto("Test Wait Command"));
-    //driverController.b().onTrue(elastic.fieldWidget.getAuto("First Test"));
-    //driverController.x().onTrue(elastic.fieldWidget.getAuto("Test Auto"));
-    //driverController.y().onTrue(elastic.fieldWidget.getAuto("HPR"));
-    //onTrue(getAutonomousCommand());//(new Activation(Pneumatics));
 }

@@ -25,6 +25,12 @@ public class ElasticData extends SubsystemBase{
     double Radius = 3;
     boolean fuelMakeIt = false;
     Field2d Field2d = new Field2d();
+    String[] motorIDs = {"[FRS Swerve] Motor Id:" + RebuiltTunerConstants.kFrontRightSteerMotorId, "[FRD Swerve] Motor Id:" + RebuiltTunerConstants.kFrontRightDriveMotorId, "[FLS Swerve] Motor Id:" + RebuiltTunerConstants.kFrontLeftSteerMotorId,
+    "[FLD Swerve] Motor Id:" + RebuiltTunerConstants.kFrontLeftDriveMotorId, "[RRS Swerve] Motor Id:" + RebuiltTunerConstants.kBackRightSteerMotorId, "[RRD Swerve] Motor Id:" + RebuiltTunerConstants.kBackRightDriveMotorId, 
+    "[RLS Swerve] Motor Id:" + RebuiltTunerConstants.kBackLeftSteerMotorId, "[RLD Swerve] Motor Id:" + RebuiltTunerConstants.kBackLeftDriveMotorId,
+    "[Turret] Motor Id:" + 1, "[Hood] Motor Id:"+ 2, "[Flywheel Lead] Motor Id:" + Constants.Flywheel_Lead_ID, "[Flywheel Follow] Motor Id:" + Constants.Flywheel_Follower_ID, "[Spindex] Motor Id:" + Constants.Spindex_ID,
+    "[Indexer] Motor Id:" + Constants.Index_ID, "[Intake] Motor Id:" + Constants.Intake_ID, "[PCM] Motor Id: unknown", "[Pidgeon] Motor Id: unknown"};
+
     public ElasticData(Telemetry m_telemetry, PhotonVision camera1, PhotonVision camera2, IndexAndSpindexSubsystem indexAndSpindexSubsystem){
         //objects for the two classes
         telemetry = m_telemetry;
@@ -82,8 +88,25 @@ public class ElasticData extends SubsystemBase{
             SmartDashboard.putData("Fields/Robot Position Field", cameraDataMain.getRobotPos());
             SmartDashboard.putData("Fields/Turret Position Field", cameraDataTurret.getDistanceAndAngle());
         }
-
-                //AC- Additional Field2d Stuff
+    
+        for(var id : targetIDs){
+            double yaw = cameraDataMain
+            .getTargetYaw((int) id)
+            .orElse(Double.NaN);
+            if (!Double.isNaN(yaw)){
+                SmartDashboard.putNumber("Vision/Main Cam/Target" + id + "yaw", yaw);
+            }
+        }
+        for(var id : targetIDs){
+            double pitch = cameraDataMain
+            .getTargetYaw((int) id)
+            .orElse(Double.NaN);
+            if (!Double.isNaN(pitch)){
+                SmartDashboard.putNumber("Vision/Main Cam/Target" + id + "pitch", pitch);
+            }
+        }
+        
+        //AC- Additional Field2d Stuff
         /*Field2d.getObject("Hub").setPose(4.6,4,new Rotation2d(0.0));
         double Rotation =  new TurretMovement().returnMotor().getPosition().getValueAsDouble();
         SmartDashboard.putBoolean("Will the Fuel make it?", fuelMakeIt);
@@ -103,36 +126,38 @@ public class ElasticData extends SubsystemBase{
         } */
                     //Ac - Motor Id's
             //Ac - Motor Id's
-        String[] motorIDs = {"[FRS Swerve] Motor Id:"+ RebuiltTunerConstants.kFrontRightSteerMotorId,"[FRD Swerve] Motor Id:" + RebuiltTunerConstants.kFrontRightDriveMotorId,"[FLS Swerve] Motor Id:"+RebuiltTunerConstants.kFrontLeftSteerMotorId,
-        "[FLD Swerve] Motor Id:"+RebuiltTunerConstants.kFrontLeftDriveMotorId,"[RRS Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightSteerMotorId,"[RRD Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightDriveMotorId,"[RLS Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftSteerMotorId,"[RLD Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftDriveMotorId,
-        "[Turret Turn] Motor Id:"+ 1,"[Hood] Motor Id:"+ 2,"[Flywheel 1] Motor Id:"+ Constants.Flywheel_Lead_ID,"[Flywheel 2] Motor Id:"+ Constants.Flywheel_Follower_ID,"[Mid Index] Motor Id:"+ Constants.Spindex_ID,
-        "[Final Index] Motor Id:"+ Constants.Index_ID,"[Intake] Motor Id:"+ Constants.Intake_ID,"[PCM] Motor Id:","[Pidgeon] Motor Id:"};
-        SmartDashboard.putStringArray("Motor Id's", motorIDs);
-    //new TurretMovement().returnMotor().getDeviceID()
-    //new HoodSubsystem(cameraDataMain).returnMotor().getDeviceID()
-    
-    
-        for(var id : targetIDs){
-            double yaw = cameraDataMain
-            .getTargetYaw((int) id)
-            .orElse(Double.NaN);
-            if (!Double.isNaN(yaw)){
-                SmartDashboard.putNumber("Vision/Main Cam/Target" + id + "yaw", yaw);
-            }
-        }
-        for(var id : targetIDs){
-            double pitch = cameraDataMain
-            .getTargetYaw((int) id)
-            .orElse(Double.NaN);
-            if (!Double.isNaN(pitch)){
-                SmartDashboard.putNumber("Vision/Main Cam/Target" + id + "pitch", pitch);
-            }
-        }
-        
+        //new HoodSubsystem(cameraDataMain).returnMotor().getDeviceID()
 
-        //some motor stuff
-        SmartDashboard.putNumber("Testing/Index Volatage", indexAndSpindexSubsystem.indexMotor.getAppliedOutput());
-        SmartDashboard.putNumber("Testing/Spindex Volatage", indexAndSpindexSubsystem.spindexMotor.getAppliedOutput());
+
+        //Motor Widgets
+        SmartDashboard.putNumber("Testing/Motors/Indexer/Index Volatage", indexAndSpindexSubsystem.indexMotor.getAppliedOutput());
+        SmartDashboard.putNumber("Testing/Motors/Spindex/Spindex Volatage", indexAndSpindexSubsystem.spindexMotor.getAppliedOutput());
+        SmartDashboard.putStringArray("Testing/Motors/Motor Id Constants", motorIDs);
+        //new TurretMovement().returnMotor().getDeviceID()
+        for (String motorInfo : motorIDs) {
+            try {
+                int openBracket = motorInfo.indexOf("[");
+                int closeBracket = motorInfo.indexOf("]");
+                int colonIndex = motorInfo.indexOf(":");
+
+                //gets what is inside the [brackets]
+                String folderName = motorInfo.substring(openBracket + 1, closeBracket).trim();
+        
+                // gets everything after the colon
+                String motorId = motorInfo.substring(colonIndex + 1).trim();
+
+                if (!motorId.isEmpty()) {
+                    if (folderName.contains("Swerve")){
+                        SmartDashboard.putString("Testing/Motors/Swerve/" + folderName + "/Motor Id", motorId);
+                    } else {
+                        SmartDashboard.putString("Testing/Motors/" + folderName + "/Motor Id", motorId);
+                    }
+                }
+            } catch (Exception e) {
+             //this prevents the code from crashing if one string is formatted weirdly
+             System.out.println("Error making motor string: " + motorInfo);
+            }
+        }
 
         //updates the Smartdash board Values
         SmartDashboard.updateValues();
