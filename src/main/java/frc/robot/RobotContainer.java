@@ -39,6 +39,7 @@ import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.TurretMovement;
 import frc.robot.Elastic.ElasticContainer;
 import static frc.robot.Constants.*;
+import frc.robot.subsystems.ElasticData;
 
 public class RobotContainer {
 //Shooting is op, Intake is drive 
@@ -60,13 +61,13 @@ public class RobotContainer {
     public IndexAndSpindexSubsystem InSSubsystem = new IndexAndSpindexSubsystem(m_turretvision, hoodSubsystem);
     public IntakeMotor intakeMotorCommand = new IntakeMotor(motorIntake);
     public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(InSSubsystem, false, hoodSubsystem);
-
     //Controller Objects
     public static final CommandXboxController driverController = new CommandXboxController(0);
     public static final CommandXboxController operatorController = new CommandXboxController(1);
 
     //elastic/smartdashboard intialization 
-    private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision);
+    //private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision);
+    private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision, InSSubsystem);
 
     //for the elastic folder, gonna be merged to elastic data later
     public final ElasticContainer elastic;
