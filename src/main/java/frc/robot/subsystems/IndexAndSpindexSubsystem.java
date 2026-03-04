@@ -13,11 +13,12 @@ import frc.robot.RobotContainer;
 public class IndexAndSpindexSubsystem extends SubsystemBase{
     public SparkMax indexMotor;
     public SparkMax spindexMotor;
-    public FlywheelSubsystem shooterSubsystem = new FlywheelSubsystem();
+    public FlywheelSubsystem shooterSubsystem;
     public HoodSubsystem hoodSubsystem;
 
-    public IndexAndSpindexSubsystem(PhotonVision turretVision, HoodSubsystem hoodSubsystem){
+    public IndexAndSpindexSubsystem(PhotonVision turretVision, HoodSubsystem hoodSubsystem, FlywheelSubsystem shooterSubsystem){
         this.hoodSubsystem = hoodSubsystem;
+        this.shooterSubsystem = shooterSubsystem;
         indexMotor = new SparkMax(Constants.Index_ID, MotorType.kBrushless);
         indexMotor.setInverted(true);
         spindexMotor = new SparkMax(Constants.Spindex_ID, MotorType.kBrushless);

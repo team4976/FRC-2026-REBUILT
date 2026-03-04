@@ -6,11 +6,9 @@ import frc.robot.subsystems.FlywheelSubsystem;
 
 public class FlywheelCommand extends Command{
     public FlywheelSubsystem flywheelSubsystem;
-    public double targetRPS;
 
-    public FlywheelCommand(FlywheelSubsystem flywheelSubsystem, double targetRPS){
+    public FlywheelCommand(FlywheelSubsystem flywheelSubsystem){
         this.flywheelSubsystem = flywheelSubsystem;
-        this.targetRPS = targetRPS;
         addRequirements(flywheelSubsystem);
     }
 
