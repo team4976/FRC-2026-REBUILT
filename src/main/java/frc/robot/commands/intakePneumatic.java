@@ -15,6 +15,7 @@ public class intakePneumatic extends Command {
 boolean SolenoidStatus;
 Pneumatics pneumatics;
 Intake intake;
+boolean stop;
   /**
        * Creates a new ExampleCommand.
        *
@@ -32,20 +33,19 @@ public intakePneumatic(Pneumatics pneumatics, Intake intake) {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {  
-  /* 
-if (SolenoidStatus == false) {
-    pneumatics.forwardSolenoid();
-    SolenoidStatus = true;
-    intake.runIntake(Constants.intakeSpeed);
-
-  }
-else if (SolenoidStatus == true) {
-    pneumatics.reverseSolenoid();
-    SolenoidStatus = false;
-    intake.stop();
-  }
-    */
-  pneumatics.forwardSolenoid();
+  
+    if (SolenoidStatus == false) {
+      pneumatics.forwardSolenoid();
+      SolenoidStatus = true;
+      intake.runIntake(Constants.intakeSpeed);
+      stop = false;
+    } else if (SolenoidStatus == true) {
+      pneumatics.reverseSolenoid();
+      SolenoidStatus = false;
+      intake.stop();
+      stop = true;
+    }
+  
 }
 
 @Override
@@ -58,13 +58,12 @@ else if (SolenoidStatus == true) {
 
   @Override
   public void end(boolean interrupted) {  
-    pneumatics.reverseSolenoid();
-
-}
+    //pneumatics.reverseSolenoid();
+  }
 
 
   @Override
   public boolean isFinished() { 
-    return false;
+    return stop;
   }
 }
