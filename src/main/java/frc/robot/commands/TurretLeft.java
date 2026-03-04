@@ -22,7 +22,7 @@ public class TurretLeft extends Command {
     @Override
     public void initialize(){
         stopSwitch = false;
-        m_shooter.turnLeft(Constants.turnVoltage);
+        m_shooter.turnLeft(Constants.turretRotationVoltage);
     }
 
     @Override

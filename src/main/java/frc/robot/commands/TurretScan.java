@@ -1,39 +1,24 @@
+//Commented lines = 3
+
 package frc.robot.commands;
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.TurretMovement;
 import frc.robot.subsystems.PhotonVision;
-import org.photonvision.EstimatedRobotPose;
-import org.photonvision.targeting.PhotonPipelineResult;
-import org.photonvision.targeting.PhotonTrackedTarget;
-
-import java.util.List;
-import java.util.Optional;
 
 public class TurretScan extends Command {
     PhotonVision m_turretVision;
     TurretMovement m_shooter;
-    boolean TurningRight = true;
-    boolean hasTargets = false;
-    double yaw;
-    double distance;
-    boolean stopLockedOn = false;
-    int targetPose;
-    Optional<EstimatedRobotPose> estimatedturretPose;
-    Pose3d turretPose3d;
-    Pose2d turretPose2d;
-    double timestampSeconds;
-    List<PhotonTrackedTarget> targeList;
-    Field2d field2d;
-    double turretTargetAngle;
-    double turretAngle;
+    boolean TurningRight = true; // flag in scan to determine if the turret should be turning right or left
+    boolean hasTargets = false; // flag to track if the turret see's an april tag
+    double distance; // distance from the hub to the turret
+    boolean stopLockedOn = false; // flag to track if the turret is hitting the limit switch in lockedOn mode
+    Field2d field2d; // our estimated position on the field
+    double turretTargetAngle; // the angle we want the turret to be at so that we are aiming at the hub
+    double turretAngle; // the turret angle we are currently at
+    double turretEncoderValue; // the encoder value of the tuurets motor
 
     public TurretScan(PhotonVision turretVision, TurretMovement shooter){
         m_turretVision = turretVision;
@@ -42,7 +27,6 @@ public class TurretScan extends Command {
         m_shooter = shooter;
         addRequirements(shooter);
 
-        turretPose2d = new Pose2d();
         field2d = new Field2d();
     }
 
@@ -58,7 +42,7 @@ public class TurretScan extends Command {
     @Override
     public void execute() {
         SmartDashboard.putBoolean("TurningRight", TurningRight);
-         System.err.println("execute works");
+        //System.err.println("execute works");
         //get if the robot is seeing the april tag
         hasTargets = m_turretVision.targetVisible();
         // set the yaw to what the yaw of the april tag is
@@ -68,26 +52,26 @@ public class TurretScan extends Command {
             
             // if TurningRight = true turn the turret to the right
             if(TurningRight == true){
-                m_shooter.turnRight(Constants.turnVoltage);
-                 System.err.println("Turn Right == true works");
+               // m_shooter.turnRight(Constants.turretRotationVoltage);  CHANGE LATER
+                //System.err.println("Turn Right == true works");
             }
 
             // if TurningRight = false turn the turret to the left
             if(TurningRight == false){
-                m_shooter.turnLeft(Constants.turnVoltage);
-                 System.err.println("Turn Right == false works");
+                //m_shooter.turnLeft(Constants.turretRotationVoltage); CHANGE LATER
+                //System.err.println("Turn Right == false works");
             }
 
             // if the left Switch is being pressed set TurningRight to true
-            if(m_shooter.getLeftSwitch() == false){
+            if(m_shooter.getLeftSwitch() == false || m_shooter.getEncoderValue() < Constants.turretLimitLeft){
                 TurningRight = true;
-                 System.err.println("getLeftSwitch works");
+                //System.err.println("getLeftSwitch works");
             }
 
             // if the right Switch is being pressed set TurningRight to false
-            if(m_shooter.getRightSwitch() == false){
+            if(m_shooter.getRightSwitch() == false || m_shooter.getEncoderValue() > Constants.turretLimitRight){
                 TurningRight = false;
-                 System.err.println("getRightSwitch works");
+                //System.err.println("getRightSwitch works");
 
             }
         }
@@ -101,6 +85,8 @@ public class TurretScan extends Command {
 
             distance = m_turretVision.getTurretDistance();
 
+            turretEncoderValue = m_shooter.getEncoderValue();
+
             SmartDashboard.putNumber("turretDistance", distance);
             SmartDashboard.putNumber("turretPoseX", field2d.getRobotPose().getX());
             SmartDashboard.putNumber("turretPoseY", field2d.getRobotPose().getY());
@@ -111,22 +97,22 @@ public class TurretScan extends Command {
             // if left or right switch is pressed while we see a target set stopLockedOn to true
             if(m_shooter.getLeftSwitch() == false || m_shooter.getRightSwitch() == false){
                 stopLockedOn = true;
-                System.out.println("stopLockedOn " + stopLockedOn);
+                //System.out.println("stopLockedOn " + stopLockedOn);
             }
 
         //Setting the voltage of the motor to the yaw of the target multiplied by 5
-            m_shooter.lockedOn((turretTargetAngle - turretAngle)/45*-0.6);
-            System.out.println(Constants.turnVoltage);
+            //m_shooter.lockedOn((turretTargetAngle - turretAngle)/45*-0.6); CHANGE LATER
+            //System.out.println(Constants.turretRotationVoltage);
 
         
-        System.out.println("hasTargets" + hasTargets);
+        //System.out.println("hasTargets" + hasTargets);
         }
     }
 
     @Override
     public void end(boolean interrupted) {
         m_shooter.stopTurn();
-        System.err.println(Constants.turnVoltage);
+        //System.err.println(Constants.turretRotationVoltage);
     }
 
 

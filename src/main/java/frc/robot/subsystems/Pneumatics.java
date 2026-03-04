@@ -13,28 +13,32 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-@SuppressWarnings("unused")
 public class Pneumatics extends SubsystemBase {
-    public static final PneumaticsControlModule pneumaticsControlModule = new PneumaticsControlModule(32);
-      private final Compressor compressor = new Compressor(32, PneumaticsModuleType.CTREPCM);
-    private final DoubleSolenoid solenoid = new DoubleSolenoid(32,
-            PneumaticsModuleType.CTREPCM, 1, 0);
+    public static final PneumaticsControlModule pneumaticsControlModule = new PneumaticsControlModule(30);
+    private final Compressor compressor = new Compressor(30, PneumaticsModuleType.CTREPCM);
+    private  Solenoid solenoid; //= new Solenoid(PneumaticsModuleType.CTREPCM, 4);
+            /* 
     private final DoubleSolenoid solenoid2 = new DoubleSolenoid(2,
             PneumaticsModuleType.CTREPCM, 2, 3);
+            */
     public Pneumatics() {
         // Enable closed-loop control for compressor
         compressor.enableDigital(); 
-        
+        solenoid = pneumaticsControlModule.makeSolenoid(2);
+        solenoid.set(false);
     }
 
     public void forwardSolenoid() {
-        //solenoid.toggle();    
-            solenoid.set(DoubleSolenoid.Value.kForward);
+        //solenoid.toggle(); 
+            System.out.println("solenoid on");   
+            solenoid.set(true);
+
         }
     
         public void reverseSolenoid() {
             //solenoidTest.set(false);
-                solenoid.set(DoubleSolenoid.Value.kReverse);
+                System.out.println("solenoid off");
+                solenoid.set(false);
              }
 
     }

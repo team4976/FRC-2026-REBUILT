@@ -11,17 +11,18 @@ import frc.robot.subsystems.Pneumatics;
 /** An example command that uses an example subsystem. 
  * @param <Drive>*/
 @SuppressWarnings("unused")
-public class intakePneumatic extends Command {
+public class intakeCommand extends Command {
 boolean SolenoidStatus;
 Pneumatics pneumatics;
 Intake intake;
+boolean stop;
   /**
        * Creates a new ExampleCommand.
        *
        * @param subsystem The subsystem used by this command.
        */
 
-public intakePneumatic(Pneumatics pneumatics, Intake intake) {
+public intakeCommand(Pneumatics pneumatics, Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
     addRequirements(pneumatics);
@@ -32,34 +33,37 @@ public intakePneumatic(Pneumatics pneumatics, Intake intake) {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {  
-if (SolenoidStatus == false) {
-    pneumatics.forwardSolenoid();
-    SolenoidStatus = true;
-    intake.runIntake(Constants.intakeSpeed);
-
-  }
-else if (SolenoidStatus == true) {
-    pneumatics.reverseSolenoid();
-    SolenoidStatus = false;
-    intake.stop();
-  }
-
+  
+    if (SolenoidStatus == false) {
+      pneumatics.forwardSolenoid();
+      SolenoidStatus = true;
+      intake.runIntake(Constants.intakeSpeed);
+      stop = false;
+    } else if (SolenoidStatus == true) {
+      pneumatics.reverseSolenoid();
+      SolenoidStatus = false;
+      intake.stop();
+      stop = true;
+    }
+  
 }
 
 @Override
   public void execute() {
     //pneumatics.testMove();
+
   }
   
   // Called once the command ends or is interrupted.
 
   @Override
   public void end(boolean interrupted) {  
-}
+    //pneumatics.reverseSolenoid();
+  }
 
 
-@Override
+  @Override
   public boolean isFinished() { 
-    return true;
+    return stop;
   }
 }

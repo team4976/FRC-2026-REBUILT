@@ -13,8 +13,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants;
 import frc.robot.Telemetry;
 
 import static frc.robot.Constants.*;
@@ -35,10 +33,10 @@ public class VisionData{
     private Optional<Alliance> alliance;
     private double hubOrigX;
     private double hubOrigY;
-    private double DriveVelocityX;
-    private double DriveVelocityY;
-    private double DistanceX;
-    private double DistanceY;
+    private double DriveVelocityX; // the velocity we are travelling in Y direction
+    private double DriveVelocityY; // the velocity we are travelling in the X direction
+    private double DistanceX; // the distance between us and the virtual hub on the X plane
+    private double DistanceY; // the distance between us and the virtual hub on the Y plane
     private double turretDistance;
     private double turretAngle;
     private double turretTargetAngle;
