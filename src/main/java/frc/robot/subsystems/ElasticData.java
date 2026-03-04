@@ -26,6 +26,7 @@ public class ElasticData extends SubsystemBase{
     double Radius = 3;
     boolean fuelMakeIt = false;
     Field2d Field2d = new Field2d();
+    double Rotation;
     String[] motorIDs = {"[FRS Swerve] Motor Id:" + RebuiltTunerConstants.kFrontRightSteerMotorId, "[FRD Swerve] Motor Id:" + RebuiltTunerConstants.kFrontRightDriveMotorId, "[FLS Swerve] Motor Id:" + RebuiltTunerConstants.kFrontLeftSteerMotorId,
     "[FLD Swerve] Motor Id:" + RebuiltTunerConstants.kFrontLeftDriveMotorId, "[RRS Swerve] Motor Id:" + RebuiltTunerConstants.kBackRightSteerMotorId, "[RRD Swerve] Motor Id:" + RebuiltTunerConstants.kBackRightDriveMotorId, 
     "[RLS Swerve] Motor Id:" + RebuiltTunerConstants.kBackLeftSteerMotorId, "[RLD Swerve] Motor Id:" + RebuiltTunerConstants.kBackLeftDriveMotorId,
@@ -110,7 +111,13 @@ public class ElasticData extends SubsystemBase{
         
         //AC- Additional Field2d Stuff
         Field2d.getObject("Hub").setPose(4.6,4,new Rotation2d(0.0));
-        double Rotation =  new TurretMovement().returnMotor().getPosition().getValueAsDouble() + Field2d.getRobotPose().getRotation().getDegrees();
+        if(turretMovement.returnMotor() != null){
+            Rotation =  turretMovement.returnMotor().getPosition().getValueAsDouble() + Field2d.getRobotPose().getRotation().getDegrees();
+        }
+        else{
+            Rotation = 0.0;
+        }
+
         SmartDashboard.putBoolean("Will the Fuel make it?", fuelMakeIt);
         Field2d.getObject("Aim").setPose(Field2d.getRobotPose().getX() +  (Radius * (Math.cos(Rotation))),Field2d.getRobotPose().getY() + (Radius * (Math.sin(Rotation))),new Rotation2d(Rotation));
         Pose2d AimPose = Field2d.getObject("Aim").getPose();
