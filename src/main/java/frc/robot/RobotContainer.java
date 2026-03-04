@@ -16,8 +16,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 
-import frc.robot.commands.intakePneumatic;
-import frc.robot.commands.IntakeMotor;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.generated.RebuiltTunerConstants;
 import frc.robot.generated.TurretTunerConstants;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -25,7 +24,6 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ElasticData;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PhotonVision;
-import frc.robot.subsystems.Pneumatics;
 import frc.robot.commands.Climb;
 import frc.robot.commands.HoodCommand;
 import frc.robot.commands.IndexAndSpindexCommand;
@@ -40,6 +38,7 @@ import frc.robot.subsystems.TurretMovement;
 import frc.robot.Elastic.ElasticContainer;
 import static frc.robot.Constants.*;
 import frc.robot.subsystems.ElasticData;
+import frc.robot.commands.IntakeCommand;
 
 public class RobotContainer {
 //Shooting is op, Intake is drive 
@@ -51,23 +50,23 @@ public class RobotContainer {
     private final PhotonVision m_turretvision = new PhotonVision("testingCamera", logger);
 
     //Subsystem Objects/Subsystem Initialization
-    private final Pneumatics Pneumatics = new Pneumatics();
-    private final Intake motorIntake = new Intake();
-    private final intakePneumatic pneumaticIntake = new intakePneumatic(Pneumatics, motorIntake);
+    private final Intake intakeSubsystem = new Intake();
     private final ClimberSubsystem climber = new ClimberSubsystem();
     private final TurretMovement turretMovement = new TurretMovement();
     public FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
     public HoodSubsystem hoodSubsystem = new HoodSubsystem(m_turretvision);
-    public IndexAndSpindexSubsystem InSSubsystem = new IndexAndSpindexSubsystem(m_turretvision, hoodSubsystem);
-    public IntakeMotor intakeMotorCommand = new IntakeMotor(motorIntake);
-    public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(InSSubsystem, false, hoodSubsystem);
+    public IndexAndSpindexSubsystem InSSubsystem = new IndexAndSpindexSubsystem(m_turretvision, hoodSubsystem, flywheelSubsystem);
+    
+    public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(InSSubsystem, false, hoodSubsystem, flywheelSubsystem);
+    public IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
+    public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem);
+
     //Controller Objects
     public static final CommandXboxController driverController = new CommandXboxController(0);
     public static final CommandXboxController operatorController = new CommandXboxController(1);
 
     //elastic/smartdashboard intialization 
-    //private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision);
-    private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision, InSSubsystem);
+    private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision, InSSubsystem,turretMovement);
 
     //for the elastic folder, gonna be merged to elastic data later
     public final ElasticContainer elastic;
@@ -105,11 +104,15 @@ public class RobotContainer {
         //driverController.rightTrigger().onTrue(turretMovement.runOnce(()->turretMovement.getStopCommand()));
         //driverController.povLeft().whileTrue(new TurretLeft(m_turretvision, turretMovement));
         //driverController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
+        // Reset the field-centric heading on left bumper press.
+        driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+
         // Regular Shooting
-        //driverController.rightBumper().whileTrue(new IndexAndSpindexCommand(InSSubsystem, false, hoodSubsystem));
-        driverController.x().whileTrue(intakeMotorCommand);
-        driverController.y().whileTrue(indexAndSpindexCommand);
-        //driverController.x().onTrue(pneumaticIntake);
+        //Should be right bumper
+        driverController.axisGreaterThan(3, 0.3).whileTrue(indexAndSpindexCommand);
+        driverController.x().onTrue(intakeCommand);
+        //driverController.leftBumper().whileTrue(flywheelCommand);
+        //driverController.y().onTrue(pneumaticIntake);
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
@@ -117,32 +120,22 @@ public class RobotContainer {
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
         //operatorController.b().whileTrue(new Climb(climber));
-        //operatorController.x().whileTrue(new IntakeMotor(motorIntake));
-        //operatorController.x().onTrue(pneumaticIntake);
         //driverController.leftTrigger().onTrue(new TurretScan(m_turretvision, turretMovement));
         // calls the method that turns the stopButton for Scan to true
         //driverController.rightTrigger().onTrue(turretMovement.runOnce(()->turretMovement.getStopCommand()));
         //driverController.povLeft().whileTrue(new TurretLeft(m_turretvision, turretMovement));
         //driverController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
 
-        // Spin flywheel and start hood
-        //operatorController.a().onTrue(new FlywheelCommand(flywheelSubsystem, 20));
+        // Spin flywheel and start hood should be a (operator controller)
+        driverController.rightBumper().onTrue(new FlywheelCommand(flywheelSubsystem).andThen(new HoodCommand(hoodSubsystem, false, 0)));
     
         // Manual hood override
-        //operatorController.povUp().onTrue(new HoodCommand(hoodSubsystem, true, 0.1));
-        //operatorController.povUp().onFalse(new HoodCommand(hoodSubsystem, true, 0));
-        //operatorController.povDown().onTrue(new HoodCommand(hoodSubsystem, true, -0.1));
-        //operatorController.povDown().onFalse(new HoodCommand(hoodSubsystem, true, 0));
-
-        // Regular Shooting
-        //driverController.rightBumper().whileTrue(new IndexAndSpindexCommand(InSSubsystem, false, hoodSubsystem));
-
+        operatorController.povUp().onTrue(new HoodCommand(hoodSubsystem, true, 0.1));
+        operatorController.povUp().onFalse(new HoodCommand(hoodSubsystem, true, 0));
+        operatorController.povDown().onTrue(new HoodCommand(hoodSubsystem, true, -0.1));
+        operatorController.povDown().onFalse(new HoodCommand(hoodSubsystem, true, 0));
         // Force Shoot
         //operatorController.b().whileTrue(new IndexAndSpindexCommand(InSSubsystem, true, hoodSubsystem));
-
-        // Reset the field-centric heading on left bumper press.
-        driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
-
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
@@ -170,20 +163,4 @@ public class RobotContainer {
         */
     }
 
-
-//PRE ORGANIZATION COMMENTS, PROBABLY USELESS
-
-    //driverController.back().and(driverController.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-    //driverController.back().and(driverController.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-    //driverController.start().and(driverController.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-    //driverController.start().and(driverController.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-    //driverController.x().onTrue(pipelineSwitcher());
-    //driverController.y().onTrue(toggleJoystix());
-    //driverController.leftTrigger(0.5).whileTrue(moveAprilTagLeft());
-    //driverController.rightTrigger(0.5).whileTrue(moveAprilTagRight());
-    //driverController.a().onTrue(elastic.fieldWidget.getAuto("Test Wait Command"));
-    //driverController.b().onTrue(elastic.fieldWidget.getAuto("First Test"));
-    //driverController.x().onTrue(elastic.fieldWidget.getAuto("Test Auto"));
-    //driverController.y().onTrue(elastic.fieldWidget.getAuto("HPR"));
-    //onTrue(getAutonomousCommand());//(new Activation(Pneumatics));
 }

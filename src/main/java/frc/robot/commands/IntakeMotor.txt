@@ -8,11 +8,11 @@ import javax.naming.LimitExceededException;
 import com.revrobotics.spark.config.LimitSwitchConfig;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
-/** An example command that uses an example subsystem. 
+/** A command for the motor portion of the intake
  * @param <Drive>*/
 @SuppressWarnings("unused")
 public class IntakeMotor extends Command {
-boolean limitSwitchStatus;
+boolean isRunning = false;
 Intake intake;
 /**
      * Creates a new ExampleCommand.
@@ -27,16 +27,23 @@ Intake intake;
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-      limitSwitchStatus = true;
-      intake.setFeederRoller(0.3);
+      if (isRunning == false){
+        isRunning = true;
+      } else if (isRunning == true) {
+        isRunning = false;
+      }
 
-     System.out.println("Drive Command Initialized");  
+      System.out.println("Intake Motor Command Initialized");  
     }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   limitSwitchStatus = intake.checkswitchstatus();
+    if (isRunning == true) {
+      intake.setFeederRoller(0.0);
+    } else if (isRunning == false) {
+      intake.setFeederRoller(0.0);
+    }
   }
  
   // Called once the command ends or is interrupted.

@@ -6,11 +6,9 @@ import frc.robot.subsystems.FlywheelSubsystem;
 
 public class FlywheelCommand extends Command{
     public FlywheelSubsystem flywheelSubsystem;
-    public double targetRPS;
 
-    public FlywheelCommand(FlywheelSubsystem flywheelSubsystem, double targetRPS){
+    public FlywheelCommand(FlywheelSubsystem flywheelSubsystem){
         this.flywheelSubsystem = flywheelSubsystem;
-        this.targetRPS = targetRPS;
         addRequirements(flywheelSubsystem);
     }
 
@@ -20,7 +18,7 @@ public class FlywheelCommand extends Command{
     }
 
     @Override
-    public void execute(){
+    public void execute(){ 
         switch (flywheelSubsystem.getShooterState()) {
             case "windShooter":
                 flywheelSubsystem.spinFlywheel(SmartDashboard.getNumber("flywheelSpeed", 40));
@@ -28,7 +26,7 @@ public class FlywheelCommand extends Command{
             case "cantShoot":
                 flywheelSubsystem.stopFlywheel();
                 break;
-        }
+        }       
     }
 
     @Override

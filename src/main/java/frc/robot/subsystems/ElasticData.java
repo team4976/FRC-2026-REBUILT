@@ -21,16 +21,36 @@ public class ElasticData extends SubsystemBase{
     private final PhotonVision cameraDataMain;
     private final PhotonVision cameraDataTurret;
     private final IndexAndSpindexSubsystem indexAndSpindexSubsystem;
+    private final TurretMovement turretMovement;
     double Hubwidth = 0.6;
     double Radius = 3;
     boolean fuelMakeIt = false;
     Field2d Field2d = new Field2d();
-    public ElasticData(Telemetry m_telemetry, PhotonVision camera1, PhotonVision camera2, IndexAndSpindexSubsystem indexAndSpindexSubsystem){
+    double Rotation;
+    String[] motorIDs = {"[FRS Swerve] Motor Id: " + RebuiltTunerConstants.kFrontRightSteerMotorId,
+     "[FRD Swerve] Motor Id: " + RebuiltTunerConstants.kFrontRightDriveMotorId, 
+     "[FLS Swerve] Motor Id: " + RebuiltTunerConstants.kFrontLeftSteerMotorId,
+    "[FLD Swerve] Motor Id: " + RebuiltTunerConstants.kFrontLeftDriveMotorId, 
+    "[RRS Swerve] Motor Id: " + RebuiltTunerConstants.kBackRightSteerMotorId, 
+    "[RRD Swerve] Motor Id: " + RebuiltTunerConstants.kBackRightDriveMotorId, 
+    "[RLS Swerve] Motor Id: " + RebuiltTunerConstants.kBackLeftSteerMotorId, 
+    "[RLD Swerve] Motor Id: " + RebuiltTunerConstants.kBackLeftDriveMotorId,
+    "[Turret] Motor Id: " + 1, "[Hood] Motor Id:"+ 2, 
+    "[Flywheel Lead] Motor Id: " + Constants.Flywheel_Lead_ID,
+     "[Flywheel Follow] Motor Id: " + Constants.Flywheel_Follower_ID,
+      "[Spindex] Motor Id: " + Constants.Spindex_ID,
+    "[Indexer] Motor Id: " + Constants.Index_ID, 
+    "[Intake] Motor Id: " + Constants.Intake_ID,
+     "[PCM] Motor Id: unknown", 
+     "[Pidgeon] Motor Id: unknown"};
+
+    public ElasticData(Telemetry m_telemetry, PhotonVision camera1, PhotonVision camera2, IndexAndSpindexSubsystem indexAndSpindexSubsystem, TurretMovement turretMovement){
         //objects for the two classes
         telemetry = m_telemetry;
         cameraDataMain = camera1;
         cameraDataTurret = camera2;
         this.indexAndSpindexSubsystem = indexAndSpindexSubsystem;
+        this.turretMovement = turretMovement;
 
         //swerve widget based on the values gained from telemetry, 100% needs to be tuned
         //and maybe even needs to use different telemtry variables. havent gotten a chance to figure that out yet.
@@ -40,16 +60,16 @@ public class ElasticData extends SubsystemBase{
                 builder.setSmartDashboardType("SwerveDrive");
       
                 builder.addDoubleProperty("Front Left Angle", () -> telemetry.m_moduleDirections[1].getAngle() /* * 2 * Math.PI */, null);
-                builder.addDoubleProperty("Front Left Velocity", () -> telemetry.m_moduleSpeeds[1].getLength(), null);
+                builder.addDoubleProperty("Front Left Velocity", () -> telemetry.m_moduleSpeeds[1].getLength() / 3, null);
       
                 builder.addDoubleProperty("Front Right Angle", () -> telemetry.m_moduleDirections[2].getAngle() /* * 2 * Math.PI */, null);
-                builder.addDoubleProperty("Front Right Velocity", ()  -> telemetry.m_moduleSpeeds[2].getLength(), null);
+                builder.addDoubleProperty("Front Right Velocity", ()  -> telemetry.m_moduleSpeeds[2].getLength() / 3, null);
       
                 builder.addDoubleProperty("Back Left Angle", () -> telemetry.m_moduleDirections[3].getAngle() /*  * 2 * Math.PI */, null);
-                builder.addDoubleProperty("Back Left Velocity", () -> telemetry.m_moduleSpeeds[3].getLength(), null);
+                builder.addDoubleProperty("Back Left Velocity", () -> telemetry.m_moduleSpeeds[3].getLength() / 3, null);
       
                 builder.addDoubleProperty("Back Right Angle", () -> telemetry.m_moduleDirections[0].getAngle() /*  * 2 * Math.PI */, null);
-                builder.addDoubleProperty("Back Right Velocity", () -> telemetry.m_moduleSpeeds[0].getLength(), null);
+                builder.addDoubleProperty("Back Right Velocity", () -> telemetry.m_moduleSpeeds[0].getLength() / 3, null);
       
                 builder.addDoubleProperty("Robot Angle", () -> telemetry.m_poseArray[2], null);
             } 
@@ -82,35 +102,6 @@ public class ElasticData extends SubsystemBase{
             SmartDashboard.putData("Fields/Robot Position Field", cameraDataMain.getRobotPos());
             SmartDashboard.putData("Fields/Turret Position Field", cameraDataTurret.getDistanceAndAngle());
         }
-
-                //AC- Additional Field2d Stuff
-        /*Field2d.getObject("Hub").setPose(4.6,4,new Rotation2d(0.0));
-        double Rotation =  new TurretMovement().returnMotor().getPosition().getValueAsDouble();
-        SmartDashboard.putBoolean("Will the Fuel make it?", fuelMakeIt);
-        Field2d.getObject("Aim").setPose(Field2d.getRobotPose().getX() +  (Radius * (Math.cos(Rotation))),Field2d.getRobotPose().getY() + (Radius * (Math.sin(Rotation))),new Rotation2d(Rotation));
-        Pose2d AimPose = Field2d.getObject("Aim").getPose();
-        Pose2d HubPose = Field2d.getObject("Hub").getPose();
-        if(AimPose.getX() >= (HubPose.getX()-(Hubwidth/2)) && AimPose.getX() <= (HubPose.getX()+(Hubwidth/2))){
-            if (AimPose.getY() >= (HubPose.getY()-Hubwidth) && AimPose.getY() <= (HubPose.getY()+Hubwidth)) {
-                fuelMakeIt = true;
-            }
-            else{
-                fuelMakeIt = false;
-            }
-        }
-        else{
-            fuelMakeIt = false;
-        } */
-                    //Ac - Motor Id's
-            //Ac - Motor Id's
-        String[] motorIDs = {"[FRS Swerve] Motor Id:"+ RebuiltTunerConstants.kFrontRightSteerMotorId,"[FRD Swerve] Motor Id:" + RebuiltTunerConstants.kFrontRightDriveMotorId,"[FLS Swerve] Motor Id:"+RebuiltTunerConstants.kFrontLeftSteerMotorId,
-        "[FLD Swerve] Motor Id:"+RebuiltTunerConstants.kFrontLeftDriveMotorId,"[RRS Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightSteerMotorId,"[RRD Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightDriveMotorId,"[RLS Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftSteerMotorId,"[RLD Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftDriveMotorId,
-        "[Turret Turn] Motor Id:"+ 1,"[Hood] Motor Id:"+ 2,"[Flywheel 1] Motor Id:"+ Constants.Flywheel_Lead_ID,"[Flywheel 2] Motor Id:"+ Constants.Flywheel_Follower_ID,"[Mid Index] Motor Id:"+ Constants.Spindex_ID,
-        "[Final Index] Motor Id:"+ Constants.Index_ID,"[Intake] Motor Id:"+ Constants.Intake_ID,"[PCM] Motor Id:","[Pidgeon] Motor Id:"};
-        SmartDashboard.putStringArray("Motor Id's", motorIDs);
-    //new TurretMovement().returnMotor().getDeviceID()
-    //new HoodSubsystem(cameraDataMain).returnMotor().getDeviceID()
-    
     
         for(var id : targetIDs){
             double yaw = cameraDataMain
@@ -129,10 +120,64 @@ public class ElasticData extends SubsystemBase{
             }
         }
         
+        //AC- Additional Field2d Stuff
+        Field2d.getObject("Hub").setPose(4.6,4,new Rotation2d(0.0));
+        if(turretMovement.returnMotor() != null){
+            Rotation =  turretMovement.returnMotor().getPosition().getValueAsDouble() + Field2d.getRobotPose().getRotation().getDegrees();
+        }
+        else{
+            Rotation = 0.0;
+        }
 
-        //some motor stuff
-        SmartDashboard.putNumber("Testing/Index Volatage", indexAndSpindexSubsystem.indexMotor.getAppliedOutput());
-        SmartDashboard.putNumber("Testing/Spindex Volatage", indexAndSpindexSubsystem.spindexMotor.getAppliedOutput());
+        SmartDashboard.putBoolean("Will the Fuel make it?", fuelMakeIt);
+        Field2d.getObject("Aim").setPose(Field2d.getRobotPose().getX() +  (Radius * (Math.cos(Rotation))),Field2d.getRobotPose().getY() + (Radius * (Math.sin(Rotation))),new Rotation2d(Rotation));
+        Pose2d AimPose = Field2d.getObject("Aim").getPose();
+        Pose2d HubPose = Field2d.getObject("Hub").getPose();
+        if(AimPose.getX() >= (HubPose.getX()-(Hubwidth/2)) && AimPose.getX() <= (HubPose.getX()+(Hubwidth/2))){
+            if (AimPose.getY() >= (HubPose.getY()-Hubwidth) && AimPose.getY() <= (HubPose.getY()+Hubwidth)) {
+                fuelMakeIt = true;
+            }
+            else{
+                fuelMakeIt = false;
+            }
+        }
+        else{
+            fuelMakeIt = false;
+        } 
+                    //Ac - Motor Id's
+            //Ac - Motor Id's
+        //new HoodSubsystem(cameraDataMain).returnMotor().getDeviceID()
+
+
+        //Motor Widgets
+        SmartDashboard.putNumber("Testing/Motors/Indexer/Index Volatage", indexAndSpindexSubsystem.indexMotor.getAppliedOutput());
+        SmartDashboard.putNumber("Testing/Motors/Spindex/Spindex Volatage", indexAndSpindexSubsystem.spindexMotor.getAppliedOutput());
+        SmartDashboard.putStringArray("Testing/Motors/Motor Id Constants", motorIDs);
+        //new TurretMovement().returnMotor().getDeviceID()
+        for (String motorInfo : motorIDs) {
+            try {
+                int openBracket = motorInfo.indexOf("[");
+                int closeBracket = motorInfo.indexOf("]");
+                int colonIndex = motorInfo.indexOf(":");
+
+                //gets what is inside the [brackets]
+                String folderName = motorInfo.substring(openBracket + 1, closeBracket).trim();
+        
+                // gets everything after the colon
+                String motorId = motorInfo.substring(colonIndex + 1).trim();
+
+                if (!motorId.isEmpty()) {
+                    if (folderName.contains("Swerve")){
+                        SmartDashboard.putString("Testing/Motors/Swerve/" + folderName + "/Motor Id", motorId);
+                    } else {
+                        SmartDashboard.putString("Testing/Motors/" + folderName + "/Motor Id", motorId);
+                    }
+                }
+            } catch (Exception e) {
+             //this prevents the code from crashing if one string is formatted weirdly
+             System.out.println("Error making motor string: " + motorInfo);
+            }
+        }
 
         //updates the Smartdash board Values
         SmartDashboard.updateValues();
