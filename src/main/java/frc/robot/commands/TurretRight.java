@@ -24,7 +24,7 @@ public class TurretRight extends Command {
     public void initialize(){
 
         stopSwitch = false;
-        m_shooter.turnRight(Constants.turnVoltage);
+        m_shooter.turnRight(Constants.turretRotationVoltage);
     }
 
     @Override

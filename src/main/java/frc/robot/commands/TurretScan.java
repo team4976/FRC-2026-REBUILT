@@ -52,13 +52,13 @@ public class TurretScan extends Command {
             
             // if TurningRight = true turn the turret to the right
             if(TurningRight == true){
-               // m_shooter.turnRight(Constants.turnVoltage);  CHANGE LATER
+               // m_shooter.turnRight(Constants.turretRotationVoltage);  CHANGE LATER
                 //System.err.println("Turn Right == true works");
             }
 
             // if TurningRight = false turn the turret to the left
             if(TurningRight == false){
-                //m_shooter.turnLeft(Constants.turnVoltage); CHANGE LATER
+                //m_shooter.turnLeft(Constants.turretRotationVoltage); CHANGE LATER
                 //System.err.println("Turn Right == false works");
             }
 
@@ -102,7 +102,7 @@ public class TurretScan extends Command {
 
         //Setting the voltage of the motor to the yaw of the target multiplied by 5
             //m_shooter.lockedOn((turretTargetAngle - turretAngle)/45*-0.6); CHANGE LATER
-            //System.out.println(Constants.turnVoltage);
+            //System.out.println(Constants.turretRotationVoltage);
 
         
         //System.out.println("hasTargets" + hasTargets);
@@ -112,7 +112,7 @@ public class TurretScan extends Command {
     @Override
     public void end(boolean interrupted) {
         m_shooter.stopTurn();
-        //System.err.println(Constants.turnVoltage);
+        //System.err.println(Constants.turretRotationVoltage);
     }
 
 
