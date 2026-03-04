@@ -39,6 +39,7 @@ import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.TurretMovement;
 import frc.robot.Elastic.ElasticContainer;
 import static frc.robot.Constants.*;
+import frc.robot.subsystems.ElasticData;
 
 public class RobotContainer {
 //Shooting is op, Intake is drive 
@@ -58,13 +59,15 @@ public class RobotContainer {
     public FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
     public HoodSubsystem hoodSubsystem = new HoodSubsystem(m_turretvision);
     public IndexAndSpindexSubsystem InSSubsystem = new IndexAndSpindexSubsystem(m_turretvision, hoodSubsystem);
-
+    public IntakeMotor intakeMotorCommand = new IntakeMotor(motorIntake);
+    public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(InSSubsystem, false, hoodSubsystem);
     //Controller Objects
     public static final CommandXboxController driverController = new CommandXboxController(0);
     public static final CommandXboxController operatorController = new CommandXboxController(1);
 
     //elastic/smartdashboard intialization 
-    private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision);
+    //private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision);
+    private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision, InSSubsystem);
 
     //for the elastic folder, gonna be merged to elastic data later
     public final ElasticContainer elastic;
@@ -104,12 +107,13 @@ public class RobotContainer {
         //driverController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
         // Regular Shooting
         //driverController.rightBumper().whileTrue(new IndexAndSpindexCommand(InSSubsystem, false, hoodSubsystem));
-        //driverController.x().whileTrue(new IntakeMotor(motorIntake));
+        driverController.x().whileTrue(intakeMotorCommand);
+        driverController.y().whileTrue(indexAndSpindexCommand);
         //driverController.x().onTrue(pneumaticIntake);
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        operatorController.start().whileTrue(new Climb(climber));
+        //operatorController.start().whileTrue(new Climb(climber));
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
         //operatorController.b().whileTrue(new Climb(climber));

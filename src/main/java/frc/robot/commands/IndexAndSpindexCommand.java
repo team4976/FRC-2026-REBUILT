@@ -29,30 +29,32 @@ public class IndexAndSpindexCommand extends Command{
     public void execute() {
         if (ForceSpin == false) {
             if (flywheelSubsystem.getShooterState() == "cantShoot") {
-                flywheelSubsystem.spinShooter(SmartDashboard.getNumber("flywheelSpeed", 0));
-                hoodSubsystem.moveHood();
+                flywheelSubsystem.spinFlywheel(SmartDashboard.getNumber("flywheelSpeed", 40));
+                hoodSubsystem.moveHood(SmartDashboard.getNumber("hood target position", 4));
             }
             else if (flywheelSubsystem.getShooterState() == "readyToShoot") {
-                InSSubsystem.moveFeeder();
+                InSSubsystem.moveFeeder(0.3, 0.3);
             }
         }
         else {
             System.out.println("Move feeder");
-            InSSubsystem.moveFeeder();
+            InSSubsystem.moveFeeder(0.3, 0.3);
         }
+            
     }
     @Override
     public void end(boolean interrupted) {
-        InSSubsystem.stopFeeder();
+        InSSubsystem.moveFeeder(0.0, 0.0);
     }
+
     @Override
     public boolean isFinished() {
-        if (RobotContainer.driverController.x().getAsBoolean() == false && ForceSpin == false
+        if (RobotContainer.driverController.rightBumper().getAsBoolean() == false && ForceSpin == false
         || RobotContainer.operatorController.b().getAsBoolean() == false && ForceSpin == true) {
             return true;
         }
         else {
             return false;
-        }
+        }   
     }
 }

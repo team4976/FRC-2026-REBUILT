@@ -27,8 +27,7 @@ public class HoodCommand extends Command{
             hoodSubsystem.forceHoodMove(hoodSpeed);
         }
         else {
-            //hoodSubsystem.moveHood(turretVision.getTurretDistance());
-            hoodSubsystem.moveHood();
+            hoodSubsystem.moveHood(SmartDashboard.getNumber("hood target position", 4)); 
         }
     }
 
