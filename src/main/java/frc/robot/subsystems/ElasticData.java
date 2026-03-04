@@ -27,11 +27,22 @@ public class ElasticData extends SubsystemBase{
     boolean fuelMakeIt = false;
     Field2d Field2d = new Field2d();
     double Rotation;
-    String[] motorIDs = {"[FRS Swerve] Motor Id:" + RebuiltTunerConstants.kFrontRightSteerMotorId, "[FRD Swerve] Motor Id:" + RebuiltTunerConstants.kFrontRightDriveMotorId, "[FLS Swerve] Motor Id:" + RebuiltTunerConstants.kFrontLeftSteerMotorId,
-    "[FLD Swerve] Motor Id:" + RebuiltTunerConstants.kFrontLeftDriveMotorId, "[RRS Swerve] Motor Id:" + RebuiltTunerConstants.kBackRightSteerMotorId, "[RRD Swerve] Motor Id:" + RebuiltTunerConstants.kBackRightDriveMotorId, 
-    "[RLS Swerve] Motor Id:" + RebuiltTunerConstants.kBackLeftSteerMotorId, "[RLD Swerve] Motor Id:" + RebuiltTunerConstants.kBackLeftDriveMotorId,
-    "[Turret] Motor Id:" + 1, "[Hood] Motor Id:"+ 2, "[Flywheel Lead] Motor Id:" + Constants.Flywheel_Lead_ID, "[Flywheel Follow] Motor Id:" + Constants.Flywheel_Follower_ID, "[Spindex] Motor Id:" + Constants.Spindex_ID,
-    "[Indexer] Motor Id:" + Constants.Index_ID, "[Intake] Motor Id:" + Constants.Intake_ID, "[PCM] Motor Id: unknown", "[Pidgeon] Motor Id: unknown"};
+    String[] motorIDs = {"[FRS Swerve] Motor Id: " + RebuiltTunerConstants.kFrontRightSteerMotorId,
+     "[FRD Swerve] Motor Id: " + RebuiltTunerConstants.kFrontRightDriveMotorId, 
+     "[FLS Swerve] Motor Id: " + RebuiltTunerConstants.kFrontLeftSteerMotorId,
+    "[FLD Swerve] Motor Id: " + RebuiltTunerConstants.kFrontLeftDriveMotorId, 
+    "[RRS Swerve] Motor Id: " + RebuiltTunerConstants.kBackRightSteerMotorId, 
+    "[RRD Swerve] Motor Id: " + RebuiltTunerConstants.kBackRightDriveMotorId, 
+    "[RLS Swerve] Motor Id: " + RebuiltTunerConstants.kBackLeftSteerMotorId, 
+    "[RLD Swerve] Motor Id: " + RebuiltTunerConstants.kBackLeftDriveMotorId,
+    "[Turret] Motor Id: " + 1, "[Hood] Motor Id:"+ 2, 
+    "[Flywheel Lead] Motor Id: " + Constants.Flywheel_Lead_ID,
+     "[Flywheel Follow] Motor Id: " + Constants.Flywheel_Follower_ID,
+      "[Spindex] Motor Id: " + Constants.Spindex_ID,
+    "[Indexer] Motor Id: " + Constants.Index_ID, 
+    "[Intake] Motor Id: " + Constants.Intake_ID,
+     "[PCM] Motor Id: unknown", 
+     "[Pidgeon] Motor Id: unknown"};
 
     public ElasticData(Telemetry m_telemetry, PhotonVision camera1, PhotonVision camera2, IndexAndSpindexSubsystem indexAndSpindexSubsystem, TurretMovement turretMovement){
         //objects for the two classes
