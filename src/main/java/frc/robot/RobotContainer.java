@@ -111,7 +111,8 @@ public class RobotContainer {
         driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
         // Regular Shooting
-        driverController.rightBumper().whileTrue(indexAndSpindexCommand);
+        //Should be right bumper
+        driverController.axisGreaterThan(3, 0.3).whileTrue(indexAndSpindexCommand);
         driverController.x().whileTrue(intakePneumatic);
         driverController.x().whileTrue(intakeMotorCommand);
         //driverController.leftBumper().whileTrue(flywheelCommand);
@@ -123,22 +124,20 @@ public class RobotContainer {
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
         //operatorController.b().whileTrue(new Climb(climber));
-        //operatorController.x().whileTrue(new IntakeMotor(motorIntake));
-        //operatorController.x().onTrue(pneumaticIntake);
         //driverController.leftTrigger().onTrue(new TurretScan(m_turretvision, turretMovement));
         // calls the method that turns the stopButton for Scan to true
         //driverController.rightTrigger().onTrue(turretMovement.runOnce(()->turretMovement.getStopCommand()));
         //driverController.povLeft().whileTrue(new TurretLeft(m_turretvision, turretMovement));
         //driverController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
 
-        // Spin flywheel and start hood
-        //operatorController.a().onTrue(new FlywheelCommand(flywheelSubsystem, 20));
+        // Spin flywheel and start hood should be a (operator controller)
+        driverController.rightBumper().onTrue(new FlywheelCommand(flywheelSubsystem, 20).andThen(new HoodCommand(hoodSubsystem, false, 0)));
     
         // Manual hood override
-        //operatorController.povUp().onTrue(new HoodCommand(hoodSubsystem, true, 0.1));
-        //operatorController.povUp().onFalse(new HoodCommand(hoodSubsystem, true, 0));
-        //operatorController.povDown().onTrue(new HoodCommand(hoodSubsystem, true, -0.1));
-        //operatorController.povDown().onFalse(new HoodCommand(hoodSubsystem, true, 0));
+        operatorController.povUp().onTrue(new HoodCommand(hoodSubsystem, true, 0.1));
+        operatorController.povUp().onFalse(new HoodCommand(hoodSubsystem, true, 0));
+        operatorController.povDown().onTrue(new HoodCommand(hoodSubsystem, true, -0.1));
+        operatorController.povDown().onFalse(new HoodCommand(hoodSubsystem, true, 0));
         // Force Shoot
         //operatorController.b().whileTrue(new IndexAndSpindexCommand(InSSubsystem, true, hoodSubsystem));
         drivetrain.registerTelemetry(logger::telemeterize);

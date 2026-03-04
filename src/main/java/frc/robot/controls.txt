@@ -1,3 +1,9 @@
+Driver
 Drive with left joystick
 Drive with right joystick
 X is intake (toggle)
+Shoot is right bumper (Index and Spindex)
+Operator 
+A is spin up flywheels
+Right Bumper is climb
+Left Joystick is move turret
