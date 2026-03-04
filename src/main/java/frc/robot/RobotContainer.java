@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 
-import frc.robot.commands.intakeCommand;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.generated.RebuiltTunerConstants;
 import frc.robot.generated.TurretTunerConstants;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -38,6 +38,7 @@ import frc.robot.subsystems.TurretMovement;
 import frc.robot.Elastic.ElasticContainer;
 import static frc.robot.Constants.*;
 import frc.robot.subsystems.ElasticData;
+import frc.robot.commands.IntakeCommand;
 
 public class RobotContainer {
 //Shooting is op, Intake is drive 
@@ -49,17 +50,15 @@ public class RobotContainer {
     private final PhotonVision m_turretvision = new PhotonVision("testingCamera", logger);
 
     //Subsystem Objects/Subsystem Initialization
-    private final Pneumatics Pneumatics = new Pneumatics();
-    private final Intake motorIntake = new Intake();
+    private final Intake intakeSubsystem = new Intake();
     private final ClimberSubsystem climber = new ClimberSubsystem();
     private final TurretMovement turretMovement = new TurretMovement();
     public FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
     public HoodSubsystem hoodSubsystem = new HoodSubsystem(m_turretvision);
     public IndexAndSpindexSubsystem InSSubsystem = new IndexAndSpindexSubsystem(m_turretvision, hoodSubsystem, flywheelSubsystem);
     
-    public IntakeMotor intakeMotorCommand = new IntakeMotor(motorIntake);
     public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(InSSubsystem, false, hoodSubsystem, flywheelSubsystem);
-    public intakeCommand intakePneumatic = new intakeCommand(Pneumatics, motorIntake);
+    public IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
     public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem);
 
     //Controller Objects
@@ -111,8 +110,7 @@ public class RobotContainer {
         // Regular Shooting
         //Should be right bumper
         driverController.axisGreaterThan(3, 0.3).whileTrue(indexAndSpindexCommand);
-        driverController.x().whileTrue(intakePneumatic);
-        driverController.x().whileTrue(intakeMotorCommand);
+        driverController.x().onTrue(intakeCommand);
         //driverController.leftBumper().whileTrue(flywheelCommand);
         //driverController.y().onTrue(pneumaticIntake);
 
