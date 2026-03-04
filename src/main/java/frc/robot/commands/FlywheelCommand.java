@@ -21,6 +21,7 @@ public class FlywheelCommand extends Command{
 
     @Override
     public void execute(){
+        /* 
         switch (flywheelSubsystem.getShooterState()) {
             case "windShooter":
                 flywheelSubsystem.spinFlywheel(SmartDashboard.getNumber("flywheelSpeed", 40));
@@ -29,6 +30,7 @@ public class FlywheelCommand extends Command{
                 flywheelSubsystem.stopFlywheel();
                 break;
         }
+                */
     }
 
     @Override

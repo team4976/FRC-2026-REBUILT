@@ -53,7 +53,7 @@ public class RobotContainer {
     //Subsystem Objects/Subsystem Initialization
     private final Pneumatics Pneumatics = new Pneumatics();
     private final Intake motorIntake = new Intake();
-    private final intakePneumatic pneumaticIntake = new intakePneumatic(Pneumatics, motorIntake);
+    //private final intakePneumatic pneumaticIntake = new intakePneumatic(Pneumatics, motorIntake);
     private final ClimberSubsystem climber = new ClimberSubsystem();
     private final TurretMovement turretMovement = new TurretMovement();
     public FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
@@ -61,6 +61,9 @@ public class RobotContainer {
     public IndexAndSpindexSubsystem InSSubsystem = new IndexAndSpindexSubsystem(m_turretvision, hoodSubsystem);
     public IntakeMotor intakeMotorCommand = new IntakeMotor(motorIntake);
     public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(InSSubsystem, false, hoodSubsystem);
+    public intakePneumatic intakePneumatic = new intakePneumatic(Pneumatics, motorIntake);
+    public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem, Flywheel_Follower_ID);
+
     //Controller Objects
     public static final CommandXboxController driverController = new CommandXboxController(0);
     public static final CommandXboxController operatorController = new CommandXboxController(1);
@@ -107,9 +110,12 @@ public class RobotContainer {
         //driverController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
         // Regular Shooting
         //driverController.rightBumper().whileTrue(new IndexAndSpindexCommand(InSSubsystem, false, hoodSubsystem));
-        driverController.x().whileTrue(intakeMotorCommand);
-        driverController.y().whileTrue(indexAndSpindexCommand);
-        //driverController.x().onTrue(pneumaticIntake);
+        driverController.rightBumper().whileTrue(intakeMotorCommand);
+        //driverController.rightBumper().whileTrue(indexAndSpindexCommand);
+        driverController.x().whileTrue(intakePneumatic);
+        //driverController.leftBumper().whileTrue(flywheelCommand);
+        
+        //driverController.y().onTrue(pneumaticIntake);
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.

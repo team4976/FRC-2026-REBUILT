@@ -28,7 +28,7 @@ Intake intake;
     @Override
     public void initialize() {
       limitSwitchStatus = true;
-      intake.setFeederRoller(0.3);
+      intake.setFeederRoller(0.8);
 
      System.out.println("Drive Command Initialized");  
     }

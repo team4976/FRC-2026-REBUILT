@@ -32,6 +32,7 @@ public intakePneumatic(Pneumatics pneumatics, Intake intake) {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {  
+  /* 
 if (SolenoidStatus == false) {
     pneumatics.forwardSolenoid();
     SolenoidStatus = true;
@@ -43,23 +44,27 @@ else if (SolenoidStatus == true) {
     SolenoidStatus = false;
     intake.stop();
   }
-
+    */
+  pneumatics.forwardSolenoid();
 }
 
 @Override
   public void execute() {
     //pneumatics.testMove();
+
   }
   
   // Called once the command ends or is interrupted.
 
   @Override
   public void end(boolean interrupted) {  
+    pneumatics.reverseSolenoid();
+
 }
 
 
-@Override
+  @Override
   public boolean isFinished() { 
-    return true;
+    return false;
   }
 }
