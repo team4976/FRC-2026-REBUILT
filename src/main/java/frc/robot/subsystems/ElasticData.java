@@ -84,7 +84,7 @@ public class ElasticData extends SubsystemBase{
         }
 
                 //AC- Additional Field2d Stuff
-        Field2d.getObject("Hub").setPose(4.6,4,new Rotation2d(0.0));
+        /*Field2d.getObject("Hub").setPose(4.6,4,new Rotation2d(0.0));
         double Rotation =  new TurretMovement().returnMotor().getPosition().getValueAsDouble();
         SmartDashboard.putBoolean("Will the Fuel make it?", fuelMakeIt);
         Field2d.getObject("Aim").setPose(Field2d.getRobotPose().getX() +  (Radius * (Math.cos(Rotation))),Field2d.getRobotPose().getY() + (Radius * (Math.sin(Rotation))),new Rotation2d(Rotation));
@@ -100,14 +100,16 @@ public class ElasticData extends SubsystemBase{
         }
         else{
             fuelMakeIt = false;
-        }
+        } */
                     //Ac - Motor Id's
             //Ac - Motor Id's
         String[] motorIDs = {"[FRS Swerve] Motor Id:"+ RebuiltTunerConstants.kFrontRightSteerMotorId,"[FRD Swerve] Motor Id:" + RebuiltTunerConstants.kFrontRightDriveMotorId,"[FLS Swerve] Motor Id:"+RebuiltTunerConstants.kFrontLeftSteerMotorId,
         "[FLD Swerve] Motor Id:"+RebuiltTunerConstants.kFrontLeftDriveMotorId,"[RRS Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightSteerMotorId,"[RRD Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightDriveMotorId,"[RLS Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftSteerMotorId,"[RLD Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftDriveMotorId,
-        "[Turret Turn] Motor Id:"+ new TurretMovement().returnMotor().getDeviceID(),"[Hood] Motor Id:"+ new HoodSubsystem(cameraDataMain).returnMotor().getDeviceID(),"[Flywheel 1] Motor Id:"+ Constants.Flywheel_Lead_ID,"[Flywheel 2] Motor Id:"+ Constants.Flywheel_Follower_ID,"[Mid Index] Motor Id:"+ Constants.Spindex_ID,
+        "[Turret Turn] Motor Id:"+ 1,"[Hood] Motor Id:"+ 2,"[Flywheel 1] Motor Id:"+ Constants.Flywheel_Lead_ID,"[Flywheel 2] Motor Id:"+ Constants.Flywheel_Follower_ID,"[Mid Index] Motor Id:"+ Constants.Spindex_ID,
         "[Final Index] Motor Id:"+ Constants.Index_ID,"[Intake] Motor Id:"+ Constants.Intake_ID,"[PCM] Motor Id:","[Pidgeon] Motor Id:"};
         SmartDashboard.putStringArray("Motor Id's", motorIDs);
+    //new TurretMovement().returnMotor().getDeviceID()
+    //new HoodSubsystem(cameraDataMain).returnMotor().getDeviceID()
     
     
         for(var id : targetIDs){
