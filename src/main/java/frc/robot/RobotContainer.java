@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 
-import frc.robot.commands.intakePneumatic;
+import frc.robot.commands.intakeCommand;
 import frc.robot.commands.IntakeMotor;
 import frc.robot.generated.RebuiltTunerConstants;
 import frc.robot.generated.TurretTunerConstants;
@@ -61,7 +61,7 @@ public class RobotContainer {
     
     public IntakeMotor intakeMotorCommand = new IntakeMotor(motorIntake);
     public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(InSSubsystem, false, hoodSubsystem);
-    public intakePneumatic intakePneumatic = new intakePneumatic(Pneumatics, motorIntake);
+    public intakeCommand intakePneumatic = new intakeCommand(Pneumatics, motorIntake);
     public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem, Flywheel_Follower_ID);
 
     //Controller Objects
