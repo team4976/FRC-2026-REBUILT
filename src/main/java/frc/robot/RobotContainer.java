@@ -149,10 +149,9 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser = null;
 
     public Command getAutonomousCommand() {
+        return (Command) elastic.fieldWidget.commandChooser.getSelected();
         // Simple drive forward auton
-        return Commands.print("d");
-        //final var idle = new SwerveRequest.Idle();
-        /*return Commands.sequence(
+        /*
             // Reset our field centric heading to match the robot
             // facing away from our alliance station wall (0 deg).
             drivetrain.runOnce(() -> drivetrain.seedFieldCentric(Rotation2d.kZero)),
@@ -171,7 +170,7 @@ public class RobotContainer {
     }
 
 
-//PRE ORGANIZATION COMMENTS, PROBABLY USELESS
+//PRE ORGANIZATION COMMENTS, PROBABLY USELESS (IS USELESS)
 
     //driverController.back().and(driverController.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
     //driverController.back().and(driverController.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));

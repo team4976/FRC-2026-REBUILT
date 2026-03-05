@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class FieldWidget<Elastic> extends SubsystemBase{
 
@@ -36,7 +37,7 @@ public Trajectory elastic = new Trajectory();
 //public Trajectory Path2 = new Trajectory();
 //public Trajectory Path3 = new Trajectory();
 
-
+public SendableChooser<Command> commandChooser;
 //Field Widget
 public FieldWidget() {
     SmartDashboard.putData("Field", m_Field);
@@ -49,7 +50,6 @@ public void addPath(String pathName,PathPlannerPath path){
 
 public Command getAuto(String name) {
     try{
-        
     //PathPlannerPath path = PathPlannerPath.fromPathFile(name);
     //return AutoBuilder.followPath(path).andThen(null);
         var autoTest = AutoBuilder.buildAuto(name);
@@ -60,7 +60,7 @@ public Command getAuto(String name) {
     }
 
 }
-//Auto Chooser Widget
+//Auto Chooser Widget, should have all the pathplanner ones added but not all will be used
     public void addChooser(){
         try{
             SendableChooser<PathPlannerPath> sendableChooser = new SendableChooser<>();
@@ -75,14 +75,49 @@ public Command getAuto(String name) {
             sendableChooser.addOption("Depot Left", PathPlannerPath.fromPathFile("Depot Left"));
             sendableChooser.addOption("Depot Mid", PathPlannerPath.fromPathFile("Depot Mid"));
             sendableChooser.addOption("Shoot+Climb", PathPlannerPath.fromPathFile("Shoot+Climb"));
-            sendableChooser.addOption("Long Auto Test", PathPlannerPath.fromPathFile("New Auto"));
+            //sendableChooser.addOption("Long Auto Test", PathPlannerPath.fromPathFile("New Auto"));
+             SmartDashboard.putData("Auto Choice", sendableChooser);
+
+            //Command Chooser Widget, adds the paths and the commands I put together (Theoretically)
+            commandChooser = new SendableChooser<>();
+
+            List<String> autoPaths = new ArrayList<String>();
+            autoPaths.add("HPR");
+            autoPaths.add("HPL");
+            autoPaths.add("HPM");
+            autoPaths.add("DL");
+            autoPaths.add("DM");
+            autoPaths.add("DR");
+            autoPaths.add("NL");
+            autoPaths.add("NR");
+            autoPaths.add("NM");
+            autoPaths.add("S+C");
+            for(String pathName : autoPaths) {
+                //AutoBuilder.configure(null, null, null, null, null, null, null, null);;
+                AutoBuilder.buildAuto(pathName);
+            }
+
+            
+            commandChooser.setDefaultOption("HPR", getAuto("HPR"));
+            commandChooser.addOption("HPL", getAuto("HPL"));
+            commandChooser.addOption("HPM", getAuto("HPM"));
+            commandChooser.addOption("DL", getAuto("DL"));
+            commandChooser.addOption("DM", getAuto("DM"));
+            commandChooser.addOption("DR", getAuto("DR"));
+            commandChooser.addOption("NL", getAuto("NL"));
+            commandChooser.addOption("NR", getAuto("NR"));
+            commandChooser.addOption("NM", getAuto("NM"));
+            commandChooser.addOption("S+C", getAuto("S+C"));
+
+            SmartDashboard.putData("Command Chooser", commandChooser);
+            commandChooser.getSelected();
 
 //PathPlannerAuto autoTest = new PathPlannerAuto("");
 //autoTest;
 //IDK IF I NEED THESE
 //PathPlannerPath testPATH = PathPlannerPath.fromPathFile("Neutral Right");
 
-SmartDashboard.putData("Auto Choice", sendableChooser);
+//SmartDashboard.putData("Auto Choice", sendableChooser);
             
             sendableChooser.onChange((path)->{
                 if(path != null) addPath("AutoPath", path);
@@ -95,12 +130,10 @@ SmartDashboard.putData("Auto Choice", sendableChooser);
     }
       
 
-
 //Trajectory Generation
 public void TrajGen(){
-
           
-            // First Trajectory Generation
+            // First Trajectory Generation (I don't think this is used but probs js keep it)
              elastic = TrajectoryGenerator.generateTrajectory(
                 new Pose2d(7, 2, Rotation2d.fromDegrees(0)),
                 List.of(new Translation2d(8.1, 1.3), new Translation2d(
@@ -110,8 +143,11 @@ public void TrajGen(){
                 );
                 m_Field.getObject("Elastic Test").setTrajectory(elastic);
 
+                //2nd and 3rd Trajectories were supposed to be here but no need to keep them 
+    }
+}
 
-                // Second Trajectory Generation
+// Second Trajectory Generation
            /*  Path2 = TrajectoryGenerator.generateTrajectory(
                 new Pose2d(0, 0, Rotation2d.fromDegrees(0)),
                 List.of(new Translation2d(1, 1), new Translation2d(
@@ -130,6 +166,3 @@ public void TrajGen(){
                 new TrajectoryConfig(Units.feetToMeters(3.0), Units.feetToMeters(3.0))
                 );
                 m_Field.getObject("Path3").setTrajectory(Path3); */
-}
-}
-
