@@ -62,10 +62,10 @@ public class ElasticData extends SubsystemBase{
             if (alliance.get() == Alliance.Blue){
                 field2d.getObject("Hub").setPose(4.6, 4, new Rotation2d(0.0));
             } else if (alliance.get() == Alliance.Red){
-                field2d.getObject("Hub").setPose(12.6, 4, new Rotation2d(0.0));
+                field2d.getObject("Hub").setPose(11.9, 4, new Rotation2d(0.0));
             } 
         } else {
-            field2d.getObject("Hub").setPose(13.01, 4, new Rotation2d(0.0));
+            field2d.getObject("Hub").setPose(11.9, 4, new Rotation2d(0.0));
         }
 
         //Subsystem Objects
