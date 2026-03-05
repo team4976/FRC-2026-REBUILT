@@ -17,27 +17,37 @@ public class FlywheelCommand extends Command{
     @Override
     public void initialize(){
         flywheelSubsystem.setShooterState();
+        System.out.println("flywheel command initialize");
+        /*if (flywheelSubsystem.getShooterState() == "windShooter") {
+            flywheelSubsystem.spinFlywheel(65);//SmartDashboard.getNumber("flywheelSpeed", 40));
+            SmartDashboard.putBoolean("Flywheel spinnin", true);
+        }           
+        else if (flywheelSubsystem.getShooterState() == "cantShoot") {
+            flywheelSubsystem.stopFlywheel();
+            SmartDashboard.putBoolean("Flywheel spinnin", false);
+        }*/
+        flywheelSubsystem.spinFlywheel(65);
     }
 
     @Override
     public void execute(){ 
-        switch (flywheelSubsystem.getShooterState()) {
-            case "windShooter":
-                flywheelSubsystem.spinFlywheel(SmartDashboard.getNumber("flywheelSpeed", 40));
-                break;
-            case "cantShoot":
-                flywheelSubsystem.stopFlywheel();
-                break;
-        }       
+        /*if (flywheelSubsystem.getShooterState() == "windShooter") {
+            flywheelSubsystem.spinFlywheel(65);//SmartDashboard.getNumber("flywheelSpeed", 40));
+            SmartDashboard.putBoolean("Flywheel spinnin", true);
+        }           
+        else if (flywheelSubsystem.getShooterState() == "cantShoot") {
+            flywheelSubsystem.stopFlywheel();
+            SmartDashboard.putBoolean("Flywheel spinnin", false);
+        }*/
     }
 
     @Override
     public void end(boolean isInterupted){
-
+        flywheelSubsystem.stopFlywheel();
     }
 
     @Override
     public boolean isFinished(){
-        return true;
+        return false;
     }
 }
