@@ -74,10 +74,10 @@ public final class Constants {
   public static final double TagPitch = 0;
 // middle of the hub red: 13.0155555556, 4.41236111111
 // middle of the hub blue: 5.05861111111, 4.41236111111
-  public static double RedHubX = 13.0155555556;
-  public static double RedHubY = 4.41236111111;
-  public static double BlueHubX = 5.05861111111;
-  public static double BlueHubY = 4.41236111111;
+  public static double RedHubX = 11.915394;
+  public static double RedHubY = 4.042283;
+  public static double BlueHubX = 4.625594;
+  public static double BlueHubY = 4.042283;
 
   public static final double turretLimitLeft = 27.656; // software limits on turret motion
   public static final double turretLimitRight = -8.469;
