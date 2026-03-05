@@ -1,4 +1,11 @@
 //Commented lines = 3
+/* 
+ * time of flight
+ * first segment: 0.9
+ * second: 1.12
+ * third:
+ * look to ur rite...
+*/
 
 package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
