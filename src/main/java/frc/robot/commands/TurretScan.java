@@ -95,7 +95,9 @@ public class TurretScan extends Command {
             SmartDashboard.putNumber("turretAngle", turretAngle);
         
             // if left or right switch is pressed while we see a target set stopLockedOn to true
-            if(m_shooter.getLeftSwitch() == false || m_shooter.getRightSwitch() == false){
+            if(m_shooter.getLeftSwitch() == false || m_shooter.getRightSwitch() == false ||
+                m_shooter.getEncoderValue() < Constants.turretLimitRight ||
+                 m_shooter.getEncoderValue() > Constants.turretLimitLeft){
                 stopLockedOn = true;
                 //System.out.println("stopLockedOn " + stopLockedOn);
             }
