@@ -13,12 +13,12 @@ import frc.robot.RobotContainer;
 public class IndexAndSpindexSubsystem extends SubsystemBase{
     public SparkMax indexMotor;
     public SparkMax spindexMotor;
-    public FlywheelSubsystem shooterSubsystem;
+    public FlywheelSubsystem flywheelSubsystem;
     public HoodSubsystem hoodSubsystem;
 
-    public IndexAndSpindexSubsystem(PhotonVision turretVision, HoodSubsystem hoodSubsystem, FlywheelSubsystem shooterSubsystem){
+    public IndexAndSpindexSubsystem(PhotonVision turretVision, HoodSubsystem hoodSubsystem, FlywheelSubsystem flywheelSubsystem){
+        this.flywheelSubsystem = flywheelSubsystem;
         this.hoodSubsystem = hoodSubsystem;
-        this.shooterSubsystem = shooterSubsystem;
         indexMotor = new SparkMax(Constants.Index_ID, MotorType.kBrushless);
         indexMotor.setInverted(true);
         spindexMotor = new SparkMax(Constants.Spindex_ID, MotorType.kBrushless);
@@ -38,7 +38,7 @@ public class IndexAndSpindexSubsystem extends SubsystemBase{
     @Override
     public void periodic() {
         if (hoodSubsystem.getHoodState() == "readyToShoot" 
-        && shooterSubsystem.getShooterState() == "readyToShoot") {
+        && flywheelSubsystem.getShooterState() == "readyToShoot") {
             RobotContainer.driverController.setRumble(GenericHID.RumbleType.kBothRumble, 100);
         }
         else {
