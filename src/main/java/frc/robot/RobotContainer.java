@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 
-import frc.robot.commands.IntakeCommand;
+//import frc.robot.commands.IntakeCommand;
 import frc.robot.generated.RebuiltTunerConstants;
 import frc.robot.generated.TurretTunerConstants;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -38,7 +38,7 @@ import frc.robot.subsystems.TurretMovement;
 import frc.robot.Elastic.ElasticContainer;
 import static frc.robot.Constants.*;
 import frc.robot.subsystems.ElasticData;
-import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.intakeCommand;
 
 public class RobotContainer {
 //Shooting is op, Intake is drive 
@@ -58,7 +58,7 @@ public class RobotContainer {
     public IndexAndSpindexSubsystem InSSubsystem = new IndexAndSpindexSubsystem(m_turretvision, hoodSubsystem, flywheelSubsystem);
     
     public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(InSSubsystem, false, hoodSubsystem, flywheelSubsystem);
-    public IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
+    public intakeCommand intakeCommand = new intakeCommand(intakeSubsystem);
     public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem);
 
     //Controller Objects
