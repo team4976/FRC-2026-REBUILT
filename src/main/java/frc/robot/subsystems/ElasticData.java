@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -13,6 +14,8 @@ import frc.robot.generated.RebuiltTunerConstants;
 import static edu.wpi.first.units.Units.*;
 
 import java.util.List;
+
+import com.pathplanner.lib.path.PathPlannerPath;
 
 import frc.robot.subsystems.IndexAndSpindexSubsystem;
 import frc.robot.Constants;
@@ -29,6 +32,7 @@ public class ElasticData extends SubsystemBase{
     private final FlywheelSubsystem flywheelSubsystem;
     private final TurretMovement turretMovement;
     private final Intake intakeSubsystem;
+    public SendableChooser<PathPlannerPath> sendableChooser = new SendableChooser<>();
     double turretTargetAngle; // the angle we want the turret to be at so that we are aiming at the hub
     double turretAngle; // the turret angle we are currently at
     double distance; // distance from the hub to the turret
@@ -37,6 +41,8 @@ public class ElasticData extends SubsystemBase{
     boolean fuelMakeIt = false;
     double Rotation;
     Field2d Field2d = new Field2d();
+
+
     public ElasticData(Telemetry m_telemetry, PhotonVision camera1, PhotonVision camera2, List<Subsystem> subsystemList){
         //objects for the two classes
         telemetry = m_telemetry;
@@ -71,6 +77,26 @@ public class ElasticData extends SubsystemBase{
             } 
         });
 
+        //Auto Field Chooser 
+        SmartDashboard.putData("Testing/Autos/Field Auto", sendableChooser);
+        try{
+            sendableChooser.setDefaultOption("Elastic Test", PathPlannerPath.fromPathFile("Elastic Test"));
+            sendableChooser.addOption("Human Player Left", PathPlannerPath.fromPathFile("Human Player Left"));
+            sendableChooser.addOption("Human Player Mid", PathPlannerPath.fromPathFile("Human Player Mid"));
+            sendableChooser.addOption("Human Player Right", PathPlannerPath.fromPathFile("Human Player Right"));
+            sendableChooser.addOption("Neutral Left", PathPlannerPath.fromPathFile("Neutral Left"));
+            sendableChooser.addOption("Neutral Right", PathPlannerPath.fromPathFile("Neutral Right"));
+            sendableChooser.addOption("Neutral Mid", PathPlannerPath.fromPathFile("Neutral Mid"));
+            sendableChooser.addOption("Depot Right", PathPlannerPath.fromPathFile("Depot Right"));
+            sendableChooser.addOption("Depot Left", PathPlannerPath.fromPathFile("Depot Left"));
+            sendableChooser.addOption("Depot Mid", PathPlannerPath.fromPathFile("Depot Mid"));
+            sendableChooser.addOption("Shoot+Climb", PathPlannerPath.fromPathFile("Shoot+Climb"));
+            sendableChooser.addOption("Long Auto Test", PathPlannerPath.fromPathFile("New Auto"));
+
+        } catch (Exception e){
+            System.out.print(e.getMessage());
+        }
+
         //Ben T's smartdashboard stuff
         SmartDashboard.putNumber("Testing/Ben T's Stuff/flywheelSpeed", 0);
         SmartDashboard.putNumber("Testing/Ben T's Stuff/hood target position", 0);
@@ -78,6 +104,10 @@ public class ElasticData extends SubsystemBase{
 
     @Override
     public void periodic(){
+        //--------
+        //Variables
+        //--------
+
         //variables for the non turret camera values
         double[] targetIDs = cameraDataMain.getIDs().stream()
         .mapToDouble(Double::doubleValue)
@@ -86,6 +116,10 @@ public class ElasticData extends SubsystemBase{
         "[FLD Swerve] Motor Id:"+RebuiltTunerConstants.kFrontLeftDriveMotorId,"[RRS Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightSteerMotorId,"[RRD Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightDriveMotorId,"[RLS Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftSteerMotorId,"[RLD Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftDriveMotorId,
         "[Turret] Motor Id:"+ 1,"[Hood] Motor Id:"+ 2,"[Flywheel Lead] Motor Id:"+ Constants.Flywheel_Lead_ID,"[Flywheel Follow] Motor Id:"+ Constants.Flywheel_Follower_ID,"[Spindex] Motor Id:"+ Constants.Spindex_ID,
         "[Indexer] Motor Id:"+ Constants.Index_ID,"[Intake] Motor Id:"+ Constants.Intake_ID,"[PCM] Motor Id:","[Pidgeon] Motor Id:"};
+
+        //-------------
+        //Vision Widgets
+        //-------------
 
         //smartdashboard values putting for non turret camera
         SmartDashboard.putNumber("Vision/Main Cam/Raw pitch", cameraDataMain.getAnyPitch());
@@ -107,6 +141,9 @@ public class ElasticData extends SubsystemBase{
         //SmartDashboard.putNumber("Vision/Turret Cam/Turret Distance Test", cameraDataTurret.vision.turretDistance);
         SmartDashboard.putNumber("Vision/Turret Cam/Turret PoseX Test", cameraDataTurret.getDistanceAndAngle().getRobotPose().getX());
 
+        //------------
+        //Field Widgets
+        //------------
         SmartDashboard.putData("Fields/Plain Field", Field2d);
         if(cameraDataMain.targetVisible() == true){
             SmartDashboard.putData("Fields/Robot Position Field", cameraDataMain.getRobotPos());
@@ -138,7 +175,6 @@ public class ElasticData extends SubsystemBase{
         else{
             fuelMakeIt = false;
         } 
-    
     
         for(var id : targetIDs){
             double yaw = cameraDataMain
@@ -197,7 +233,9 @@ public class ElasticData extends SubsystemBase{
             }
         }
 
-
+        sendableChooser.onChange((path)->{
+            if(path != null) Field2d.getObject("AutoPath").setPoses(path.getPathPoses());;
+        });
     
         //updates the Smartdash board Values
         SmartDashboard.updateValues();

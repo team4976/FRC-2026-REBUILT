@@ -37,7 +37,6 @@ import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.IndexAndSpindexSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.TurretMovement;
-import frc.robot.Elastic.ElasticContainer;
 import static frc.robot.Constants.*;
 
 import java.util.List;
@@ -84,10 +83,8 @@ public class RobotContainer {
     private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision, allSubsystemsList);
 
     //for the elastic folder, gonna be merged to elastic data later
-    public final ElasticContainer elastic;
 
     public RobotContainer() {
-        elastic = new ElasticContainer();
         configureBindings();
     }
 
