@@ -64,7 +64,5 @@ public class FlywheelSubsystem extends SubsystemBase{
         else if (targetRPS > 0 && shooterState == "readyToShoot") {
             shooterState = "windShooter";
         }*/
-        SmartDashboard.putString("shooter state", shooterState);
-        SmartDashboard.putNumber("shooter speed", ShooterMotorLeader.getVelocity().getValueAsDouble());
     }
 }

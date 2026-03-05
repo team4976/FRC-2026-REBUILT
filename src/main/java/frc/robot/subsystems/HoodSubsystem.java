@@ -70,7 +70,5 @@ public class HoodSubsystem extends SubsystemBase{
         && HoodMotor.getPosition().getValueAsDouble() < targetHoodPos - 1) {
             hoodState = "cantShoot";
         }
-        SmartDashboard.putString("hood State", hoodState);
-        SmartDashboard.putNumber("hood position", HoodMotor.getPosition().getValueAsDouble());
     }
 }
