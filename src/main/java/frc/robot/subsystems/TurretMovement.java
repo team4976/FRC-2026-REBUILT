@@ -13,9 +13,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class TurretMovement extends SubsystemBase{
-    private TalonFX turretSpin; //Turret Spin is the motor name for the turret
-    private static DigitalInput RightSwitch = new DigitalInput(11);
-    private static DigitalInput LeftSwitch = new DigitalInput(12);
+    public TalonFX turretSpin; //Turret Spin is the motor name for the turret
+    public static DigitalInput RightSwitch = new DigitalInput(11);
+    public static DigitalInput LeftSwitch = new DigitalInput(12);
 
     public TurretMovement(){
         turretSpin = new TalonFX(Constants.Turret_ID);  
