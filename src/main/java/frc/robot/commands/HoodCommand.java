@@ -27,7 +27,7 @@ public class HoodCommand extends Command{
             hoodSubsystem.forceHoodMove(hoodSpeed);
         }
         else {
-            hoodSubsystem.moveHood(SmartDashboard.getNumber("hood target position", 4)); 
+            hoodSubsystem.moveHood(SmartDashboard.getNumber("Testing/Ben T's Stuff/hood target position", 4)); 
         }
     }
 
