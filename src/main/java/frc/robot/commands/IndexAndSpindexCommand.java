@@ -43,7 +43,7 @@ public class IndexAndSpindexCommand extends Command{
             InSSubsystem.moveFeeder(0.5, 0.5); //Force move
         }*/
         
-        InSSubsystem.moveFeeder(0.5, 0.5); //Force move
+        InSSubsystem.moveFeeder(0.85, 0.85); //Force move
     }
     @Override
     public void end(boolean interrupted) {

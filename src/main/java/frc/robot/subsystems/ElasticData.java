@@ -37,7 +37,7 @@ public class ElasticData extends SubsystemBase{
     private final Intake intakeSubsystem;
     public SendableChooser<PathPlannerPath> sendableChooser = new SendableChooser<>();
     double turretTargetAngle; // the angle we want the turret to be at so that we are aiming at the hub
-    double turretAngle; // the turret angle we are currently at
+    //double turretAngle; // the turret angle we are currently at
     double distance; // distance from the hub to the turret
     double hubWidth = 0.6;
     double radius = 3;
@@ -205,7 +205,7 @@ public class ElasticData extends SubsystemBase{
 
         //AC- Additional Field2d Stuff
         if (turretMovement.turretSpin != null){
-            rotation = turretAngle + field2d.getRobotPose().getRotation().getDegrees();
+            rotation = cameraDataTurret.getTurretAngle() + field2d.getRobotPose().getRotation().getDegrees();
         } else {
             rotation = 0.0;
         }
@@ -213,8 +213,8 @@ public class ElasticData extends SubsystemBase{
         field2d.getObject("Aim").setPose(field2d.getRobotPose().getX() + (radius * (Math.cos(rotation))), field2d.getRobotPose().getY() + (radius * (Math.sin(rotation))), new Rotation2d(rotation));
         Pose2d aimPose = field2d.getObject("Aim").getPose();
         Pose2d hubPose = field2d.getObject("Hub").getPose();
-        if (aimPose.getX() >= (hubPose.getX()-(hubWidth/2)) && aimPose.getX() <= (hubPose.getX()+(hubWidth/2))){
-            if (aimPose.getY() >= (hubPose.getY()-hubWidth) && aimPose.getY() <= (hubPose.getY()+hubWidth)) {
+        if (aimPose.getX() >= (hubPose.getX() - (hubWidth/2)) && aimPose.getX() <= (hubPose.getX() + (hubWidth/2))){
+            if (aimPose.getY() >= (hubPose.getY() - hubWidth) && aimPose.getY() <= (hubPose.getY() + hubWidth)) {
                 fuelMakeIt = true;
             } else {
                 fuelMakeIt = false;

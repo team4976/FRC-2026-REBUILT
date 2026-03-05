@@ -10,9 +10,12 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Telemetry;
 
 import static frc.robot.Constants.*;
@@ -225,6 +228,7 @@ public class VisionData{
         return 0.0;
     }
 
+    
     // gets the robot pose based on two april tags or tries with one
     public Field2d getDistanceAndAngle(){
         double HubX = hubOrigX;
@@ -239,7 +243,9 @@ public class VisionData{
             DistanceX = HubX - field2d.getRobotPose().getX();
             DistanceY = HubY - field2d.getRobotPose().getY();
             turretDistance = Math.sqrt(DistanceX*DistanceX + DistanceY*DistanceY);
-
+            SmartDashboard.putString("DistanceX",""+HubX+" - "+field2d.getRobotPose().getX() +"= "+DistanceX);
+            SmartDashboard.putString("DistanceY",""+HubY+" - "+field2d.getRobotPose().getY() +"= "+DistanceY);
+            SmartDashboard.putString("turretDistance", "sqrt("+DistanceX+"*"+DistanceX +"+"+ DistanceY+"*"+DistanceY+")=" +turretDistance);
             for (int i = 0; i < 5; i++){
                 // update BallAirTime
                 double ballAirTime = turretDistance*0.5; // TESTING REMOVE LATER
