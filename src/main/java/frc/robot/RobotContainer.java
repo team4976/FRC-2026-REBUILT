@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 
@@ -24,6 +25,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ElasticData;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PhotonVision;
+import frc.robot.subsystems.SmartDashboardHub;
 import frc.robot.commands.Climb;
 import frc.robot.commands.HoodCommand;
 import frc.robot.commands.IndexAndSpindexCommand;
@@ -37,6 +39,9 @@ import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.TurretMovement;
 import frc.robot.Elastic.ElasticContainer;
 import static frc.robot.Constants.*;
+
+import java.util.List;
+
 import frc.robot.subsystems.ElasticData;
 import frc.robot.commands.intakeCommand;
 
@@ -53,11 +58,21 @@ public class RobotContainer {
     private final Intake intakeSubsystem = new Intake();
     private final ClimberSubsystem climber = new ClimberSubsystem();
     private final TurretMovement turretMovement = new TurretMovement();
-    public FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
-    public HoodSubsystem hoodSubsystem = new HoodSubsystem(m_turretvision);
-    public IndexAndSpindexSubsystem InSSubsystem = new IndexAndSpindexSubsystem(m_turretvision, hoodSubsystem, flywheelSubsystem);
-    
-    public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(InSSubsystem, false, hoodSubsystem, flywheelSubsystem);
+    public final FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
+    public final HoodSubsystem hoodSubsystem = new HoodSubsystem(m_turretvision);
+    public final IndexAndSpindexSubsystem indexAndSpindexSubsystem = new IndexAndSpindexSubsystem(m_turretvision, hoodSubsystem, flywheelSubsystem);
+    //public SmartDashboardHub smartDashboardHub = new SmartDashboardHub();
+    public final List<Subsystem> allSubsystemsList = List.of(
+        intakeSubsystem,
+        climber,
+        turretMovement,
+        flywheelSubsystem,
+        hoodSubsystem,
+        indexAndSpindexSubsystem
+    );
+
+    //Command Objects
+    public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, false, hoodSubsystem, flywheelSubsystem);
     public intakeCommand intakeCommand = new intakeCommand(intakeSubsystem);
     public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem);
 
@@ -66,7 +81,7 @@ public class RobotContainer {
     public static final CommandXboxController operatorController = new CommandXboxController(1);
 
     //elastic/smartdashboard intialization 
-    private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision, InSSubsystem,turretMovement);
+    private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision, allSubsystemsList);
 
     //for the elastic folder, gonna be merged to elastic data later
     public final ElasticContainer elastic;

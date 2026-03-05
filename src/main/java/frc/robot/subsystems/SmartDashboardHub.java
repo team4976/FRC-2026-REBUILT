@@ -41,53 +41,51 @@ public Compressor compressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
 
     public SmartDashboardHub () {
         SmartDashboard.putBoolean("QC Check", false);
-
     }
 
     
     @Override
     public void periodic () {
-        SmartDashboard.putNumber("test", 1);
-           if (SmartDashboard.getBoolean("QC Check", false)) {
-        SmartDashboard.putNumber("QC/index voltage",indexMotorFx.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("QC/spindex voltage",spindex_SparkMax.getBusVoltage());
-        SmartDashboard.putNumber("QC/FRSwerve direction voltage",FRswerveMotordirectionFx.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("QC/FRSwerve drive 1 voltage",FRswerveMotordriveFx.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Swerve direction 2 voltage",FLswerveMotordirectionFx.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Swerve drive 2 voltage",FLswerveMotordriveFx.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Swere direction 3 voltage",RRswerveMotordirectionFx.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Swerve drive 3voltage",RRswerveMotordriveFx.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Swerve direction 4 voltage",RLswerveMotordirectionFx.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Swerve drive 4 voltage",RLswerveMotordriveFx.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Turret M1 voltage",turretMotor1Fx.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Turret M2 voltage",turretMotor2Fx.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Turret M3 voltage",turretMotor3Fx.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Intake voltage",intakeMotorFx.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Index RPM",indexMotorFx.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Spindex RPM",spindex_SparkMax.getEncoder().getVelocity());
-        SmartDashboard.putNumber("QC/FRSwerve direction RPM",FRswerveMotordirectionFx.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("QC/FRSwerve drive RPM",FRswerveMotordriveFx.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("QC/FLSwerve direction RPM",FLswerveMotordirectionFx.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("QC/FLSwerve drive RPM",FLswerveMotordriveFx.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("QC/RRSwerve direction RPM",RRswerveMotordirectionFx.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("QC/RRSwerve drive RPM",RRswerveMotordriveFx.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("QC/RLSwerve direction RPM",RLswerveMotordirectionFx.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("QC/RLSwerve drive RPM",RLswerveMotordriveFx.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("QC/turret M1 RPM",turretMotor1Fx.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("QC/turret M2 RPM",turretMotor2Fx.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("QC/turret M3 RPM",turretMotor3Fx.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("QC/intake RPM",intakeMotorFx.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Pressure",compressor.getPressure());
-        SmartDashboard.putNumber("QC/Turret Position",turretMotor1Fx.getPosition().getValueAsDouble());
-        SmartDashboard.putBoolean("QC/limit Switch1",TurretLimitSwitch1.get());
-        SmartDashboard.putBoolean("QC/limit switch2",TurretLimitSwitch2.get());
-        SmartDashboard.putBoolean("QC/limit switch3",TurretLimitSwitch3.get());
-        SmartDashboard.putBoolean("QC/limit switch4",TurretLimitSwitch4.get());
-        SmartDashboard.putNumber("QC/FRSwerve M1 direction",FRswerveMotordirectionFx.getPosition().getValueAsDouble());
-        SmartDashboard.putNumber("QC/FLSwerve M2 direction",FLswerveMotordirectionFx.getPosition().getValueAsDouble());
-        SmartDashboard.putNumber("QC/RRSwerve M3 direction",RRswerveMotordirectionFx.getPosition().getValueAsDouble());
-        SmartDashboard.putNumber("QC/RLSwerve M4 direction",RLswerveMotordirectionFx.getPosition().getValueAsDouble());
-         }
+        if (SmartDashboard.getBoolean("QC Check", false)) {
+            SmartDashboard.putNumber("QC/index voltage",indexMotorFx.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("QC/spindex voltage",spindex_SparkMax.getBusVoltage());
+            SmartDashboard.putNumber("QC/FRSwerve direction voltage",FRswerveMotordirectionFx.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("QC/FRSwerve drive 1 voltage",FRswerveMotordriveFx.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("QC/Swerve direction 2 voltage",FLswerveMotordirectionFx.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("QC/Swerve drive 2 voltage",FLswerveMotordriveFx.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("QC/Swere direction 3 voltage",RRswerveMotordirectionFx.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("QC/Swerve drive 3voltage",RRswerveMotordriveFx.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("QC/Swerve direction 4 voltage",RLswerveMotordirectionFx.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("QC/Swerve drive 4 voltage",RLswerveMotordriveFx.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("QC/Turret M1 voltage",turretMotor1Fx.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("QC/Turret M2 voltage",turretMotor2Fx.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("QC/Turret M3 voltage",turretMotor3Fx.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("QC/Intake voltage",intakeMotorFx.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("QC/Index RPM",indexMotorFx.getVelocity().getValueAsDouble());
+            SmartDashboard.putNumber("QC/Spindex RPM",spindex_SparkMax.getEncoder().getVelocity());
+            SmartDashboard.putNumber("QC/FRSwerve direction RPM",FRswerveMotordirectionFx.getVelocity().getValueAsDouble());
+            SmartDashboard.putNumber("QC/FRSwerve drive RPM",FRswerveMotordriveFx.getVelocity().getValueAsDouble());
+            SmartDashboard.putNumber("QC/FLSwerve direction RPM",FLswerveMotordirectionFx.getVelocity().getValueAsDouble());
+            SmartDashboard.putNumber("QC/FLSwerve drive RPM",FLswerveMotordriveFx.getVelocity().getValueAsDouble());
+            SmartDashboard.putNumber("QC/RRSwerve direction RPM",RRswerveMotordirectionFx.getVelocity().getValueAsDouble());
+            SmartDashboard.putNumber("QC/RRSwerve drive RPM",RRswerveMotordriveFx.getVelocity().getValueAsDouble());
+            SmartDashboard.putNumber("QC/RLSwerve direction RPM",RLswerveMotordirectionFx.getVelocity().getValueAsDouble());
+            SmartDashboard.putNumber("QC/RLSwerve drive RPM",RLswerveMotordriveFx.getVelocity().getValueAsDouble());
+            SmartDashboard.putNumber("QC/turret M1 RPM",turretMotor1Fx.getVelocity().getValueAsDouble());
+            SmartDashboard.putNumber("QC/turret M2 RPM",turretMotor2Fx.getVelocity().getValueAsDouble());
+            SmartDashboard.putNumber("QC/turret M3 RPM",turretMotor3Fx.getVelocity().getValueAsDouble());
+            SmartDashboard.putNumber("QC/intake RPM",intakeMotorFx.getVelocity().getValueAsDouble());
+            SmartDashboard.putNumber("QC/Pressure",compressor.getPressure());
+            SmartDashboard.putNumber("QC/Turret Position",turretMotor1Fx.getPosition().getValueAsDouble());
+            SmartDashboard.putBoolean("QC/limit Switch1",TurretLimitSwitch1.get());
+            SmartDashboard.putBoolean("QC/limit switch2",TurretLimitSwitch2.get());
+            SmartDashboard.putBoolean("QC/limit switch3",TurretLimitSwitch3.get());
+            SmartDashboard.putBoolean("QC/limit switch4",TurretLimitSwitch4.get());
+            SmartDashboard.putNumber("QC/FRSwerve M1 direction",FRswerveMotordirectionFx.getPosition().getValueAsDouble());
+            SmartDashboard.putNumber("QC/FLSwerve M2 direction",FLswerveMotordirectionFx.getPosition().getValueAsDouble());
+            SmartDashboard.putNumber("QC/RRSwerve M3 direction",RRswerveMotordirectionFx.getPosition().getValueAsDouble());
+            SmartDashboard.putNumber("QC/RLSwerve M4 direction",RLswerveMotordirectionFx.getPosition().getValueAsDouble());
         }
+    }
 
-            }
+}

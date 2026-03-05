@@ -4,12 +4,16 @@ import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.Telemetry;
 import frc.robot.generated.RebuiltTunerConstants;
 import static edu.wpi.first.units.Units.*;
+
+import java.util.List;
+
 import frc.robot.subsystems.IndexAndSpindexSubsystem;
 import frc.robot.Constants;
 //was designed to be the only elastic subsystem/container but it isnt currently
@@ -21,6 +25,10 @@ public class ElasticData extends SubsystemBase{
     private final PhotonVision cameraDataMain;
     private final PhotonVision cameraDataTurret;
     private final IndexAndSpindexSubsystem indexAndSpindexSubsystem;
+    private final HoodSubsystem hoodSubsystem;
+    private final FlywheelSubsystem flywheelSubsystem;
+    private final TurretMovement turretMovement;
+    private final Intake intakeSubsystem;
     double turretTargetAngle; // the angle we want the turret to be at so that we are aiming at the hub
     double turretAngle; // the turret angle we are currently at
     double distance; // distance from the hub to the turret
@@ -28,12 +36,16 @@ public class ElasticData extends SubsystemBase{
     double Radius = 3;
     boolean fuelMakeIt = false;
     Field2d Field2d = new Field2d();
-    public ElasticData(Telemetry m_telemetry, PhotonVision camera1, PhotonVision camera2, IndexAndSpindexSubsystem indexAndSpindexSubsystem, TurretMovement turretMovement){
+    public ElasticData(Telemetry m_telemetry, PhotonVision camera1, PhotonVision camera2, List<Subsystem> subsystemList){
         //objects for the two classes
         telemetry = m_telemetry;
         cameraDataMain = camera1;
         cameraDataTurret = camera2;
-        this.indexAndSpindexSubsystem = indexAndSpindexSubsystem;
+        indexAndSpindexSubsystem = (IndexAndSpindexSubsystem) subsystemList.get(5);
+        hoodSubsystem = (HoodSubsystem) subsystemList.get(4);
+        flywheelSubsystem = (FlywheelSubsystem) subsystemList.get(3);
+        turretMovement = (TurretMovement) subsystemList.get(2);
+        intakeSubsystem = (Intake) subsystemList.get(0);
 
         //swerve widget based on the values gained from telemetry, 100% needs to be tuned
         //and maybe even needs to use different telemtry variables. havent gotten a chance to figure that out yet.
@@ -69,6 +81,10 @@ public class ElasticData extends SubsystemBase{
         double[] targetIDs = cameraDataMain.getIDs().stream()
         .mapToDouble(Double::doubleValue)
         .toArray();
+        String[] motorIDs = {"[FRS Swerve] Motor Id:"+ RebuiltTunerConstants.kFrontRightSteerMotorId,"[FRD Swerve] Motor Id:" + RebuiltTunerConstants.kFrontRightDriveMotorId,"[FLS Swerve] Motor Id:"+RebuiltTunerConstants.kFrontLeftSteerMotorId,
+        "[FLD Swerve] Motor Id:"+RebuiltTunerConstants.kFrontLeftDriveMotorId,"[RRS Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightSteerMotorId,"[RRD Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightDriveMotorId,"[RLS Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftSteerMotorId,"[RLD Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftDriveMotorId,
+        "[Turret Turn] Motor Id:"+ 1,"[Hood] Motor Id:"+ 2,"[Flywheel 1] Motor Id:"+ Constants.Flywheel_Lead_ID,"[Flywheel 2] Motor Id:"+ Constants.Flywheel_Follower_ID,"[Spindex] Motor Id:"+ Constants.Spindex_ID,
+        "[Indexer] Motor Id:"+ Constants.Index_ID,"[Intake] Motor Id:"+ Constants.Intake_ID,"[PCM] Motor Id:","[Pidgeon] Motor Id:"};
 
         //smartdashboard values putting for non turret camera
         SmartDashboard.putNumber("Vision/Main Cam/Raw pitch", cameraDataMain.getAnyPitch());
@@ -80,12 +96,16 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Vision/Main Cam/X Rotation", cameraDataMain.getXRotation());
         SmartDashboard.putNumber("Vision/Main Cam/Z Rotation", cameraDataMain.getZRotation());
         SmartDashboard.putNumber("Vision/Main Cam/Distance", cameraDataMain.getDistance());
-        SmartDashboard.putNumber("turretDistance", cameraDataTurret.getDistance());
-        SmartDashboard.putNumber("turretPoseX", cameraDataTurret.getRobotPos().getRobotPose().getX());
-        SmartDashboard.putNumber("turretPoseY",  cameraDataTurret.getRobotPos().getRobotPose().getY());
-        SmartDashboard.putNumber("turretRotation", cameraDataTurret.getRobotPos().getRobotPose().getRotation().getDegrees());
-        SmartDashboard.putNumber("targetAngle", cameraDataTurret.getTurretTargetAngle());
-        SmartDashboard.putNumber("turretAngle", cameraDataTurret.getTurretAngle());
+
+        SmartDashboard.putNumber("Vision/Turret Cam/turretDistance", cameraDataTurret.getTurretDistance());
+        SmartDashboard.putNumber("Vision/Turret Cam/turretPoseX", cameraDataTurret.getRobotPos().getRobotPose().getX());
+        SmartDashboard.putNumber("Vision/Turret Cam/turretPoseY",  cameraDataTurret.getRobotPos().getRobotPose().getY());
+        SmartDashboard.putNumber("Vision/Turret Cam/turretRotation", cameraDataTurret.getRobotPos().getRobotPose().getRotation().getDegrees());
+        SmartDashboard.putNumber("Vision/Turret Cam/targetAngle", cameraDataTurret.getTurretTargetAngle());
+        SmartDashboard.putNumber("Vision/Turret Cam/turretAngle", cameraDataTurret.getTurretAngle());
+        SmartDashboard.putNumber("Vision/Turret Cam/Turret Distance Test", cameraDataTurret.vision.turretDistance);
+        SmartDashboard.putNumber("Vision/Turret Cam/Turret PoseX Test", cameraDataTurret.getDistanceAndAngle().getRobotPose().getX());
+
         SmartDashboard.putData("Fields/Plain Field", Field2d);
         if(cameraDataMain.targetVisible() == true){
             SmartDashboard.putData("Fields/Robot Position Field", cameraDataMain.getRobotPos());
@@ -112,11 +132,6 @@ public class ElasticData extends SubsystemBase{
         } */
                     //Ac - Motor Id's
             //Ac - Motor Id's
-        String[] motorIDs = {"[FRS Swerve] Motor Id:"+ RebuiltTunerConstants.kFrontRightSteerMotorId,"[FRD Swerve] Motor Id:" + RebuiltTunerConstants.kFrontRightDriveMotorId,"[FLS Swerve] Motor Id:"+RebuiltTunerConstants.kFrontLeftSteerMotorId,
-        "[FLD Swerve] Motor Id:"+RebuiltTunerConstants.kFrontLeftDriveMotorId,"[RRS Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightSteerMotorId,"[RRD Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightDriveMotorId,"[RLS Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftSteerMotorId,"[RLD Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftDriveMotorId,
-        "[Turret Turn] Motor Id:"+ 1,"[Hood] Motor Id:"+ 2,"[Flywheel 1] Motor Id:"+ Constants.Flywheel_Lead_ID,"[Flywheel 2] Motor Id:"+ Constants.Flywheel_Follower_ID,"[Mid Index] Motor Id:"+ Constants.Spindex_ID,
-        "[Final Index] Motor Id:"+ Constants.Index_ID,"[Intake] Motor Id:"+ Constants.Intake_ID,"[PCM] Motor Id:","[Pidgeon] Motor Id:"};
-        SmartDashboard.putStringArray("Motor Id's", motorIDs);
     //new TurretMovement().returnMotor().getDeviceID()
     //new HoodSubsystem(cameraDataMain).returnMotor().getDeviceID()
     
@@ -139,10 +154,38 @@ public class ElasticData extends SubsystemBase{
         }
         
 
-        //some motor stuff
-        SmartDashboard.putNumber("Testing/Index Volatage", indexAndSpindexSubsystem.indexMotor.getAppliedOutput());
-        SmartDashboard.putNumber("Testing/Spindex Volatage", indexAndSpindexSubsystem.spindexMotor.getAppliedOutput());
+        //Motor Widgets
+        SmartDashboard.putStringArray("Testing/Motors/Motor Id's", motorIDs);
+        SmartDashboard.putNumber("Testing/Motors/Indexer/Index Volatage", indexAndSpindexSubsystem.indexMotor.getAppliedOutput());
+        SmartDashboard.putNumber("Testing/Motors/Spindex/Spindex Volatage", indexAndSpindexSubsystem.spindexMotor.getAppliedOutput());
 
+        for (String motorInfo : motorIDs) {
+            try {
+                int openBracket = motorInfo.indexOf("[");
+                int closeBracket = motorInfo.indexOf("]");
+                int colonIndex = motorInfo.indexOf(":");
+
+                //gets what is inside the [brackets]
+                String folderName = motorInfo.substring(openBracket + 1, closeBracket).trim();
+        
+                //gets everything after the colon
+                String motorId = motorInfo.substring(colonIndex + 1).trim();
+
+                if (!motorId.isEmpty()) {
+                    if (folderName.contains("Swerve")){
+                        SmartDashboard.putString("Testing/Motors/Swerve/" + folderName + "/Motor Id", motorId);
+                    } else {
+                        SmartDashboard.putString("Testing/Motors/" + folderName + "/Motor Id", motorId);
+                    }
+                }
+            } catch (Exception e) {
+             //this prevents the code from crashing if one string is formatted weirdly
+             System.out.println("Error making motor string: " + motorInfo);
+            }
+        }
+
+
+    
         //updates the Smartdash board Values
         SmartDashboard.updateValues();
 

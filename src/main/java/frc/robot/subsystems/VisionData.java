@@ -37,9 +37,9 @@ public class VisionData{
     private double DriveVelocityY; // the velocity we are travelling in the X direction
     private double DistanceX; // the distance between us and the virtual hub on the X plane
     private double DistanceY; // the distance between us and the virtual hub on the Y plane
-    private double turretDistance;
-    private double turretAngle;
-    private double turretTargetAngle;
+    public double turretDistance;
+    public double turretAngle;
+    public double turretTargetAngle;
 
     //the constructor, having the camera as a parameter--
     //means the methods in this class can be used dynamically--
