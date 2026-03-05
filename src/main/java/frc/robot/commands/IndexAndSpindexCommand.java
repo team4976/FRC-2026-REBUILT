@@ -28,7 +28,7 @@ public class IndexAndSpindexCommand extends Command{
     }
     @Override
     public void execute() {
-        if (ForceSpin == false) {
+        /*if (ForceSpin == false) {
             if (flywheelSubsystem.getShooterState() == "cantShoot") {
                 flywheelSubsystem.setShooterState();
                 flywheelSubsystem.spinFlywheel(SmartDashboard.getNumber("Testing/Ben T's Stuff/flywheelSpeed", 40));
@@ -41,9 +41,9 @@ public class IndexAndSpindexCommand extends Command{
         else {
             System.out.println("Move feeder");
             InSSubsystem.moveFeeder(0.5, 0.5); //Force move
-        }
+        }*/
         
-            
+        InSSubsystem.moveFeeder(0.5, 0.5); //Force move
     }
     @Override
     public void end(boolean interrupted) {

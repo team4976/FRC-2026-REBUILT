@@ -7,12 +7,10 @@ import frc.robot.subsystems.HoodSubsystem;
 public class HoodCommand extends Command{
     public HoodSubsystem hoodSubsystem;
     public boolean HoodOverride;
-    public double hoodSpeed;
     
-    public HoodCommand(HoodSubsystem hoodSubsystem, boolean HoodOverride, double hoodSpeed){
+    public HoodCommand(HoodSubsystem hoodSubsystem, boolean HoodOverride){
         this.hoodSubsystem = hoodSubsystem;
         this.HoodOverride = HoodOverride;
-        this.hoodSpeed = hoodSpeed;
         addRequirements(hoodSubsystem);
     }
 
@@ -23,17 +21,18 @@ public class HoodCommand extends Command{
 
     @Override
     public void execute() {
-        if (HoodOverride) {
+        /*if (HoodOverride == true) {
             hoodSubsystem.forceHoodMove(hoodSpeed);
         }
         else {
             hoodSubsystem.moveHood(SmartDashboard.getNumber("Testing/Ben T's Stuff/hood target position", 4)); 
-        }
+        }*/
+        hoodSubsystem.moveHood(SmartDashboard.getNumber("Testing/Ben T's Stuff/hood target position", 4)); 
     }
 
     @Override
     public void end(boolean interrupted) {
-
+        hoodSubsystem.moveHood(0);
     }
 
     @Override

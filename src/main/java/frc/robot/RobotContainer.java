@@ -131,7 +131,7 @@ public class RobotContainer {
         //driverController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
 
         // Spin flywheel and start hood should be a (operator controller)
-        driverController.rightBumper().onTrue(new FlywheelCommand(flywheelSubsystem));//.andThen(new HoodCommand(hoodSubsystem, false, 0)));
+        driverController.rightBumper().whileTrue(new FlywheelCommand(flywheelSubsystem).andThen(new HoodCommand(hoodSubsystem, false)));//.andThen(new HoodCommand(hoodSubsystem, false, 0)));
     
         // Manual hood override
         //operatorController.povUp().onTrue(new HoodCommand(hoodSubsystem, true, 0.1));
