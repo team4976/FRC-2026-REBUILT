@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,6 +16,7 @@ import frc.robot.generated.RebuiltTunerConstants;
 import static edu.wpi.first.units.Units.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.pathplanner.lib.path.PathPlannerPath;
 
@@ -36,15 +39,17 @@ public class ElasticData extends SubsystemBase{
     double turretTargetAngle; // the angle we want the turret to be at so that we are aiming at the hub
     double turretAngle; // the turret angle we are currently at
     double distance; // distance from the hub to the turret
-    double Hubwidth = 0.6;
-    double Radius = 3;
+    double hubWidth = 0.6;
+    double radius = 3;
     boolean fuelMakeIt = false;
-    double Rotation;
-    Field2d Field2d = new Field2d();
+    double rotation;
+    Field2d field2d;
+    Optional<Alliance> alliance;
 
 
     public ElasticData(Telemetry m_telemetry, PhotonVision camera1, PhotonVision camera2, List<Subsystem> subsystemList){
         //objects for the two classes
+        alliance = DriverStation.getAlliance();
         telemetry = m_telemetry;
         cameraDataMain = camera1;
         cameraDataTurret = camera2;
@@ -53,6 +58,7 @@ public class ElasticData extends SubsystemBase{
         flywheelSubsystem = (FlywheelSubsystem) subsystemList.get(3);
         turretMovement = (TurretMovement) subsystemList.get(2);
         intakeSubsystem = (Intake) subsystemList.get(0);
+        field2d = cameraDataMain.getRobotPos();
 
         //swerve widget based on the values gained from telemetry, 100% needs to be tuned
         //and maybe even needs to use different telemtry variables. havent gotten a chance to figure that out yet.
@@ -97,6 +103,15 @@ public class ElasticData extends SubsystemBase{
             System.out.print(e.getMessage());
         }
 
+        if (alliance.isPresent()){
+            if (alliance.get() == Alliance.Blue){
+                field2d.getObject("Hub").setPose(4.6, 4, new Rotation2d(0.0));
+            } else if (alliance.get() == Alliance.Red){
+                field2d.getObject("Hub").setPose(12.6, 4, new Rotation2d(0.0));
+            } 
+        } else {
+            field2d.getObject("Hub").setPose(4.6, 4, new Rotation2d(0.0));
+        }
         //Ben T's smartdashboard stuff
         SmartDashboard.putNumber("Testing/Ben T's Stuff/flywheelSpeed", 0);
         SmartDashboard.putNumber("Testing/Ben T's Stuff/hood target position", 0);
@@ -112,6 +127,8 @@ public class ElasticData extends SubsystemBase{
         double[] targetIDs = cameraDataMain.getIDs().stream()
         .mapToDouble(Double::doubleValue)
         .toArray();
+
+        //Motor id Array
         String[] motorIDs = {"[FRS Swerve] Motor Id:"+ RebuiltTunerConstants.kFrontRightSteerMotorId,"[FRD Swerve] Motor Id:" + RebuiltTunerConstants.kFrontRightDriveMotorId,"[FLS Swerve] Motor Id:"+RebuiltTunerConstants.kFrontLeftSteerMotorId,
         "[FLD Swerve] Motor Id:"+RebuiltTunerConstants.kFrontLeftDriveMotorId,"[RRS Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightSteerMotorId,"[RRD Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightDriveMotorId,"[RLS Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftSteerMotorId,"[RLD Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftDriveMotorId,
         "[Turret] Motor Id:"+ 1,"[Hood] Motor Id:"+ 2,"[Flywheel Lead] Motor Id:"+ Constants.Flywheel_Lead_ID,"[Flywheel Follow] Motor Id:"+ Constants.Flywheel_Follower_ID,"[Spindex] Motor Id:"+ Constants.Spindex_ID,
@@ -121,7 +138,7 @@ public class ElasticData extends SubsystemBase{
         //Vision Widgets
         //-------------
 
-        //smartdashboard values putting for non turret camera
+        //Main Cam Based Vision Widgets
         SmartDashboard.putNumber("Vision/Main Cam/Raw pitch", cameraDataMain.getAnyPitch());
         SmartDashboard.putNumber("Vision/Main Cam/Raw yaw", cameraDataMain.getAnyYaw());
         SmartDashboard.putNumberArray("Vision/Main Cam/Target IDs", targetIDs);
@@ -131,51 +148,6 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Vision/Main Cam/X Rotation", cameraDataMain.getXRotation());
         SmartDashboard.putNumber("Vision/Main Cam/Z Rotation", cameraDataMain.getZRotation());
         SmartDashboard.putNumber("Vision/Main Cam/Distance", cameraDataMain.getDistance());
-
-        SmartDashboard.putNumber("Vision/Turret Cam/turretDistance", cameraDataTurret.getTurretDistance());
-        SmartDashboard.putNumber("Vision/Turret Cam/turretPoseX", cameraDataTurret.getRobotPos().getRobotPose().getX());
-        SmartDashboard.putNumber("Vision/Turret Cam/turretPoseY",  cameraDataTurret.getRobotPos().getRobotPose().getY());
-        SmartDashboard.putNumber("Vision/Turret Cam/turretRotation", cameraDataTurret.getRobotPos().getRobotPose().getRotation().getDegrees());
-        SmartDashboard.putNumber("Vision/Turret Cam/targetAngle", cameraDataTurret.getTurretTargetAngle());
-        SmartDashboard.putNumber("Vision/Turret Cam/turretAngle", cameraDataTurret.getTurretAngle());
-        //SmartDashboard.putNumber("Vision/Turret Cam/Turret Distance Test", cameraDataTurret.vision.turretDistance);
-        SmartDashboard.putNumber("Vision/Turret Cam/Turret PoseX Test", cameraDataTurret.getDistanceAndAngle().getRobotPose().getX());
-
-        //------------
-        //Field Widgets
-        //------------
-        SmartDashboard.putData("Fields/Plain Field", Field2d);
-        if(cameraDataMain.targetVisible() == true){
-            SmartDashboard.putData("Fields/Robot Position Field", cameraDataMain.getRobotPos());
-            SmartDashboard.putData("Fields/Turret Position Field", cameraDataTurret.getDistanceAndAngle());
-        }
-
-                //AC- Additional Field2d Stuff
-        Field2d.getObject("Hub").setPose(4.6,4,new Rotation2d(0.0));
-        if(turretMovement.returnMotor() != null){
-            Rotation =  turretAngle + Field2d.getRobotPose().getRotation().getDegrees();
-        }
-        else{
-            Rotation = 0.0;
-        }
-
-        
-        SmartDashboard.putBoolean("Will the Fuel make it?", fuelMakeIt);
-        Field2d.getObject("Aim").setPose(Field2d.getRobotPose().getX() +  (Radius * (Math.cos(Rotation))),Field2d.getRobotPose().getY() + (Radius * (Math.sin(Rotation))),new Rotation2d(Rotation));
-        Pose2d AimPose = Field2d.getObject("Aim").getPose();
-        Pose2d HubPose = Field2d.getObject("Hub").getPose();
-        if(AimPose.getX() >= (HubPose.getX()-(Hubwidth/2)) && AimPose.getX() <= (HubPose.getX()+(Hubwidth/2))){
-            if (AimPose.getY() >= (HubPose.getY()-Hubwidth) && AimPose.getY() <= (HubPose.getY()+Hubwidth)) {
-                fuelMakeIt = true;
-            }
-            else{
-                fuelMakeIt = false;
-            }
-        }
-        else{
-            fuelMakeIt = false;
-        } 
-    
         for(var id : targetIDs){
             double yaw = cameraDataMain
             .getTargetYaw((int) id)
@@ -192,6 +164,48 @@ public class ElasticData extends SubsystemBase{
                 SmartDashboard.putNumber("Vision/Main Cam/Target" + id + "pitch", pitch);
             }
         }
+
+        //Turret Based Vision Widgets
+        SmartDashboard.putNumber("Vision/Turret Cam/turretDistance", cameraDataTurret.getTurretDistance());
+        SmartDashboard.putNumber("Vision/Turret Cam/turretPoseX", cameraDataTurret.getRobotPos().getRobotPose().getX());
+        SmartDashboard.putNumber("Vision/Turret Cam/turretPoseY",  cameraDataTurret.getRobotPos().getRobotPose().getY());
+        SmartDashboard.putNumber("Vision/Turret Cam/turretRotation", cameraDataTurret.getRobotPos().getRobotPose().getRotation().getDegrees());
+        SmartDashboard.putNumber("Vision/Turret Cam/targetAngle", cameraDataTurret.getTurretTargetAngle());
+        SmartDashboard.putNumber("Vision/Turret Cam/turretAngle", cameraDataTurret.getTurretAngle());
+        SmartDashboard.putNumber("Vision/Turret Cam/Turret Distance Test", cameraDataTurret.vision.turretDistance);
+        SmartDashboard.putNumber("Vision/Turret Cam/Turret PoseX Test", cameraDataTurret.getDistanceAndAngle().getRobotPose().getX());
+
+
+
+
+        //------------
+        //Field Widgets
+        //------------
+        SmartDashboard.putData("Fields/Ideal Field", field2d);
+        if (cameraDataMain.targetVisible() == true){
+            SmartDashboard.putData("Fields/Robot Position Field", cameraDataMain.getRobotPos());
+            SmartDashboard.putData("Fields/Turret Position Field", cameraDataTurret.getDistanceAndAngle());
+        }
+
+        //AC- Additional Field2d Stuff
+        if (turretMovement.turretSpin != null){
+            rotation = turretAngle + field2d.getRobotPose().getRotation().getDegrees();
+        } else {
+            rotation = 0.0;
+        }
+        SmartDashboard.putBoolean("Will the Fuel make it?", fuelMakeIt);
+        field2d.getObject("Aim").setPose(field2d.getRobotPose().getX() + (radius * (Math.cos(rotation))), field2d.getRobotPose().getY() + (radius * (Math.sin(rotation))), new Rotation2d(rotation));
+        Pose2d aimPose = field2d.getObject("Aim").getPose();
+        Pose2d hubPose = field2d.getObject("Hub").getPose();
+        if (aimPose.getX() >= (hubPose.getX()-(hubWidth/2)) && aimPose.getX() <= (hubPose.getX()+(hubWidth/2))){
+            if (aimPose.getY() >= (hubPose.getY()-hubWidth) && aimPose.getY() <= (hubPose.getY()+hubWidth)) {
+                fuelMakeIt = true;
+            } else {
+                fuelMakeIt = false;
+            }
+        } else {
+            fuelMakeIt = false;
+        } 
         
         //------------
         //MOTOR WIDGETS
@@ -234,7 +248,7 @@ public class ElasticData extends SubsystemBase{
         }
 
         sendableChooser.onChange((path)->{
-            if(path != null) Field2d.getObject("AutoPath").setPoses(path.getPathPoses());;
+            if(path != null) field2d.getObject("AutoPath").setPoses(path.getPathPoses());;
         });
     
         //updates the Smartdash board Values

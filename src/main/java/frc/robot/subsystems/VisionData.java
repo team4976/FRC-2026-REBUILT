@@ -31,8 +31,8 @@ public class VisionData{
     private PhotonPipelineResult latestResult;
     private Field2d field2d = new Field2d();
     private Optional<Alliance> alliance;
-    private double hubOrigX;
-    private double hubOrigY;
+    public double hubOrigX;
+    public double hubOrigY;
     private double DriveVelocityX; // the velocity we are travelling in Y direction
     private double DriveVelocityY; // the velocity we are travelling in the X direction
     private double DistanceX; // the distance between us and the virtual hub on the X plane
