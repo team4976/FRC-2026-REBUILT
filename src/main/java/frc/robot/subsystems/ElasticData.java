@@ -35,6 +35,7 @@ public class ElasticData extends SubsystemBase{
     double Hubwidth = 0.6;
     double Radius = 3;
     boolean fuelMakeIt = false;
+    double Rotation;
     Field2d Field2d = new Field2d();
     public ElasticData(Telemetry m_telemetry, PhotonVision camera1, PhotonVision camera2, List<Subsystem> subsystemList){
         //objects for the two classes
@@ -103,7 +104,7 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Vision/Turret Cam/turretRotation", cameraDataTurret.getRobotPos().getRobotPose().getRotation().getDegrees());
         SmartDashboard.putNumber("Vision/Turret Cam/targetAngle", cameraDataTurret.getTurretTargetAngle());
         SmartDashboard.putNumber("Vision/Turret Cam/turretAngle", cameraDataTurret.getTurretAngle());
-        SmartDashboard.putNumber("Vision/Turret Cam/Turret Distance Test", cameraDataTurret.vision.turretDistance);
+        //SmartDashboard.putNumber("Vision/Turret Cam/Turret Distance Test", cameraDataTurret.vision.turretDistance);
         SmartDashboard.putNumber("Vision/Turret Cam/Turret PoseX Test", cameraDataTurret.getDistanceAndAngle().getRobotPose().getX());
 
         SmartDashboard.putData("Fields/Plain Field", Field2d);
@@ -113,8 +114,15 @@ public class ElasticData extends SubsystemBase{
         }
 
                 //AC- Additional Field2d Stuff
-        /*Field2d.getObject("Hub").setPose(4.6,4,new Rotation2d(0.0));
-        double Rotation =  new TurretMovement().returnMotor().getPosition().getValueAsDouble();
+        Field2d.getObject("Hub").setPose(4.6,4,new Rotation2d(0.0));
+        if(turretMovement.returnMotor() != null){
+            Rotation =  turretAngle + Field2d.getRobotPose().getRotation().getDegrees();
+        }
+        else{
+            Rotation = 0.0;
+        }
+
+        
         SmartDashboard.putBoolean("Will the Fuel make it?", fuelMakeIt);
         Field2d.getObject("Aim").setPose(Field2d.getRobotPose().getX() +  (Radius * (Math.cos(Rotation))),Field2d.getRobotPose().getY() + (Radius * (Math.sin(Rotation))),new Rotation2d(Rotation));
         Pose2d AimPose = Field2d.getObject("Aim").getPose();
@@ -129,11 +137,7 @@ public class ElasticData extends SubsystemBase{
         }
         else{
             fuelMakeIt = false;
-        } */
-                    //Ac - Motor Id's
-            //Ac - Motor Id's
-    //new TurretMovement().returnMotor().getDeviceID()
-    //new HoodSubsystem(cameraDataMain).returnMotor().getDeviceID()
+        } 
     
     
         for(var id : targetIDs){
