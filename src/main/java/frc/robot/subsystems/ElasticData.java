@@ -48,17 +48,37 @@ public class ElasticData extends SubsystemBase{
 
 
     public ElasticData(Telemetry m_telemetry, PhotonVision camera1, PhotonVision camera2, List<Subsystem> subsystemList){
-        //objects for the two classes
+        //-------------------
+        //Object Assignments
+        //-------------------
+
+        //Misc Objects
         alliance = DriverStation.getAlliance();
         telemetry = m_telemetry;
         cameraDataMain = camera1;
         cameraDataTurret = camera2;
+        field2d = cameraDataMain.getRobotPos();
+        if (alliance.isPresent()){
+            if (alliance.get() == Alliance.Blue){
+                field2d.getObject("Hub").setPose(4.6, 4, new Rotation2d(0.0));
+            } else if (alliance.get() == Alliance.Red){
+                field2d.getObject("Hub").setPose(12.6, 4, new Rotation2d(0.0));
+            } 
+        } else {
+            field2d.getObject("Hub").setPose(13.01, 4, new Rotation2d(0.0));
+        }
+
+        //Subsystem Objects
         indexAndSpindexSubsystem = (IndexAndSpindexSubsystem) subsystemList.get(5);
         hoodSubsystem = (HoodSubsystem) subsystemList.get(4);
         flywheelSubsystem = (FlywheelSubsystem) subsystemList.get(3);
         turretMovement = (TurretMovement) subsystemList.get(2);
         intakeSubsystem = (Intake) subsystemList.get(0);
-        field2d = cameraDataMain.getRobotPos();
+
+
+        //-------------------
+        //Non-Periodic Widgets 
+        //-------------------
 
         //swerve widget based on the values gained from telemetry, 100% needs to be tuned
         //and maybe even needs to use different telemtry variables. havent gotten a chance to figure that out yet.
@@ -103,15 +123,6 @@ public class ElasticData extends SubsystemBase{
             System.out.print(e.getMessage());
         }
 
-        if (alliance.isPresent()){
-            if (alliance.get() == Alliance.Blue){
-                field2d.getObject("Hub").setPose(4.6, 4, new Rotation2d(0.0));
-            } else if (alliance.get() == Alliance.Red){
-                field2d.getObject("Hub").setPose(12.6, 4, new Rotation2d(0.0));
-            } 
-        } else {
-            field2d.getObject("Hub").setPose(4.6, 4, new Rotation2d(0.0));
-        }
         //Ben T's smartdashboard stuff
         SmartDashboard.putNumber("Testing/Ben T's Stuff/flywheelSpeed", 0);
         SmartDashboard.putNumber("Testing/Ben T's Stuff/hood target position", 0);
