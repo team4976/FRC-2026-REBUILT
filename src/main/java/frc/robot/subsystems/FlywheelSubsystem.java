@@ -47,10 +47,6 @@ public class FlywheelSubsystem extends SubsystemBase{
         this.targetRPS = targetRPS;
     }
 
-    public void stopFlywheel(){
-        ShooterMotorLeader.setControl(shooterVelocityVoltage.withVelocity(0));
-    }
-
     public double getShooterSpeed(){
         return ShooterMotorLeader.getVelocity().getValueAsDouble();
     }
@@ -65,7 +61,7 @@ public class FlywheelSubsystem extends SubsystemBase{
          && ShooterMotorLeader.getVelocity().getValueAsDouble() > targetRPS - 5 && targetRPS > 0) {
             shooterState = "readyToShoot";
         }
-        else if (targetRPS > 0) {
+        else if (targetRPS > 0 && shooterState == "readyToShoot") {
             shooterState = "windShooter";
         }*/
         SmartDashboard.putString("shooter state", shooterState);

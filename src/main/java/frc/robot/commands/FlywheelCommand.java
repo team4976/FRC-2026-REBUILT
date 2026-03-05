@@ -6,11 +6,9 @@ import frc.robot.subsystems.FlywheelSubsystem;
 
 public class FlywheelCommand extends Command{
     public FlywheelSubsystem flywheelSubsystem;
-    public double targetRPS;
 
-    public FlywheelCommand(FlywheelSubsystem flywheelSubsystem, double targetRPS){
+    public FlywheelCommand(FlywheelSubsystem flywheelSubsystem){
         this.flywheelSubsystem = flywheelSubsystem;
-        this.targetRPS = targetRPS;
         addRequirements(flywheelSubsystem);
     }
 
@@ -19,14 +17,14 @@ public class FlywheelCommand extends Command{
         flywheelSubsystem.setShooterState();
         System.out.println("flywheel command initialize");
         /*if (flywheelSubsystem.getShooterState() == "windShooter") {
-            flywheelSubsystem.spinFlywheel(65);//SmartDashboard.getNumber("flywheelSpeed", 40));
+            flywheelSubsystem.spinFlywheel(SmartDashboard.getNumber("Testing/Ben T's Stuff/flywheelSpeed", 40));
             SmartDashboard.putBoolean("Flywheel spinnin", true);
         }           
         else if (flywheelSubsystem.getShooterState() == "cantShoot") {
-            flywheelSubsystem.stopFlywheel();
+            flywheelSubsystem.spinFlywheel(0);
             SmartDashboard.putBoolean("Flywheel spinnin", false);
         }*/
-        flywheelSubsystem.spinFlywheel(65);
+        flywheelSubsystem.spinFlywheel(SmartDashboard.getNumber("Testing/Ben T's Stuff/flywheelSpeed", 40));
     }
 
     @Override
@@ -43,7 +41,7 @@ public class FlywheelCommand extends Command{
 
     @Override
     public void end(boolean isInterupted){
-        flywheelSubsystem.stopFlywheel();
+        flywheelSubsystem.spinFlywheel(0);
     }
 
     @Override

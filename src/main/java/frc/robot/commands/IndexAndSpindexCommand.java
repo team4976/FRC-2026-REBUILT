@@ -24,14 +24,15 @@ public class IndexAndSpindexCommand extends Command{
 
     @Override
     public void initialize(){
-        InSSubsystem.moveFeeder(0.5, 0.5);
+        //InSSubsystem.moveFeeder(0.5, 0.5);
     }
     @Override
     public void execute() {
-       /*  if (ForceSpin == false) {
+        /*if (ForceSpin == false) {
             if (flywheelSubsystem.getShooterState() == "cantShoot") {
-                flywheelSubsystem.spinFlywheel(SmartDashboard.getNumber("flywheelSpeed", 40));
-                hoodSubsystem.moveHood(SmartDashboard.getNumber("hood target position", 4));
+                flywheelSubsystem.setShooterState();
+                flywheelSubsystem.spinFlywheel(SmartDashboard.getNumber("Testing/Ben T's Stuff/flywheelSpeed", 40));
+                hoodSubsystem.moveHood(SmartDashboard.getNumber("Testing/Ben T's Stuff/hood target position", 4));
             }
             else if (flywheelSubsystem.getShooterState() == "readyToShoot") {
                 InSSubsystem.moveFeeder(0.5, 0.5); 
@@ -42,7 +43,7 @@ public class IndexAndSpindexCommand extends Command{
             InSSubsystem.moveFeeder(0.5, 0.5); //Force move
         }*/
         
-            
+        InSSubsystem.moveFeeder(0.5, 0.5); //Force move
     }
     @Override
     public void end(boolean interrupted) {

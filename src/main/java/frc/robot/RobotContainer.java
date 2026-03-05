@@ -73,7 +73,7 @@ public class RobotContainer {
     //Command Objects
     public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, false, hoodSubsystem, flywheelSubsystem);
     public intakeCommand intakeCommand = new intakeCommand(intakeSubsystem);
-    public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem, 20);
+    public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem);
 
     //Controller Objects
     public static final CommandXboxController driverController = new CommandXboxController(0);
@@ -142,10 +142,10 @@ public class RobotContainer {
         driverController.rightBumper().whileTrue(flywheelCommand);
     
         // Manual hood override
-        operatorController.povUp().onTrue(new HoodCommand(hoodSubsystem, true, 0.1));
-        operatorController.povUp().onFalse(new HoodCommand(hoodSubsystem, true, 0));
-        operatorController.povDown().onTrue(new HoodCommand(hoodSubsystem, true, -0.1));
-        operatorController.povDown().onFalse(new HoodCommand(hoodSubsystem, true, 0));
+        operatorController.povUp().onTrue(new HoodCommand(hoodSubsystem, true));
+        operatorController.povUp().onFalse(new HoodCommand(hoodSubsystem, true));
+        operatorController.povDown().onTrue(new HoodCommand(hoodSubsystem, true));
+        operatorController.povDown().onFalse(new HoodCommand(hoodSubsystem, true));
         // Force Shoot
         //operatorController.b().whileTrue(new IndexAndSpindexCommand(InSSubsystem, true, hoodSubsystem));
         drivetrain.registerTelemetry(logger::telemeterize);
