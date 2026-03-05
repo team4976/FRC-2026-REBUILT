@@ -28,18 +28,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class FieldWidget<Elastic> extends SubsystemBase{
+public class FieldWidget extends SubsystemBase{
 
 //Initialization for Field and Trajectories
 public Field2d m_Field = new Field2d();
 public Trajectory elastic = new Trajectory();
 //public Trajectory Path2 = new Trajectory();
 //public Trajectory Path3 = new Trajectory();
-
+public SendableChooser<PathPlannerPath> sendableChooser = new SendableChooser<>();
 
 //Field Widget
 public FieldWidget() {
-    SmartDashboard.putData("Field", m_Field);
+    SmartDashboard.putData("Fields/Autos Field", m_Field);
     //AutoBuilder.configure(null, null, null, null, null, null, null, null);
 }
 
@@ -62,8 +62,9 @@ public Command getAuto(String name) {
 }
 //Auto Chooser Widget
     public void addChooser(){
+        SmartDashboard.putData("Auto Choice", sendableChooser);
+        SmartDashboard.putString("Started Chooser", "Started Chooser");
         try{
-            SendableChooser<PathPlannerPath> sendableChooser = new SendableChooser<>();
             sendableChooser.setDefaultOption("Elastic Test", PathPlannerPath.fromPathFile("Elastic Test"));
             sendableChooser.addOption("Human Player Left", PathPlannerPath.fromPathFile("Human Player Left"));
             sendableChooser.addOption("Human Player Mid", PathPlannerPath.fromPathFile("Human Player Mid"));
@@ -81,12 +82,6 @@ public Command getAuto(String name) {
 //autoTest;
 //IDK IF I NEED THESE
 //PathPlannerPath testPATH = PathPlannerPath.fromPathFile("Neutral Right");
-
-SmartDashboard.putData("Auto Choice", sendableChooser);
-            
-            sendableChooser.onChange((path)->{
-                if(path != null) addPath("AutoPath", path);
-            });
 
         }
         catch(Exception e){
@@ -130,6 +125,14 @@ public void TrajGen(){
                 new TrajectoryConfig(Units.feetToMeters(3.0), Units.feetToMeters(3.0))
                 );
                 m_Field.getObject("Path3").setTrajectory(Path3); */
-}
+    }
+
+    public void periodic(){
+        sendableChooser.onChange((path)->{
+            if(path != null) addPath("AutoPath", path);
+        });
+    }
+
+
 }
 
