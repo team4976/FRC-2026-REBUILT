@@ -83,7 +83,7 @@ public class ElasticData extends SubsystemBase{
         .toArray();
         String[] motorIDs = {"[FRS Swerve] Motor Id:"+ RebuiltTunerConstants.kFrontRightSteerMotorId,"[FRD Swerve] Motor Id:" + RebuiltTunerConstants.kFrontRightDriveMotorId,"[FLS Swerve] Motor Id:"+RebuiltTunerConstants.kFrontLeftSteerMotorId,
         "[FLD Swerve] Motor Id:"+RebuiltTunerConstants.kFrontLeftDriveMotorId,"[RRS Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightSteerMotorId,"[RRD Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightDriveMotorId,"[RLS Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftSteerMotorId,"[RLD Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftDriveMotorId,
-        "[Turret Turn] Motor Id:"+ 1,"[Hood] Motor Id:"+ 2,"[Flywheel 1] Motor Id:"+ Constants.Flywheel_Lead_ID,"[Flywheel 2] Motor Id:"+ Constants.Flywheel_Follower_ID,"[Spindex] Motor Id:"+ Constants.Spindex_ID,
+        "[Turret] Motor Id:"+ 1,"[Hood] Motor Id:"+ 2,"[Flywheel Lead] Motor Id:"+ Constants.Flywheel_Lead_ID,"[Flywheel Follow] Motor Id:"+ Constants.Flywheel_Follower_ID,"[Spindex] Motor Id:"+ Constants.Spindex_ID,
         "[Indexer] Motor Id:"+ Constants.Index_ID,"[Intake] Motor Id:"+ Constants.Intake_ID,"[PCM] Motor Id:","[Pidgeon] Motor Id:"};
 
         //smartdashboard values putting for non turret camera
@@ -153,12 +153,21 @@ public class ElasticData extends SubsystemBase{
             }
         }
         
+        //------------
+        //MOTOR WIDGETS
+        //------------
 
-        //Motor Widgets
-        SmartDashboard.putStringArray("Testing/Motors/Motor Id's", motorIDs);
+        //Voltage Widgets
         SmartDashboard.putNumber("Testing/Motors/Indexer/Index Volatage", indexAndSpindexSubsystem.indexMotor.getAppliedOutput());
         SmartDashboard.putNumber("Testing/Motors/Spindex/Spindex Volatage", indexAndSpindexSubsystem.spindexMotor.getAppliedOutput());
-
+        SmartDashboard.putNumber("Testing/Motors/Hood/Hood Voltage", hoodSubsystem.HoodMotor.getMotorVoltage().getValueAsDouble());
+        SmartDashboard.putNumber("Testing/Motors/Turret/Turret Voltage", turretMovement.turretSpin.getMotorVoltage().getValueAsDouble());
+        SmartDashboard.putNumber("Testing/Motors/Flywheel Lead/Flywheel Lead Voltage", flywheelSubsystem.ShooterMotorLeader.getMotorVoltage().getValueAsDouble());
+        SmartDashboard.putNumber("Testing/Motors/Flywheel Follow/Flywheel Follow Voltage", flywheelSubsystem.ShooterMotorFollower.getMotorVoltage().getValueAsDouble());
+        SmartDashboard.putNumber("Testing/Motors/Intake/Intake Voltage", intakeSubsystem.IntakeMotor.getMotorOutputVoltage());
+        
+        //Motor id Widgets
+        SmartDashboard.putStringArray("Testing/Motors/Motor Id's", motorIDs);
         for (String motorInfo : motorIDs) {
             try {
                 int openBracket = motorInfo.indexOf("[");
