@@ -40,6 +40,7 @@ public class HoodSubsystem extends SubsystemBase{
     }
 
     public void moveHood(double targetHoodPos){
+        SmartDashboard.putNumber("targetHoodPos", targetHoodPos);
         //targetHoodPos = turretVision.getTurretDistance();
         if (targetHoodPos < 0) {
             targetHoodPos = 0;

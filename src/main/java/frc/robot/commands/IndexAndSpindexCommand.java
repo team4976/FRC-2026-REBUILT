@@ -12,38 +12,37 @@ public class IndexAndSpindexCommand extends Command{
     public FlywheelSubsystem flywheelSubsystem;
     public HoodSubsystem hoodSubsystem;
     public boolean IndexOverride = false;
-    public boolean ForceSpin = false;
+    public boolean reverseSpin = false;
     
-    public IndexAndSpindexCommand(IndexAndSpindexSubsystem InSSubsystem, boolean ForceSpin, HoodSubsystem hoodSubsystem, FlywheelSubsystem flywheelSubsystem){
+    public IndexAndSpindexCommand(IndexAndSpindexSubsystem InSSubsystem, boolean reverseSpin, HoodSubsystem hoodSubsystem, FlywheelSubsystem flywheelSubsystem){
         this.flywheelSubsystem = flywheelSubsystem;
         this.hoodSubsystem = hoodSubsystem;
         this.InSSubsystem = InSSubsystem;
-        this.ForceSpin = ForceSpin;
+        this.reverseSpin = reverseSpin;
         addRequirements(InSSubsystem);
     }
 
     @Override
     public void initialize(){
-        //InSSubsystem.moveFeeder(0.5, 0.5);
+
     }
     @Override
     public void execute() {
-        /*if (ForceSpin == false) {
-            if (flywheelSubsystem.getShooterState() == "cantShoot") {
+        if (reverseSpin == false) {
+            /*if (flywheelSubsystem.getShooterState() == "cantShoot") {
                 flywheelSubsystem.setShooterState();
                 flywheelSubsystem.spinFlywheel(SmartDashboard.getNumber("Testing/Ben T's Stuff/flywheelSpeed", 40));
+                flywheelSubsystem.setShooterState();
                 hoodSubsystem.moveHood(SmartDashboard.getNumber("Testing/Ben T's Stuff/hood target position", 4));
             }
             else if (flywheelSubsystem.getShooterState() == "readyToShoot") {
                 InSSubsystem.moveFeeder(0.5, 0.5); 
-            }
+            }*/
+            InSSubsystem.moveFeeder(0.5, 0.5);
         }
         else {
-            System.out.println("Move feeder");
-            InSSubsystem.moveFeeder(0.5, 0.5); //Force move
-        }*/
-        
-        InSSubsystem.moveFeeder(0.85, 0.85); //Force move
+            InSSubsystem.moveFeeder(-0.5, -0.5); //Force move
+        }
     }
     @Override
     public void end(boolean interrupted) {
@@ -52,13 +51,6 @@ public class IndexAndSpindexCommand extends Command{
 
     @Override
     public boolean isFinished() {
-        /*if (RobotContainer.driverController.axisLessThan(3, 0.3).getAsBoolean() == true && ForceSpin == false
-        || RobotContainer.operatorController.b().getAsBoolean() == false && ForceSpin == true) {
-            return true;
-        }
-        else {
-            return false;
-        }   */
        return false;
     }
 }

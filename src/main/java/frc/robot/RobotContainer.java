@@ -72,8 +72,12 @@ public class RobotContainer {
 
     //Command Objects
     public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, false, hoodSubsystem, flywheelSubsystem);
+    public IndexAndSpindexCommand reverseIndexer = new IndexAndSpindexCommand(indexAndSpindexSubsystem, true, hoodSubsystem, flywheelSubsystem);
     public intakeCommand intakeCommand = new intakeCommand(intakeSubsystem);
     public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem);
+    public HoodCommand hoodCommand = new HoodCommand(hoodSubsystem, false, 0);
+    public HoodCommand manualHoodUp = new HoodCommand(hoodSubsystem, true, 0.5);
+    public HoodCommand manualHoodDown = new HoodCommand(hoodSubsystem, true, -0.5);
 
     //Controller Objects
     public static final CommandXboxController driverController = new CommandXboxController(0);
@@ -139,15 +143,14 @@ public class RobotContainer {
         //driverController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
 
         // Spin flywheel and start hood should be a (operator controller)
-        driverController.rightBumper().whileTrue(flywheelCommand);
-    
+        driverController.rightBumper().onTrue(flywheelCommand);
+        driverController.rightBumper().toggleOnTrue(hoodCommand);
+        
         // Manual hood override
-        operatorController.povUp().onTrue(new HoodCommand(hoodSubsystem, true));
-        operatorController.povUp().onFalse(new HoodCommand(hoodSubsystem, true));
-        operatorController.povDown().onTrue(new HoodCommand(hoodSubsystem, true));
-        operatorController.povDown().onFalse(new HoodCommand(hoodSubsystem, true));
+        operatorController.povUp().whileTrue(manualHoodUp);
+        operatorController.povDown().whileTrue(manualHoodDown);
         // Force Shoot
-        //operatorController.b().whileTrue(new IndexAndSpindexCommand(InSSubsystem, true, hoodSubsystem));
+        //operatorController.b().whileTrue(reverseIndexer);
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 

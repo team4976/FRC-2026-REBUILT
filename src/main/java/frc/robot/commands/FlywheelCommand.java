@@ -14,17 +14,17 @@ public class FlywheelCommand extends Command{
 
     @Override
     public void initialize(){
-        flywheelSubsystem.setShooterState();
         System.out.println("flywheel command initialize");
-        /*if (flywheelSubsystem.getShooterState() == "windShooter") {
+        if (flywheelSubsystem.getShooterState() == "cantShoot") {
             flywheelSubsystem.spinFlywheel(SmartDashboard.getNumber("Testing/Ben T's Stuff/flywheelSpeed", 40));
             SmartDashboard.putBoolean("Flywheel spinnin", true);
         }           
-        else if (flywheelSubsystem.getShooterState() == "cantShoot") {
+        else if (flywheelSubsystem.getShooterState() == "windShooter"
+              || flywheelSubsystem.getShooterState() == "readyToShoot") {
             flywheelSubsystem.spinFlywheel(0);
             SmartDashboard.putBoolean("Flywheel spinnin", false);
-        }*/
-        flywheelSubsystem.spinFlywheel(SmartDashboard.getNumber("Testing/Ben T's Stuff/flywheelSpeed", 40));
+        }
+        flywheelSubsystem.setShooterState();
     }
 
     @Override
@@ -41,11 +41,11 @@ public class FlywheelCommand extends Command{
 
     @Override
     public void end(boolean isInterupted){
-        flywheelSubsystem.spinFlywheel(0);
+        //flywheelSubsystem.spinFlywheel(0);
     }
 
     @Override
     public boolean isFinished(){
-        return false;
+        return true;
     }
 }
