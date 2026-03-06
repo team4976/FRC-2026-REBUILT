@@ -18,7 +18,8 @@ public class TurretScan extends Command {
     Field2d field2d; // our estimated position on the field
     double turretTargetAngle; // the angle we want the turret to be at so that we are aiming at the hub
     double turretAngle; // the turret angle we are currently at
-    double turretEncoderValue; // the encoder value of the tuurets motor
+    double turretCurrentPosition; // the encoder value of the tuurets motor
+    double turretTargetPosition; //
 
     public TurretScan(PhotonVision turretVision, TurretMovement shooter){
         m_turretVision = turretVision;
@@ -85,7 +86,10 @@ public class TurretScan extends Command {
 
             distance = m_turretVision.getTurretDistance();
 
-            turretEncoderValue = m_shooter.getEncoderValue();
+            turretCurrentPosition= m_shooter.getEncoderValue();
+
+            turretTargetPosition = m_shooter.convertAngletoRotation(turretAngle-turretTargetAngle);
+
 
             SmartDashboard.putNumber("turretDistance", distance);
             SmartDashboard.putNumber("turretPoseX", field2d.getRobotPose().getX());
@@ -103,6 +107,7 @@ public class TurretScan extends Command {
         //Setting the voltage of the motor to the yaw of the target multiplied by 5
             //m_shooter.lockedOn((turretTargetAngle - turretAngle)/45*-0.6); CHANGE LATER
             //System.out.println(Constants.turretRotationVoltage);
+            m_shooter.ApplyPositionControler(turretTargetPosition);  //Set position controller
 
         
         //System.out.println("hasTargets" + hasTargets);

@@ -99,13 +99,11 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Vision/Main Cam/Distance", cameraDataMain.getDistance());
 
         SmartDashboard.putNumber("Vision/Turret Cam/turretDistance", cameraDataTurret.getTurretDistance());
-        SmartDashboard.putNumber("Vision/Turret Cam/turretPoseX", cameraDataTurret.getRobotPos().getRobotPose().getX());
-        SmartDashboard.putNumber("Vision/Turret Cam/turretPoseY",  cameraDataTurret.getRobotPos().getRobotPose().getY());
-        SmartDashboard.putNumber("Vision/Turret Cam/turretRotation", cameraDataTurret.getRobotPos().getRobotPose().getRotation().getDegrees());
+        SmartDashboard.putNumber("Vision/Turret Cam/turretPoseX", cameraDataTurret.getDistanceAndAngle().getRobotPose().getX());
+        SmartDashboard.putNumber("Vision/Turret Cam/turretPoseY",  cameraDataTurret.getDistanceAndAngle().getRobotPose().getY());
+        SmartDashboard.putNumber("Vision/Turret Cam/turretRotation", cameraDataTurret.getDistanceAndAngle().getRobotPose().getRotation().getDegrees());
         SmartDashboard.putNumber("Vision/Turret Cam/targetAngle", cameraDataTurret.getTurretTargetAngle());
         SmartDashboard.putNumber("Vision/Turret Cam/turretAngle", cameraDataTurret.getTurretAngle());
-        //SmartDashboard.putNumber("Vision/Turret Cam/Turret Distance Test", cameraDataTurret.vision.turretDistance);
-        SmartDashboard.putNumber("Vision/Turret Cam/Turret PoseX Test", cameraDataTurret.getDistanceAndAngle().getRobotPose().getX());
 
         SmartDashboard.putData("Fields/Plain Field", Field2d);
         if(cameraDataMain.targetVisible() == true){

@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.OptionalDouble;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -40,6 +41,7 @@ public class VisionData{
     public double turretDistance;
     public double turretAngle;
     public double turretTargetAngle;
+    public PhotonPoseEstimator poseEstimator;
 
     //the constructor, having the camera as a parameter--
     //means the methods in this class can be used dynamically--
@@ -231,13 +233,14 @@ public class VisionData{
         double HubY = hubOrigY;
 
         if (latestResult != null && latestResult.hasTargets()){
-            var cameraResult = latestResult.getMultiTagResult();
+            //var cameraResult = latestResult.getMultiTagResult();
+            var cameraResult = poseEstimator.estimateCoprocMultiTagPose(latestResult);
             if (cameraResult != null && cameraResult.isEmpty() == false) {
-                var fieldToCamera = cameraResult.get().estimatedPose.best;
-                field2d.setRobotPose(new Pose2d(fieldToCamera.getX(), fieldToCamera.getY(), fieldToCamera.getRotation().toRotation2d()));
+                var fieldToCamera = cameraResult.get().estimatedPose.toPose2d();
+                field2d.setRobotPose(fieldToCamera); 
             // Initial Distance calculation
-            DistanceX = HubX - field2d.getRobotPose().getX();
-            DistanceY = HubY - field2d.getRobotPose().getY();
+            DistanceX = HubX - fieldToCamera.getX();
+            DistanceY = HubY - fieldToCamera.getY();
             turretDistance = Math.sqrt(DistanceX*DistanceX + DistanceY*DistanceY);
 
             for (int i = 0; i < 5; i++){
@@ -258,12 +261,8 @@ public class VisionData{
             // calculates the angle we want to get to
             turretTargetAngle = Math.atan(DistanceX / DistanceY);
             // calculates the angle of the bot from the middle
-            turretAngle = (fieldToCamera.getRotation().toRotation2d().getDegrees());
-            } else {
-            field2d.setRobotPose(new Pose2d()); //Maybe not such a good idea
-            }
-        } else {
-            field2d.setRobotPose(new Pose2d());
+            turretAngle = (fieldToCamera.getRotation().getDegrees());
+            } 
         }
         return field2d;
     }
