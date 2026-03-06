@@ -242,10 +242,11 @@ public class VisionData{
             // Initial Distance calculation
             DistanceX = HubX - field2d.getRobotPose().getX();
             DistanceY = HubY - field2d.getRobotPose().getY();
+
             turretDistance = Math.sqrt(DistanceX*DistanceX + DistanceY*DistanceY);
-            SmartDashboard.putString("DistanceX",""+HubX+" - "+field2d.getRobotPose().getX() +"= "+DistanceX);
-            SmartDashboard.putString("DistanceY",""+HubY+" - "+field2d.getRobotPose().getY() +"= "+DistanceY);
-            SmartDashboard.putString("turretDistance", "sqrt("+DistanceX+"*"+DistanceX +"+"+ DistanceY+"*"+DistanceY+")=" +turretDistance);
+            SmartDashboard.putString("DistanceX",""+String.format("%.2f",HubX)+" - "+String.format("%.2f",field2d.getRobotPose().getX()) +"= "+String.format("%.2f",DistanceX));
+            SmartDashboard.putString("DistanceY",""+String.format("%.2f",HubY)+" - "+String.format("%.2f",field2d.getRobotPose().getY()) +"= "+String.format("%.2f",DistanceY));
+            SmartDashboard.putString("turretDistance Split", "sqrt("+String.format("%.2f",DistanceX)+"*"+String.format("%.2f",DistanceX) +"+"+ String.format("%.2f",DistanceY)+"*"+(String.format("%.2f",DistanceY)+")=" +turretDistance));
             for (int i = 0; i < 5; i++){
                 // update BallAirTime
                 double ballAirTime = turretDistance*0.5; // TESTING REMOVE LATER

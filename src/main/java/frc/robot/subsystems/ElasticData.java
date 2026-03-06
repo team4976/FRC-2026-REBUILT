@@ -129,7 +129,7 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Testing/Ben T's Stuff/shooter speed", flywheelSubsystem.getShooterSpeed());
         SmartDashboard.putNumber("Testing/Ben T's Stuff/hood target position", 0);
         SmartDashboard.putString("Testing/Ben T's Stuff/hood State", hoodSubsystem.getHoodState());
-        SmartDashboard.putNumber("Testing/Ben T's Stuff/hood position", hoodSubsystem.returnMotor().getPosition().getValueAsDouble());
+
     }
 
     @Override
@@ -235,7 +235,9 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Testing/Motors/Flywheel Lead/Flywheel Lead Voltage", flywheelSubsystem.ShooterMotorLeader.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putNumber("Testing/Motors/Flywheel Follow/Flywheel Follow Voltage", flywheelSubsystem.ShooterMotorFollower.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putNumber("Testing/Motors/Intake/Intake Voltage", intakeSubsystem.IntakeMotor.getMotorOutputVoltage());
-        
+        SmartDashboard.putNumber("Testing/Ben T's Stuff/hood position", hoodSubsystem.returnMotor().getPosition().getValueAsDouble());
+
+
         //Motor id Widgets
         SmartDashboard.putStringArray("Testing/Motors/Motor Id's", motorIDs);
         for (String motorInfo : motorIDs) {
