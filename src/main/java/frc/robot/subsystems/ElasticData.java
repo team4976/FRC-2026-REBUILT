@@ -38,7 +38,7 @@ public class ElasticData extends SubsystemBase{
     public SendableChooser<PathPlannerPath> sendableChooser = new SendableChooser<>();
     double turretTargetAngle; // the angle we want the turret to be at so that we are aiming at the hub
     //double turretAngle; // the turret angle we are currently at
-    double distance; // distance from the hub to the turret
+    //double distance; // distance from the hub to the turret
     double hubWidth = 0.6;
     double radius = 3;
     boolean fuelMakeIt = false;
@@ -122,13 +122,6 @@ public class ElasticData extends SubsystemBase{
         } catch (Exception e){
             System.out.print(e.getMessage());
         }
-
-        //Ben T's smartdashboard stuff
-        SmartDashboard.putNumber("Testing/Ben T's Stuff/flywheelSpeed", 0);
-        SmartDashboard.putString("Testing/Ben T's Stuff/shooter state", flywheelSubsystem.getShooterState());
-        SmartDashboard.putNumber("Testing/Ben T's Stuff/shooter speed", flywheelSubsystem.getShooterSpeed());
-        SmartDashboard.putNumber("Testing/Ben T's Stuff/hood target position", 0);
-        SmartDashboard.putString("Testing/Ben T's Stuff/hood State", hoodSubsystem.getHoodState());
 
     }
 
@@ -235,8 +228,19 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Testing/Motors/Flywheel Lead/Flywheel Lead Voltage", flywheelSubsystem.ShooterMotorLeader.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putNumber("Testing/Motors/Flywheel Follow/Flywheel Follow Voltage", flywheelSubsystem.ShooterMotorFollower.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putNumber("Testing/Motors/Intake/Intake Voltage", intakeSubsystem.IntakeMotor.getMotorOutputVoltage());
-        SmartDashboard.putNumber("Testing/Ben T's Stuff/hood position", hoodSubsystem.returnMotor().getPosition().getValueAsDouble());
 
+        //RPM Widgets
+        SmartDashboard.putNumber("Testing/Motors/Indexer/Index RPM", indexAndSpindexSubsystem.indexMotor.getEncoder().getVelocity());
+        SmartDashboard.putNumber("Testing/Motors/Spindex/Spindex RPM", indexAndSpindexSubsystem.spindexMotor.getEncoder().getVelocity());
+        SmartDashboard.putNumber("Testing/Motors/Hood/Hood RPS", hoodSubsystem.HoodMotor.getVelocity().getValueAsDouble());
+        SmartDashboard.putNumber("Testing/Motors/Turret/Turret RPS", turretMovement.turretSpin.getVelocity().getValueAsDouble());
+        SmartDashboard.putNumber("Testing/Motors/Flywheel Lead/Flywheel Lead RPS", flywheelSubsystem.ShooterMotorLeader.getVelocity().getValueAsDouble());
+        SmartDashboard.putNumber("Testing/Motors/Flywheel Follow/Flywheel Follow RPS", flywheelSubsystem.ShooterMotorFollower.getVelocity().getValueAsDouble());
+        SmartDashboard.putNumber("Testing/Motors/Intake/Intake Speed (Raw)", intakeSubsystem.IntakeMotor.getSelectedSensorVelocity());
+
+        //Position Widgets
+        SmartDashboard.putNumber("Testing/Motors/Hood/Hood Position", hoodSubsystem.HoodMotor.getPosition().getValueAsDouble());
+        SmartDashboard.putNumber("Testing/Motors/Turret/Turret Position", turretMovement.turretSpin.getPosition().getValueAsDouble());
 
         //Motor id Widgets
         SmartDashboard.putStringArray("Testing/Motors/Motor Id's", motorIDs);
@@ -265,9 +269,20 @@ public class ElasticData extends SubsystemBase{
             }
         }
 
+        //Ben T's smartdashboard stuff
+        SmartDashboard.putNumber("Testing/Ben T's Stuff/flywheelSpeed", 0);
+        SmartDashboard.putString("Testing/Ben T's Stuff/shooter state", flywheelSubsystem.getShooterState());
+        SmartDashboard.putNumber("Testing/Ben T's Stuff/shooter speed", flywheelSubsystem.getShooterSpeed());
+        SmartDashboard.putNumber("Testing/Ben T's Stuff/hood target position", 0);
+        SmartDashboard.putString("Testing/Ben T's Stuff/hood State", hoodSubsystem.getHoodState());
+        SmartDashboard.putNumber("Testing/Ben T's Stuff/hood position", hoodSubsystem.returnMotor().getPosition().getValueAsDouble());
+
+        //Changes The Path on the Field2d
         sendableChooser.onChange((path)->{
             if(path != null) field2d.getObject("AutoPath").setPoses(path.getPathPoses());;
         });
+
+        
     
         //updates the Smartdash board Values
         SmartDashboard.updateValues();
