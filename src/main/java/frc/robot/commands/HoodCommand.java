@@ -4,14 +4,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.HoodSubsystem;
+import frc.robot.subsystems.PhotonVision;
 
 public class HoodCommand extends Command{
     public HoodSubsystem hoodSubsystem;
+    public PhotonVision turretVision;
     public boolean HoodOverride;
     public double hoodSpeed;
     
-    public HoodCommand(HoodSubsystem hoodSubsystem, boolean HoodOverride, double hoodSpeed){
+    public HoodCommand(HoodSubsystem hoodSubsystem, PhotonVision turretVision, boolean HoodOverride, double hoodSpeed){
         this.hoodSubsystem = hoodSubsystem;
+        this.turretVision = turretVision;
         this.HoodOverride = HoodOverride;
         this.hoodSpeed = hoodSpeed;
         addRequirements(hoodSubsystem);

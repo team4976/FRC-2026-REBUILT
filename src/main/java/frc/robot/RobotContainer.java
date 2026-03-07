@@ -58,7 +58,7 @@ public class RobotContainer {
     private final ClimberSubsystem climber = new ClimberSubsystem();
     private final TurretMovement turretMovement = new TurretMovement();
     public final FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
-    public final HoodSubsystem hoodSubsystem = new HoodSubsystem(m_turretvision);
+    public final HoodSubsystem hoodSubsystem = new HoodSubsystem();
     public final IndexAndSpindexSubsystem indexAndSpindexSubsystem = new IndexAndSpindexSubsystem(m_turretvision, hoodSubsystem, flywheelSubsystem);
     //public SmartDashboardHub smartDashboardHub = new SmartDashboardHub();
     public final List<Subsystem> allSubsystemsList = List.of(
@@ -74,10 +74,10 @@ public class RobotContainer {
     public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, false, hoodSubsystem, flywheelSubsystem);
     public IndexAndSpindexCommand reverseIndexer = new IndexAndSpindexCommand(indexAndSpindexSubsystem, true, hoodSubsystem, flywheelSubsystem);
     public intakeCommand intakeCommand = new intakeCommand(intakeSubsystem);
-    public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem);
-    public HoodCommand hoodCommand = new HoodCommand(hoodSubsystem, false, 0);
-    public HoodCommand manualHoodUp = new HoodCommand(hoodSubsystem, true, 0.5);
-    public HoodCommand manualHoodDown = new HoodCommand(hoodSubsystem, true, -0.5);
+    public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem, m_turretvision);
+    public HoodCommand hoodCommand = new HoodCommand(hoodSubsystem, m_turretvision, false, 0);
+    public HoodCommand manualHoodUp = new HoodCommand(hoodSubsystem, m_turretvision, true, 0.5);
+    public HoodCommand manualHoodDown = new HoodCommand(hoodSubsystem, m_turretvision, true, -0.5);
 
     //Controller Objects
     public static final CommandXboxController driverController = new CommandXboxController(0);
@@ -127,7 +127,6 @@ public class RobotContainer {
         //Should be right bumper
         driverController.axisGreaterThan(3, 0.3).whileTrue(indexAndSpindexCommand);
         driverController.x().onTrue(intakeCommand);
-        //driverController.leftBumper().whileTrue(flywheelCommand);
         //driverController.y().onTrue(pneumaticIntake);
 
         // Run SysId routines when holding back/start and X/Y.
@@ -143,7 +142,7 @@ public class RobotContainer {
         //driverController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
 
         // Spin flywheel and start hood should be a (operator controller)
-        driverController.rightBumper().onTrue(flywheelCommand);
+        driverController.rightBumper().toggleOnTrue(flywheelCommand);
         driverController.rightBumper().toggleOnTrue(hoodCommand);
         
         // Manual hood override

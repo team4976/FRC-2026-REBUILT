@@ -1,25 +1,20 @@
 package frc.robot.subsystems;
 
-import java.util.logging.Logger;
-
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class HoodSubsystem extends SubsystemBase{
     public TalonFX HoodMotor;
-    public PhotonVision turretVision;
     public String hoodState;
     public double targetHoodPos;
     public final MotionMagicVoltage hoodPosVolt = new MotionMagicVoltage(0).withSlot(1);
 
-    public HoodSubsystem(PhotonVision turretVision){
+    public HoodSubsystem(){
         hoodState = "cantShoot";
-        this.turretVision=turretVision;
         var hoodConfig = new TalonFXConfiguration();
 
         var slot1Configs = hoodConfig.Slot1;        
@@ -40,8 +35,6 @@ public class HoodSubsystem extends SubsystemBase{
     }
 
     public void moveHood(double targetHoodPos){
-        SmartDashboard.putNumber("targetHoodPos", targetHoodPos);
-        //targetHoodPos = turretVision.getTurretDistance();
         if (targetHoodPos < 0) {
             targetHoodPos = 0;
         }
