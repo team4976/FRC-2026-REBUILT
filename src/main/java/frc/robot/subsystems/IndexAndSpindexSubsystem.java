@@ -27,6 +27,7 @@ public class IndexAndSpindexSubsystem extends SubsystemBase{
         sparkConfig.inverted(true);
         indexMotor.configure(sparkConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
         spindexMotor = new SparkMax(Constants.Spindex_ID, MotorType.kBrushless);
+        System.out.println("Sparkmax index inverted");
     }
 
     public void stopFeeder(){

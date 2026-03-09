@@ -123,6 +123,9 @@ public class ElasticData extends SubsystemBase{
             System.out.print(e.getMessage());
         }
 
+        SmartDashboard.putNumber("Testing/Ben T's Stuff/flywheelSpeed", 0);
+        SmartDashboard.putNumber("Testing/Ben T's Stuff/hood target position", 0);
+
     }
 
     @Override
@@ -270,10 +273,8 @@ public class ElasticData extends SubsystemBase{
         }
 
         //Ben T's smartdashboard stuff
-        SmartDashboard.putNumber("Testing/Ben T's Stuff/flywheelSpeed", 0);
         SmartDashboard.putString("Testing/Ben T's Stuff/shooter state", flywheelSubsystem.getShooterState());
         SmartDashboard.putNumber("Testing/Ben T's Stuff/shooter speed", flywheelSubsystem.getShooterSpeed());
-        SmartDashboard.putNumber("Testing/Ben T's Stuff/hood target position", 0);
         SmartDashboard.putString("Testing/Ben T's Stuff/hood State", hoodSubsystem.getHoodState());
         SmartDashboard.putNumber("Testing/Ben T's Stuff/hood position", hoodSubsystem.returnMotor().getPosition().getValueAsDouble());
 
@@ -282,8 +283,7 @@ public class ElasticData extends SubsystemBase{
             if(path != null) field2d.getObject("AutoPath").setPoses(path.getPathPoses());;
         });
 
-        
-    
+            
         //updates the Smartdash board Values
         SmartDashboard.updateValues();
 
