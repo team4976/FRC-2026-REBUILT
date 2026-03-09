@@ -59,8 +59,8 @@ public final class Constants {
 
   public static final int kDriverControllerPort = 0;
   public static final int LEFT_LEADER_ID = 1;
-  public static double turnVoltage = 1;
-  public static double turretRotationVoltage = 1;
+  public static double turretScanVoltage = 0.7;
+  public static double turretManualVoltage = 2;
   public static boolean stopbutton = false;
   public static double yaw;
   public static double targetYaw = 0.0;
@@ -79,8 +79,11 @@ public final class Constants {
   public static double BlueHubX = 4.625594;
   public static double BlueHubY = 4.042283;
 
-  public static final double turretLimitLeft = 27.656; // software limits on turret motion
-  public static final double turretLimitRight = -8.469;
+  public static final double turretLimitLeft = 17.66748046875; // software limits on turret motion
+  public static final double turretLimitRight = -15.3974609375;
+  public static final double turretDeadzoneSize = 41.667 - (Constants.turretLimitLeft - Constants.turretLimitRight);// the turret encoder position the turret cannot go
+  // 8.6056
+
 
   public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
   public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(0.0, 0.0, 0.635), new Rotation3d(0, 0, 0));

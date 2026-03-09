@@ -1,11 +1,4 @@
-//Commented lines = 3
-/* 
- * time of flight
- * first segment: 0.9
- * second: 1.12
- * third:
- * look to ur rite...
-*/
+
 
 package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -25,7 +18,8 @@ public class TurretScan extends Command {
     Field2d field2d; // our estimated position on the field
     double turretTargetAngle; // the angle we want the turret to be at so that we are aiming at the hub
     double turretAngle; // the turret angle we are currently at
-    double turretEncoderValue; // the encoder value of the tuurets motor
+    double turretPosition; // the encoder value of the tuurets motor
+    double turretTargetPosition;
 
     public TurretScan(PhotonVision turretVision, TurretMovement shooter){
         m_turretVision = turretVision;
@@ -59,13 +53,13 @@ public class TurretScan extends Command {
             
             // if TurningRight = true turn the turret to the right
             if(TurningRight == true){
-               // m_shooter.turnRight(Constants.turretRotationVoltage);  CHANGE LATER
+               m_shooter.turnRight(Constants.turretScanVoltage);
                 //System.err.println("Turn Right == true works");
             }
 
             // if TurningRight = false turn the turret to the left
             if(TurningRight == false){
-                //m_shooter.turnLeft(Constants.turretRotationVoltage); CHANGE LATER
+                m_shooter.turnLeft(Constants.turretScanVoltage);
                 //System.err.println("Turn Right == false works");
             }
 
@@ -84,6 +78,7 @@ public class TurretScan extends Command {
         }
         else{
             field2d = m_turretVision.getDistanceAndAngle();
+            System.out.println("Setting PID");
 
             // gets the turret angle relative to the field
             turretAngle = m_turretVision.getTurretAngle();
@@ -92,7 +87,12 @@ public class TurretScan extends Command {
 
             distance = m_turretVision.getTurretDistance();
 
-            turretEncoderValue = m_shooter.getEncoderValue();
+            turretPosition = m_shooter.getEncoderValue();
+
+            turretTargetPosition = m_shooter.convertAngleRotation(turretTargetAngle-turretAngle);
+
+            m_shooter.turretRotationPID(turretPosition+turretTargetPosition);
+
 
             SmartDashboard.putNumber("turretDistance", distance);
             SmartDashboard.putNumber("turretPoseX", field2d.getRobotPose().getX());
@@ -100,6 +100,7 @@ public class TurretScan extends Command {
             SmartDashboard.putNumber("turretRotation", field2d.getRobotPose().getRotation().getDegrees());
             SmartDashboard.putNumber("targetAngle", turretTargetAngle);
             SmartDashboard.putNumber("turretAngle", turretAngle);
+            SmartDashboard.putNumber("turretTargetAngle", turretTargetAngle);
         
             // if left or right switch is pressed while we see a target set stopLockedOn to true
             if(m_shooter.getLeftSwitch() == false || m_shooter.getRightSwitch() == false ||
@@ -111,7 +112,7 @@ public class TurretScan extends Command {
 
         //Setting the voltage of the motor to the yaw of the target multiplied by 5
             //m_shooter.lockedOn((turretTargetAngle - turretAngle)/45*-0.6); CHANGE LATER
-            //System.out.println(Constants.turretRotationVoltage);
+            //System.out.println(Constants.turretManualVoltage);
 
         
         //System.out.println("hasTargets" + hasTargets);
@@ -121,7 +122,7 @@ public class TurretScan extends Command {
     @Override
     public void end(boolean interrupted) {
         m_shooter.stopTurn();
-        //System.err.println(Constants.turretRotationVoltage);
+        //System.err.println(Constants.turretManualVoltage);
     }
 
 

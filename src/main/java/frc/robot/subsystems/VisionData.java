@@ -249,7 +249,7 @@ public class VisionData{
             SmartDashboard.putString("turretDistance Split", "sqrt("+String.format("%.2f",DistanceX)+"*"+String.format("%.2f",DistanceX) +"+"+ String.format("%.2f",DistanceY)+"*"+(String.format("%.2f",DistanceY)+")=" +turretDistance));
             for (int i = 0; i < 5; i++){
                 // update BallAirTime
-                double ballAirTime = turretDistance*0.5; // TESTING REMOVE LATER
+                double ballAirTime = 0; // TESTING CHANGE LATER
                 //turretDistance = driveVelocity*BallAirTime;
                 double hubMovedX = DriveVelocityX*-1*ballAirTime;
                 double hubMovedY = DriveVelocityY*-1*ballAirTime;

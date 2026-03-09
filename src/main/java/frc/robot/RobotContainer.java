@@ -111,7 +111,7 @@ public class RobotContainer {
             point.withModuleDirection(new Rotation2d(-driverController.getLeftY(), -driverController.getLeftX()))
         ));
 
-        //driverController.leftTrigger().onTrue(new TurretScan(m_turretvision, turretMovement));
+        driverController.leftTrigger().toggleOnTrue(new TurretScan(m_turretvision, turretMovement));
         // calls the method that turns the stopButton for Scan to true
         //driverController.rightTrigger().onTrue(turretMovement.runOnce(()->turretMovement.getStopCommand()));
         //driverController.povLeft().whileTrue(new TurretLeft(m_turretvision, turretMovement));
@@ -135,8 +135,8 @@ public class RobotContainer {
         //driverController.leftTrigger().onTrue(new TurretScan(m_turretvision, turretMovement));
         // calls the method that turns the stopButton for Scan to true
         //driverController.rightTrigger().onTrue(turretMovement.runOnce(()->turretMovement.getStopCommand()));
-        //driverController.povLeft().whileTrue(new TurretLeft(m_turretvision, turretMovement));
-        //driverController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
+        driverController.povLeft().whileTrue(new TurretLeft(m_turretvision, turretMovement));
+        driverController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
 
         // Spin flywheel and start hood should be a (operator controller)
         driverController.rightBumper().whileTrue(flywheelCommand);
