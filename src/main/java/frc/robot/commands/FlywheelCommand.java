@@ -46,8 +46,8 @@ public class FlywheelCommand extends Command{
             SmartDashboard.putBoolean("Flywheel spinnin", false);
         }*/
         flywheelSubsystem.spinFlywheel(
-                31.49597 + (10.19041 * (photonVision.getDistance() + 0.5969))  
-                - (0.4148098 * Math.pow(photonVision.getDistance() + 0.5969, 2)));//SmartDashboard.getNumber("Testing/Ben T's Stuff/flywheelSpeed", 40));
+               /*  31.49597 + (10.19041 * (photonVision.getDistance() + 0.5969))  
+                - (0.4148098 * Math.pow(photonVision.getDistance() + 0.5969, 2))); */SmartDashboard.getNumber("Testing/Ben T's Stuff/flywheelSpeed", 40));
     }
 
     @Override
