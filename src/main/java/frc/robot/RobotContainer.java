@@ -146,8 +146,9 @@ public class RobotContainer {
         // Manual hood override
         operatorController.povUp().whileTrue(manualHoodUp);
         operatorController.povDown().whileTrue(manualHoodDown);
+        operatorController.a().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
         // Force Shoot
-        //operatorController.b().whileTrue(reverseIndexer);
+        operatorController.b().whileTrue(reverseIndexer);
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
