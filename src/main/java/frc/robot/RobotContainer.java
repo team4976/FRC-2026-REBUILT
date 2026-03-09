@@ -42,7 +42,7 @@ import static frc.robot.Constants.*;
 import java.util.List;
 
 import frc.robot.subsystems.ElasticData;
-import frc.robot.commands.intakeCommand;
+import frc.robot.commands.IntakeCommand;
 
 public class RobotContainer {
 //Shooting is op, Intake is drive 
@@ -73,7 +73,7 @@ public class RobotContainer {
     //Command Objects
     public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, false, hoodSubsystem, flywheelSubsystem);
     public IndexAndSpindexCommand reverseIndexer = new IndexAndSpindexCommand(indexAndSpindexSubsystem, true, hoodSubsystem, flywheelSubsystem);
-    public intakeCommand intakeCommand = new intakeCommand(intakeSubsystem);
+    public IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
     public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem, m_turretvision);
     public HoodCommand hoodCommand = new HoodCommand(hoodSubsystem, m_turretvision, false, 0);
     public HoodCommand manualHoodUp = new HoodCommand(hoodSubsystem, m_turretvision, true, 0.5);
