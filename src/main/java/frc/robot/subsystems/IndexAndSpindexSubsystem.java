@@ -35,10 +35,10 @@ public class IndexAndSpindexSubsystem extends SubsystemBase{
         spindexMotor.set(0);
     }
 
-    public void moveFeeder(double indexSpeed, double spindexSpeed){
-        indexMotor.set(indexSpeed);
-        spindexMotor.set(spindexSpeed);
-        System.out.println("Spinning indexer at:" + indexSpeed + "spinning spindexer at:" + spindexSpeed);
+    public void moveFeeder(double speed){
+        indexMotor.set(speed);
+        spindexMotor.set(speed);
+        //System.out.println("Spinning indexer at:" +  + "spinning spindexer at:" + spindexSpeed);
     }
 
     @Override

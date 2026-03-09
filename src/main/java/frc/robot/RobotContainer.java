@@ -17,9 +17,8 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 
-//import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.intakeCommand;
 import frc.robot.generated.RebuiltTunerConstants;
-import frc.robot.generated.TurretTunerConstants;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ElasticData;
@@ -42,7 +41,6 @@ import static frc.robot.Constants.*;
 import java.util.List;
 
 import frc.robot.subsystems.ElasticData;
-import frc.robot.commands.IntakeCommand;
 
 public class RobotContainer {
 //Shooting is op, Intake is drive 
@@ -71,9 +69,9 @@ public class RobotContainer {
     );
 
     //Command Objects
-    public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, false, hoodSubsystem, flywheelSubsystem);
-    public IndexAndSpindexCommand reverseIndexer = new IndexAndSpindexCommand(indexAndSpindexSubsystem, true, hoodSubsystem, flywheelSubsystem);
-    public IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
+    public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, 0.5);//hoodSubsystem, flywheelSubsystem);
+    public IndexAndSpindexCommand reverseIndexer = new IndexAndSpindexCommand(indexAndSpindexSubsystem, -0.5);//hoodSubsystem, flywheelSubsystem);
+    public intakeCommand intakeCommand = new intakeCommand(intakeSubsystem);
     public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem, m_turretvision);
     public HoodCommand hoodCommand = new HoodCommand(hoodSubsystem, m_turretvision, false, 0);
     public HoodCommand manualHoodUp = new HoodCommand(hoodSubsystem, m_turretvision, true, 0.5);
@@ -142,8 +140,8 @@ public class RobotContainer {
         //driverController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
 
         // Spin flywheel and start hood should be a (operator controller)
-        driverController.rightBumper().toggleOnTrue(flywheelCommand);
-        driverController.rightBumper().toggleOnTrue(hoodCommand);
+        //driverController.rightBumper().toggleOnTrue(flywheelCommand);
+        driverController.rightBumper().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
         
         // Manual hood override
         operatorController.povUp().whileTrue(manualHoodUp);
