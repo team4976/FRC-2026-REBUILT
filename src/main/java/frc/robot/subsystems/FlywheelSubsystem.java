@@ -32,14 +32,14 @@ public class FlywheelSubsystem extends SubsystemBase{
         ShooterMotorFollower.setControl(new Follower(ShooterMotorLeader.getDeviceID(), MotorAlignmentValue.Aligned));
     }
 
-    public void setShooterState(){
+    /*public void setShooterState(){
         if (shooterState == "cantShoot") {
             shooterState = "windShooter";
         }
         else if (shooterState == "readyToShoot" || shooterState == "windShooter") {
             shooterState = "cantShoot";
         }
-    }
+    }*/
 
     public void spinFlywheel(double targetRPS){
         System.out.println("targetRPS: " + targetRPS);
@@ -69,8 +69,8 @@ public class FlywheelSubsystem extends SubsystemBase{
          && ShooterMotorLeader.getVelocity().getValueAsDouble() > targetRPS - 5 && targetRPS > 0) {
             shooterState = "readyToShoot";
         }
-        else if (targetRPS > 0 && shooterState == "readyToShoot") {
-            shooterState = "windShooter";
+        else {
+            shooterState = "notReady";
         }
     }
 }
