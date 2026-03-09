@@ -130,14 +130,11 @@ public class RobotContainer {
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
         //operatorController.start().whileTrue(new Climb(climber));
-        // Run SysId routines when holding back/start and X/Y.
-        // Note that each routine should be run exactly once in a single log.
-        //operatorController.b().whileTrue(new Climb(climber));
         //driverController.leftTrigger().onTrue(new TurretScan(m_turretvision, turretMovement));
         // calls the method that turns the stopButton for Scan to true
         //driverController.rightTrigger().onTrue(turretMovement.runOnce(()->turretMovement.getStopCommand()));
-        //driverController.povLeft().whileTrue(new TurretLeft(m_turretvision, turretMovement));
-        //driverController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
+        operatorController.povLeft().whileTrue(new TurretLeft(m_turretvision, turretMovement));
+        operatorController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
 
         // Spin flywheel and start hood should be a (operator controller)
         //driverController.rightBumper().toggleOnTrue(flywheelCommand);
@@ -147,7 +144,7 @@ public class RobotContainer {
         operatorController.povUp().whileTrue(manualHoodUp);
         operatorController.povDown().whileTrue(manualHoodDown);
         operatorController.a().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
-        // Force Shoot
+        //operatorController.leftBumper().whileTrue(indexAndSpindexCommand);
         operatorController.b().whileTrue(reverseIndexer);
         drivetrain.registerTelemetry(logger::telemeterize);
     }
