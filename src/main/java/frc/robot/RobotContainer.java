@@ -83,7 +83,7 @@ public class RobotContainer {
     public HoodCommand hoodCommand = new HoodCommand(hoodSubsystem, m_turretvision, false, 0);
     public HoodCommand manualHoodUp = new HoodCommand(hoodSubsystem, m_turretvision, true, 0.5);
     public HoodCommand manualHoodDown = new HoodCommand(hoodSubsystem, m_turretvision, true, -0.5);
-    public Command hoodAndFlywheel = new ParallelDeadlineGroup(flywheelCommand, hoodCommand);
+    //public Command hoodAndFlywheel = new ParallelDeadlineGroup(flywheelCommand, hoodCommand);
 
     //Controller Objects
     public static final CommandXboxController driverController = new CommandXboxController(0);
