@@ -15,3 +15,5 @@ Right Joystick is move turret
 Q. Should we have a manual override for the flywheel speed? -
 Like what if the camera stops working so our code starts not using the correct speed -
 so we start missing all our shots.
+
+A. Yes
