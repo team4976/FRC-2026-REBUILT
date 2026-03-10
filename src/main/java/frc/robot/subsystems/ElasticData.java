@@ -246,8 +246,8 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Testing/Motors/Turret/Turret Position", turretMovement.turretSpin.getPosition().getValueAsDouble());
 
         //Limit Switch Pressed Widgets (not technically motor stuff but whatever)
-        SmartDashboard.putBoolean("Testing/Limit Switch Left" turretMovement.getLeftSwitch());
-        SmartDashboard.putBoolean("Testing/Limit Switch Right" turretMovement.getRightSwitch());
+        SmartDashboard.putBoolean("Testing/Limit Switch Left", turretMovement.getLeftSwitch());
+        SmartDashboard.putBoolean("Testing/Limit Switch Right", turretMovement.getRightSwitch());
 
         //Motor id Widgets
         SmartDashboard.putStringArray("Testing/Motors/Motor Id's", motorIDs);
