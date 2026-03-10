@@ -52,7 +52,6 @@ public IntakeCommand(Intake intake) {
 
   @Override
   public void end(boolean interrupted) {  
-    //pneumatics.reverseSolenoid();
   }
 
 
