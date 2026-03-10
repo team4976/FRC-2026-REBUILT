@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import frc.robot.Telemetry;
 import frc.robot.generated.RebuiltTunerConstants;
 import static edu.wpi.first.units.Units.*;
@@ -230,10 +232,10 @@ public class ElasticData extends SubsystemBase{
         //Swerve Direction on Field
         if(telemetry != null){
             if(hoodSubsystem != null){
-                field2d.getObject("FR").setPose(field2d.getRobotPose().getX() + (1* Math.cos(telemetry.m_moduleDirections[2].getAngle())),field2d.getRobotPose().getY() + (1* Math.sin(telemetry.m_moduleDirections[2].getAngle())),new Rotation2d(telemetry.m_moduleDirections[2].getAngle()));
-                field2d.getObject("FL").setPose(field2d.getRobotPose().getX() + (-1* Math.cos(telemetry.m_moduleDirections[1].getAngle())),field2d.getRobotPose().getY() + (1* Math.sin(telemetry.m_moduleDirections[1].getAngle())),new Rotation2d(telemetry.m_moduleDirections[1].getAngle()));
-                field2d.getObject("RR").setPose(field2d.getRobotPose().getX() + (1* Math.cos(telemetry.m_moduleDirections[0].getAngle())),field2d.getRobotPose().getY() + (-1* Math.sin(telemetry.m_moduleDirections[0].getAngle())),new Rotation2d(telemetry.m_moduleDirections[0].getAngle()));
-                field2d.getObject("RL").setPose(field2d.getRobotPose().getX() + (-1* Math.cos(telemetry.m_moduleDirections[3].getAngle())),field2d.getRobotPose().getY() + (-1* Math.sin(telemetry.m_moduleDirections[3].getAngle())),new Rotation2d(telemetry.m_moduleDirections[3].getAngle()));
+                field2d.getObject("FR").setPose(field2d.getRobotPose().getX() + 0.42 + (1 * Math.cos(telemetry.m_moduleDirections[2].getAngle())),field2d.getRobotPose().getY() + 0.343 + (1 * Math.sin(telemetry.m_moduleDirections[2].getAngle())),new Rotation2d(telemetry.m_moduleDirections[2].getAngle()));
+                field2d.getObject("FL").setPose(field2d.getRobotPose().getX() - 0.42  + (1 * Math.cos(telemetry.m_moduleDirections[1].getAngle())),field2d.getRobotPose().getY() + 0.343 + (1 * Math.sin(telemetry.m_moduleDirections[1].getAngle())),new Rotation2d(telemetry.m_moduleDirections[1].getAngle()));
+                field2d.getObject("RR").setPose(field2d.getRobotPose().getX() + 0.42 + (1 * Math.cos(telemetry.m_moduleDirections[0].getAngle())),field2d.getRobotPose().getY() - 0.343 + (1 * Math.sin(telemetry.m_moduleDirections[0].getAngle())),new Rotation2d(telemetry.m_moduleDirections[0].getAngle()));
+                field2d.getObject("RL").setPose(field2d.getRobotPose().getX() - 0.42 + (1 * Math.cos(telemetry.m_moduleDirections[3].getAngle())),field2d.getRobotPose().getY() - 0.343 + (1 * Math.sin(telemetry.m_moduleDirections[3].getAngle())),new Rotation2d(telemetry.m_moduleDirections[3].getAngle()));
             }
             
         }
