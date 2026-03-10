@@ -112,6 +112,9 @@ public class TurretScan extends Command {
                 stopLockedOn = true;
                 //System.out.println("stopLockedOn " + stopLockedOn);
             }
+            else{
+                stopLockedOn = false;
+            }
 
         Double speedAdjust = 5.0;
         m_shooter.lockedOn((turretTargetAngle-turretAngle)/45*-speedAdjust);

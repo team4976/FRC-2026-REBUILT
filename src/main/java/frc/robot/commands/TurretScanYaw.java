@@ -94,6 +94,9 @@ public class TurretScanYaw extends Command {
                 stopLockedOn = true;
                 //System.out.println("stopLockedOn " + stopLockedOn);
             }
+            else{
+                stopLockedOn = false;
+            }
 
         //Setting the voltage of the motor to the yaw of the target multiplied by 5
         OptionalDouble yaw = m_turretVision.getTargetYaw(Constants.hubId);
