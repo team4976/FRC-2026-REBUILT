@@ -78,6 +78,7 @@ public final class Constants {
   public static double RedHubY = 4.042283;
   public static double BlueHubX = 4.625594;
   public static double BlueHubY = 4.042283;
+  public static int hubId = 0;
 
   public static final double turretLimitLeft = 21.7626953125; // software limits on turret motion
   public static final double turretLimitRight = -11.59228515625;

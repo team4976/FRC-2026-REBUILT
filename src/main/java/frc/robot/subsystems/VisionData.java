@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
 import frc.robot.Telemetry;
 
 import static frc.robot.Constants.*;
@@ -43,6 +44,7 @@ public class VisionData{
     public double turretDistance;
     public double turretAngle;
     public double turretTargetAngle;
+    public double hubId;
 
     //the constructor, having the camera as a parameter--
     //means the methods in this class can be used dynamically--
@@ -58,10 +60,12 @@ public class VisionData{
             if (alliance.get() == Alliance.Blue) {
                 hubOrigX = BlueHubX; 
                 hubOrigY = BlueHubY;
+                Constants.hubId = 26;
             }
             if (alliance.get() == Alliance.Red) {
                 hubOrigX = RedHubX; 
                 hubOrigY = RedHubY;
+                Constants.hubId = 10;
             }}
     }
 
