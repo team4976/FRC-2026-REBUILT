@@ -201,7 +201,7 @@ public class ElasticData extends SubsystemBase{
 
         //AC- Additional Field2d Stuff
         if (turretMovement.turretSpin != null){
-            rotation = cameraDataTurret.getTurretAngle() + field2d.getRobotPose().getRotation().getDegrees();
+            rotation = (cameraDataTurret.getTurretAngle()/57) + field2d.getRobotPose().getRotation().getDegrees();
         } else {
             rotation = 0.0;
         }
