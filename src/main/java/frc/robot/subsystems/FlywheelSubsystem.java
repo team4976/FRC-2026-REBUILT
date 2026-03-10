@@ -32,15 +32,6 @@ public class FlywheelSubsystem extends SubsystemBase{
         ShooterMotorFollower.setControl(new Follower(ShooterMotorLeader.getDeviceID(), MotorAlignmentValue.Aligned));
     }
 
-    /*public void setShooterState(){
-        if (shooterState == "cantShoot") {
-            shooterState = "windShooter";
-        }
-        else if (shooterState == "readyToShoot" || shooterState == "windShooter") {
-            shooterState = "cantShoot";
-        }
-    }*/
-
     public void spinFlywheel(double targetRPS){
         System.out.println("targetRPS: " + targetRPS);
         ShooterMotorLeader.setControl(shooterVelocityVoltage.withVelocity(targetRPS));
@@ -58,12 +49,6 @@ public class FlywheelSubsystem extends SubsystemBase{
     @Override
     public void periodic(){
         SmartDashboard.putNumber("Turret Rotate", ShooterMotorLeader.getVelocity().getValueAsDouble());
-        /*var flywheelConfig = new Slot0Configs();
-        flywheelConfig.kS = SmartDashboard.getNumber("kS", 0.1); // Add 0.1 V output to overcome static friction
-        flywheelConfig.kV = SmartDashboard.getNumber("kV", 0.12); // A velocity target of 1 rps results in 0.12 V output
-        flywheelConfig.kP = SmartDashboard.getNumber("kP", 0.45); // An error of 1 rps results in 0.11 V output
-        flywheelConfig.kI = SmartDashboard.getNumber("kP", 0.0); // no output for integrated error
-        flywheelConfig.kD = SmartDashboard.getNumber("kP", 0.0); // no output for error derivative*/
         
         if (ShooterMotorLeader.getVelocity().getValueAsDouble() < targetRPS + 5 
          && ShooterMotorLeader.getVelocity().getValueAsDouble() > targetRPS - 5 && targetRPS > 0) {

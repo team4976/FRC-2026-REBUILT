@@ -141,18 +141,14 @@ public class RobotContainer {
         //driverController.leftTrigger().onTrue(new TurretScan(m_turretvision, turretMovement));
         // calls the method that turns the stopButton for Scan to true
         //driverController.rightTrigger().onTrue(turretMovement.runOnce(()->turretMovement.getStopCommand()));
-        operatorController.povLeft().whileTrue(new TurretLeft(m_turretvision, turretMovement));
-        operatorController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
-
-        // Spin flywheel and start hood should be a (operator controller)
-        //driverController.rightBumper().toggleOnTrue(flywheelCommand);
-        driverController.rightBumper().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
+        operatorController.povLeft().whileTrue(turretLeft);
+        operatorController.povRight().whileTrue(turretRight);
         
         // Manual hood override
         operatorController.povUp().whileTrue(manualHoodUp);
         operatorController.povDown().whileTrue(manualHoodDown);
-        //operatorController.a().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
-        //operatorController.a().toggleOnTrue(hoodCommand.withDeadline(ManualFlywheelOverideCommand));
+        operatorController.a().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
+        operatorController.a().toggleOnTrue(ManualFlywheelOverideCommand);
         //operatorController.leftBumper().whileTrue(indexAndSpindexCommand);
         operatorController.b().whileTrue(reverseIndexer);
         drivetrain.registerTelemetry(logger::telemeterize);
