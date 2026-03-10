@@ -59,7 +59,7 @@ public class RobotContainer {
     private final ClimberSubsystem climber = new ClimberSubsystem();
     private final TurretMovement turretMovement = new TurretMovement();
     public final FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
-    public final HoodSubsystem hoodSubsystem = new HoodSubsystem(m_turretvision);
+    public final HoodSubsystem hoodSubsystem = new HoodSubsystem();
     public final TurretScan turretScan = new TurretScan(m_turretvision, turretMovement);
     public final TurretScanYaw turretScanYaw = new TurretScanYaw(m_turretvision, turretMovement);
     public final TurretLeft turretLeft = new TurretLeft(m_turretvision, turretMovement);
@@ -141,18 +141,14 @@ public class RobotContainer {
         //driverController.leftTrigger().onTrue(new TurretScan(m_turretvision, turretMovement));
         // calls the method that turns the stopButton for Scan to true
         //driverController.rightTrigger().onTrue(turretMovement.runOnce(()->turretMovement.getStopCommand()));
-        operatorController.povLeft().whileTrue(new TurretLeft(m_turretvision, turretMovement));
-        operatorController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
-
-        // Spin flywheel and start hood should be a (operator controller)
-        //driverController.rightBumper().toggleOnTrue(flywheelCommand);
-        driverController.rightBumper().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
+        operatorController.povLeft().whileTrue(turretLeft);
+        operatorController.povRight().whileTrue(turretRight);
         
         // Manual hood override
         operatorController.povUp().whileTrue(manualHoodUp);
         operatorController.povDown().whileTrue(manualHoodDown);
         operatorController.a().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
-        operatorController.a().toggleOnTrue(hoodCommand.withDeadline(ManualFlywheelOverideCommand));
+        operatorController.a().toggleOnTrue(ManualFlywheelOverideCommand);
         //operatorController.leftBumper().whileTrue(indexAndSpindexCommand);
         operatorController.b().whileTrue(reverseIndexer);
         drivetrain.registerTelemetry(logger::telemeterize);
