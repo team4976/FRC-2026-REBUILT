@@ -8,12 +8,6 @@ A is spin up flywheels
 B is reverse indexer
 X is Intake manual override
 D-Pad is hood manual override
-
+y is manual flywheel override
 Menu button is climb
 Right Joystick is move turret
-
-Q. Should we have a manual override for the flywheel speed? -
-Like what if the camera stops working so our code starts not using the correct speed -
-so we start missing all our shots.
-
-A. Yes
