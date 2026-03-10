@@ -59,7 +59,7 @@ public class RobotContainer {
     private final ClimberSubsystem climber = new ClimberSubsystem();
     private final TurretMovement turretMovement = new TurretMovement();
     public final FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
-    public final HoodSubsystem hoodSubsystem = new HoodSubsystem(m_turretvision);
+    public final HoodSubsystem hoodSubsystem = new HoodSubsystem();
     public final TurretScan turretScan = new TurretScan(m_turretvision, turretMovement);
     public final TurretScanYaw turretScanYaw = new TurretScanYaw(m_turretvision, turretMovement);
     public final TurretLeft turretLeft = new TurretLeft(m_turretvision, turretMovement);
@@ -151,8 +151,8 @@ public class RobotContainer {
         // Manual hood override
         operatorController.povUp().whileTrue(manualHoodUp);
         operatorController.povDown().whileTrue(manualHoodDown);
-        operatorController.a().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
-        operatorController.a().toggleOnTrue(hoodCommand.withDeadline(ManualFlywheelOverideCommand));
+        //operatorController.a().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
+        //operatorController.a().toggleOnTrue(hoodCommand.withDeadline(ManualFlywheelOverideCommand));
         //operatorController.leftBumper().whileTrue(indexAndSpindexCommand);
         operatorController.b().whileTrue(reverseIndexer);
         drivetrain.registerTelemetry(logger::telemeterize);
