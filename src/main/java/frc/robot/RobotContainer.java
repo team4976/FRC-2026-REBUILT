@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
 
 import static edu.wpi.first.units.Units.*;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -17,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 
-import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.intakeCommand;
 import frc.robot.generated.RebuiltTunerConstants;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -71,7 +72,7 @@ public class RobotContainer {
     //Command Objects
     public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, 0.5);//hoodSubsystem, flywheelSubsystem);
     public IndexAndSpindexCommand reverseIndexer = new IndexAndSpindexCommand(indexAndSpindexSubsystem, -0.5);//hoodSubsystem, flywheelSubsystem);
-    public IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
+    public intakeCommand IntakeCommand = new intakeCommand(intakeSubsystem);
     public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem, m_turretvision);
     public HoodCommand hoodCommand = new HoodCommand(hoodSubsystem, m_turretvision, false, 0);
     public HoodCommand manualHoodUp = new HoodCommand(hoodSubsystem, m_turretvision, true, 0.5);
@@ -87,6 +88,7 @@ public class RobotContainer {
     //for the elastic folder, gonna be merged to elastic data later
 
     public RobotContainer() {
+        drivetrain.configureAutoBuilder();
         configureBindings();
     }
 
@@ -124,7 +126,7 @@ public class RobotContainer {
         // Regular Shooting
         //Should be right bumper
         driverController.axisGreaterThan(3, 0.3).whileTrue(indexAndSpindexCommand);
-        driverController.x().onTrue(intakeCommand);
+        driverController.x().onTrue(IntakeCommand);
         //driverController.y().onTrue(pneumaticIntake);
 
         // Run SysId routines when holding back/start and X/Y.
@@ -151,8 +153,11 @@ public class RobotContainer {
 
     private final SendableChooser<Command> autoChooser = null;
 
-    public Command getAutonomousCommand() {
-        return (Command) elastic.fieldWidget.commandChooser.getSelected();
+    public Command getAutonomousCommand() { 
+        //elasticData..addChooser();
+        Command test = AutoBuilder.buildAuto("DR");//(Command) elastic.fieldWidget.commandChooser.getSelected();
+        System.out.println("*********: "+test.getName());
+        return test;//(Command) elastic.fieldWidget.commandChooser.getSelected();
         // Simple drive forward auton
         /*
             // Reset our field centric heading to match the robot
@@ -171,9 +176,7 @@ public class RobotContainer {
         );
         */
     }
-
-<<<<<<< HEAD
-
+}
 //PRE ORGANIZATION COMMENTS, PROBABLY USELESS (IS USELESS)
 
     //driverController.back().and(driverController.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
@@ -189,6 +192,4 @@ public class RobotContainer {
     //driverController.x().onTrue(elastic.fieldWidget.getAuto("Test Auto"));
     //driverController.y().onTrue(elastic.fieldWidget.getAuto("HPR"));
     //onTrue(getAutonomousCommand());//(new Activation(Pneumatics));
-=======
->>>>>>> testing
-}
+

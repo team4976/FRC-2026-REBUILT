@@ -18,6 +18,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import frc.robot.generated.RebuiltTunerConstants;
+//import frc.robot.generated.TurretTunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 /**
@@ -35,7 +36,7 @@ public final class Constants {
 
   //serve constants
   //swerve drive variables and objects
-  public static double MaxSpeed = 0.8 * RebuiltTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+  public static double MaxSpeed = 0.8 * RebuiltTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); //RebuiltTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
   public static double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); //rotations per second max angular velocity
   /* Setting up bindings for necessary control of the swerve drive platform */
   public static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -43,7 +44,7 @@ public final class Constants {
           .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
   public static final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   public static final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
-  public static final CommandSwerveDrivetrain drivetrain = RebuiltTunerConstants.createDrivetrain();
+  public static final CommandSwerveDrivetrain drivetrain = RebuiltTunerConstants.createDrivetrain(); //TurretTunerConstants.createDrivetrain();
   public static final SwerveRequest idle = new SwerveRequest.Idle();
 
   //id constants
