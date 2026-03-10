@@ -46,8 +46,6 @@ public IntakeCommand(Intake intake) {
 
 @Override
   public void execute() {
-    //pneumatics.testMove();
-
   }
   
   // Called once the command ends or is interrupted.
