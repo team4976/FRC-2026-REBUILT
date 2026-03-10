@@ -23,15 +23,20 @@ public class TurretMovement extends SubsystemBase{
     final PositionVoltage turretPosition = new PositionVoltage(0).withSlot(0);
 
     public TurretMovement(){
-        turretSpin = new TalonFX(Constants.Turret_ID);  
+    
+        turretSpin = new TalonFX(Constants.Turret_ID); 
+         
         turretSpin.setVoltage(0);
-
+        turretSpin.setPosition(0);
+        
         var turretSpinConfig = new Slot0Configs();
+        
         SmartDashboard.putNumber("turret.kS",0.1); // Add 0.1 V output to overcome static friction
         SmartDashboard.putNumber("turret.kV",0.2); // A velocity target of 1 rps results in 0.12 V output
         SmartDashboard.putNumber("turret.kP",0.9);; // An error of 1 rps results in 0.11 V output
         SmartDashboard.putNumber("turret.kI",0);; // no output for integrated error
         SmartDashboard.putNumber("turret.kD",0);; // no output for error derivative*/
+   
         turretSpinConfig.kS = SmartDashboard.getNumber("turret.kS", 0.1); // Add 0.1 V output to overcome static friction
         turretSpinConfig.kV = SmartDashboard.getNumber("turret.kV", 0.12); // A velocity target of 1 rps results in 0.12 V output
         turretSpinConfig.kP = SmartDashboard.getNumber("turret.kP", 0.3); // An error of 1 rps results in 0.11 V output

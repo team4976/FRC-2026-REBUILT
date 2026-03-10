@@ -1,6 +1,8 @@
 
 
 package frc.robot.commands;
+import java.util.OptionalDouble;
+
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,6 +22,7 @@ public class TurretScan extends Command {
     double turretAngle; // the turret angle we are currently at
     double turretPosition; // the encoder value of the tuurets motor
     double turretTargetPosition;
+    double turretyaw;
 
     public TurretScan(PhotonVision turretVision, TurretMovement shooter){
         m_turretVision = turretVision;
@@ -50,6 +53,7 @@ public class TurretScan extends Command {
 
 
         if(hasTargets == false){
+            System.err.println("hasTargets = false");
             
             // if TurningRight = true turn the turret to the right
             if(TurningRight == true){
@@ -78,7 +82,7 @@ public class TurretScan extends Command {
         }
         else{
             field2d = m_turretVision.getDistanceAndAngle();
-            System.out.println("Setting PID");
+            System.err.println("hasTargets = false");
 
             // gets the turret angle relative to the field
             turretAngle = m_turretVision.getTurretAngle();
@@ -91,7 +95,7 @@ public class TurretScan extends Command {
 
             turretTargetPosition = m_shooter.convertAngleRotation(turretTargetAngle-turretAngle);
 
-            m_shooter.turretRotationPID(turretPosition+turretTargetPosition);
+         //   m_shooter.turretRotationPID(turretPosition+turretTargetPosition);
 
 
             SmartDashboard.putNumber("turretDistance", distance);
@@ -111,7 +115,12 @@ public class TurretScan extends Command {
             }
 
         //Setting the voltage of the motor to the yaw of the target multiplied by 5
-            //m_shooter.lockedOn((turretTargetAngle - turretAngle)/45*-0.6); CHANGE LATER
+        OptionalDouble yaw = m_turretVision.getTargetYaw(26);
+        if (yaw.isEmpty()) return;
+
+        turretyaw= yaw.getAsDouble();
+        Double speedAdjust = 5.0;
+        m_shooter.lockedOn((turretyaw)/45*-speedAdjust); //CHANGE LATER
             //System.out.println(Constants.turretManualVoltage);
 
         

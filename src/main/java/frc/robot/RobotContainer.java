@@ -59,6 +59,9 @@ public class RobotContainer {
     private final TurretMovement turretMovement = new TurretMovement();
     public final FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
     public final HoodSubsystem hoodSubsystem = new HoodSubsystem(m_turretvision);
+    public final TurretScan turretScan = new TurretScan(m_turretvision, turretMovement);
+    public final TurretLeft turretLeft = new TurretLeft(m_turretvision, turretMovement);
+    public final TurretRight turretRight = new TurretRight(m_turretvision, turretMovement);
     public final IndexAndSpindexSubsystem indexAndSpindexSubsystem = new IndexAndSpindexSubsystem(m_turretvision, hoodSubsystem, flywheelSubsystem);
     //public SmartDashboardHub smartDashboardHub = new SmartDashboardHub();
     public final List<Subsystem> allSubsystemsList = List.of(
@@ -111,7 +114,7 @@ public class RobotContainer {
             point.withModuleDirection(new Rotation2d(-driverController.getLeftY(), -driverController.getLeftX()))
         ));
 
-        driverController.leftTrigger().toggleOnTrue(new TurretScan(m_turretvision, turretMovement));
+        driverController.leftTrigger().toggleOnTrue(turretScan);
         // calls the method that turns the stopButton for Scan to true
         //driverController.rightTrigger().onTrue(turretMovement.runOnce(()->turretMovement.getStopCommand()));
         //driverController.povLeft().whileTrue(new TurretLeft(m_turretvision, turretMovement));
@@ -135,8 +138,8 @@ public class RobotContainer {
         //driverController.leftTrigger().onTrue(new TurretScan(m_turretvision, turretMovement));
         // calls the method that turns the stopButton for Scan to true
         //driverController.rightTrigger().onTrue(turretMovement.runOnce(()->turretMovement.getStopCommand()));
-        driverController.povLeft().whileTrue(new TurretLeft(m_turretvision, turretMovement));
-        driverController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
+        driverController.povLeft().whileTrue(turretLeft);
+        driverController.povRight().whileTrue(turretRight);
 
         // Spin flywheel and start hood should be a (operator controller)
         driverController.rightBumper().whileTrue(flywheelCommand);
