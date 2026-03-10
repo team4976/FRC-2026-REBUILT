@@ -24,7 +24,7 @@ public class Intake extends SubsystemBase {
   public static final PneumaticsControlModule pneumaticsControlModule = new PneumaticsControlModule(30);
   private final Compressor compressor = new Compressor(30, PneumaticsModuleType.CTREPCM);
   private Solenoid solenoid;
-  private static DigitalInput m_toplimitSwitch = new DigitalInput(0);
+  //private static DigitalInput m_toplimitSwitch = new DigitalInput(0);
       
   public Intake() {
     IntakeMotor = new TalonSRX(Intake_ID); //Defines motor 1
@@ -53,10 +53,10 @@ public class Intake extends SubsystemBase {
     solenoid.set(false);
   }
   
-  public boolean checkswitchstatus() {
+  /*public boolean checkswitchstatus() {
     // Limit switch is pressed
     return (m_toplimitSwitch.get());
-  }
+  }*/
 
 }
 

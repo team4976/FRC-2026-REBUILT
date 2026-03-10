@@ -186,6 +186,12 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Vision/Turret Cam/Turret Distance Test", cameraDataTurret.vision.turretDistance);
         SmartDashboard.putNumber("Vision/Turret Cam/Turret PoseX Test", cameraDataTurret.getDistanceAndAngle().getRobotPose().getX());
         SmartDashboard.putNumber("Vision/Turret Cam/Turret PoseX Test", cameraDataTurret.getDistanceAndAngle().getRobotPose().getY());
+        SmartDashboard.putNumber("turretTargetAngle", cameraDataTurret.getTurretTargetAngle());
+        SmartDashboard.putNumber("Vision/Turret Cam/Turret Target Position", turretMovement.convertAngleRotation(cameraDataTurret.getTurretTargetAngle() - cameraDataTurret.getTurretAngle()));
+
+        // Turret Limit Switches
+        SmartDashboard.putBoolean("leftLimit", turretMovement.getLeftSwitch());
+        SmartDashboard.putBoolean("RightLimit", turretMovement.getRightSwitch());
 
 
 

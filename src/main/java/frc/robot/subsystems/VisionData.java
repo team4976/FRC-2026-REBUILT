@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
 import frc.robot.Telemetry;
 
 import static frc.robot.Constants.*;
@@ -43,6 +44,7 @@ public class VisionData{
     public double turretDistance;
     public double turretAngle;
     public double turretTargetAngle;
+    public double hubId;
 
     //the constructor, having the camera as a parameter--
     //means the methods in this class can be used dynamically--
@@ -58,10 +60,12 @@ public class VisionData{
             if (alliance.get() == Alliance.Blue) {
                 hubOrigX = BlueHubX; 
                 hubOrigY = BlueHubY;
+                Constants.hubId = 26;
             }
             if (alliance.get() == Alliance.Red) {
                 hubOrigX = RedHubX; 
                 hubOrigY = RedHubY;
+                Constants.hubId = 10;
             }}
     }
 
@@ -247,23 +251,26 @@ public class VisionData{
             SmartDashboard.putString("DistanceX",""+String.format("%.2f",HubX)+" - "+String.format("%.2f",field2d.getRobotPose().getX()) +"= "+String.format("%.2f",DistanceX));
             SmartDashboard.putString("DistanceY",""+String.format("%.2f",HubY)+" - "+String.format("%.2f",field2d.getRobotPose().getY()) +"= "+String.format("%.2f",DistanceY));
             SmartDashboard.putString("turretDistance Split", "sqrt("+String.format("%.2f",DistanceX)+"*"+String.format("%.2f",DistanceX) +"+"+ String.format("%.2f",DistanceY)+"*"+(String.format("%.2f",DistanceY)+")=" +turretDistance));
-            for (int i = 0; i < 5; i++){
+            //for (int i = 0; i < 5; i++){
                 // update BallAirTime
-                double ballAirTime = turretDistance*0.5; // TESTING REMOVE LATER
+               // double ballAirTime = 0; // TESTING CHANGE LATER
                 //turretDistance = driveVelocity*BallAirTime;
-                double hubMovedX = DriveVelocityX*-1*ballAirTime;
-                double hubMovedY = DriveVelocityY*-1*ballAirTime;
+                //double hubMovedX = DriveVelocityX*-1*ballAirTime;
+                //double hubMovedY = DriveVelocityY*-1*ballAirTime;
 
                 // moving the virtual hub
-                HubX = HubX + hubMovedX;
-                HubY = HubY + hubMovedY;
+              //  HubX = HubX + hubMovedX;
+               // HubY = HubY + hubMovedY;
                 // making a new distance based on the virtual hub
-                DistanceX = HubX - field2d.getRobotPose().getX();
-                DistanceY = HubY - field2d.getRobotPose().getY();
+                DistanceX = field2d.getRobotPose().getX()-HubX;
+                DistanceY = field2d.getRobotPose().getY()-HubY;
                 turretDistance = Math.sqrt(DistanceX*DistanceX + DistanceY*DistanceY);
-            }
+
+                System.err.println(hubOrigX);
+                System.err.println(hubOrigY);
+            //}
             // calculates the angle we want to get to
-            turretTargetAngle = Math.atan(DistanceX / DistanceY);
+            turretTargetAngle = Math.toDegrees(Math.atan2( DistanceY,DistanceX));
             // calculates the angle of the bot from the middle
             turretAngle = (fieldToCamera.getRotation().toRotation2d().getDegrees());
             } else {

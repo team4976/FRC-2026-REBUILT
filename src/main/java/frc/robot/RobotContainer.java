@@ -34,6 +34,7 @@ import frc.robot.commands.ManualFlywheelOverideCommand;
 import frc.robot.commands.TurretLeft;
 import frc.robot.commands.TurretRight;
 import frc.robot.commands.TurretScan;
+import frc.robot.commands.TurretScanYaw;
 import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.IndexAndSpindexSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
@@ -58,7 +59,11 @@ public class RobotContainer {
     private final ClimberSubsystem climber = new ClimberSubsystem();
     private final TurretMovement turretMovement = new TurretMovement();
     public final FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
-    public final HoodSubsystem hoodSubsystem = new HoodSubsystem();
+    public final HoodSubsystem hoodSubsystem = new HoodSubsystem(m_turretvision);
+    public final TurretScan turretScan = new TurretScan(m_turretvision, turretMovement);
+    public final TurretScanYaw turretScanYaw = new TurretScanYaw(m_turretvision, turretMovement);
+    public final TurretLeft turretLeft = new TurretLeft(m_turretvision, turretMovement);
+    public final TurretRight turretRight = new TurretRight(m_turretvision, turretMovement);
     public final IndexAndSpindexSubsystem indexAndSpindexSubsystem = new IndexAndSpindexSubsystem(m_turretvision, hoodSubsystem, flywheelSubsystem);
     //public SmartDashboardHub smartDashboardHub = new SmartDashboardHub();
     public final List<Subsystem> allSubsystemsList = List.of(
@@ -116,7 +121,7 @@ public class RobotContainer {
             point.withModuleDirection(new Rotation2d(-driverController.getLeftY(), -driverController.getLeftX()))
         ));
 
-        //driverController.leftTrigger().onTrue(new TurretScan(m_turretvision, turretMovement));
+        driverController.leftTrigger().toggleOnTrue(turretScanYaw);
         // calls the method that turns the stopButton for Scan to true
         //driverController.rightTrigger().onTrue(turretMovement.runOnce(()->turretMovement.getStopCommand()));
         //driverController.povLeft().whileTrue(new TurretLeft(m_turretvision, turretMovement));

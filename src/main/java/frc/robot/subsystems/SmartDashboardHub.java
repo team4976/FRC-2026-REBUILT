@@ -17,8 +17,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 @SuppressWarnings("unused")
 public class SmartDashboardHub extends SubsystemBase{
-public DigitalInput TurretLimitSwitch1 = new DigitalInput(0);
-public DigitalInput TurretLimitSwitch2 = new DigitalInput(1);
+//public DigitalInput TurretLimitSwitch1 = new DigitalInput(0);
+//public DigitalInput TurretLimitSwitch2 = new DigitalInput(1);
 public DigitalInput TurretLimitSwitch3 = new DigitalInput(2);
 public DigitalInput TurretLimitSwitch4 = new DigitalInput(3);
 public TalonFX indexMotorFx = new TalonFX(0);
@@ -77,8 +77,8 @@ public Compressor compressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
             SmartDashboard.putNumber("QC/intake RPM",intakeMotorFx.getVelocity().getValueAsDouble());
             SmartDashboard.putNumber("QC/Pressure",compressor.getPressure());
             SmartDashboard.putNumber("QC/Turret Position",turretMotor1Fx.getPosition().getValueAsDouble());
-            SmartDashboard.putBoolean("QC/limit Switch1",TurretLimitSwitch1.get());
-            SmartDashboard.putBoolean("QC/limit switch2",TurretLimitSwitch2.get());
+            //SmartDashboard.putBoolean("QC/limit Switch1",TurretLimitSwitch1.get());
+            //SmartDashboard.putBoolean("QC/limit switch2",TurretLimitSwitch2.get());
             SmartDashboard.putBoolean("QC/limit switch3",TurretLimitSwitch3.get());
             SmartDashboard.putBoolean("QC/limit switch4",TurretLimitSwitch4.get());
             SmartDashboard.putNumber("QC/FRSwerve M1 direction",FRswerveMotordirectionFx.getPosition().getValueAsDouble());

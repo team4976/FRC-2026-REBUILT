@@ -35,11 +35,11 @@ public final class Constants {
 
   //serve constants
   //swerve drive variables and objects
-  public static double MaxSpeed = 0.8 * RebuiltTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+  public static double MaxSpeed = RebuiltTunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.5; // kSpeedAt12Volts desired top speed
   public static double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); //rotations per second max angular velocity
   /* Setting up bindings for necessary control of the swerve drive platform */
   public static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-          .withDeadband(MaxSpeed * 0.2).withRotationalDeadband(MaxAngularRate * 0.2) // Add a 10% deadband
+          .withDeadband(0.1).withRotationalDeadband(0.1) // Add a 10% deadband
           .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
   public static final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   public static final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
@@ -59,8 +59,8 @@ public final class Constants {
 
   public static final int kDriverControllerPort = 0;
   public static final int LEFT_LEADER_ID = 1;
-  public static double turnVoltage = 1;
-  public static double turretRotationVoltage = 1;
+  public static double turretScanVoltage = 1.2;
+  public static double turretManualVoltage = .5; //2
   public static boolean stopbutton = false;
   public static double yaw;
   public static double targetYaw = 0.0;
@@ -78,9 +78,13 @@ public final class Constants {
   public static double RedHubY = 4.042283;
   public static double BlueHubX = 4.625594;
   public static double BlueHubY = 4.042283;
+  public static int hubId = 0;
 
-  public static final double turretLimitLeft = 27.656; // software limits on turret motion
-  public static final double turretLimitRight = -8.469;
+  public static final double turretLimitLeft = 21.7626953125; // software limits on turret motion
+  public static final double turretLimitRight = -11.59228515625;
+  public static final double turretDeadzoneSize = 41.667 - (Constants.turretLimitLeft - Constants.turretLimitRight);// the turret encoder position the turret cannot go
+  // 8.6056
+
 
   public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
   public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(0.0, 0.0, 0.635), new Rotation3d(0, 0, 0));
