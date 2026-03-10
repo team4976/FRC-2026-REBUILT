@@ -24,13 +24,13 @@ public class TurretRight extends Command {
     public void initialize(){
 
         stopSwitch = false;
-        m_shooter.turnRight(Constants.turnVoltage);
+        m_shooter.turnRight(Constants.turretRotationVoltage);
     }
 
     @Override
     public void execute(){
         // if the switch on the right side of the bot is being hit than set stopSwitch to true
-        if(m_shooter.getRightSwitch() == false){
+        if(m_shooter.getRightSwitch() == false || m_shooter.getEncoderValue() < Constants.turretLimitRight){
             stopSwitch = true;
 
         }

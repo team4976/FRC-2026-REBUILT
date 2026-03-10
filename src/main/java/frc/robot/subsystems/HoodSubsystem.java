@@ -1,24 +1,20 @@
 package frc.robot.subsystems;
 
-import java.util.logging.Logger;
-
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class HoodSubsystem extends SubsystemBase{
     public TalonFX HoodMotor;
-    public PhotonVision turretVision;
-    public String hoodState = "readyToShoot";
+    public String hoodState;
     public double targetHoodPos;
     public final MotionMagicVoltage hoodPosVolt = new MotionMagicVoltage(0).withSlot(1);
 
-    public HoodSubsystem(PhotonVision turretVision){
-        this.turretVision=turretVision;
+    public HoodSubsystem(){
+        hoodState = "cantShoot";
         var hoodConfig = new TalonFXConfiguration();
 
         var slot1Configs = hoodConfig.Slot1;        
@@ -35,15 +31,15 @@ public class HoodSubsystem extends SubsystemBase{
 
         HoodMotor = new TalonFX(Constants.Hood_ID);
         HoodMotor.getConfigurator().apply(hoodConfig, 0.050);
-        HoodMotor.setPosition(0);
+        //HoodMotor.setPosition(0);
     }
 
-    public void moveHood(){
-        targetHoodPos = turretVision.getTurretDistance();
+    public void moveHood(double targetHoodPos){
         if (targetHoodPos < 0) {
             targetHoodPos = 0;
         }
-        HoodMotor.setControl(hoodPosVolt.withPosition(SmartDashboard.getNumber("hood target position", 0)));
+        HoodMotor.setControl(hoodPosVolt.withPosition(targetHoodPos));
+        this.targetHoodPos = targetHoodPos;
     }
 
     public void forceHoodMove(double speed){
@@ -60,14 +56,13 @@ public class HoodSubsystem extends SubsystemBase{
 
     @Override
     public void periodic(){
-        if (HoodMotor.getPosition().getValueAsDouble() <= targetHoodPos + 0.01 
-        && HoodMotor.getPosition().getValueAsDouble() >= targetHoodPos - 0.01) {
+        if (HoodMotor.getPosition().getValueAsDouble() < targetHoodPos + 1 
+        && HoodMotor.getPosition().getValueAsDouble() > targetHoodPos - 1) {
             hoodState = "readyToShoot";
         }
-        else {
+        else if (HoodMotor.getPosition().getValueAsDouble() > targetHoodPos + 1 
+        && HoodMotor.getPosition().getValueAsDouble() < targetHoodPos - 1) {
             hoodState = "cantShoot";
         }
-        SmartDashboard.putString("hood State", hoodState);
-        SmartDashboard.putNumber("hood position", HoodMotor.getPosition().getValueAsDouble());
     }
 }

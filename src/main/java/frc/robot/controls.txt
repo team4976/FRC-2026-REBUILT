@@ -1,0 +1,13 @@
+Driver
+Drive with left joystick
+Drive with right joystick
+X is intake (toggle)
+Shoot is right bumper (Index and Spindex)
+Operator 
+A is spin up flywheels
+B is reverse indexer
+X is Intake manual override
+D-Pad is hood manual override
+
+Menu button is climb
+Right Joystick is move turret

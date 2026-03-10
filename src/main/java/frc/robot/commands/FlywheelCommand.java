@@ -3,45 +3,60 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.FlywheelSubsystem;
+import frc.robot.subsystems.PhotonVision;
 
 public class FlywheelCommand extends Command{
     public FlywheelSubsystem flywheelSubsystem;
-    public double targetRPS;
+    public PhotonVision photonVision;
 
-    public FlywheelCommand(FlywheelSubsystem flywheelSubsystem, double targetRPS){
+    public FlywheelCommand(FlywheelSubsystem flywheelSubsystem, PhotonVision photonVision){
         this.flywheelSubsystem = flywheelSubsystem;
-        this.targetRPS = targetRPS;
+        this.photonVision = photonVision;
         addRequirements(flywheelSubsystem);
     }
 
     @Override
     public void initialize(){
-        flywheelSubsystem.setShooterState();
-        /* 
-         * also make the default wind up for flywheel be controller op, but if you try to shoot and it
-         * is not spinning then start spinning it.
-         */
+        System.out.println("flywheel command initialize");
+        /*if (flywheelSubsystem.getShooterState() == "cantShoot") {
+            flywheelSubsystem.spinFlywheel(
+                31.49597 + (10.19041 * (photonVision.getDistance() + 0.5969))  
+                - (0.4148098 * Math.pow(photonVision.getDistance() + 0.5969, 2)));//SmartDashboard.getNumber("Testing/Ben T's Stuff/flywheelSpeed", 40));
+            SmartDashboard.putBoolean("Flywheel spinnin", true);
+        }           
+        else if (flywheelSubsystem.getShooterState() == "windShooter"
+              || flywheelSubsystem.getShooterState() == "readyToShoot") {
+            flywheelSubsystem.spinFlywheel(0);
+            SmartDashboard.putBoolean("Flywheel spinnin", false);
+        }
+        flywheelSubsystem.spinFlywheel(
+                31.49597 + (10.19041 * (photonVision.getDistance() + 0.5969))  
+                - (0.4148098 * Math.pow(photonVision.getDistance() + 0.5969, 2)));//SmartDashboard.getNumber("Testing/Ben T's Stuff/flywheelSpeed", 40));
+        //flywheelSubsystem.setShooterState();*/
     }
 
     @Override
-    public void execute(){
-        switch (flywheelSubsystem.getShooterState()) {
-            case "windShooter":
-                flywheelSubsystem.spinShooter(SmartDashboard.getNumber("flywheelSpeed", targetRPS));
-                break;
-            case "cantShoot":
-                flywheelSubsystem.spinShooter(0);
-                break;
-        }
+    public void execute(){ 
+        /*if (flywheelSubsystem.getShooterState() == "windShooter") {
+            flywheelSubsystem.spinFlywheel(65);//SmartDashboard.getNumber("flywheelSpeed", 40));
+            SmartDashboard.putBoolean("Flywheel spinnin", true);
+        }           
+        else if (flywheelSubsystem.getShooterState() == "cantShoot") {
+            flywheelSubsystem.stopFlywheel();
+            SmartDashboard.putBoolean("Flywheel spinnin", false);
+        }*/
+        flywheelSubsystem.spinFlywheel(
+               /*  31.49597 + (10.19041 * (photonVision.getDistance() + 0.5969))  
+                - (0.4148098 * Math.pow(photonVision.getDistance() + 0.5969, 2))); */SmartDashboard.getNumber("Testing/Ben T's Stuff/flywheelSpeed", 40));
     }
 
     @Override
     public void end(boolean isInterupted){
-
+        flywheelSubsystem.spinFlywheel(0);
     }
 
     @Override
     public boolean isFinished(){
-        return true;
+        return false;
     }
 }

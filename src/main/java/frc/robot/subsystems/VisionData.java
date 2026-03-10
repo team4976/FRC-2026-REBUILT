@@ -10,11 +10,12 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants;
 import frc.robot.Telemetry;
 
 import static frc.robot.Constants.*;
@@ -33,15 +34,15 @@ public class VisionData{
     private PhotonPipelineResult latestResult;
     private Field2d field2d = new Field2d();
     private Optional<Alliance> alliance;
-    private double hubOrigX;
-    private double hubOrigY;
-    private double DriveVelocityX;
-    private double DriveVelocityY;
-    private double DistanceX;
-    private double DistanceY;
-    private double turretDistance;
-    private double turretAngle;
-    private double turretTargetAngle;
+    public double hubOrigX;
+    public double hubOrigY;
+    private double DriveVelocityX; // the velocity we are travelling in Y direction
+    private double DriveVelocityY; // the velocity we are travelling in the X direction
+    private double DistanceX; // the distance between us and the virtual hub on the X plane
+    private double DistanceY; // the distance between us and the virtual hub on the Y plane
+    public double turretDistance;
+    public double turretAngle;
+    public double turretTargetAngle;
 
     //the constructor, having the camera as a parameter--
     //means the methods in this class can be used dynamically--
@@ -227,6 +228,7 @@ public class VisionData{
         return 0.0;
     }
 
+    
     // gets the robot pose based on two april tags or tries with one
     public Field2d getDistanceAndAngle(){
         double HubX = hubOrigX;
@@ -240,8 +242,11 @@ public class VisionData{
             // Initial Distance calculation
             DistanceX = HubX - field2d.getRobotPose().getX();
             DistanceY = HubY - field2d.getRobotPose().getY();
-            turretDistance = Math.sqrt(DistanceX*DistanceX + DistanceY*DistanceY);
 
+            turretDistance = Math.sqrt(DistanceX*DistanceX + DistanceY*DistanceY);
+            SmartDashboard.putString("DistanceX",""+String.format("%.2f",HubX)+" - "+String.format("%.2f",field2d.getRobotPose().getX()) +"= "+String.format("%.2f",DistanceX));
+            SmartDashboard.putString("DistanceY",""+String.format("%.2f",HubY)+" - "+String.format("%.2f",field2d.getRobotPose().getY()) +"= "+String.format("%.2f",DistanceY));
+            SmartDashboard.putString("turretDistance Split", "sqrt("+String.format("%.2f",DistanceX)+"*"+String.format("%.2f",DistanceX) +"+"+ String.format("%.2f",DistanceY)+"*"+(String.format("%.2f",DistanceY)+")=" +turretDistance));
             for (int i = 0; i < 5; i++){
                 // update BallAirTime
                 double ballAirTime = turretDistance*0.5; // TESTING REMOVE LATER

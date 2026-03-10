@@ -8,31 +8,32 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class TurretMovement extends SubsystemBase{
-    private TalonFX turretSpin; //Turret Spin is the motor name for the turret
-    private static DigitalInput RightSwitch = new DigitalInput(11);
-    private static DigitalInput LeftSwitch = new DigitalInput(12);
-    int leftTriggerPressed;
+    public TalonFX turretSpin; //Turret Spin is the motor name for the turret
+    public static DigitalInput RightSwitch = new DigitalInput(11);
+    public static DigitalInput LeftSwitch = new DigitalInput(12);
 
     public TurretMovement(){
         turretSpin = new TalonFX(Constants.Turret_ID);  
         turretSpin.setVoltage(0);
-        leftTriggerPressed = 0;
+        //turretSpin.setPosition(0);
+
     }
 
-    //When called it turns the motor tho the right
+    //When called it turns the motor to the right
     public void turnRight(double voltage) {
     turretSpin.setVoltage(voltage*-1);
-    System.out.println("right switch: " + RightSwitch.get());
+    //System.out.println("right switch: " + RightSwitch.get());
     }
 
     //When called it turns the motor to the left
     public void turnLeft(double voltage) {
     turretSpin.setVoltage(voltage);
-    System.out.println("left switch: " + LeftSwitch.get());
+    //System.out.println("left switch: " + LeftSwitch.get());
     }
 
     public void lockedOn(double voltage){
@@ -42,7 +43,7 @@ public class TurretMovement extends SubsystemBase{
     //When called it stops the motor
     public void stopTurn() {
         turretSpin.setVoltage(0);
-        System.out.println("STOP MOVING");
+        //System.out.println("STOP MOVING");
     }
 
     //Returns the value of the right limit switch
@@ -55,6 +56,12 @@ public class TurretMovement extends SubsystemBase{
         return LeftSwitch.get();
     }
 
+    // gets the value of the turret encoder
+    public double getEncoderValue(){
+        SmartDashboard.putNumber("turretEncoderValue", turretSpin.getPosition().getValueAsDouble());
+        return turretSpin.getPosition().getValueAsDouble();
+    }
+
     // returns the stopButton to be true
     public boolean getStopCommand(){
         return Constants.stopbutton = true;
@@ -62,6 +69,11 @@ public class TurretMovement extends SubsystemBase{
 
     public TalonFX returnMotor(){
         return turretSpin;
+    }
+
+    @Override
+    public void periodic(){
+        SmartDashboard.putNumber("turretEncoderValue", turretSpin.getPosition().getValueAsDouble());
     }
 
 }
