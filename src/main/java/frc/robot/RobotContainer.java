@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
@@ -84,6 +85,7 @@ public class RobotContainer {
     public HoodCommand hoodCommand = new HoodCommand(hoodSubsystem, m_turretvision, false, 0);
     public HoodCommand manualHoodUp = new HoodCommand(hoodSubsystem, m_turretvision, true, 0.5);
     public HoodCommand manualHoodDown = new HoodCommand(hoodSubsystem, m_turretvision, true, -0.5);
+    public Command hoodAndFlywheel = new ParallelDeadlineGroup(flywheelCommand, hoodCommand);
 
     //Controller Objects
     public static final CommandXboxController driverController = new CommandXboxController(0);
@@ -147,7 +149,7 @@ public class RobotContainer {
         // Manual hood override
         operatorController.povUp().whileTrue(manualHoodUp);
         operatorController.povDown().whileTrue(manualHoodDown);
-        operatorController.a().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
+        operatorController.a().toggleOnTrue(hoodAndFlywheel);
         operatorController.a().toggleOnTrue(ManualFlywheelOverideCommand);
         //operatorController.leftBumper().whileTrue(indexAndSpindexCommand);
         operatorController.b().whileTrue(reverseIndexer);
