@@ -237,38 +237,39 @@ public class ElasticData extends SubsystemBase{
                 field2d.getObject("RR").setPose(field2d.getRobotPose().getX() + 0.42, field2d.getRobotPose().getY() - 0.343, new Rotation2d(telemetry.m_moduleDirections[0].getAngle()));
                 field2d.getObject("RL").setPose(field2d.getRobotPose().getX() - 0.42, field2d.getRobotPose().getY() - 0.343, new Rotation2d(telemetry.m_moduleDirections[3].getAngle()));
         }
+
         //------------
         //MOTOR WIDGETS
         //------------
 
         //Voltage Widgets
-        SmartDashboard.putNumber("Testing/Motors/Indexer/Index Volatage", indexAndSpindexSubsystem.indexMotor.getAppliedOutput());
-        SmartDashboard.putNumber("Testing/Motors/Spindex/Spindex Volatage", indexAndSpindexSubsystem.spindexMotor.getAppliedOutput());
-        SmartDashboard.putNumber("Testing/Motors/Hood/Hood Voltage", hoodSubsystem.HoodMotor.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("Testing/Motors/Turret/Turret Voltage", turretMovement.turretSpin.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("Testing/Motors/Flywheel Lead/Flywheel Lead Voltage", flywheelSubsystem.ShooterMotorLeader.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("Testing/Motors/Flywheel Follow/Flywheel Follow Voltage", flywheelSubsystem.ShooterMotorFollower.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("Testing/Motors/Intake/Intake Voltage", intakeSubsystem.IntakeMotor.getMotorOutputVoltage());
+        SmartDashboard.putNumber("QC/Motors/Indexer/Index Volatage", indexAndSpindexSubsystem.indexMotor.getAppliedOutput());
+        SmartDashboard.putNumber("QC/Motors/Spindex/Spindex Volatage", indexAndSpindexSubsystem.spindexMotor.getAppliedOutput());
+        SmartDashboard.putNumber("QC/Motors/Hood/Hood Voltage", hoodSubsystem.HoodMotor.getMotorVoltage().getValueAsDouble());
+        SmartDashboard.putNumber("QC/Motors/Turret/Turret Voltage", turretMovement.turretSpin.getMotorVoltage().getValueAsDouble());
+        SmartDashboard.putNumber("QC/Motors/Flywheel Lead/Flywheel Lead Voltage", flywheelSubsystem.shooterMotorLeader.getMotorVoltage().getValueAsDouble());
+        SmartDashboard.putNumber("QC/Motors/Flywheel Follow/Flywheel Follow Voltage", flywheelSubsystem.shooterMotorFollower.getMotorVoltage().getValueAsDouble());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Voltage", intakeSubsystem.IntakeMotor.getMotorOutputVoltage());
 
         //RPM Widgets
-        SmartDashboard.putNumber("Testing/Motors/Indexer/Index RPM", indexAndSpindexSubsystem.indexMotor.getEncoder().getVelocity());
-        SmartDashboard.putNumber("Testing/Motors/Spindex/Spindex RPM", indexAndSpindexSubsystem.spindexMotor.getEncoder().getVelocity());
-        SmartDashboard.putNumber("Testing/Motors/Hood/Hood RPS", hoodSubsystem.HoodMotor.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("Testing/Motors/Turret/Turret RPS", turretMovement.turretSpin.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("Testing/Motors/Flywheel Lead/Flywheel Lead RPS", flywheelSubsystem.ShooterMotorLeader.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("Testing/Motors/Flywheel Follow/Flywheel Follow RPS", flywheelSubsystem.ShooterMotorFollower.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("Testing/Motors/Intake/Intake Speed (Raw)", intakeSubsystem.IntakeMotor.getSelectedSensorVelocity());
+        SmartDashboard.putNumber("QC/Motors/Indexer/Index RPM", indexAndSpindexSubsystem.indexMotor.getEncoder().getVelocity());
+        SmartDashboard.putNumber("QC/Motors/Spindex/Spindex RPM", indexAndSpindexSubsystem.spindexMotor.getEncoder().getVelocity());
+        SmartDashboard.putNumber("QC/Motors/Hood/Hood RPS", hoodSubsystem.HoodMotor.getVelocity().getValueAsDouble());
+        SmartDashboard.putNumber("QC/Motors/Turret/Turret RPS", turretMovement.turretSpin.getVelocity().getValueAsDouble());
+        SmartDashboard.putNumber("QC/Motors/Flywheel Lead/Flywheel Lead RPS", flywheelSubsystem.shooterMotorLeader.getVelocity().getValueAsDouble());
+        SmartDashboard.putNumber("QC/Motors/Flywheel Follow/Flywheel Follow RPS", flywheelSubsystem.shooterMotorFollower.getVelocity().getValueAsDouble());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Speed (Raw)", intakeSubsystem.IntakeMotor.getSelectedSensorVelocity());
 
         //Position Widgets
-        SmartDashboard.putNumber("Testing/Motors/Hood/Hood Position", hoodSubsystem.HoodMotor.getPosition().getValueAsDouble());
-        SmartDashboard.putNumber("Testing/Motors/Turret/Turret Position", turretMovement.turretSpin.getPosition().getValueAsDouble());
+        SmartDashboard.putNumber("QC/Motors/Hood/Hood Position", hoodSubsystem.HoodMotor.getPosition().getValueAsDouble());
+        SmartDashboard.putNumber("QC/Motors/Turret/Turret Position", turretMovement.turretSpin.getPosition().getValueAsDouble());
 
         //Limit Switch Pressed Widgets (not technically motor stuff but whatever)
-        SmartDashboard.putBoolean("Testing/Limit Switch Left", turretMovement.getLeftSwitch());
-        SmartDashboard.putBoolean("Testing/Limit Switch Right", turretMovement.getRightSwitch());
+        SmartDashboard.putBoolean("QC/Limit Switch Left", turretMovement.getLeftSwitch());
+        SmartDashboard.putBoolean("QC/Limit Switch Right", turretMovement.getRightSwitch());
 
         //Motor id Widgets
-        SmartDashboard.putStringArray("Testing/Motors/Motor Id's", motorIDs);
+        SmartDashboard.putStringArray("QC/Motors/Motor Id's", motorIDs);
         for (String motorInfo : motorIDs) {
             try {
                 int openBracket = motorInfo.indexOf("[");
@@ -283,9 +284,9 @@ public class ElasticData extends SubsystemBase{
 
                 if (!motorId.isEmpty()) {
                     if (folderName.contains("Swerve")){
-                        SmartDashboard.putString("Testing/Motors/Swerve/" + folderName + "/Motor Id", motorId);
+                        SmartDashboard.putString("QC/Motors/Swerve/" + folderName + "/Motor Id", motorId);
                     } else {
-                        SmartDashboard.putString("Testing/Motors/" + folderName + "/Motor Id", motorId);
+                        SmartDashboard.putString("QC/Motors/" + folderName + "/Motor Id", motorId);
                     }
                 }
             } catch (Exception e) {
