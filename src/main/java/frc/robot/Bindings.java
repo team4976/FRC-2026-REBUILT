@@ -27,7 +27,8 @@ public class Bindings {
     public TurretRight turretRight;
 
     public Bindings(IndexAndSpindexCommand indexAndSpindexCommand, IndexAndSpindexCommand reverseIndexer, IntakeCommand intakecommand, 
-    FlywheelCommand flywheelCommand, HoodCommand hoodCommand, HoodCommand manualHoodUp, HoodCommand manualHoodDown, TurretScanYaw turretScanYaw, TurretLeft turretLeft, TurretRight turretRight){
+    FlywheelCommand flywheelCommand, HoodCommand hoodCommand, HoodCommand manualHoodUp, HoodCommand manualHoodDown, TurretScanYaw turretScanYaw, 
+    TurretLeft turretLeft, TurretRight turretRight, TurretScan turretScan){
         this.indexAndSpindexCommand = indexAndSpindexCommand;
         this.reverseIndexer = reverseIndexer;
         this.intakeCommand = intakecommand;
@@ -38,6 +39,7 @@ public class Bindings {
         this.turretScanYaw = turretScanYaw;
         this.turretLeft = turretLeft;
         this.turretRight = turretRight;
+        this.turretScan = turretScan;
         System.out.println("Bindings Initialized");
     }
 
