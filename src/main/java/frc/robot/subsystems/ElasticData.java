@@ -232,17 +232,10 @@ public class ElasticData extends SubsystemBase{
 
         //Swerve Direction on Field
         if(telemetry != null){
-            if(hoodSubsystem != null){
-                //field2d.getObject("FR").setPose(field2d.getRobotPose().getX() + 0.42 + (1 * (Math.cos(telemetry.m_moduleDirections[2].getAngle())/57)),field2d.getRobotPose().getY() + 0.343 + (1 * (Math.sin(telemetry.m_moduleDirections[2].getAngle())/57)),new Rotation2d(telemetry.m_moduleDirections[2].getAngle()));
-                //field2d.getObject("FL").setPose(field2d.getRobotPose().getX() - 0.42  - (1 * (Math.cos(telemetry.m_moduleDirections[1].getAngle())/57)),field2d.getRobotPose().getY() + 0.343 + (1 * (Math.sin(telemetry.m_moduleDirections[1].getAngle())/57)),new Rotation2d(telemetry.m_moduleDirections[1].getAngle()));
-                //field2d.getObject("RR").setPose(field2d.getRobotPose().getX() + 0.42 + (1 * (Math.cos(telemetry.m_moduleDirections[0].getAngle())/57)),field2d.getRobotPose().getY() - 0.343 + (1 * (Math.sin(telemetry.m_moduleDirections[0].getAngle())/57)),new Rotation2d(telemetry.m_moduleDirections[0].getAngle()));
-                //field2d.getObject("RL").setPose(field2d.getRobotPose().getX() - 0.42 - (1 * (Math.cos(telemetry.m_moduleDirections[3].getAngle())/57)),field2d.getRobotPose().getY() - 0.343 + (1 * (Math.sin(telemetry.m_moduleDirections[3].getAngle())/57)),new Rotation2d(telemetry.m_moduleDirections[3].getAngle()));
                 field2d.getObject("FR").setPose(field2d.getRobotPose().getX() + 0.42, field2d.getRobotPose().getY() + 0.343, new Rotation2d(telemetry.m_moduleDirections[2].getAngle()));
                 field2d.getObject("FL").setPose(field2d.getRobotPose().getX() - 0.42, field2d.getRobotPose().getY() + 0.343, new Rotation2d(telemetry.m_moduleDirections[1].getAngle()));
                 field2d.getObject("RR").setPose(field2d.getRobotPose().getX() + 0.42, field2d.getRobotPose().getY() - 0.343, new Rotation2d(telemetry.m_moduleDirections[0].getAngle()));
                 field2d.getObject("RL").setPose(field2d.getRobotPose().getX() - 0.42, field2d.getRobotPose().getY() - 0.343, new Rotation2d(telemetry.m_moduleDirections[3].getAngle()));
-            }
-            
         }
         //------------
         //MOTOR WIDGETS
