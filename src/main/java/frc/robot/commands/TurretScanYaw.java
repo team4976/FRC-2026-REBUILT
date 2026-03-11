@@ -55,6 +55,13 @@ public class TurretScanYaw extends Command {
             stopLockedOn = false;
             System.err.println("hasTargets = false");
             
+            // if flipButton is true reverse the scan direction
+            if(Constants.flipButton = true && TurningRight == true){
+                TurningRight = false;
+            }
+            else if(Constants.flipButton = true && TurningRight == false){
+                TurningRight = true;
+            }
             // if TurningRight = true turn the turret to the right
             if(TurningRight == true){
                m_shooter.turnRight(Constants.turretScanVoltage);
@@ -102,7 +109,7 @@ public class TurretScanYaw extends Command {
 
         turretyaw= yaw.getAsDouble();
         Double speedAdjust = 5.0;
-        m_shooter.lockedOn((turretyaw)/45*-speedAdjust);
+        m_shooter.lockedOn(Math.max(((turretyaw)/45*-speedAdjust),0.75));
         System.out.println(Constants.turretManualVoltage);
 
 

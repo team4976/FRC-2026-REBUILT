@@ -119,6 +119,7 @@ public class RobotContainer {
         driverController.leftTrigger().toggleOnTrue(turretScanYaw);
         // calls the method that turns the stopButton for Scan to true
         //driverController.rightTrigger().onTrue(turretMovement.runOnce(()->turretMovement.getStopCommand()));
+        //operatorController.leftBumper().onTrue(turretMovement.runOnce(()->turretMovement.forceTurretFlip()));
         //driverController.povLeft().whileTrue(new TurretLeft(m_turretvision, turretMovement));
         //driverController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
         // Reset the field-centric heading on left bumper press.
