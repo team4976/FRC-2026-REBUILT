@@ -52,6 +52,7 @@ public class TurretScan extends Command {
 
 
         if(hasTargets == false || stopLockedOn == true){
+            stopLockedOn = false;
             System.err.println("hasTargets = false");
             
             // if TurningRight = true turn the turret to the right
@@ -114,7 +115,7 @@ public class TurretScan extends Command {
             }
 
         Double speedAdjust = 5.0;
-        m_shooter.lockedOn((turretTargetAngle-turretAngle)/45*-speedAdjust);
+        m_shooter.lockedOn((turretTargetAngle-turretAngle)/45*speedAdjust);
         System.out.println(Constants.turretManualVoltage);
         }
     }
