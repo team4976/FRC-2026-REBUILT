@@ -39,7 +39,7 @@ public final class Constants {
   public static double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); //rotations per second max angular velocity
   /* Setting up bindings for necessary control of the swerve drive platform */
   public static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-          .withDeadband(0.1).withRotationalDeadband(0.1) // Add a 10% deadband
+          .withDeadband(0.2).withRotationalDeadband(0.2) // Add a 10% deadband
           .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
   public static final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   public static final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
