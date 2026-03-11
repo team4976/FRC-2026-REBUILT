@@ -109,7 +109,7 @@ public class RobotContainer {
     }
 
     public void driverConfigureBindings(){
-        //Swerve
+        //Swerve break and align
         driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
         driverController.b().whileTrue(drivetrain.applyRequest(() ->
             point.withModuleDirection(new Rotation2d(-driverController.getLeftY(), -driverController.getLeftX()))
@@ -117,11 +117,8 @@ public class RobotContainer {
         // Reset the field-centric heading on left bumper press.
         driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
-        //Turret
-        driverController.leftTrigger().toggleOnTrue(turretScanYaw);
-
         //Regular Shooting
-        driverController.rightBumper().whileTrue(indexAndSpindexCommand);
+        driverController.axisGreaterThan(4, 0.1).whileTrue(indexAndSpindexCommand);
 
         //Intake
         driverController.x().onTrue(intakeCommand);
@@ -131,8 +128,11 @@ public class RobotContainer {
         //------------
         //Main Controls
         //------------
+        //Spin up flywheels
         operatorController.a().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
 
+        //Turret scan
+        operatorController.axisGreaterThan(3, 0.1).toggleOnTrue(turretScanYaw);
         //---------------
         //Manual Overrides
         //---------------
