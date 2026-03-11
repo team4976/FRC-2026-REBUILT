@@ -38,6 +38,7 @@ public class Bindings {
         this.turretScanYaw = turretScanYaw;
         this.turretLeft = turretLeft;
         this.turretRight = turretRight;
+        System.out.println("Bindings Initialized");
     }
 
      public void driverConfigureBindings(){
@@ -54,6 +55,7 @@ public class Bindings {
 
         //Intake
         driverController.x().onTrue(intakeCommand);
+
     }
 
     public void operatorConfigureBindings(){
@@ -61,7 +63,8 @@ public class Bindings {
         //Main Controls
         //------------
         //Spin up flywheels
-        operatorController.a().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
+        //operatorController.a().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
+        operatorController.a().toggleOnTrue(flywheelCommand);
 
         //Turret scan
         operatorController.axisGreaterThan(2, 0.1).toggleOnTrue(turretScanYaw);
