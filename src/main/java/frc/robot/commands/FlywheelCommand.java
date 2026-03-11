@@ -44,8 +44,10 @@ public class FlywheelCommand extends Command{
         autoFlywheelSpeed = 31.49597 + (10.19041 * (photonVision.getDistance() + 0.5969))  
                 - (0.4148098 * Math.pow(photonVision.getDistance() + 0.5969, 2));
 
-        if (operatorController.axisGreaterThan(1, 0.1).getAsBoolean() || operatorController.axisGreaterThan(1, -0.1).getAsBoolean()){
+        if (operatorController.axisGreaterThan(1, 0.1).getAsBoolean()){
             manualFlywheelSpeed = operatorController.getLeftY() * -20;
+        } else if (operatorController.axisGreaterThan(1, -0.1).getAsBoolean()) {
+            manualFlywheelSpeed = operatorController.getLeftY() * -40;
         }
         
         totalFlywheelSpeed = manualFlywheelSpeed + autoFlywheelSpeed;
