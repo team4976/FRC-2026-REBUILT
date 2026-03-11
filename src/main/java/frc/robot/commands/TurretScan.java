@@ -136,7 +136,12 @@ public class TurretScan extends Command {
     @Override
     public boolean isFinished() {
         // if rightTrigger is pressed or stopLocked = true then end command
-        return false;
+        if(Constants.stopbutton == true){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
     
 }

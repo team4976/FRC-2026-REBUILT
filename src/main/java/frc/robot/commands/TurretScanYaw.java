@@ -125,7 +125,12 @@ public class TurretScanYaw extends Command {
     @Override
     public boolean isFinished() {
         // if rightTrigger is pressed or stopLocked = true then end command
+    if(Constants.stopbutton == true){
+            return true;
+    }
+    else{
         return false;
+    }
     }
     
 }
