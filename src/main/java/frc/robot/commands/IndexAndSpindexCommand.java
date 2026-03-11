@@ -1,14 +1,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.IndexAndSpindexSubsystem;
 
 public class IndexAndSpindexCommand extends Command{
     public IndexAndSpindexSubsystem InSSubsystem;
     public double speed;
+    public FlywheelSubsystem flywheelSubsystem;
     
-    public IndexAndSpindexCommand(IndexAndSpindexSubsystem InSSubsystem, double speed){
+    public IndexAndSpindexCommand(IndexAndSpindexSubsystem InSSubsystem, double speed, FlywheelSubsystem flywheelSubsystem){
         this.InSSubsystem = InSSubsystem;
+        this.flywheelSubsystem = flywheelSubsystem;
         this.speed = speed;
         addRequirements(InSSubsystem);
     }
@@ -20,6 +23,9 @@ public class IndexAndSpindexCommand extends Command{
     
     @Override
     public void execute() {
+        if (flywheelSubsystem.shooterMotorLeader.getMotorVoltage().getValueAsDouble() < 0) {
+            return;
+        }
         InSSubsystem.moveFeeder(speed);
     }
 

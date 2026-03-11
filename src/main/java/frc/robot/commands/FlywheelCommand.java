@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.PhotonVision;
@@ -9,6 +10,9 @@ public class FlywheelCommand extends Command{
     public FlywheelSubsystem flywheelSubsystem;
     public PhotonVision photonVision;
     public boolean isOverriden;
+    public double autoFlywheelSpeed;
+    public double manualFlywheelSpeed;
+    public double totalFlywheelSpeed;
 
     public FlywheelCommand(FlywheelSubsystem flywheelSubsystem, PhotonVision photonVision, boolean isOverriden){
         this.flywheelSubsystem = flywheelSubsystem;
@@ -24,6 +28,7 @@ public class FlywheelCommand extends Command{
 
     @Override
     public void execute(){ 
+        /* 
         if (isOverriden) {
             double leftTriggerAxis = operatorController.getLeftTriggerAxis();
             double flywheelSpeed = leftTriggerAxis * 70;
@@ -31,9 +36,17 @@ public class FlywheelCommand extends Command{
         } else if (!isOverriden) {
             flywheelSubsystem.spinFlywheel(50);
                 /*31.49597 + (10.19041 * (photonVision.getDistance() + 0.5969))  
-                - (0.4148098 * Math.pow(photonVision.getDistance() + 0.5969, 2))*/ 
+                - (0.4148098 * Math.pow(photonVision.getDistance() + 0.5969, 2)) 
                 //SmartDashboard.getNumber("Turret Rotate", 0));
+        }  */
+        autoFlywheelSpeed = SmartDashboard.getNumber("Turret Rotate", 0);
+        if (operatorController.axisGreaterThan(1, 0.9).getAsBoolean()){
+            manualFlywheelSpeed = 70;
+        } else {
+            manualFlywheelSpeed = operatorController.getLeftY() * 50;
         }
+        totalFlywheelSpeed = manualFlywheelSpeed + autoFlywheelSpeed;
+        flywheelSubsystem.spinFlywheel(totalFlywheelSpeed);
     }
 
     @Override
