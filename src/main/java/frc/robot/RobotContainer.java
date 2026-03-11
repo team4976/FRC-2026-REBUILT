@@ -10,11 +10,13 @@ import com.pathplanner.lib.auto.AutoBuilder;
 
 import static edu.wpi.first.units.Units.*;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 
@@ -30,6 +32,8 @@ import frc.robot.commands.Climb;
 import frc.robot.commands.HoodCommand;
 import frc.robot.commands.IndexAndSpindexCommand;
 import frc.robot.commands.FlywheelCommand;
+import frc.robot.commands.FlywheelStart;
+import frc.robot.commands.FlywheelStop;
 import frc.robot.commands.TurretLeft;
 import frc.robot.commands.TurretRight;
 import frc.robot.commands.TurretScan;
@@ -77,6 +81,8 @@ public class RobotContainer {
     public HoodCommand hoodCommand = new HoodCommand(hoodSubsystem, m_turretvision, false, 0);
     public HoodCommand manualHoodUp = new HoodCommand(hoodSubsystem, m_turretvision, true, 0.5);
     public HoodCommand manualHoodDown = new HoodCommand(hoodSubsystem, m_turretvision, true, -0.5);
+    public FlywheelStart flyWheelStart = new FlywheelStart(flywheelSubsystem, vision);
+    public FlywheelStop flywheelStop = new FlywheelStop(flywheelSubsystem, vision);
 
     //Controller Objects
     public static final CommandXboxController driverController = new CommandXboxController(0);
@@ -155,9 +161,10 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() { 
         //elasticData..addChooser();
-        Command test = AutoBuilder.buildAuto("DR");//(Command) elastic.fieldWidget.commandChooser.getSelected();
+        Command test = AutoBuilder.buildAuto("Hub to Shoot");//(Command) elastic.fieldWidget.commandChooser.getSelected();
         System.out.println("*********: "+test.getName());
-        return test;//(Command) elastic.fieldWidget.commandChooser.getSelected();
+        return test.andThen(flyWheelStart).andThen(new WaitCommand(.5)).andThen(indexAndSpindexCommand).andThen(new WaitCommand(.5)).andThen(flywheelStop);//(Command) elastic.fieldWidget.commandChooser.getSelected();
+        //.alongWith(new TurretScan(m_turretvision, turretMovement))
         // Simple drive forward auton
         /*
             // Reset our field centric heading to match the robot
