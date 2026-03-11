@@ -24,6 +24,7 @@ public class FlywheelCommand extends Command{
     @Override
     public void initialize(){
         System.out.println("flywheel command initialize");
+        flywheelSubsystem.spinFlywheel(0);
     }
 
     @Override
@@ -39,14 +40,20 @@ public class FlywheelCommand extends Command{
                 - (0.4148098 * Math.pow(photonVision.getDistance() + 0.5969, 2)) 
                 //SmartDashboard.getNumber("Turret Rotate", 0));
         }  */
-        autoFlywheelSpeed = SmartDashboard.getNumber("Turret Rotate", 0);
-        if (operatorController.axisGreaterThan(1, 0.9).getAsBoolean()){
-            manualFlywheelSpeed = 70;
+          
+        autoFlywheelSpeed = 31.49597 + (10.19041 * (photonVision.getDistance() + 0.5969))  
+                - (0.4148098 * Math.pow(photonVision.getDistance() + 0.5969, 2));
+
+        if (operatorController.axisGreaterThan(1, 0.9).getAsBoolean() || operatorController.axisGreaterThan(1, -0.9).getAsBoolean()){
+            manualFlywheelSpeed = 30;
         } else {
-            manualFlywheelSpeed = operatorController.getLeftY() * 50;
+            manualFlywheelSpeed = operatorController.getLeftY() * -2;
         }
+
         totalFlywheelSpeed = manualFlywheelSpeed + autoFlywheelSpeed;
         flywheelSubsystem.spinFlywheel(totalFlywheelSpeed);
+        System.out.println("manual flywheel speed:"  + manualFlywheelSpeed);
+        System.out.println("total flywheel speed" + totalFlywheelSpeed);
     }
 
     @Override

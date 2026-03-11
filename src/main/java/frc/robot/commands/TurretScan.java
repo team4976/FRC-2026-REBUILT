@@ -54,7 +54,14 @@ public class TurretScan extends Command {
         if(hasTargets == false || stopLockedOn == true){
             stopLockedOn = false;
             System.err.println("hasTargets = false");
-            
+
+            // if flipButton is true reverse the scan direction
+            if(Constants.flipButton = true && TurningRight == true){
+                TurningRight = false;
+            }
+            else if(Constants.flipButton = true && TurningRight == false){
+                TurningRight = true;
+            }
             // if TurningRight = true turn the turret to the right
             if(TurningRight == true){
                m_shooter.turnRight(Constants.turretScanVoltage);
@@ -129,7 +136,12 @@ public class TurretScan extends Command {
     @Override
     public boolean isFinished() {
         // if rightTrigger is pressed or stopLocked = true then end command
-        return false;
+        if(Constants.stopbutton == true){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
     
 }

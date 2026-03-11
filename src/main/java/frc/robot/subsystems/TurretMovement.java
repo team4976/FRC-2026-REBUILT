@@ -112,6 +112,9 @@ public class TurretMovement extends SubsystemBase{
     public boolean getStopCommand(){
         return Constants.stopbutton = true;
     }
+    public boolean forceTurretFlip(){
+        return Constants.flipButton = true;
+    }
 
     public TalonFX returnMotor(){
         return turretSpin;
