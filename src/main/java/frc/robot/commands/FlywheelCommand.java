@@ -28,9 +28,10 @@ public class FlywheelCommand extends Command{
         if (isOverriden) {
             RobotContainer.operatorController.getLeftTriggerAxis();
         } else if (!isOverriden) {
-            flywheelSubsystem.spinFlywheel(
+            flywheelSubsystem.spinFlywheel(50);
                 /*31.49597 + (10.19041 * (photonVision.getDistance() + 0.5969))  
-                - (0.4148098 * Math.pow(photonVision.getDistance() + 0.5969, 2))*/ SmartDashboard.getNumber("Turret Rotate", 0));
+                - (0.4148098 * Math.pow(photonVision.getDistance() + 0.5969, 2))*/ 
+                //SmartDashboard.getNumber("Turret Rotate", 0));
         }
     }
 

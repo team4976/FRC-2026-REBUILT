@@ -45,7 +45,7 @@ public class VisionData{
     public double turretAngle;
     public double turretTargetAngle;
     public double hubId;
-    Field2d field2d;
+    Field2d field2d = new Field2d();
     //static Field2d field2d = SmartDashboard.getData("Fields/Ideal Field");
     //the constructor, having the camera as a parameter--
     //means the methods in this class can be used dynamically--
