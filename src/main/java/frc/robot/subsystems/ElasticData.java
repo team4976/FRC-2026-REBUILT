@@ -195,7 +195,8 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putBoolean("leftLimit", turretMovement.getLeftSwitch());
         SmartDashboard.putBoolean("RightLimit", turretMovement.getRightSwitch());
 
-
+        SmartDashboard.putNumber("Flywheel Speed Calculation", 31.49597 + (10.19041 * (cameraDataMain.getDistance() + 0.5969))  
+                - (0.4148098 * Math.pow(cameraDataMain.getDistance() + 0.5969, 2)));
 
 
         //------------

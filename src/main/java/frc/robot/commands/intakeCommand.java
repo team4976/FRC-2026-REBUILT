@@ -5,6 +5,7 @@ import javax.naming.LimitExceededException;
 import com.revrobotics.spark.config.LimitSwitchConfig;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
 /** An example command that uses an example subsystem. 
@@ -22,7 +23,6 @@ boolean stop;
 
 public IntakeCommand(Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
-  this.SolenoidStatus = false;
   this.intake = intake;
   addRequirements(intake);  
 }
@@ -30,14 +30,13 @@ public IntakeCommand(Intake intake) {
   @Override
   public void initialize() {  
   
-    if (SolenoidStatus == false) {
+    if (!intake.intakeStatus) {
       intake.forwardSolenoid();
-      SolenoidStatus = true;
       intake.runIntakeMotor(Constants.intakeSpeed);
       stop = true;
-    } else if (SolenoidStatus == true) {
+    } else if (intake.intakeStatus) {
       intake.reverseSolenoid();
-      SolenoidStatus = false;
+      Commands.waitSeconds(2);
       intake.stopIntakeMotor();
       stop = true;
     }
@@ -52,6 +51,7 @@ public IntakeCommand(Intake intake) {
 
   @Override
   public void end(boolean interrupted) {  
+
   }
 
 

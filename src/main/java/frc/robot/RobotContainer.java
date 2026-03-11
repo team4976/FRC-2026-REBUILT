@@ -92,8 +92,6 @@ public class RobotContainer {
     //elastic/smartdashboard intialization 
     private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision, allSubsystemsList);
 
-    //for the elastic folder, gonna be merged to elastic data later
-
     public RobotContainer() {
         configureBindings();
     }
@@ -116,6 +114,13 @@ public class RobotContainer {
         RobotModeTriggers.disabled().whileTrue(
             drivetrain.applyRequest(() -> idle).ignoringDisable(true)
         );
+
+        driverConfigureBindings();
+        operatorConfigureBindings();
+        drivetrain.registerTelemetry(logger::telemeterize);
+    }
+
+    public void driverConfigureBindings(){
         driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
         driverController.b().whileTrue(drivetrain.applyRequest(() ->
             point.withModuleDirection(new Rotation2d(-driverController.getLeftY(), -driverController.getLeftX()))
@@ -123,24 +128,17 @@ public class RobotContainer {
 
         driverController.leftTrigger().toggleOnTrue(turretScanYaw);
         // calls the method that turns the stopButton for Scan to true
-        //driverController.rightTrigger().onTrue(turretMovement.runOnce(()->turretMovement.getStopCommand()));
-        //driverController.povLeft().whileTrue(new TurretLeft(m_turretvision, turretMovement));
-        //driverController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
+
         // Reset the field-centric heading on left bumper press.
         driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
         // Regular Shooting
         //Should be right bumper
-        driverController.axisGreaterThan(3, 0.3).whileTrue(indexAndSpindexCommand);
+        driverController.rightBumper().whileTrue(indexAndSpindexCommand);
         driverController.x().onTrue(intakeCommand);
-        //driverController.y().onTrue(pneumaticIntake);
+    }
 
-        // Run SysId routines when holding back/start and X/Y.
-        // Note that each routine should be run exactly once in a single log.
-        //operatorController.start().whileTrue(new Climb(climber));
-        //driverController.leftTrigger().onTrue(new TurretScan(m_turretvision, turretMovement));
-        // calls the method that turns the stopButton for Scan to true
-        //driverController.rightTrigger().onTrue(turretMovement.runOnce(()->turretMovement.getStopCommand()));
+    public void operatorConfigureBindings(){
         operatorController.povLeft().whileTrue(turretLeft);
         operatorController.povRight().whileTrue(turretRight);
         
@@ -148,10 +146,9 @@ public class RobotContainer {
         operatorController.povUp().whileTrue(manualHoodUp);
         operatorController.povDown().whileTrue(manualHoodDown);
         operatorController.a().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
+
         operatorController.leftTrigger(0.1).whileTrue(flywheelOverrideCommand);
-        //operatorController.leftBumper().whileTrue(indexAndSpindexCommand);
         operatorController.b().whileTrue(reverseIndexer);
-        drivetrain.registerTelemetry(logger::telemeterize);
     }
 
     private final SendableChooser<Command> autoChooser = null;

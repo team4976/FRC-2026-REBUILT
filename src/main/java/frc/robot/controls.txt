@@ -11,3 +11,4 @@ D-Pad is hood manual override
 y is manual flywheel override
 Menu button is climb
 Right Joystick is move turret
+left trigger manual override for flywheel

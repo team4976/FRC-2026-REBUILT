@@ -24,10 +24,12 @@ public class Intake extends SubsystemBase {
   public static final PneumaticsControlModule pneumaticsControlModule = new PneumaticsControlModule(30);
   private final Compressor compressor = new Compressor(30, PneumaticsModuleType.CTREPCM);
   private Solenoid solenoid;
+  public boolean intakeStatus;
       
   public Intake() {
     IntakeMotor = new TalonSRX(Intake_ID); //Defines motor 1
 
+    intakeStatus = false;
     compressor.enableDigital(); 
     solenoid = pneumaticsControlModule.makeSolenoid(2);
     solenoid.set(false);
@@ -45,11 +47,13 @@ public class Intake extends SubsystemBase {
   public void forwardSolenoid(){
     System.out.println("solenoid on");   
     solenoid.set(true);
+    intakeStatus = true;
   }
 
   public void reverseSolenoid(){
     System.out.println("solenoid off");
     solenoid.set(false);
+    intakeStatus = false;
   }
 
 }
