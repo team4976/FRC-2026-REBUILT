@@ -67,7 +67,7 @@ public class Bindings {
         operatorController.a().toggleOnTrue(flywheelCommand);
 
         //Turret scan
-        operatorController.axisGreaterThan(2, 0.1).toggleOnTrue(turretScanYaw);
+        operatorController.axisGreaterThan(2, 0.1).toggleOnTrue(turretScan);
 
         //---------------
         //Manual Overrides
