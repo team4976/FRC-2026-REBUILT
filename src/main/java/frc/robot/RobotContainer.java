@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.ManualFlywheelOverideCommand;
 import frc.robot.generated.RebuiltTunerConstants;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -31,7 +30,6 @@ import frc.robot.commands.Climb;
 import frc.robot.commands.HoodCommand;
 import frc.robot.commands.IndexAndSpindexCommand;
 import frc.robot.commands.FlywheelCommand;
-import frc.robot.commands.ManualFlywheelOverideCommand;
 import frc.robot.commands.TurretLeft;
 import frc.robot.commands.TurretRight;
 import frc.robot.commands.TurretScan;
@@ -80,12 +78,12 @@ public class RobotContainer {
     public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, 0.5);//hoodSubsystem, flywheelSubsystem);
     public IndexAndSpindexCommand reverseIndexer = new IndexAndSpindexCommand(indexAndSpindexSubsystem, -0.5);//hoodSubsystem, flywheelSubsystem);
     public IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
-    public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem, m_turretvision);
-    public ManualFlywheelOverideCommand ManualFlywheelOverideCommand = new ManualFlywheelOverideCommand(flywheelSubsystem, m_turretvision);
+    public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem, m_turretvision, false);
+    public FlywheelCommand flywheelOverrideCommand = new FlywheelCommand(flywheelSubsystem, m_turretvision, true);
     public HoodCommand hoodCommand = new HoodCommand(hoodSubsystem, m_turretvision, false, 0);
     public HoodCommand manualHoodUp = new HoodCommand(hoodSubsystem, m_turretvision, true, 0.5);
     public HoodCommand manualHoodDown = new HoodCommand(hoodSubsystem, m_turretvision, true, -0.5);
-    public Command hoodAndFlywheel = new ParallelDeadlineGroup(flywheelCommand, hoodCommand);
+    //public Command hoodAndFlywheel = new ParallelDeadlineGroup(flywheelCommand, hoodCommand);
 
     //Controller Objects
     public static final CommandXboxController driverController = new CommandXboxController(0);
@@ -149,8 +147,8 @@ public class RobotContainer {
         // Manual hood override
         operatorController.povUp().whileTrue(manualHoodUp);
         operatorController.povDown().whileTrue(manualHoodDown);
-        operatorController.a().toggleOnTrue(hoodAndFlywheel);
-        operatorController.a().toggleOnTrue(ManualFlywheelOverideCommand);
+        operatorController.a().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
+        operatorController.leftTrigger(0.1).whileTrue(flywheelOverrideCommand);
         //operatorController.leftBumper().whileTrue(indexAndSpindexCommand);
         operatorController.b().whileTrue(reverseIndexer);
         drivetrain.registerTelemetry(logger::telemeterize);

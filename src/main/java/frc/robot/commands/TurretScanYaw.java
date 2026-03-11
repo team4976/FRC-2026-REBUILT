@@ -45,7 +45,6 @@ public class TurretScanYaw extends Command {
     @Override
     public void execute() {
         SmartDashboard.putBoolean("TurningRight", TurningRight);
-        //System.err.println("execute works");
         //get if the robot is seeing the april tag
         hasTargets = m_turretVision.targetVisible();
         // set the yaw to what the yaw of the april tag is

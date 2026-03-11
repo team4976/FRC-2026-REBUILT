@@ -36,7 +36,7 @@ public class Climb extends Command {
         isClimbed = false;
       }
     }
-  //creates command
+    
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {}
@@ -52,7 +52,5 @@ public class Climb extends Command {
     public boolean isFinished() {
       return false;
     }
-     // Called when the cool stuff happens i guess?
   
   }
-  //hoi!
