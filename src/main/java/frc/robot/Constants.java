@@ -64,9 +64,10 @@ public final class Constants {
 
   public static final int kDriverControllerPort = 0;
   public static final int LEFT_LEADER_ID = 1;
-  public static double turretScanVoltage = 1.2;
-  public static double turretManualVoltage = .5; //2
+  public static double turretScanVoltage = 0.8;
+  public static double turretManualVoltage = 1.5; //2
   public static boolean stopbutton = false;
+  public static boolean flipButton = false;
   public static double yaw;
   public static double targetYaw = 0.0;
   public static double currentYaw;
