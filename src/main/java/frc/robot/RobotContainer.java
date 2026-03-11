@@ -116,7 +116,7 @@ public class RobotContainer {
             point.withModuleDirection(new Rotation2d(-driverController.getLeftY(), -driverController.getLeftX()))
         ));
 
-        driverController.leftTrigger().toggleOnTrue(turretScanYaw);
+        driverController.leftTrigger().toggleOnTrue(turretScan);
         // calls the method that turns the stopButton for Scan to true
         //driverController.rightTrigger().onTrue(turretMovement.runOnce(()->turretMovement.getStopCommand()));
         //operatorController.leftBumper().onTrue(turretMovement.runOnce(()->turretMovement.forceTurretFlip()));

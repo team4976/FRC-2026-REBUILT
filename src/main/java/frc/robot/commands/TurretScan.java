@@ -122,7 +122,7 @@ public class TurretScan extends Command {
             }
 
         Double speedAdjust = 5.0;
-        m_shooter.lockedOn((turretTargetAngle-turretAngle)/45*-speedAdjust);
+        m_shooter.lockedOn((turretTargetAngle-turretAngle)/45*speedAdjust);
         System.out.println(Constants.turretManualVoltage);
         }
     }
