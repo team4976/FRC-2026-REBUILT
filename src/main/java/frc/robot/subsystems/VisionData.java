@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Telemetry;
+import frc.robot.subsystems.ElasticData;
 
 import static frc.robot.Constants.*;
 
@@ -33,7 +34,6 @@ public class VisionData{
     private PhotonCamera camera;
     private Telemetry logger;
     private PhotonPipelineResult latestResult;
-    private Field2d field2d = new Field2d();
     private Optional<Alliance> alliance;
     public double hubOrigX;
     public double hubOrigY;
@@ -45,7 +45,8 @@ public class VisionData{
     public double turretAngle;
     public double turretTargetAngle;
     public double hubId;
-
+    Field2d field2d;
+    //static Field2d field2d = SmartDashboard.getData("Fields/Ideal Field");
     //the constructor, having the camera as a parameter--
     //means the methods in this class can be used dynamically--
     //with any camera and dont need to be changed if the camera--
