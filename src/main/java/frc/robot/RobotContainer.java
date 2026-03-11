@@ -145,7 +145,7 @@ public class RobotContainer {
         // Manual hood override
         operatorController.povUp().whileTrue(manualHoodUp);
         operatorController.povDown().whileTrue(manualHoodDown);
-        operatorController.a().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
+        //operatorController.a().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
         //operatorController.leftBumper().whileTrue(indexAndSpindexCommand);
         operatorController.b().whileTrue(reverseIndexer);
         drivetrain.registerTelemetry(logger::telemeterize);
