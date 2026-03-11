@@ -50,7 +50,7 @@ public class Bindings {
         driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
         //Regular Shooting
-        driverController.axisGreaterThan(4, 0.1).whileTrue(indexAndSpindexCommand);
+        driverController.axisGreaterThan(3, 0.1).whileTrue(indexAndSpindexCommand);
 
         //Intake
         driverController.x().onTrue(intakeCommand);
@@ -64,7 +64,7 @@ public class Bindings {
         operatorController.a().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
 
         //Turret scan
-        operatorController.axisGreaterThan(3, 0.1).toggleOnTrue(turretScanYaw);
+        operatorController.axisGreaterThan(2, 0.1).toggleOnTrue(turretScanYaw);
 
         //---------------
         //Manual Overrides
