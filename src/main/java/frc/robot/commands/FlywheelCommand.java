@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.PhotonVision;
+import static frc.robot.Constants.*;
 
 public class FlywheelCommand extends Command{
     public FlywheelSubsystem flywheelSubsystem;
@@ -26,7 +27,7 @@ public class FlywheelCommand extends Command{
     @Override
     public void execute(){ 
         if (isOverriden) {
-            RobotContainer.operatorController.getLeftTriggerAxis();
+            operatorController.getLeftTriggerAxis();
         } else if (!isOverriden) {
             flywheelSubsystem.spinFlywheel(50);
                 /*31.49597 + (10.19041 * (photonVision.getDistance() + 0.5969))  

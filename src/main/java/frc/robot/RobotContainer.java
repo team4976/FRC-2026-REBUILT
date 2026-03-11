@@ -77,10 +77,6 @@ public class RobotContainer {
     public HoodCommand manualHoodDown = new HoodCommand(hoodSubsystem, m_turretvision, true, -0.5);
     //public Command hoodAndFlywheel = new ParallelDeadlineGroup(flywheelCommand, hoodCommand);
 
-    //Controller Objects
-    public static final CommandXboxController driverController = new CommandXboxController(0);
-    public static final CommandXboxController operatorController = new CommandXboxController(1);
-
     //elastic/smartdashboard intialization 
     private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision, allSubsystemsList);
 
@@ -113,20 +109,21 @@ public class RobotContainer {
     }
 
     public void driverConfigureBindings(){
+        //Swerve
         driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
         driverController.b().whileTrue(drivetrain.applyRequest(() ->
             point.withModuleDirection(new Rotation2d(-driverController.getLeftY(), -driverController.getLeftX()))
         ));
-
-        driverController.leftTrigger().toggleOnTrue(turretScanYaw);
-        // calls the method that turns the stopButton for Scan to true
-
         // Reset the field-centric heading on left bumper press.
         driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
-        // Regular Shooting
-        //Should be right bumper
+        //Turret
+        driverController.leftTrigger().toggleOnTrue(turretScanYaw);
+
+        //Regular Shooting
         driverController.rightBumper().whileTrue(indexAndSpindexCommand);
+
+        //Intake
         driverController.x().onTrue(intakeCommand);
     }
 
