@@ -45,10 +45,10 @@ public class IndexAndSpindexSubsystem extends SubsystemBase{
     public void periodic() {
         if (hoodSubsystem.getHoodState() == "readyToShoot" 
         && flywheelSubsystem.getShooterState() == "readyToShoot") {
-            driverController.setRumble(GenericHID.RumbleType.kBothRumble, 100);
+            //driverController.setRumble(GenericHID.RumbleType.kBothRumble, 100);
         }
         else {
-            driverController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
+            //driverController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
         }
     }
 }
