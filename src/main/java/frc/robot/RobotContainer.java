@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
 import frc.robot.commands.Auto.IntakeExtend;
 import frc.robot.generated.RebuiltTunerConstants;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -129,8 +130,10 @@ public class RobotContainer {
         FlywheelStart flywheelStart = new FlywheelStart(flywheelSubsystem,vision);
         FlywheelStop flywheelStop = new FlywheelStop(flywheelSubsystem,vision);
         Trigger trigger = new Trigger(vision.AutoShootFlag);
+        AutoIndexAndSpindexCommand index = new AutoIndexAndSpindexCommand(indexAndSpindexSubsystem, MaxSpeed, flywheelSubsystem);
+        
         trigger.onTrue(indexAndSpindexCommand);
-        return test.andThen(new WaitCommand(.5)).andThen(pathCommand).andThen(turretScan).andThen(flywheelStart).andThen(indexAndSpindexCommand).andThen(flywheelStop);//(Command) elastic.fieldWidget.commandChooser.getSelected();
+        return test.andThen(new WaitCommand(.5)).andThen(pathCommand).andThen(turretScan).andThen(flywheelStart).andThen(index).andThen(new WaitCommand(4)).andThen(flywheelStop);//(Command) elastic.fieldWidget.commandChooser.getSelected();
         //(Command) elastic.fieldWidget.commandChooser.getSelected();
         //System.out.println("*********: "+test.getName());
         //return test.andThen(IntakeCommand);

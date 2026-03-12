@@ -61,6 +61,7 @@ public class VisionData{
             if (alliance.get() == Alliance.Blue) {
                 hubOrigX = BlueHubX; 
                 hubOrigY = BlueHubY;
+                
                 Constants.hubId = 26;
             }
             if (alliance.get() == Alliance.Red) {
@@ -68,6 +69,9 @@ public class VisionData{
                 hubOrigY = RedHubY;
                 Constants.hubId = 10;
             }}
+            SmartDashboard.putString("Alliance", alliance.get().name() );
+            SmartDashboard.putNumber("Hub Location X", hubOrigX );
+            SmartDashboard.putNumber("Hub Location Y", hubOrigY );
     }
 
     //called at the top of the periodic in PhotonVision, keeps the camera frame used uniform.

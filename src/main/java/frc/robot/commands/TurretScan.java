@@ -83,6 +83,8 @@ public class TurretScan extends Command {
             SmartDashboard.putNumber("targetAngle", turretTargetAngle);
             SmartDashboard.putNumber("turretAngle", turretAngle);
             SmartDashboard.putNumber("turretTargetAngle", turretTargetAngle);
+
+             
         
             // if left or right switch is pressed while we see a target set stopLockedOn to true
             if(m_shooter.getLeftSwitch() == false || m_shooter.getRightSwitch() == false ||
@@ -93,7 +95,7 @@ public class TurretScan extends Command {
             }
 
         Double speedAdjust = 5.0;
-        double autoLockedOn = Math.max((turretTargetAngle-turretAngle)/45*speedAdjust, 0.75);
+        double autoLockedOn = (turretTargetAngle-turretAngle)/45*speedAdjust; //Math.max((turretTargetAngle-turretAngle)/45*speedAdjust, 0.75);
         double manualLockedOn = operatorController.getRightX() * -1;
         double totalLockedOn = autoLockedOn + manualLockedOn;
         
@@ -120,13 +122,13 @@ public class TurretScan extends Command {
         // if rightTrigger is pressed or stopLocked = true then end command
         
         return m_turretVision.AutoShootFlag.getAsBoolean();
-        /*
-        if(Constants.stopbutton == true){
+        
+       /*  if(Constants.stopbutton == true){
             return true;
         }
         else{
             return false;
-        } */
+        }*/
     }
     
 }
