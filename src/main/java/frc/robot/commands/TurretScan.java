@@ -24,6 +24,7 @@ public class TurretScan extends Command {
     double turretAngle; // the turret angle we are currently at
     double turretPosition; // the encoder value of the tuurets motor
     double turretTargetPosition;
+    double manualLockedOn;
 
     public TurretScan(PhotonVision turretVision, TurretMovement shooter){
         m_turretVision = turretVision;
@@ -94,7 +95,11 @@ public class TurretScan extends Command {
 
         Double speedAdjust = 5.0;
         double autoLockedOn = Math.max((turretTargetAngle-turretAngle)/45*speedAdjust, 0.75);
-        double manualLockedOn = operatorController.getRightX() * -1;
+        if (operatorController.axisGreaterThan(5, 0.3).getAsBoolean()){
+            manualLockedOn = operatorController.getRightX() * -1;
+        } else if (operatorController.axisLessThan(5, -0.3).getAsBoolean()) {
+            manualLockedOn = operatorController.getRightX() * -1;
+        }
         double totalLockedOn = autoLockedOn + manualLockedOn;
         m_shooter.lockedOn(totalLockedOn);
         System.out.println(Constants.turretManualVoltage);
