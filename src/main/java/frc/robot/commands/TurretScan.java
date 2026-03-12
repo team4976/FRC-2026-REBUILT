@@ -124,12 +124,19 @@ public class TurretScan extends Command {
             }
 
         Double speedAdjust = 5.0;
+        
+
         double autoLockedOn = (turretTargetAngle-turretAngle)/45*speedAdjust;
         double manualLockedOn = operatorController.getRightX() * -1;
         double totalLockedOn = autoLockedOn + manualLockedOn;
-        m_shooter.lockedOn(totalLockedOn);
+        
+        SmartDashboard.putNumber("turretAutoLockedOn", autoLockedOn);
+        //m_shooter.lockedOn(totalLockedOn);
+        m_shooter.lockedOn(autoLockedOn);
+
         System.out.println(Constants.turretManualVoltage);
         }
+        
         m_turretVision.turretAngle = turretAngle;
         m_turretVision.turretTargetAngle = turretTargetAngle;
         

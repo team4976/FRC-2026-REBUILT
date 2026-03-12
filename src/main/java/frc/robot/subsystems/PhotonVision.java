@@ -14,7 +14,9 @@ public class PhotonVision extends SubsystemBase{
     public Double turretAngle = 0.0;
 
     public BooleanSupplier AutoShootFlag = ()->{
-            return ((turretTargetAngle-turretAngle) < 2.5 && (turretTargetAngle-turretAngle) > -2.5);
+            boolean hasVaildTarget = ((turretTargetAngle-turretAngle) < 2.5 && (turretTargetAngle-turretAngle) > -2.5);
+            System.out.println("Has Vaild Target: " + hasVaildTarget);
+            return hasVaildTarget;
          };
 
     public PhotonVision(String cameraName, Telemetry logger){
