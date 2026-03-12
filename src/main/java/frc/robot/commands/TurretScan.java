@@ -56,38 +56,6 @@ public class TurretScan extends Command {
         if(hasTargets == false || stopLockedOn == true){
             stopLockedOn = false;
             System.err.println("hasTargets = false");
-
-            // if flipButton is true reverse the scan direction
-            if(Constants.flipButton = true && TurningRight == true){
-                TurningRight = false;
-            }
-            else if(Constants.flipButton = true && TurningRight == false){
-                TurningRight = true;
-            }
-            // if TurningRight = true turn the turret to the right
-            if(TurningRight == true){
-               m_shooter.turnRight(Constants.turretScanVoltage);
-                //System.err.println("Turn Right == true works");
-            }
-
-            // if TurningRight = false turn the turret to the left
-            if(TurningRight == false){
-                m_shooter.turnLeft(Constants.turretScanVoltage);
-                //System.err.println("Turn Right == false works");
-            }
-
-            // if the left Switch is being pressed set TurningRight to true
-            if(m_shooter.getLeftSwitch() == false || m_shooter.getEncoderValue() > Constants.turretLimitLeft){
-                TurningRight = true;
-                //System.err.println("getLeftSwitch works");
-            }
-
-            // if the right Switch is being pressed set TurningRight to false
-            if(m_shooter.getRightSwitch() == false || m_shooter.getEncoderValue() < Constants.turretLimitRight){
-                TurningRight = false;
-                //System.err.println("getRightSwitch works");
-
-            }
         }
         else{
             field2d = m_turretVision.getDistanceAndAngle();
