@@ -46,8 +46,8 @@ public class FlywheelCommand extends Command{
 
         if (operatorController.axisGreaterThan(1, 0.1).getAsBoolean()){
             manualFlywheelSpeed = operatorController.getLeftY() * -20;
-        } else if (operatorController.axisGreaterThan(1, -0.1).getAsBoolean()) {
-            manualFlywheelSpeed = operatorController.getLeftY() * -40;
+        } else if (operatorController.axisLessThan(1, -0.1).getAsBoolean()) {
+            manualFlywheelSpeed = operatorController.getLeftY() * -20;
         }
         
         totalFlywheelSpeed = manualFlywheelSpeed + autoFlywheelSpeed;
