@@ -2,6 +2,7 @@
 
 package frc.robot.commands;
 import java.util.OptionalDouble;
+import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -129,6 +130,9 @@ public class TurretScan extends Command {
         m_shooter.lockedOn(totalLockedOn);
         System.out.println(Constants.turretManualVoltage);
         }
+        m_turretVision.turretAngle = turretAngle;
+        m_turretVision.turretTargetAngle = turretTargetAngle;
+        
     }
 
     @Override
