@@ -95,9 +95,9 @@ public class TurretScan extends Command {
 
         Double speedAdjust = 5.0;
         double autoLockedOn = Math.max((turretTargetAngle-turretAngle)/45*speedAdjust, 0.75);
-        if (operatorController.axisGreaterThan(5, 0.3).getAsBoolean()){
+        if (operatorController.axisGreaterThan(4, 0.3).getAsBoolean()){
             manualLockedOn = operatorController.getRightX() * -1;
-        } else if (operatorController.axisLessThan(5, -0.3).getAsBoolean()) {
+        } else if (operatorController.axisLessThan(4, -0.3).getAsBoolean()) {
             manualLockedOn = operatorController.getRightX() * -1;
         }
         double totalLockedOn = autoLockedOn + manualLockedOn;
