@@ -12,7 +12,7 @@ public class IndexAndSpindexCommand extends Command{
     public IndexAndSpindexCommand(IndexAndSpindexSubsystem InSSubsystem, double speed, FlywheelSubsystem flywheelSubsystem){
         this.InSSubsystem = InSSubsystem;
         this.flywheelSubsystem = flywheelSubsystem;
-        this.speed = speed;
+        speed = 0.8;
         addRequirements(InSSubsystem);
     }
 
