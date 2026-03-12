@@ -13,7 +13,7 @@ public class PhotonVision extends SubsystemBase{
     public Double turretTargetAngle = 0.0;
     public Double turretAngle = 0.0;
 
-    BooleanSupplier AutoShootFlag = ()->{
+    public BooleanSupplier AutoShootFlag = ()->{
             return ((turretTargetAngle-turretAngle) < 2.5 && (turretTargetAngle-turretAngle) > -2.5);
          };
 

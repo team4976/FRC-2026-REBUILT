@@ -91,7 +91,7 @@ public class TurretScan extends Command {
         }
         else{
             field2d = m_turretVision.getDistanceAndAngle();
-            System.err.println("hasTargets = false");
+            System.err.println("hasTargets = true");
 
             // gets the turret angle relative to the field
             turretAngle = m_turretVision.getTurretAngle();
@@ -144,12 +144,15 @@ public class TurretScan extends Command {
     @Override
     public boolean isFinished() {
         // if rightTrigger is pressed or stopLocked = true then end command
+        
+        return m_turretVision.AutoShootFlag.getAsBoolean();
+        /*
         if(Constants.stopbutton == true){
             return true;
         }
         else{
             return false;
-        }
+        } */
     }
     
 }

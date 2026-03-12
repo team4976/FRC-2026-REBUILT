@@ -11,7 +11,7 @@ import frc.robot.subsystems.Intake;
 /** An example command that uses an example subsystem. 
  * @param <Drive>*/
 @SuppressWarnings("unused")
-public class intakeCommand extends Command {
+public class IntakeCommand extends Command {
 boolean SolenoidStatus;
 Intake intake;
 boolean stop;
@@ -21,7 +21,7 @@ boolean stop;
        * @param subsystem The subsystem used by this command.
        */
 
-public intakeCommand(Intake intake) {
+public IntakeCommand(Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
   this.intake = intake;
   addRequirements(intake);  
@@ -59,4 +59,5 @@ public intakeCommand(Intake intake) {
   public boolean isFinished() { 
     return stop;
   }
+}
 
