@@ -45,6 +45,11 @@ public class TurretMovement extends SubsystemBase{
         turretSpin.getConfigurator().apply(turretSpinConfig);
     }
 
+    public void teleopInit(){
+        turretSpin.setControl(turretPosition.withPosition(0));
+        turretSpin.setVoltage(0);
+    }
+
     public void turretRotationPID(double targetTurretPos){
         System.out.println("turret target position" + targetTurretPos);
         // check if target position is in turret deadzone

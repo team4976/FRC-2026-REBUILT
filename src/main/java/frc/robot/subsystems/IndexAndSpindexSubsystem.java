@@ -31,6 +31,13 @@ public class IndexAndSpindexSubsystem extends SubsystemBase{
         System.out.println("Sparkmax index inverted");
     }
 
+    //Sets the motor to 0 for the beginning of teleop
+    //could have used stopFeeder but consistency w/other subsystems
+    public void teleopInit(){
+        indexMotor.set(0);
+        spindexMotor.set(0);
+    }
+
     public void stopFeeder(){
         indexMotor.set(0);
         spindexMotor.set(0);

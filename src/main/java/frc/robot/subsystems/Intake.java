@@ -34,6 +34,12 @@ public class Intake extends SubsystemBase {
     solenoid = pneumaticsControlModule.makeSolenoid(2);
     solenoid.set(false);
   }   
+
+  public void teleopInit(){
+    IntakeMotor.set(ControlMode.PercentOutput, 0); 
+    solenoid.set(false);
+    intakeStatus = false;
+  }
              
   public void stopIntakeMotor() {
     IntakeMotor.set(ControlMode.PercentOutput, 0); 

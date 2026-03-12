@@ -33,6 +33,10 @@ public class HoodSubsystem extends SubsystemBase{
         HoodMotor.getConfigurator().apply(hoodConfig, 0.050);
     }
 
+    public void teleopInit(){
+        HoodMotor.setControl(hoodPosVolt.withPosition(0));
+    }
+
     public void moveHood(double targetHoodPos){
         if (targetHoodPos < 0) {
             targetHoodPos = 0;
