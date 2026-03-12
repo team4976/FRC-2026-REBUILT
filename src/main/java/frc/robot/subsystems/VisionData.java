@@ -263,8 +263,8 @@ public class VisionData{
               //  HubX = HubX + hubMovedX;
                // HubY = HubY + hubMovedY;
                 // making a new distance based on the virtual hub
-                DistanceX = HubX - field2d.getRobotPose().getX();
-                DistanceY = HubY - field2d.getRobotPose().getY();
+                DistanceX = HubX-field2d.getRobotPose().getX();
+                DistanceY = HubY-field2d.getRobotPose().getY();
                 turretDistance = Math.sqrt(DistanceX*DistanceX + DistanceY*DistanceY);
 
                 System.err.println(hubOrigX);

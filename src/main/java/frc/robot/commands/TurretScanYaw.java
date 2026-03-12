@@ -51,32 +51,9 @@ public class TurretScanYaw extends Command {
 
 
         if(hasTargets == false || stopLockedOn == true){
+            stopLockedOn = false;
             System.err.println("hasTargets = false");
-            
-            // if TurningRight = true turn the turret to the right
-            if(TurningRight == true){
-               m_shooter.turnRight(Constants.turretScanVoltage);
-                //System.err.println("Turn Right == true works");
-            }
-
-            // if TurningRight = false turn the turret to the left
-            if(TurningRight == false){
-                m_shooter.turnLeft(Constants.turretScanVoltage);
-                //System.err.println("Turn Right == false works");
-            }
-
-            // if the left Switch is being pressed set TurningRight to true
-            if(m_shooter.getLeftSwitch() == false || m_shooter.getEncoderValue() > Constants.turretLimitLeft){
-                TurningRight = true;
-                //System.err.println("getLeftSwitch works");
-            }
-
-            // if the right Switch is being pressed set TurningRight to false
-            if(m_shooter.getRightSwitch() == false || m_shooter.getEncoderValue() < Constants.turretLimitRight){
-                TurningRight = false;
-                //System.err.println("getRightSwitch works");
-
-            }
+            m_shooter.stopTurn();
         }
         else{
             field2d = m_turretVision.getDistanceAndAngle();
@@ -100,7 +77,7 @@ public class TurretScanYaw extends Command {
 
         turretyaw= yaw.getAsDouble();
         Double speedAdjust = 5.0;
-        m_shooter.lockedOn((turretyaw)/45*-speedAdjust);
+        m_shooter.lockedOn(Math.max(((turretyaw)/45*-speedAdjust),0.75));
         System.out.println(Constants.turretManualVoltage);
 
 
@@ -116,7 +93,12 @@ public class TurretScanYaw extends Command {
     @Override
     public boolean isFinished() {
         // if rightTrigger is pressed or stopLocked = true then end command
+    if(Constants.stopbutton == true){
+            return true;
+    }
+    else{
         return false;
+    }
     }
     
 }

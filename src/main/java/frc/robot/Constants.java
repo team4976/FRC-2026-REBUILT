@@ -17,6 +17,7 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.generated.RebuiltTunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
@@ -32,6 +33,10 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+
+  //Controller Objects
+  public static final CommandXboxController driverController = new CommandXboxController(0);
+  public static final CommandXboxController operatorController = new CommandXboxController(1);
 
   //serve constants
   //swerve drive variables and objects
@@ -59,9 +64,10 @@ public final class Constants {
 
   public static final int kDriverControllerPort = 0;
   public static final int LEFT_LEADER_ID = 1;
-  public static double turretScanVoltage = 1.2;
-  public static double turretManualVoltage = .5; //2
+  public static double turretScanVoltage = 0.8;
+  public static double turretManualVoltage = 1.5; //2
   public static boolean stopbutton = false;
+  public static boolean flipButton = false;
   public static double yaw;
   public static double targetYaw = 0.0;
   public static double currentYaw;
@@ -88,5 +94,5 @@ public final class Constants {
 
   public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
   public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(0.0, 0.0, 0.635), new Rotation3d(0, 0, 0));
-  public static double intakeSpeed = 0.60;
+  public static double intakeSpeed = 1.00;
 }

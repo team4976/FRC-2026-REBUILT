@@ -2,6 +2,7 @@
 
 package frc.robot.commands;
 import java.util.OptionalDouble;
+import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -9,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.TurretMovement;
 import frc.robot.subsystems.PhotonVision;
+import static frc.robot.Constants.*;
 
 public class TurretScan extends Command {
     PhotonVision m_turretVision;
@@ -52,32 +54,9 @@ public class TurretScan extends Command {
 
 
         if(hasTargets == false || stopLockedOn == true){
+            stopLockedOn = false;
             System.err.println("hasTargets = false");
-            
-            // if TurningRight = true turn the turret to the right
-            if(TurningRight == true){
-               m_shooter.turnRight(Constants.turretScanVoltage);
-                //System.err.println("Turn Right == true works");
-            }
-
-            // if TurningRight = false turn the turret to the left
-            if(TurningRight == false){
-                m_shooter.turnLeft(Constants.turretScanVoltage);
-                //System.err.println("Turn Right == false works");
-            }
-
-            // if the left Switch is being pressed set TurningRight to true
-            if(m_shooter.getLeftSwitch() == false || m_shooter.getEncoderValue() > Constants.turretLimitLeft){
-                TurningRight = true;
-                //System.err.println("getLeftSwitch works");
-            }
-
-            // if the right Switch is being pressed set TurningRight to false
-            if(m_shooter.getRightSwitch() == false || m_shooter.getEncoderValue() < Constants.turretLimitRight){
-                TurningRight = false;
-                //System.err.println("getRightSwitch works");
-
-            }
+            m_shooter.stopTurn();
         }
         else{
             field2d = m_turretVision.getDistanceAndAngle();
@@ -114,9 +93,15 @@ public class TurretScan extends Command {
             }
 
         Double speedAdjust = 5.0;
-        m_shooter.lockedOn((turretTargetAngle-turretAngle)/45*-speedAdjust);
+        double autoLockedOn = Math.max((turretTargetAngle-turretAngle)/45*speedAdjust, 0.75);
+        double manualLockedOn = operatorController.getRightX() * -1;
+        double totalLockedOn = autoLockedOn + manualLockedOn;
+        m_shooter.lockedOn(totalLockedOn);
         System.out.println(Constants.turretManualVoltage);
         }
+        m_turretVision.turretAngle = turretAngle;
+        m_turretVision.turretTargetAngle = turretTargetAngle;
+        
     }
 
     @Override
@@ -128,7 +113,12 @@ public class TurretScan extends Command {
     @Override
     public boolean isFinished() {
         // if rightTrigger is pressed or stopLocked = true then end command
-        return false;
+        if(Constants.stopbutton == true){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
     
 }
