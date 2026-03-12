@@ -56,6 +56,7 @@ public class TurretScan extends Command {
         if(hasTargets == false || stopLockedOn == true){
             stopLockedOn = false;
             System.err.println("hasTargets = false");
+            m_shooter.stopTurn();
         }
         else{
             field2d = m_turretVision.getDistanceAndAngle();
