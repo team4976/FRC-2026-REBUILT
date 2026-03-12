@@ -69,7 +69,7 @@ public class Bindings {
         operatorController.a().toggleOnTrue(flywheelCommand);
 
         //Operator Shoot
-        driverController.axisGreaterThan(3, 0.1).whileTrue(indexAndSpindexCommand);
+        operatorController.axisGreaterThan(3, 0.1).whileTrue(indexAndSpindexCommand);
 
         //Turret scan
         operatorController.axisGreaterThan(2, 0.1).toggleOnTrue(turretScan);
