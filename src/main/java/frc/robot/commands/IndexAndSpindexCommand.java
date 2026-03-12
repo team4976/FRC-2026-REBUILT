@@ -23,9 +23,13 @@ public class IndexAndSpindexCommand extends Command{
     
     @Override
     public void execute() {
-        if (flywheelSubsystem.shooterMotorLeader.getMotorVoltage().getValueAsDouble() > 0) {
+        if (speed < 0) {
             InSSubsystem.moveFeeder(speed);
-        }
+        } else {
+            if (flywheelSubsystem.shooterMotorLeader.getMotorVoltage().getValueAsDouble() > 0) {
+              InSSubsystem.moveFeeder(speed);
+            }
+        }   
 
     }
 
