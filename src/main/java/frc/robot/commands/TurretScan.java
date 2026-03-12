@@ -103,10 +103,10 @@ public class TurretScan extends Command {
             manualLockedOn = operatorController.getRightX() * -1;
         } else if (operatorController.axisLessThan(4, -0.3).getAsBoolean()) {
             System.out.println("auto aim value:" + autoLockedOn);
-          //  if (autoLockedOn <= 0.9) {
+          //  if (autoLockedOn <= -0.6) {
           //      manualLockedOn = operatorController.getRightX() * -2;
-          //  } else if (autoLockedOn > 1) {
-                manualLockedOn = operatorController.getRightX() * -1;
+          //  } else if (autoLockedOn > -0.5) {
+             //   manualLockedOn = operatorController.getRightX() * -1;
            // }
         }
         double totalLockedOn = autoLockedOn + manualLockedOn;
