@@ -59,4 +59,5 @@ public IntakeCommand(Intake intake) {
   public boolean isFinished() { 
     return stop;
   }
-
+  
+}
