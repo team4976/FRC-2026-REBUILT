@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import java.util.List;
 import java.util.OptionalDouble;
+import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -9,6 +10,12 @@ import frc.robot.Telemetry;
 
 public class PhotonVision extends SubsystemBase{
     VisionData vision;
+    public Double turretTargetAngle = 0.0;
+    public Double turretAngle = 0.0;
+
+    BooleanSupplier AutoShootFlag = ()->{
+            return ((turretTargetAngle-turretAngle) < 2.5 && (turretTargetAngle-turretAngle) > -2.5);
+         };
 
     public PhotonVision(String cameraName, Telemetry logger){
         vision = new VisionData(cameraName, logger);
