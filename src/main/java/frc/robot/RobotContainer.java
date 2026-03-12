@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 
 import frc.robot.commands.intakeCommand;
+import frc.robot.commands.Auto.IntakeExtend;
 import frc.robot.generated.RebuiltTunerConstants;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -161,9 +162,14 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() { 
         //elasticData..addChooser();
-        Command test = AutoBuilder.buildAuto("Hub to Shoot");//(Command) elastic.fieldWidget.commandChooser.getSelected();
-        System.out.println("*********: "+test.getName());
-        return test.andThen(flyWheelStart).andThen(new WaitCommand(.5)).andThen(indexAndSpindexCommand).andThen(new WaitCommand(.5)).andThen(flywheelStop);//(Command) elastic.fieldWidget.commandChooser.getSelected();
+        IntakeExtend test = new IntakeExtend(intakeSubsystem);
+        Command pathCommand = AutoBuilder.buildAuto("Final Auto 1");
+        return test.andThen(new WaitCommand(.5)).andThen(pathCommand).andThen(TurretScan).andThen(flyWheelStart).andThen(new WaitCommand(.5)).andThen(indexAndSpindexCommand).andThen(new WaitCommand(.5)).andThen(flywheelStop);//(Command) elastic.fieldWidget.commandChooser.getSelected();
+        //(Command) elastic.fieldWidget.commandChooser.getSelected();
+        //System.out.println("*********: "+test.getName());
+        //return test.andThen(IntakeCommand);
+        //return test.andThen(flyWheelStart).andThen(new WaitCommand(.5)).andThen(indexAndSpindexCommand).andThen(new WaitCommand(.5)).andThen(flywheelStop);//(Command) elastic.fieldWidget.commandChooser.getSelected();
+        
         //.alongWith(new TurretScan(m_turretvision, turretMovement))
         // Simple drive forward auton
         /*
