@@ -41,8 +41,8 @@ public class FlywheelCommand extends Command{
                 //SmartDashboard.getNumber("Turret Rotate", 0));
         }  */
         if (photonVision.getDistance() != 0) {
-            autoFlywheelSpeed = 31.49597 + (10.19041 * (photonVision.getDistance() + 0.5969))  
-                - (0.4148098 * Math.pow(photonVision.getDistance() + 0.5969, 2));
+            autoFlywheelSpeed = (31.49597 + (10.19041 * (photonVision.getDistance() + 0.5969))  
+                - (0.4148098 * Math.pow(photonVision.getDistance() + 0.5969, 2))) * 0.9;
         } else {
             autoFlywheelSpeed = 50;
         }
