@@ -12,7 +12,7 @@ public class IndexAndSpindexCommand extends Command{
     public IndexAndSpindexCommand(IndexAndSpindexSubsystem InSSubsystem, double speed, FlywheelSubsystem flywheelSubsystem){
         this.InSSubsystem = InSSubsystem;
         this.flywheelSubsystem = flywheelSubsystem;
-        this.speed = speed;
+        speed = 0.8;
         addRequirements(InSSubsystem);
     }
 
@@ -23,10 +23,14 @@ public class IndexAndSpindexCommand extends Command{
     
     @Override
     public void execute() {
-        if (flywheelSubsystem.shooterMotorLeader.getMotorVoltage().getValueAsDouble() < 0) {
-            return;
-        }
-        InSSubsystem.moveFeeder(speed);
+        if (speed < 0) {
+            InSSubsystem.moveFeeder(speed);
+        } else {
+            if (flywheelSubsystem.shooterMotorLeader.getMotorVoltage().getValueAsDouble() > 0) {
+              InSSubsystem.moveFeeder(speed);
+            }
+        }   
+
     }
 
     @Override

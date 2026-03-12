@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.TurretMovement;
 import frc.robot.subsystems.PhotonVision;
+import static frc.robot.Constants.*;
 
 public class TurretScan extends Command {
     PhotonVision m_turretVision;
@@ -123,7 +124,10 @@ public class TurretScan extends Command {
             }
 
         Double speedAdjust = 5.0;
-        m_shooter.lockedOn((turretTargetAngle-turretAngle)/45*speedAdjust);
+        double autoLockedOn = (turretTargetAngle-turretAngle)/45*speedAdjust;
+        double manualLockedOn = operatorController.getRightX() * -1;
+        double totalLockedOn = autoLockedOn + manualLockedOn;
+        m_shooter.lockedOn(totalLockedOn);
         System.out.println(Constants.turretManualVoltage);
         }
         m_turretVision.turretAngle = turretAngle;
