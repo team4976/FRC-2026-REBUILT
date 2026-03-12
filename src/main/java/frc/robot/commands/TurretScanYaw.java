@@ -1,6 +1,8 @@
 
 
 package frc.robot.commands;
+import static frc.robot.Constants.yaw;
+
 import java.util.OptionalDouble;
 
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -9,9 +11,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.TurretMovement;
 import frc.robot.subsystems.PhotonVision;
-import static frc.robot.Constants.*;
 
-public class TurretScan extends Command {
+public class TurretScanYaw extends Command {
     PhotonVision m_turretVision;
     TurretMovement m_shooter;
     boolean TurningRight = true; // flag in scan to determine if the turret should be turning right or left
@@ -19,12 +20,10 @@ public class TurretScan extends Command {
     double distance; // distance from the hub to the turret
     boolean stopLockedOn = false; // flag to track if the turret is hitting the limit switch in lockedOn mode
     Field2d field2d; // our estimated position on the field
-    double turretTargetAngle; // the angle we want the turret to be at so that we are aiming at the hub
-    double turretAngle; // the turret angle we are currently at
-    double turretPosition; // the encoder value of the tuurets motor
-    double turretTargetPosition;
+    double turretyaw;
+    double turretPosition;
 
-    public TurretScan(PhotonVision turretVision, TurretMovement shooter){
+    public TurretScanYaw(PhotonVision turretVision, TurretMovement shooter){
         m_turretVision = turretVision;
         addRequirements(turretVision);
 
@@ -46,7 +45,6 @@ public class TurretScan extends Command {
     @Override
     public void execute() {
         SmartDashboard.putBoolean("TurningRight", TurningRight);
-        //System.err.println("execute works");
         //get if the robot is seeing the april tag
         hasTargets = m_turretVision.targetVisible();
         // set the yaw to what the yaw of the april tag is
@@ -55,7 +53,7 @@ public class TurretScan extends Command {
         if(hasTargets == false || stopLockedOn == true){
             stopLockedOn = false;
             System.err.println("hasTargets = false");
-
+            
             // if flipButton is true reverse the scan direction
             if(Constants.flipButton = true && TurningRight == true){
                 TurningRight = false;
@@ -92,27 +90,9 @@ public class TurretScan extends Command {
             field2d = m_turretVision.getDistanceAndAngle();
             System.err.println("hasTargets = false");
 
-            // gets the turret angle relative to the field
-            turretAngle = m_turretVision.getTurretAngle();
-            // gets the angle we want to be at to be facing the hub
-            turretTargetAngle = m_turretVision.getTurretTargetAngle();
-
             distance = m_turretVision.getTurretDistance();
 
             turretPosition = m_shooter.getEncoderValue();
-
-            //turretTargetPosition = m_shooter.convertAngleRotation(turretTargetAngle-turretAngle);
-
-            //m_shooter.turretRotationPID(turretPosition+turretTargetPosition);
-
-
-            SmartDashboard.putNumber("turretDistance", distance);
-            SmartDashboard.putNumber("turretPoseX", field2d.getRobotPose().getX());
-            SmartDashboard.putNumber("turretPoseY", field2d.getRobotPose().getY());
-            SmartDashboard.putNumber("turretRotation", field2d.getRobotPose().getRotation().getDegrees());
-            SmartDashboard.putNumber("targetAngle", turretTargetAngle);
-            SmartDashboard.putNumber("turretAngle", turretAngle);
-            SmartDashboard.putNumber("turretTargetAngle", turretTargetAngle);
         
             // if left or right switch is pressed while we see a target set stopLockedOn to true
             if(m_shooter.getLeftSwitch() == false || m_shooter.getRightSwitch() == false ||
@@ -122,12 +102,16 @@ public class TurretScan extends Command {
                 //System.out.println("stopLockedOn " + stopLockedOn);
             }
 
+        //Setting the voltage of the motor to the yaw of the target multiplied by 5
+        OptionalDouble yaw = m_turretVision.getTargetYaw(Constants.hubId);
+        if (yaw.isEmpty()) return;
+
+        turretyaw= yaw.getAsDouble();
         Double speedAdjust = 5.0;
-        double autoLockedOn = (turretTargetAngle-turretAngle)/45*speedAdjust;
-        double manualLockedOn = operatorController.getRightX() * -1;
-        double totalLockedOn = autoLockedOn + manualLockedOn;
-        m_shooter.lockedOn(totalLockedOn);
+        m_shooter.lockedOn(Math.max(((turretyaw)/45*-speedAdjust),0.75));
         System.out.println(Constants.turretManualVoltage);
+
+
         }
     }
 
@@ -140,12 +124,12 @@ public class TurretScan extends Command {
     @Override
     public boolean isFinished() {
         // if rightTrigger is pressed or stopLocked = true then end command
-        if(Constants.stopbutton == true){
+    if(Constants.stopbutton == true){
             return true;
-        }
-        else{
-            return false;
-        }
+    }
+    else{
+        return false;
+    }
     }
     
 }

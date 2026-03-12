@@ -8,13 +8,12 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 
-import static edu.wpi.first.units.Units.*;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -24,11 +23,9 @@ import frc.robot.commands.intakeCommand;
 import frc.robot.commands.Auto.IntakeExtend;
 import frc.robot.generated.RebuiltTunerConstants;
 import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ElasticData;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PhotonVision;
-import frc.robot.subsystems.SmartDashboardHub;
 import frc.robot.commands.Climb;
 import frc.robot.commands.HoodCommand;
 import frc.robot.commands.IndexAndSpindexCommand;
@@ -38,6 +35,7 @@ import frc.robot.commands.FlywheelStop;
 import frc.robot.commands.TurretLeft;
 import frc.robot.commands.TurretRight;
 import frc.robot.commands.TurretScan;
+import frc.robot.commands.TurretScanYaw;
 import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.IndexAndSpindexSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
@@ -46,7 +44,7 @@ import static frc.robot.Constants.*;
 
 import java.util.List;
 
-import frc.robot.subsystems.ElasticData;
+
 
 public class RobotContainer {
 //Shooting is op, Intake is drive 
@@ -64,7 +62,6 @@ public class RobotContainer {
     public final FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
     public final HoodSubsystem hoodSubsystem = new HoodSubsystem();
     public final IndexAndSpindexSubsystem indexAndSpindexSubsystem = new IndexAndSpindexSubsystem(m_turretvision, hoodSubsystem, flywheelSubsystem);
-    //public SmartDashboardHub smartDashboardHub = new SmartDashboardHub();
     public final List<Subsystem> allSubsystemsList = List.of(
         intakeSubsystem,
         climber,
@@ -75,24 +72,24 @@ public class RobotContainer {
     );
 
     //Command Objects
-    public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, 0.5);//hoodSubsystem, flywheelSubsystem);
-    public IndexAndSpindexCommand reverseIndexer = new IndexAndSpindexCommand(indexAndSpindexSubsystem, -0.5);//hoodSubsystem, flywheelSubsystem);
-    public intakeCommand IntakeCommand = new intakeCommand(intakeSubsystem);
-    public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem, m_turretvision);
+    public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, 0.5, flywheelSubsystem);//hoodSubsystem, flywheelSubsystem);
+    public IndexAndSpindexCommand reverseIndexer = new IndexAndSpindexCommand(indexAndSpindexSubsystem, -0.5, flywheelSubsystem);//hoodSubsystem, flywheelSubsystem);
+    public IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
+    public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem, m_turretvision, false);
+    public FlywheelCommand flywheelOverrideCommand = new FlywheelCommand(flywheelSubsystem, m_turretvision, true);
     public HoodCommand hoodCommand = new HoodCommand(hoodSubsystem, m_turretvision, false, 0);
     public HoodCommand manualHoodUp = new HoodCommand(hoodSubsystem, m_turretvision, true, 0.5);
     public HoodCommand manualHoodDown = new HoodCommand(hoodSubsystem, m_turretvision, true, -0.5);
-    public FlywheelStart flyWheelStart = new FlywheelStart(flywheelSubsystem, vision);
-    public FlywheelStop flywheelStop = new FlywheelStop(flywheelSubsystem, vision);
-
-    //Controller Objects
-    public static final CommandXboxController driverController = new CommandXboxController(0);
-    public static final CommandXboxController operatorController = new CommandXboxController(1);
+    public final TurretScan turretScan = new TurretScan(m_turretvision, turretMovement);
+    public final TurretScanYaw turretScanYaw = new TurretScanYaw(m_turretvision, turretMovement);
+    public final TurretLeft turretLeft = new TurretLeft(m_turretvision, turretMovement);
+    public final TurretRight turretRight = new TurretRight(m_turretvision, turretMovement);
+    //public Command hoodAndFlywheel = new ParallelDeadlineGroup(flywheelCommand, hoodCommand);
 
     //elastic/smartdashboard intialization 
     private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision, allSubsystemsList);
 
-    //for the elastic folder, gonna be merged to elastic data later
+    public Bindings bindings = new Bindings(indexAndSpindexCommand, reverseIndexer, intakeCommand, flywheelCommand, hoodCommand, manualHoodUp, manualHoodDown, turretScanYaw, turretLeft, turretRight, turretScan);
 
     public RobotContainer() {
         drivetrain.configureAutoBuilder();
@@ -117,44 +114,9 @@ public class RobotContainer {
         RobotModeTriggers.disabled().whileTrue(
             drivetrain.applyRequest(() -> idle).ignoringDisable(true)
         );
-        driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
-        driverController.b().whileTrue(drivetrain.applyRequest(() ->
-            point.withModuleDirection(new Rotation2d(-driverController.getLeftY(), -driverController.getLeftX()))
-        ));
 
-        //driverController.leftTrigger().onTrue(new TurretScan(m_turretvision, turretMovement));
-        // calls the method that turns the stopButton for Scan to true
-        //driverController.rightTrigger().onTrue(turretMovement.runOnce(()->turretMovement.getStopCommand()));
-        //driverController.povLeft().whileTrue(new TurretLeft(m_turretvision, turretMovement));
-        //driverController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
-        // Reset the field-centric heading on left bumper press.
-        driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
-
-        // Regular Shooting
-        //Should be right bumper
-        driverController.axisGreaterThan(3, 0.3).whileTrue(indexAndSpindexCommand);
-        driverController.x().onTrue(IntakeCommand);
-        //driverController.y().onTrue(pneumaticIntake);
-
-        // Run SysId routines when holding back/start and X/Y.
-        // Note that each routine should be run exactly once in a single log.
-        //operatorController.start().whileTrue(new Climb(climber));
-        //driverController.leftTrigger().onTrue(new TurretScan(m_turretvision, turretMovement));
-        // calls the method that turns the stopButton for Scan to true
-        //driverController.rightTrigger().onTrue(turretMovement.runOnce(()->turretMovement.getStopCommand()));
-        operatorController.povLeft().whileTrue(new TurretLeft(m_turretvision, turretMovement));
-        operatorController.povRight().whileTrue(new TurretRight(m_turretvision, turretMovement));
-
-        // Spin flywheel and start hood should be a (operator controller)
-        //driverController.rightBumper().toggleOnTrue(flywheelCommand);
-        driverController.rightBumper().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
-        
-        // Manual hood override
-        operatorController.povUp().whileTrue(manualHoodUp);
-        operatorController.povDown().whileTrue(manualHoodDown);
-        //operatorController.a().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
-        //operatorController.leftBumper().whileTrue(indexAndSpindexCommand);
-        operatorController.b().whileTrue(reverseIndexer);
+        bindings.driverConfigureBindings();
+        bindings.operatorConfigureBindings();
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 

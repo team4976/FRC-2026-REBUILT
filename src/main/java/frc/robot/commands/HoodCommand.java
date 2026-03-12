@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.PhotonVision;
+import static frc.robot.Constants.*;
 
 public class HoodCommand extends Command{
     public HoodSubsystem hoodSubsystem;
@@ -42,8 +43,8 @@ public class HoodCommand extends Command{
             hoodSubsystem.forceHoodMove(0);
         }
         else {
-            if (RobotContainer.operatorController.povUp().getAsBoolean() == false
-             && RobotContainer.operatorController.povDown().getAsBoolean() == false) {
+            if (operatorController.povUp().getAsBoolean() == false
+             && operatorController.povDown().getAsBoolean() == false) {
                 hoodSubsystem.moveHood(0);
                 SmartDashboard.putString("hood testing", "hood went to 0");
             }

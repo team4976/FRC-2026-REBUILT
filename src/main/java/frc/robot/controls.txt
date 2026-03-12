@@ -8,6 +8,21 @@ A is spin up flywheels
 B is reverse indexer
 X is Intake manual override
 D-Pad is hood manual override
-
+y is manual flywheel override
 Menu button is climb
 Right Joystick is move turret
+left trigger manual override for flywheel
+
+
+
+
+
+
+Driver
+Shoot right trigger 0.1
+
+Operator
+Auto aim - Left trigger 0.1
+Shoot Right trigger 0.1
+right joysitck rotate turret left and right (exponential)
+left joystick rpm up/down (exponential) adds to auto aim if enabled otherwise shoots alone

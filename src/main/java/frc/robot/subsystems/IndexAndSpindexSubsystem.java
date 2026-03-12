@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import static frc.robot.Constants.*;
 
 public class IndexAndSpindexSubsystem extends SubsystemBase{
     public SparkMax indexMotor;
@@ -38,17 +39,16 @@ public class IndexAndSpindexSubsystem extends SubsystemBase{
     public void moveFeeder(double speed){
         indexMotor.set(speed);
         spindexMotor.set(speed);
-        //System.out.println("Spinning indexer at:" +  + "spinning spindexer at:" + spindexSpeed);
     }
 
     @Override
     public void periodic() {
         if (hoodSubsystem.getHoodState() == "readyToShoot" 
         && flywheelSubsystem.getShooterState() == "readyToShoot") {
-            RobotContainer.driverController.setRumble(GenericHID.RumbleType.kBothRumble, 100);
+            driverController.setRumble(GenericHID.RumbleType.kBothRumble, 100);
         }
         else {
-            RobotContainer.driverController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
+            driverController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
         }
     }
 }

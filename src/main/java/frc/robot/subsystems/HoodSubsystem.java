@@ -31,7 +31,6 @@ public class HoodSubsystem extends SubsystemBase{
 
         HoodMotor = new TalonFX(Constants.Hood_ID);
         HoodMotor.getConfigurator().apply(hoodConfig, 0.050);
-        //HoodMotor.setPosition(0);
     }
 
     public void moveHood(double targetHoodPos){
