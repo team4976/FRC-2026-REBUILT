@@ -105,14 +105,19 @@ public class TurretScan extends Command {
             manualLockedOn = operatorController.getRightX() * -1;
         } else if (operatorController.axisLessThan(4, -0.3).getAsBoolean()) {
             System.out.println("auto aim value:" + autoLockedOn);
-          //  if (autoLockedOn <= -0.6) {
-          //      manualLockedOn = operatorController.getRightX() * -2;
-          //  } else if (autoLockedOn > -0.5) {
-             //   manualLockedOn = operatorController.getRightX() * -1;
-           // }
+            if (autoLockedOn <= -0.6) {
+                manualLockedOn = operatorController.getRightX() * -2;
+            } else if (autoLockedOn > -0.5) {
+                manualLockedOn = operatorController.getRightX() * -1;
+            }
         }
         double totalLockedOn = autoLockedOn + manualLockedOn;
+        
+        if(totalLockedOn > 0.7) totalLockedOn = 0.7;
+
+        else if(totalLockedOn < -0.7) totalLockedOn = -0.7;
         m_shooter.lockedOn(totalLockedOn);
+        SmartDashboard.putNumber("Total Turret Voltage", totalLockedOn);
         m_turretVision.turretAngle = turretAngle;
         m_turretVision.turretTargetAngle = turretTargetAngle;
         
@@ -129,14 +134,14 @@ public class TurretScan extends Command {
     public boolean isFinished() {
         // if rightTrigger is pressed or stopLocked = true then end command
         
-        return m_turretVision.AutoShootFlag.getAsBoolean();
+        //return m_turretVision.AutoShootFlag.getAsBoolean();
         
-       /*  if(Constants.stopbutton == true){
+         if(Constants.stopbutton == true){
             return true;
         }
         else{
             return false;
-        }*/
+        }
     }
     
 }
