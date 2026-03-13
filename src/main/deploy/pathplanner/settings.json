@@ -7,7 +7,9 @@
     "Human Player",
     "Neutral"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "Not Usings"
+  ],
   "defaultMaxVel": 4.72,
   "defaultMaxAccel": 4.72,
   "defaultMaxAngVel": 180.0,
