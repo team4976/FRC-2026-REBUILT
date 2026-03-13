@@ -138,9 +138,9 @@ public class RobotContainer {
         trigger.onTrue(indexAndSpindexCommand);
         //return test.andThen(new WaitCommand(.5)).andThen(pathCommand).andThen(turretScan).andThen(flywheelStart).andThen(index).andThen(new WaitCommand(4)).andThen(intakeRetract).andThen(flywheelStop);//(Command) elastic.fieldWidget.commandChooser.getSelected();
         
-        Autos autos =  new Autos(intakeSubsystem);
+        Autos autos =  new Autos(intakeSubsystem,vision,flywheelSubsystem,indexAndSpindexSubsystem,turretScan );
 
-        return autos.auto1;
+        return autos.NeutralRightStartFar;
         //(Command) elastic.fieldWidget.commandChooser.getSelected();
         //System.out.println("*********: "+test.getName());
         //return test.andThen(IntakeCommand);

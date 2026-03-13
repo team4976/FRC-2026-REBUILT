@@ -22,7 +22,7 @@ public class Autos {
     IndexAndSpindexSubsystem indexAndSpindexSubsystem;
     TurretScan turretScan;
 
-    public Autos(Intake intakeSubsystem, PhotonVision vision, FlywheelSubsystem flywheelSubsystem, IndexAndSpindexSubsystem indexAndSpindexSubsystem, TurretScan turretScan){
+    public Autos(Intake intakeSubsystem, PhotonVision vision, FlywheelSubsystem flywheelSubsystem,IndexAndSpindexSubsystem indexAndSpindexSubsystem,TurretScan turretScan){
         this.intakeSubsystem = intakeSubsystem;
         this.vision = vision;
         this.flywheelSubsystem = flywheelSubsystem;
@@ -47,20 +47,23 @@ public class Autos {
         flywheelStop = new FlywheelStop(flywheelSubsystem,vision);
         index = new AutoIndexAndSpindexCommand(indexAndSpindexSubsystem, MaxSpeed, flywheelSubsystem);
         
-        pathCommand = AutoBuilder.buildAuto("Final Auto 1");
+        pathCommand = AutoBuilder.buildAuto("Neutral Right Start Far");
         trigger = new Trigger(vision.AutoShootFlag);
 
         buildAutos();
     }
-    
-    
         
-    public Command auto1;
+    public Command NeutralRightStartFar;
+    public Command NeutralRightStartClose;
+    public Command NeutralLeftStartFar;
+    //public Command NeutralLeftStartClose;
     void buildAutos(){
         
         //trigger.onTrue(indexAndSpindexCommand);
-        auto1 = intakeExtend.andThen(new WaitCommand(.5)).andThen(pathCommand).andThen(turretScan).andThen(flywheelStart).andThen(index).andThen(new WaitCommand(4)).andThen(intakeRetract).andThen(flywheelStop);//(Command) elastic.fieldWidget.commandChooser.getSelected();
-         
+        NeutralRightStartFar = intakeExtend.andThen(new WaitCommand(.5)).andThen(pathCommand).andThen(turretScan).andThen(flywheelStart).andThen(index).andThen(new WaitCommand(4)).andThen(intakeRetract).andThen(flywheelStop);//(Command) elastic.fieldWidget.commandChooser.getSelected();
+        NeutralRightStartClose =  intakeExtend.andThen(new WaitCommand(.5)).andThen(pathCommand).andThen(turretScan).andThen(flywheelStart).andThen(index).andThen(new WaitCommand(4)).andThen(intakeRetract).andThen(flywheelStop);//(Command) elastic.fieldWidget.commandChooser.getSelected();
+        NeutralLeftStartFar =  intakeExtend.andThen(new WaitCommand(.5)).andThen(pathCommand).andThen(turretScan).andThen(flywheelStart).andThen(index).andThen(new WaitCommand(4)).andThen(intakeRetract).andThen(flywheelStop);//(Command) elastic.fieldWidget.commandChooser.getSelected();
+
     }
     
 }
