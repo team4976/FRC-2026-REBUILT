@@ -26,3 +26,6 @@ Auto aim - Left trigger 0.1
 Shoot Right trigger 0.1
 right joysitck rotate turret left and right (exponential)
 left joystick rpm up/down (exponential) adds to auto aim if enabled otherwise shoots alone
+
+
+Changes we need:
