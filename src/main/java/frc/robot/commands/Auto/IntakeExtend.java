@@ -24,7 +24,7 @@ public class IntakeExtend extends Command {
   @Override
   public void initialize() {
     intake.forwardSolenoid();
-    intake.runIntakeMotor(0.80);
+    intake.runIntakeMotor(0.65);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

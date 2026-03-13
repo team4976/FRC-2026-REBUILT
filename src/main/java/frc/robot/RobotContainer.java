@@ -22,7 +22,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
 import frc.robot.commands.Auto.IntakeExtend;
+import frc.robot.commands.Auto.IntakeRetract;
 import frc.robot.generated.RebuiltTunerConstants;
+import frc.robot.subsystems.Autos;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElasticData;
 import frc.robot.subsystems.Intake;
@@ -126,6 +128,7 @@ public class RobotContainer {
     public Command getAutonomousCommand() { 
         //elasticData..addChooser();
         IntakeExtend test = new IntakeExtend(intakeSubsystem);
+        IntakeRetract intakeRetract = new IntakeRetract(intakeSubsystem);
         Command pathCommand = AutoBuilder.buildAuto("Final Auto 1");
         FlywheelStart flywheelStart = new FlywheelStart(flywheelSubsystem,vision);
         FlywheelStop flywheelStop = new FlywheelStop(flywheelSubsystem,vision);
@@ -133,7 +136,11 @@ public class RobotContainer {
         AutoIndexAndSpindexCommand index = new AutoIndexAndSpindexCommand(indexAndSpindexSubsystem, MaxSpeed, flywheelSubsystem);
         
         trigger.onTrue(indexAndSpindexCommand);
-        return test.andThen(new WaitCommand(.5)).andThen(pathCommand).andThen(turretScan).andThen(flywheelStart).andThen(index).andThen(new WaitCommand(4)).andThen(flywheelStop);//(Command) elastic.fieldWidget.commandChooser.getSelected();
+        //return test.andThen(new WaitCommand(.5)).andThen(pathCommand).andThen(turretScan).andThen(flywheelStart).andThen(index).andThen(new WaitCommand(4)).andThen(intakeRetract).andThen(flywheelStop);//(Command) elastic.fieldWidget.commandChooser.getSelected();
+        
+        Autos autos =  new Autos(intakeSubsystem);
+
+        return autos.auto1;
         //(Command) elastic.fieldWidget.commandChooser.getSelected();
         //System.out.println("*********: "+test.getName());
         //return test.andThen(IntakeCommand);
