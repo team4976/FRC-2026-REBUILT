@@ -100,7 +100,7 @@ public class Autos {
         //NeutralRightStartClose =  intakeExtend.andThen(new WaitCommand(.5)).andThen(NeutralRightClosepathCommand).andThen(turretScan).andThen(flywheelStart).andThen(index).andThen(new WaitCommand(2)).andThen(intakeRetract).andThen(flywheelStop);//(Command) elastic.fieldWidget.commandChooser.getSelected();
         //NeutralLeftStartClose = intakeExtend.andThen(new WaitCommand(.5)).andThen(NeutralRightClosepathCommand).andThen(turretScan).andThen(flywheelStart).andThen(index).andThen(new WaitCommand(4)).andThen(intakeRetract).andThen(flywheelStop);//(Command) elastic.fieldWidget.commandChooser.getSelected();
         //ShoottoDepot = intakeExtend.andThen(new WaitCommand(.5).andThen(ShoottoDepot1pathCommand).andThen(turretScan).andThen(flywheelStart).andThen(index).andThen(new WaitCommand(2)).andThen(flywheelStop).andThen(ShoottoDepot2pathCommand).andThen(ShoottoDepot3pathCommand).andThen().andThen(turretScan).andThen(flywheelStart).andThen(index).andThen(new WaitCommand(2)).andThen(intakeRetract).andThen(flywheelStop));
-        
+        /*
         TurretScan turretScan2 = new TurretScan(vision, turretMovement);
         TurretScan turretScan3 = new TurretScan(vision, turretMovement);
         FlywheelStart flywheelStart1 = new FlywheelStart(flywheelSubsystem, vision);
@@ -121,7 +121,7 @@ public class Autos {
             .andThen(index)
             .andThen(new WaitCommand(2))
             .andThen(intakeRetract)
-            .andThen(flywheelStop2);
+            .andThen(flywheelStop2);*/
     }
     
 }
