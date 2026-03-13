@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.commands.AlignedShotCommand;
+import frc.robot.commands.FlywheelCommand;
 import frc.robot.commands.HoodCommand;
 import frc.robot.commands.IndexAndSpindexCommand;
 import frc.robot.commands.IntakeCommand;
@@ -16,8 +17,8 @@ public class Bindings {
     public IndexAndSpindexCommand indexAndSpindexCommand;
     public IndexAndSpindexCommand reverseIndexer;
     public IntakeCommand intakeCommand;
-    public AlignedShotCommand flywheelCommand;
-    public AlignedShotCommand flywheelOverrideCommand;
+    public FlywheelCommand flywheelCommand;
+    public FlywheelCommand flywheelOverrideCommand;
     public HoodCommand hoodCommand;
     public HoodCommand manualHoodUp;
     public HoodCommand manualHoodDown;
@@ -28,7 +29,7 @@ public class Bindings {
     public AlignedShotCommand alignedShotCommand;
 
     public Bindings(IndexAndSpindexCommand indexAndSpindexCommand, IndexAndSpindexCommand reverseIndexer, IntakeCommand intakecommand, 
-    AlignedShotCommand flywheelCommand, HoodCommand hoodCommand, HoodCommand manualHoodUp, HoodCommand manualHoodDown, TurretScanYaw turretScanYaw, 
+    FlywheelCommand flywheelCommand, HoodCommand hoodCommand, HoodCommand manualHoodUp, HoodCommand manualHoodDown, TurretScanYaw turretScanYaw, 
     TurretLeft turretLeft, TurretRight turretRight, TurretScan turretScan, AlignedShotCommand alignedShotCommand){
         this.indexAndSpindexCommand = indexAndSpindexCommand;
         this.reverseIndexer = reverseIndexer;
