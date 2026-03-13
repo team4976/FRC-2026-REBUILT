@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Final 3 Step 1"
+            "pathName": "Left to Neutral"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Final 3 Step 2"
+            "pathName": "Left Far"
           }
         }
       ]
