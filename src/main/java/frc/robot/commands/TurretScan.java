@@ -8,13 +8,13 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.TurretMovement;
+import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.PhotonVision;
 import static frc.robot.Constants.*;
 
 public class TurretScan extends Command {
     PhotonVision m_turretVision;
-    TurretMovement m_shooter;
+    TurretSubsystem m_shooter;
     boolean TurningRight = true; // flag in scan to determine if the turret should be turning right or left
     boolean hasTargets = false; // flag to track if the turret see's an april tag
     double distance; // distance from the hub to the turret
@@ -27,7 +27,7 @@ public class TurretScan extends Command {
     double manualLockedOn;
     double autoLockedOn = 0.0;
 
-    public TurretScan(PhotonVision turretVision, TurretMovement shooter){
+    public TurretScan(PhotonVision turretVision, TurretSubsystem shooter){
         m_turretVision = turretVision;
         addRequirements(turretVision);
 
@@ -41,7 +41,7 @@ public class TurretScan extends Command {
     public void initialize() {
         TurningRight = true;
         hasTargets = false;
-        Constants.stopbutton = false;
+        m_shooter.stopbutton = false;
         stopLockedOn = false;
         m_shooter.isAutoAiming = true;
     }
@@ -136,7 +136,7 @@ public class TurretScan extends Command {
         
         //return m_turretVision.AutoShootFlag.getAsBoolean();
         
-         if(Constants.stopbutton == true){
+         if(m_shooter.stopbutton == true){
             return true;
         }
         else{

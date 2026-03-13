@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
-/** An example command that uses an example subsystem. 
+/** The Command for the Intake
  * @param <Drive> */
 @SuppressWarnings("unused")
 public class IntakeCommand extends Command {
@@ -16,9 +16,9 @@ boolean SolenoidStatus;
 Intake intake;
 boolean stop;
   /**
-       * Creates a new ExampleCommand.
+       * Creates a new IntakeCommand
        *
-       * @param subsystem The subsystem used by this command.
+       * @param intake The subsystem used by this command.
        */
 
 public IntakeCommand(Intake intake) {

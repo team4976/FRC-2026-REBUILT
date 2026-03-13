@@ -17,7 +17,7 @@ public class FlywheelSubsystem extends SubsystemBase{
     public double targetRPS;
     final VelocityVoltage shooterVelocityVoltage = new VelocityVoltage(0).withSlot(0);
     public boolean isAutoFlywheel;
-    public double rStickAxis;
+    public double lStickAxis;
    
     public FlywheelSubsystem(){
         //the PID of the flywheel
@@ -70,11 +70,11 @@ public class FlywheelSubsystem extends SubsystemBase{
             return;
         } else if (!isAutoFlywheel){
             if (operatorController.axisGreaterThan(1, 0.3).getAsBoolean()){
-                rStickAxis = operatorController.getLeftY();
-                spinFlywheel(rStickAxis * 65);
+                lStickAxis = operatorController.getLeftY();
+                spinFlywheel(lStickAxis * 65);
             } else if (operatorController.axisLessThan(1, -0.3).getAsBoolean()){
-                rStickAxis = operatorController.getLeftY();
-                spinFlywheel(rStickAxis * 65);
+                lStickAxis = operatorController.getLeftY();
+                spinFlywheel(lStickAxis * 65);
             } else {
                 spinFlywheel(0);
             }

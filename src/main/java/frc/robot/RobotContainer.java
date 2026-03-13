@@ -43,7 +43,7 @@ import frc.robot.commands.TurretScanYaw;
 import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.IndexAndSpindexSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
-import frc.robot.subsystems.TurretMovement;
+import frc.robot.subsystems.TurretSubsystem;
 import static frc.robot.Constants.*;
 
 import java.util.List;
@@ -62,7 +62,7 @@ public class RobotContainer {
     //Subsystem Objects/Subsystem Initialization
     private final Intake intakeSubsystem = new Intake();
     private final ClimberSubsystem climber = new ClimberSubsystem();
-    private final TurretMovement turretMovement = new TurretMovement();
+    private final TurretSubsystem turretMovement = new TurretSubsystem();
     public final FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
     public final HoodSubsystem hoodSubsystem = new HoodSubsystem();
     public final IndexAndSpindexSubsystem indexAndSpindexSubsystem = new IndexAndSpindexSubsystem(hoodSubsystem, flywheelSubsystem);

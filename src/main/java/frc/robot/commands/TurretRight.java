@@ -2,15 +2,15 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.TurretMovement;
+import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.PhotonVision;
 
 public class TurretRight extends Command {
     PhotonVision m_turretVision;
-    TurretMovement m_shooter;
+    TurretSubsystem m_shooter;
     boolean stopSwitch;
 
-    public TurretRight(PhotonVision turretVision, TurretMovement shooter){
+    public TurretRight(PhotonVision turretVision, TurretSubsystem shooter){
         m_turretVision = turretVision;
         addRequirements(turretVision);
 
@@ -22,7 +22,6 @@ public class TurretRight extends Command {
 
     @Override
     public void initialize(){
-
         stopSwitch = false;
         m_shooter.turnRight(Constants.turretManualVoltage);
     }
@@ -32,7 +31,6 @@ public class TurretRight extends Command {
         // if the switch on the right side of the bot is being hit than set stopSwitch to true
         if(m_shooter.getRightSwitch() == false || m_shooter.getEncoderValue() < Constants.turretLimitRight){
             stopSwitch = true;
-
         }
 
     }

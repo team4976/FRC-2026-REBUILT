@@ -35,7 +35,7 @@ public class ElasticData extends SubsystemBase{
     private final IndexAndSpindexSubsystem indexAndSpindexSubsystem;
     private final HoodSubsystem hoodSubsystem;
     private final FlywheelSubsystem flywheelSubsystem;
-    private final TurretMovement turretMovement;
+    private final TurretSubsystem turretSubsystem;
     private final Intake intakeSubsystem;
     public SendableChooser<PathPlannerPath> sendableChooser = new SendableChooser<>();
     double turretTargetAngle; // the angle we want the turret to be at so that we are aiming at the hub
@@ -74,7 +74,7 @@ public class ElasticData extends SubsystemBase{
         indexAndSpindexSubsystem = (IndexAndSpindexSubsystem) subsystemList.get(5);
         hoodSubsystem = (HoodSubsystem) subsystemList.get(4);
         flywheelSubsystem = (FlywheelSubsystem) subsystemList.get(3);
-        turretMovement = (TurretMovement) subsystemList.get(2);
+        turretSubsystem = (TurretSubsystem) subsystemList.get(2);
         intakeSubsystem = (Intake) subsystemList.get(0);
 
 
@@ -189,13 +189,13 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Vision/Turret Cam/Turret PoseX Test", cameraDataTurret.getDistanceAndAngle().getRobotPose().getX());
         SmartDashboard.putNumber("Vision/Turret Cam/Turret PoseX Test", cameraDataTurret.getDistanceAndAngle().getRobotPose().getY());
         SmartDashboard.putNumber("turretTargetAngle", cameraDataTurret.getTurretTargetAngle());
-        SmartDashboard.putNumber("Vision/Turret Cam/Turret Target Position", turretMovement.convertAngleRotation(cameraDataTurret.getTurretTargetAngle() - cameraDataTurret.getTurretAngle()));
+        SmartDashboard.putNumber("Vision/Turret Cam/Turret Target Position", turretSubsystem.convertAngleRotation(cameraDataTurret.getTurretTargetAngle() - cameraDataTurret.getTurretAngle()));
 
         // Turret Limit Switches
-        SmartDashboard.putBoolean("leftLimit", turretMovement.getLeftSwitch());
-        SmartDashboard.putBoolean("RightLimit", turretMovement.getRightSwitch());
+        SmartDashboard.putBoolean("Testing/Left Limit Switch Status", turretSubsystem.getLeftSwitch());
+        SmartDashboard.putBoolean("Testing/Right Limit Switch Status", turretSubsystem.getRightSwitch());
 
-        SmartDashboard.putNumber("Flywheel Speed Calculation", 31.49597 + (10.19041 * (cameraDataMain.getDistance() + 0.5969))  
+        SmartDashboard.putNumber("Testing/Calculated Flywheel Speed", 31.49597 + (10.19041 * (cameraDataMain.getDistance() + 0.5969))  
                 - (0.4148098 * Math.pow(cameraDataMain.getDistance() + 0.5969, 2)));
 
 
@@ -209,7 +209,7 @@ public class ElasticData extends SubsystemBase{
         }
 
         //AC- Additional Field2d Stuff
-        if (turretMovement.turretSpin != null){
+        if (turretSubsystem.turretMotor != null){
             rotation = (cameraDataTurret.getTurretAngle()/57) + field2d.getRobotPose().getRotation().getDegrees();
         } else {
             rotation = 0.0;
@@ -246,7 +246,7 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("QC/Motors/Indexer/Index Volatage", indexAndSpindexSubsystem.indexMotor.getAppliedOutput());
         SmartDashboard.putNumber("QC/Motors/Spindex/Spindex Volatage", indexAndSpindexSubsystem.spindexMotor.getAppliedOutput());
         SmartDashboard.putNumber("QC/Motors/Hood/Hood Voltage", hoodSubsystem.HoodMotor.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Motors/Turret/Turret Voltage", turretMovement.turretSpin.getMotorVoltage().getValueAsDouble());
+        SmartDashboard.putNumber("QC/Motors/Turret/Turret Voltage", turretSubsystem.turretMotor.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Lead/Flywheel Lead Voltage", flywheelSubsystem.shooterMotorLeader.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Follow/Flywheel Follow Voltage", flywheelSubsystem.shooterMotorFollower.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Intake/Intake Voltage", intakeSubsystem.IntakeMotor.getMotorOutputVoltage());
@@ -255,18 +255,18 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("QC/Motors/Indexer/Index RPM", indexAndSpindexSubsystem.indexMotor.getEncoder().getVelocity());
         SmartDashboard.putNumber("QC/Motors/Spindex/Spindex RPM", indexAndSpindexSubsystem.spindexMotor.getEncoder().getVelocity());
         SmartDashboard.putNumber("QC/Motors/Hood/Hood RPS", hoodSubsystem.HoodMotor.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Motors/Turret/Turret RPS", turretMovement.turretSpin.getVelocity().getValueAsDouble());
+        SmartDashboard.putNumber("QC/Motors/Turret/Turret RPS", turretSubsystem.turretMotor.getVelocity().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Lead/Flywheel Lead RPS", flywheelSubsystem.shooterMotorLeader.getVelocity().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Follow/Flywheel Follow RPS", flywheelSubsystem.shooterMotorFollower.getVelocity().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Intake/Intake Speed (Raw)", intakeSubsystem.IntakeMotor.getSelectedSensorVelocity());
 
         //Position Widgets
         SmartDashboard.putNumber("QC/Motors/Hood/Hood Position", hoodSubsystem.HoodMotor.getPosition().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Motors/Turret/Turret Position", turretMovement.turretSpin.getPosition().getValueAsDouble());
+        SmartDashboard.putNumber("QC/Motors/Turret/Turret Position", turretSubsystem.turretMotor.getPosition().getValueAsDouble());
 
         //Limit Switch Pressed Widgets (not technically motor stuff but whatever)
-        SmartDashboard.putBoolean("QC/Limit Switch Left", turretMovement.getLeftSwitch());
-        SmartDashboard.putBoolean("QC/Limit Switch Right", turretMovement.getRightSwitch());
+        SmartDashboard.putBoolean("QC/Limit Switch Left", turretSubsystem.getLeftSwitch());
+        SmartDashboard.putBoolean("QC/Limit Switch Right", turretSubsystem.getRightSwitch());
 
         //Motor id Widgets
         SmartDashboard.putStringArray("QC/Motors/Motor Id's", motorIDs);

@@ -39,14 +39,15 @@ public class VisionData{
     public double hubOrigY;
     private double DriveVelocityX; // the velocity we are travelling in Y direction
     private double DriveVelocityY; // the velocity we are travelling in the X direction
-    private double DistanceX; // the distance between us and the virtual hub on the X plane
-    private double DistanceY; // the distance between us and the virtual hub on the Y plane
+    private double distanceX; // the distance between us and the virtual hub on the X plane
+    private double distanceY; // the distance between us and the virtual hub on the Y plane
     public double turretDistance;
     public double turretAngle;
     public double turretTargetAngle;
     public double hubId;
     Field2d field2d = new Field2d();
-    //static Field2d field2d = SmartDashboard.getData("Fields/Ideal Field");
+
+
     //the constructor, having the camera as a parameter--
     //means the methods in this class can be used dynamically--
     //with any camera and dont need to be changed if the camera--
@@ -68,10 +69,11 @@ public class VisionData{
                 hubOrigX = RedHubX; 
                 hubOrigY = RedHubY;
                 Constants.hubId = 10;
-            }}
-            SmartDashboard.putString("Alliance", alliance.get().name() );
-            SmartDashboard.putNumber("Hub Location X", hubOrigX );
-            SmartDashboard.putNumber("Hub Location Y", hubOrigY );
+            }
+            SmartDashboard.putString("Testing/Alliance", alliance.get().name() );
+        }
+        SmartDashboard.putNumber("Testing/Hub Location X", hubOrigX );
+        SmartDashboard.putNumber("Testing/Hub Location Y", hubOrigY );
     }
 
     //called at the top of the periodic in PhotonVision, keeps the camera frame used uniform.
@@ -240,42 +242,29 @@ public class VisionData{
     
     // gets the robot pose based on two april tags or tries with one
     public Field2d getDistanceAndAngle(){
-        double HubX = hubOrigX;
-        double HubY = hubOrigY;
+        double hubX = hubOrigX;
+        double hubY = hubOrigY;
 
         if (latestResult != null && latestResult.hasTargets()){
             var cameraResult = latestResult.getMultiTagResult();
             if (cameraResult != null && cameraResult.isEmpty() == false) {
                 var fieldToCamera = cameraResult.get().estimatedPose.best;
                 field2d.setRobotPose(new Pose2d(fieldToCamera.getX(), fieldToCamera.getY(), fieldToCamera.getRotation().toRotation2d()));
+
             // Initial Distance calculation
-            DistanceX = HubX - field2d.getRobotPose().getX();
-            DistanceY = HubY - field2d.getRobotPose().getY();
+            distanceX = hubX - field2d.getRobotPose().getX();
+            distanceY = hubY - field2d.getRobotPose().getY();
 
-            turretDistance = Math.sqrt(DistanceX*DistanceX + DistanceY*DistanceY);
-            SmartDashboard.putString("DistanceX",""+String.format("%.2f",HubX)+" - "+String.format("%.2f",field2d.getRobotPose().getX()) +"= "+String.format("%.2f",DistanceX));
-            SmartDashboard.putString("DistanceY",""+String.format("%.2f",HubY)+" - "+String.format("%.2f",field2d.getRobotPose().getY()) +"= "+String.format("%.2f",DistanceY));
-            SmartDashboard.putString("turretDistance Split", "sqrt("+String.format("%.2f",DistanceX)+"*"+String.format("%.2f",DistanceX) +"+"+ String.format("%.2f",DistanceY)+"*"+(String.format("%.2f",DistanceY)+")=" +turretDistance));
-            //for (int i = 0; i < 5; i++){
-                // update BallAirTime
-               // double ballAirTime = 0; // TESTING CHANGE LATER
-                //turretDistance = driveVelocity*BallAirTime;
-                //double hubMovedX = DriveVelocityX*-1*ballAirTime;
-                //double hubMovedY = DriveVelocityY*-1*ballAirTime;
+            turretDistance = Math.sqrt(distanceX*distanceX + distanceY*distanceY);
+            SmartDashboard.putString("Testing/DistanceX",""+String.format("%.2f",hubX)+" - "+String.format("%.2f",field2d.getRobotPose().getX()) +"= "+String.format("%.2f",distanceX));
+            SmartDashboard.putString("Testing/DistanceY",""+String.format("%.2f",hubY)+" - "+String.format("%.2f",field2d.getRobotPose().getY()) +"= "+String.format("%.2f",distanceY));
+            SmartDashboard.putString("Testing/turretDistance Split", "sqrt("+String.format("%.2f",distanceX)+"*"+String.format("%.2f",distanceX) +"+"+ String.format("%.2f",distanceY)+"*"+(String.format("%.2f",distanceY)+")=" +turretDistance));
 
-                // moving the virtual hub
-              //  HubX = HubX + hubMovedX;
-               // HubY = HubY + hubMovedY;
-                // making a new distance based on the virtual hub
-                DistanceX = HubX-field2d.getRobotPose().getX();
-                DistanceY = HubY-field2d.getRobotPose().getY();
-                turretDistance = Math.sqrt(DistanceX*DistanceX + DistanceY*DistanceY);
+            System.err.println(hubOrigX);
+            System.err.println(hubOrigY);
 
-                System.err.println(hubOrigX);
-                System.err.println(hubOrigY);
-            //}
             // calculates the angle we want to get to
-            turretTargetAngle = Math.toDegrees(Math.atan2( DistanceY,DistanceX));
+            turretTargetAngle = Math.toDegrees(Math.atan2( distanceY,distanceX));
             // calculates the angle of the bot from the middle
             turretAngle = (fieldToCamera.getRotation().toRotation2d().getDegrees());
             } else {

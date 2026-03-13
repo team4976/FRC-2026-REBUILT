@@ -1,41 +1,23 @@
-Driver
-Drive with left joystick
-Drive with right joystick
-X is intake (toggle)
-Shoot is right bumper (Index and Spindex)
-Operator 
-A is spin up flywheels
-B is reverse indexer
-X is Intake manual override
-D-Pad is hood manual override
-y is manual flywheel override
-Menu button is climb
-Right Joystick is move turret
-left trigger manual override for flywheel
+-----------------
+CURRENT CONTROLS:
+-----------------
 
+DRIVER:
 
+    - Drive W/Left and Right Sticks
+    - Brake on "A"
+    - Reset Field Centric on "LB" (Left Bumper)
+    - Shoot (Spin Index/Spindex) on "RT" (Right Trigger)
+    - Intake on "X", is a Toggle
 
+OPERATOR:
 
-
-
-Driver
-Shoot right trigger 0.1
-
-Operator
-Auto aim - Left trigger 0.1
-Shoot Right trigger 0.1
-right joysitck rotate turret left and right (exponential)
-left joystick rpm up/down (exponential) adds to auto aim if enabled otherwise shoots alone
-
-
-Changes we need:
-Change turret move
-
-
-
-
-
-
-
-
-
+    - Flywheel Auto Speed on "A", Can Increase/Decrease W/Left Stick
+    - Flywheel Override on "Left Stick", REQUIRES AUTO FLYWHEEL TO BE OFF
+    - Shoot (Spin Index/Spindex) on "RT" (Right Trigger)
+    - Auto Aim (Turret Scan) on "LT" (Left Trigger), Can Increasse/Decrease W/Right Stick
+    - Manual Aim (Move Turret) on Right Stick, REQUIRES AUTO AIM TO BE OFF
+    - Manual Hood on "D-Pad" (Up/Down)
+    - Reverse Index/Spindex on "B"
+    
+    - Menu Will Be Climb Once we Have a Climber

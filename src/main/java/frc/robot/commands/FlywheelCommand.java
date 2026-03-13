@@ -30,17 +30,7 @@ public class FlywheelCommand extends Command{
 
     @Override
     public void execute(){ 
-        /* 
-        if (isOverriden) {
-            double leftTriggerAxis = operatorController.getLeftTriggerAxis();
-            double flywheelSpeed = leftTriggerAxis * 70;
-            flywheelSubsystem.spinFlywheel(flywheelSpeed);
-        } else if (!isOverriden) {
-            flywheelSubsystem.spinFlywheel(50);
-                /*31.49597 + (10.19041 * (photonVision.getDistance() + 0.5969))  
-                - (0.4148098 * Math.pow(photonVision.getDistance() + 0.5969, 2)) 
-                //SmartDashboard.getNumber("Turret Rotate", 0));
-        }  */
+        //Sets the auto flywheel speed
         if (photonVision.getDistance() != 0) {
             autoFlywheelSpeed = (31.49597 + (10.19041 * (photonVision.getDistance() + 0.5969))  
                 - (0.4148098 * Math.pow(photonVision.getDistance() + 0.5969, 2))) * 0.9;
@@ -48,12 +38,14 @@ public class FlywheelCommand extends Command{
             autoFlywheelSpeed = 50;
         }
 
+        //Sets the adder/substractor to the flywheel speed
         if (operatorController.axisGreaterThan(1, 0.1).getAsBoolean()){
             manualFlywheelSpeed = operatorController.getLeftY() * -8;
         } else if (operatorController.axisLessThan(1, -0.1).getAsBoolean()) {
             manualFlywheelSpeed = operatorController.getLeftY() * -8;
         }
         
+        //adds the flywheel speeds then spinds the flywheel
         totalFlywheelSpeed = manualFlywheelSpeed + autoFlywheelSpeed;
         flywheelSubsystem.spinFlywheel(totalFlywheelSpeed);
         System.out.println("manual flywheel speed:"  + manualFlywheelSpeed);

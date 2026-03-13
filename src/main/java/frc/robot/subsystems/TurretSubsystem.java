@@ -5,8 +5,6 @@
 
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.operatorController;
-
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -14,10 +12,10 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import static frc.robot.Constants.*;
 
-public class TurretMovement extends SubsystemBase{
-    public TalonFX turretSpin; //Turret Spin is the motor name for the turret
+public class TurretSubsystem extends SubsystemBase{
+    public TalonFX turretMotor; //Turret Spin is the motor name for the turret
     public static DigitalInput RightSwitch = new DigitalInput(0);
     public static DigitalInput LeftSwitch = new DigitalInput(1);
     public double TurretGearRatio = 41.667; // the number of times the motor has to spin for the turret to go one rotation
@@ -25,13 +23,14 @@ public class TurretMovement extends SubsystemBase{
     final PositionVoltage turretPosition = new PositionVoltage(0).withSlot(0);
     public double rStickAxis;
     public boolean isAutoAiming;
+    public boolean stopbutton = false;
+    public boolean flipButton = false;
 
-    public TurretMovement(){
-    
-        turretSpin = new TalonFX(Constants.Turret_ID); 
+    public TurretSubsystem(){
+        turretMotor = new TalonFX(Turret_ID); 
          
-        turretSpin.setVoltage(0);
-        turretSpin.setPosition(0);
+        turretMotor.setVoltage(0);
+        turretMotor.setPosition(0);
         
         var turretSpinConfig = new Slot0Configs();
         
@@ -46,33 +45,17 @@ public class TurretMovement extends SubsystemBase{
         turretSpinConfig.kP = SmartDashboard.getNumber("turret.kP", 0.3); // An error of 1 rps results in 0.11 V output
         turretSpinConfig.kI = SmartDashboard.getNumber("turret.kI", 0); // no output for integrated error
         turretSpinConfig.kD = SmartDashboard.getNumber("turret.kD", 0); // no output for error derivative
-        turretSpin.getConfigurator().apply(turretSpinConfig);
+        turretMotor.getConfigurator().apply(turretSpinConfig);
     }
 
     public void teleopInit(){
-        turretSpin.setControl(turretPosition.withPosition(0));
-        turretSpin.setVoltage(0);
+        turretMotor.setControl(turretPosition.withPosition(0));
+        turretMotor.setVoltage(0);
     }
 
     public void turretRotationPID(double targetTurretPos){
         System.out.println("turret target position" + targetTurretPos);
-        // check if target position is in turret deadzone
-       /*  if(targetTurretPos > Constants.turretLimitLeft && targetTurretPos < Constants.turretLimitLeft + Constants.turretDeadzoneSize ||
-         targetTurretPos < Constants.turretLimitRight && targetTurretPos > Constants.turretLimitRight - Constants.turretDeadzoneSize){
-            turretSpin.setControl(turretPosition.withPosition(turretSpin.getPosition().getValueAsDouble())); 
-        }
-        // if targetTurretPos is on the other side of the dead zone subtract 41.667 from the targetPos (causes turret to whiparound left)
-        else if(targetTurretPos > Constants.turretLimitLeft + Constants.turretDeadzoneSize){
-            turretSpin.setControl(turretPosition.withPosition(targetTurretPos - 41.667));
-        }
-        // if targetTurretPos is on the other side of the dead zone add 41.667 from the targetPos (causes turret to whiparound right)
-        else if(targetTurretPos < Constants.turretLimitRight - Constants.turretDeadzoneSize){
-            turretSpin.setControl(turretPosition.withPosition(targetTurretPos + 41.667));
-        }
-        // go to targetTurretPos
-        else{ */            
-        turretSpin.setControl(turretPosition.withPosition(targetTurretPos));
-       // }
+        turretMotor.setControl(turretPosition.withPosition(targetTurretPos));
     }
 
     public double convertAngleRotation(double angle){
@@ -81,24 +64,21 @@ public class TurretMovement extends SubsystemBase{
 
     //When called it turns the motor to the right
     public void turnRight(double voltage) {
-        turretSpin.setVoltage(voltage*-1);
-    //System.out.println("right switch: " + RightSwitch.get());
+        turretMotor.setVoltage(voltage*-1);
     }
 
     //When called it turns the motor to the left
     public void turnLeft(double voltage) {
-        turretSpin.setVoltage(voltage);
-    //System.out.println("left switch: " + LeftSwitch.get());
+        turretMotor.setVoltage(voltage);
     }
 
     public void lockedOn(double voltage){
-        turretSpin.setVoltage(voltage);
+        turretMotor.setVoltage(voltage);
     }
 
     //When called it stops the motor
     public void stopTurn() {
-        turretSpin.setVoltage(0);
-        //System.out.println("STOP MOVING");
+        turretMotor.setVoltage(0);
     }
 
     //Returns the value of the right limit switch
@@ -113,20 +93,20 @@ public class TurretMovement extends SubsystemBase{
 
     // gets the value of the turret encoder
     public double getEncoderValue(){
-        SmartDashboard.putNumber("turretEncoderValue", turretSpin.getPosition().getValueAsDouble());
-        return turretSpin.getPosition().getValueAsDouble();
+        SmartDashboard.putNumber("turretEncoderValue", turretMotor.getPosition().getValueAsDouble());
+        return turretMotor.getPosition().getValueAsDouble();
     }
 
     // returns the stopButton to be true
     public boolean getStopCommand(){
-        return Constants.stopbutton = true;
+        return stopbutton = true;
     }
     public boolean forceTurretFlip(){
-        return Constants.flipButton = true;
+        return flipButton = true;
     }
 
     public TalonFX returnMotor(){
-        return turretSpin;
+        return turretMotor;
     }
 
     @Override
@@ -137,7 +117,7 @@ public class TurretMovement extends SubsystemBase{
         turretSpinConfig.kP = SmartDashboard.getNumber("turret.kP", 0.1); // An error of 1 rps results in 0.11 V output
         turretSpinConfig.kI = SmartDashboard.getNumber("turret.kI", 0); // no output for integrated error
         turretSpinConfig.kD = SmartDashboard.getNumber("turret.kD", 0); // no output for error derivative
-        SmartDashboard.putNumber("turretEncoderValue", turretSpin.getPosition().getValueAsDouble());
+        SmartDashboard.putNumber("turretEncoderValue", turretMotor.getPosition().getValueAsDouble());
 
         //turret override
         if (isAutoAiming) {

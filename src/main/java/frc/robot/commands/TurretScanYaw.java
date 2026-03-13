@@ -9,12 +9,12 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.TurretMovement;
+import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.PhotonVision;
 
 public class TurretScanYaw extends Command {
     PhotonVision m_turretVision;
-    TurretMovement m_shooter;
+    TurretSubsystem m_shooter;
     boolean TurningRight = true; // flag in scan to determine if the turret should be turning right or left
     boolean hasTargets = false; // flag to track if the turret see's an april tag
     double distance; // distance from the hub to the turret
@@ -23,7 +23,7 @@ public class TurretScanYaw extends Command {
     double turretyaw;
     double turretPosition;
 
-    public TurretScanYaw(PhotonVision turretVision, TurretMovement shooter){
+    public TurretScanYaw(PhotonVision turretVision, TurretSubsystem shooter){
         m_turretVision = turretVision;
         addRequirements(turretVision);
 
@@ -37,7 +37,7 @@ public class TurretScanYaw extends Command {
     public void initialize() {
         TurningRight = true;
         hasTargets = false;
-        Constants.stopbutton = false;
+        m_shooter.stopbutton = false;
         stopLockedOn = false;
 
     }
@@ -93,7 +93,7 @@ public class TurretScanYaw extends Command {
     @Override
     public boolean isFinished() {
         // if rightTrigger is pressed or stopLocked = true then end command
-    if(Constants.stopbutton == true){
+    if(m_shooter.stopbutton == true){
             return true;
     }
     else{

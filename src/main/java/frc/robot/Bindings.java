@@ -60,10 +60,10 @@ public class Bindings {
 
         //Intake
         driverController.x().onTrue(intakeCommand);
-        driverController.axisGreaterThan(3, 0.1).whileTrue(indexAndSpindexCommand);
     }
 
     public void operatorConfigureBindings(){
+
         //------------
         //Main Controls
         //------------
@@ -80,16 +80,16 @@ public class Bindings {
         //perfect shot from the aligned spot
         operatorController.x().toggleOnTrue(alignedShotCommand);
 
+
         //---------------
         //Manual Overrides
         //---------------
 
         //Turret
-        operatorController.povLeft().whileTrue(turretLeft);
-        operatorController.povRight().whileTrue(turretRight);
+        //Inside of the turret subystems periodic()
         
         //Flywheel
-        //operatorController.leftTrigger(0.1).whileTrue(flywheelOverrideCommand);
+        //Inside of the flywheel subystemcs periodic()
 
         //Hood
         operatorController.povUp().whileTrue(manualHoodUp);
