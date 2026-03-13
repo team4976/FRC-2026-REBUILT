@@ -69,14 +69,14 @@ public class FlywheelSubsystem extends SubsystemBase{
         if (isAutoFlywheel) {
             return;
         } else if (!isAutoFlywheel){
-            if (operatorController.axisGreaterThan(4, 0.3).getAsBoolean()){
-                rStickAxis = operatorController.getRightX();
+            if (operatorController.axisGreaterThan(1, 0.3).getAsBoolean()){
+                rStickAxis = operatorController.getLeftY();
                 spinFlywheel(rStickAxis * 65);
-            } else if (operatorController.axisLessThan(4, -0.3).getAsBoolean()){
-                rStickAxis = operatorController.getRightX();
+            } else if (operatorController.axisLessThan(1, -0.3).getAsBoolean()){
+                rStickAxis = operatorController.getLeftY();
                 spinFlywheel(rStickAxis * 65);
             } else {
-                
+                spinFlywheel(0);
             }
         }
     }
