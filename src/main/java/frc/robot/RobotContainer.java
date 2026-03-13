@@ -135,20 +135,20 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() { 
         //elasticData..addChooser();
-        IntakeExtend test = new IntakeExtend(intakeSubsystem);
+        /*IntakeExtend test = new IntakeExtend(intakeSubsystem);
         IntakeRetract intakeRetract = new IntakeRetract(intakeSubsystem);
         Command pathCommand = AutoBuilder.buildAuto("Final Auto 1");
         FlywheelStart flywheelStart = new FlywheelStart(flywheelSubsystem,vision);
         FlywheelStop flywheelStop = new FlywheelStop(flywheelSubsystem,vision);
         Trigger trigger = new Trigger(vision.AutoShootFlag);
         AutoIndexAndSpindexCommand index = new AutoIndexAndSpindexCommand(indexAndSpindexSubsystem, MaxSpeed, flywheelSubsystem);
-        
-        trigger.onTrue(indexAndSpindexCommand);
+        */
+        //trigger.onTrue(indexAndSpindexCommand);
         //return test.andThen(new WaitCommand(.5)).andThen(pathCommand).andThen(turretScan).andThen(flywheelStart).andThen(index).andThen(new WaitCommand(4)).andThen(intakeRetract).andThen(flywheelStop);//(Command) elastic.fieldWidget.commandChooser.getSelected();
         
-        Autos autos =  new Autos(intakeSubsystem,vision,flywheelSubsystem,indexAndSpindexSubsystem,turretScan );
+        Autos autos =  new Autos(intakeSubsystem,vision,flywheelSubsystem,indexAndSpindexSubsystem,turretMovement);
 
-        return autos.NeutralRightStartFar;
+        return autos.ShoottoOutpost;
         //(Command) elastic.fieldWidget.commandChooser.getSelected();
         //System.out.println("*********: "+test.getName());
         //return test.andThen(IntakeCommand);
