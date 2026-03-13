@@ -29,8 +29,8 @@ public class FlywheelSubsystem extends SubsystemBase{
         flywheelConfig.kD = 0.0; // no output for error derivative*/
         
         //
-        shooterMotorLeader = new TalonFX(Constants.Flywheel_Lead_ID);
-        shooterMotorFollower = new TalonFX(Constants.Flywheel_Follower_ID);
+        shooterMotorLeader = new TalonFX(Flywheel_Lead_ID);
+        shooterMotorFollower = new TalonFX(Flywheel_Follower_ID);
         shooterMotorLeader.getConfigurator().apply(flywheelConfig);
         shooterMotorFollower.getConfigurator().apply(flywheelConfig);
         shooterMotorFollower.setControl(new Follower(shooterMotorLeader.getDeviceID(), MotorAlignmentValue.Aligned));

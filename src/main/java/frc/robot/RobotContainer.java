@@ -33,6 +33,7 @@ import frc.robot.commands.Climb;
 import frc.robot.commands.HoodCommand;
 import frc.robot.commands.IndexAndSpindexCommand;
 import frc.robot.commands.AlignedShotCommand;
+import frc.robot.commands.FlywheelCommand;
 import frc.robot.commands.FlywheelStart;
 import frc.robot.commands.FlywheelStop;
 import frc.robot.commands.TurretLeft;
@@ -78,8 +79,8 @@ public class RobotContainer {
     public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, 0.8, flywheelSubsystem);//hoodSubsystem, flywheelSubsystem);
     public IndexAndSpindexCommand reverseIndexer = new IndexAndSpindexCommand(indexAndSpindexSubsystem, -0.8, flywheelSubsystem);//hoodSubsystem, flywheelSubsystem);
     public IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
-    public AlignedShotCommand flywheelCommand = new AlignedShotCommand(flywheelSubsystem, m_turretvision, false);
-    public AlignedShotCommand flywheelOverrideCommand = new AlignedShotCommand(flywheelSubsystem, m_turretvision, true);
+    public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem, m_turretvision, false);
+    public FlywheelCommand flywheelOverrideCommand = new FlywheelCommand(flywheelSubsystem, m_turretvision, true);
     public HoodCommand hoodCommand = new HoodCommand(hoodSubsystem, m_turretvision, false, 0);
     public HoodCommand manualHoodUp = new HoodCommand(hoodSubsystem, m_turretvision, true, 0.5);
     public HoodCommand manualHoodDown = new HoodCommand(hoodSubsystem, m_turretvision, true, -0.5);
@@ -89,7 +90,6 @@ public class RobotContainer {
     public final TurretRight turretRight = new TurretRight(m_turretvision, turretMovement);
     //public Command hoodAndFlywheel = new ParallelDeadlineGroup(flywheelCommand, hoodCommand);
     public AlignedShotCommand alignedShotCommand = new AlignedShotCommand(flywheelSubsystem, hoodSubsystem);
-
     //elastic/smartdashboard intialization 
     private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision, allSubsystemsList);
 
