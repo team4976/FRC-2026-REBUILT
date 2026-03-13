@@ -34,6 +34,10 @@ public class FlywheelSubsystem extends SubsystemBase{
         shooterMotorFollower.setControl(new Follower(shooterMotorLeader.getDeviceID(), MotorAlignmentValue.Aligned));
     }
 
+    public void teleopInit(){
+        shooterMotorLeader.set(0.0);
+    }
+
     public void spinFlywheel(double targetRPS){
         System.out.println("targetRPS: " + targetRPS);
         shooterMotorLeader.setControl(shooterVelocityVoltage.withVelocity(targetRPS));

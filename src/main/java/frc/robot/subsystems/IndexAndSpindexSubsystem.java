@@ -21,7 +21,7 @@ public class IndexAndSpindexSubsystem extends SubsystemBase{
     public HoodSubsystem hoodSubsystem;
     private SparkMaxConfig sparkConfig = new SparkMaxConfig();
 
-    public IndexAndSpindexSubsystem(PhotonVision turretVision, HoodSubsystem hoodSubsystem, FlywheelSubsystem flywheelSubsystem){
+    public IndexAndSpindexSubsystem(HoodSubsystem hoodSubsystem, FlywheelSubsystem flywheelSubsystem){
         this.flywheelSubsystem = flywheelSubsystem;
         this.hoodSubsystem = hoodSubsystem;
         indexMotor = new SparkMax(Constants.Index_ID, MotorType.kBrushless);
@@ -29,6 +29,13 @@ public class IndexAndSpindexSubsystem extends SubsystemBase{
         indexMotor.configure(sparkConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
         spindexMotor = new SparkMax(Constants.Spindex_ID, MotorType.kBrushless);
         System.out.println("Sparkmax index inverted");
+    }
+
+    //Sets the motor to 0 for the beginning of teleop
+    //could have used stopFeeder but consistency w/other subsystems
+    public void teleopInit(){
+        indexMotor.set(0);
+        spindexMotor.set(0);
     }
 
     public void stopFeeder(){

@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.*;
 
@@ -34,6 +35,14 @@ public class Intake extends SubsystemBase {
     solenoid = pneumaticsControlModule.makeSolenoid(2);
     solenoid.set(false);
   }   
+
+  public void teleopInit(){
+    IntakeMotor.set(ControlMode.PercentOutput, intakeSpeed); 
+    solenoid.set(false);
+    Commands.waitSeconds(4);
+    IntakeMotor.set(ControlMode.PercentOutput, 0); 
+    intakeStatus = false;
+  }
              
   public void stopIntakeMotor() {
     IntakeMotor.set(ControlMode.PercentOutput, 0); 

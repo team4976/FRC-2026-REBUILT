@@ -24,6 +24,8 @@ public class TurretScan extends Command {
     double turretAngle; // the turret angle we are currently at
     double turretPosition; // the encoder value of the tuurets motor
     double turretTargetPosition;
+    double manualLockedOn;
+    double autoLockedOn = 0.0;
 
     public TurretScan(PhotonVision turretVision, TurretMovement shooter){
         m_turretVision = turretVision;
@@ -41,7 +43,7 @@ public class TurretScan extends Command {
         hasTargets = false;
         Constants.stopbutton = false;
         stopLockedOn = false;
-
+        m_shooter.isAutoAiming = true;
     }
 
     @Override
@@ -57,6 +59,7 @@ public class TurretScan extends Command {
             stopLockedOn = false;
             System.err.println("hasTargets = false");
             m_shooter.stopTurn();
+            autoLockedOn = 0;
         }
         else{
             field2d = m_turretVision.getDistanceAndAngle();
@@ -95,17 +98,21 @@ public class TurretScan extends Command {
             }
 
         Double speedAdjust = 5.0;
-        double autoLockedOn = (turretTargetAngle-turretAngle)/45*speedAdjust; //Math.max((turretTargetAngle-turretAngle)/45*speedAdjust, 0.75);
-        double manualLockedOn = operatorController.getRightX() * -1;
-        double totalLockedOn = autoLockedOn + manualLockedOn;
-        
-        SmartDashboard.putNumber("turretAutoLockedOn", autoLockedOn);
-        //m_shooter.lockedOn(totalLockedOn);
-        m_shooter.lockedOn(autoLockedOn);
-
+        autoLockedOn = (turretTargetAngle-turretAngle)/45*speedAdjust;
         System.out.println(Constants.turretManualVoltage);
         }
-        
+        if (operatorController.axisGreaterThan(4, 0.3).getAsBoolean()){
+            manualLockedOn = operatorController.getRightX() * -1;
+        } else if (operatorController.axisLessThan(4, -0.3).getAsBoolean()) {
+            System.out.println("auto aim value:" + autoLockedOn);
+          //  if (autoLockedOn <= -0.6) {
+          //      manualLockedOn = operatorController.getRightX() * -2;
+          //  } else if (autoLockedOn > -0.5) {
+             //   manualLockedOn = operatorController.getRightX() * -1;
+           // }
+        }
+        double totalLockedOn = autoLockedOn + manualLockedOn;
+        m_shooter.lockedOn(totalLockedOn);
         m_turretVision.turretAngle = turretAngle;
         m_turretVision.turretTargetAngle = turretTargetAngle;
         
@@ -113,6 +120,7 @@ public class TurretScan extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        m_shooter.isAutoAiming = false;
         m_shooter.stopTurn();
         //System.err.println(Constants.turretManualVoltage);
     }

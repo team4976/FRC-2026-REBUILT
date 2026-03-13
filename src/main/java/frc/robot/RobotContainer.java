@@ -64,7 +64,7 @@ public class RobotContainer {
     private final TurretMovement turretMovement = new TurretMovement();
     public final FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
     public final HoodSubsystem hoodSubsystem = new HoodSubsystem();
-    public final IndexAndSpindexSubsystem indexAndSpindexSubsystem = new IndexAndSpindexSubsystem(m_turretvision, hoodSubsystem, flywheelSubsystem);
+    public final IndexAndSpindexSubsystem indexAndSpindexSubsystem = new IndexAndSpindexSubsystem(hoodSubsystem, flywheelSubsystem);
     public final List<Subsystem> allSubsystemsList = List.of(
         intakeSubsystem,
         climber,
@@ -75,8 +75,8 @@ public class RobotContainer {
     );
 
     //Command Objects
-    public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, 0.5, flywheelSubsystem);//hoodSubsystem, flywheelSubsystem);
-    public IndexAndSpindexCommand reverseIndexer = new IndexAndSpindexCommand(indexAndSpindexSubsystem, -0.5, flywheelSubsystem);//hoodSubsystem, flywheelSubsystem);
+    public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, 0.8, flywheelSubsystem);//hoodSubsystem, flywheelSubsystem);
+    public IndexAndSpindexCommand reverseIndexer = new IndexAndSpindexCommand(indexAndSpindexSubsystem, -0.8, flywheelSubsystem);//hoodSubsystem, flywheelSubsystem);
     public IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
     public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem, m_turretvision, false);
     public FlywheelCommand flywheelOverrideCommand = new FlywheelCommand(flywheelSubsystem, m_turretvision, true);
@@ -97,6 +97,14 @@ public class RobotContainer {
     public RobotContainer() {
         drivetrain.configureAutoBuilder();
         configureBindings();
+    }
+
+    public void teleopInit(){
+        flywheelSubsystem.teleopInit();
+        hoodSubsystem.teleopInit();
+        indexAndSpindexSubsystem.teleopInit();
+        intakeSubsystem.teleopInit();
+        turretMovement.teleopInit();
     }
 
     private void configureBindings() {

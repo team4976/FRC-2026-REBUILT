@@ -1,3 +1,7 @@
 -Make sure the correct team is chosen in driver station
 -Make sure the turret is facing the correct direction
--
+-Make sure it is in the correct starting pos
+-Intake facing correct direction
+-Make sure network table is connected
+-Make sure QC is done everything
+-make sure multipose estimation is on
