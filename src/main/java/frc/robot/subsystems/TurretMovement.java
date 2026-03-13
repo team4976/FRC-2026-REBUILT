@@ -5,6 +5,8 @@
 
 package frc.robot.subsystems;
 
+import static frc.robot.Constants.operatorController;
+
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -21,6 +23,8 @@ public class TurretMovement extends SubsystemBase{
     public double TurretGearRatio = 41.667; // the number of times the motor has to spin for the turret to go one rotation
     public double RotationsPerDegree = TurretGearRatio/360;
     final PositionVoltage turretPosition = new PositionVoltage(0).withSlot(0);
+    public double rStickAxis;
+    public boolean isAutoAiming;
 
     public TurretMovement(){
     
@@ -134,6 +138,19 @@ public class TurretMovement extends SubsystemBase{
         turretSpinConfig.kI = SmartDashboard.getNumber("turret.kI", 0); // no output for integrated error
         turretSpinConfig.kD = SmartDashboard.getNumber("turret.kD", 0); // no output for error derivative
         SmartDashboard.putNumber("turretEncoderValue", turretSpin.getPosition().getValueAsDouble());
+
+        if (isAutoAiming) {
+            return;
+        } else if (!isAutoAiming){
+            if (operatorController.axisGreaterThan(4, 0.3).getAsBoolean()){
+                rStickAxis = operatorController.getRightX();
+                turnLeft(rStickAxis * 2);
+            } else if (operatorController.axisLessThan(4, -0.3).getAsBoolean()){
+                rStickAxis = operatorController.getRightX();
+                turnRight(rStickAxis * 2);
+            }
+        }
+        
 
     }
 

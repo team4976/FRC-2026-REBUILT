@@ -43,7 +43,7 @@ public class TurretScan extends Command {
         hasTargets = false;
         Constants.stopbutton = false;
         stopLockedOn = false;
-
+        m_shooter.isAutoAiming = true;
     }
 
     @Override
@@ -118,6 +118,7 @@ public class TurretScan extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        m_shooter.isAutoAiming = false;
         m_shooter.stopTurn();
         //System.err.println(Constants.turretManualVoltage);
     }
