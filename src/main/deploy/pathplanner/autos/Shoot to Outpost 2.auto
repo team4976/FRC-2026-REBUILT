@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "Shoot to Outpost 2"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Not Usings",
+  "folder": null,
   "choreoAuto": false
 }
