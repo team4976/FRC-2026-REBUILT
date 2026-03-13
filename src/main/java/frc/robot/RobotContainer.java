@@ -23,6 +23,7 @@ import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
 import frc.robot.commands.Auto.IntakeExtend;
 import frc.robot.commands.Auto.IntakeRetract;
+import frc.robot.commands.Auto.AutoSequence.NeutralRightStartFar;
 import frc.robot.generated.RebuiltTunerConstants;
 import frc.robot.subsystems.Autos;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -32,6 +33,7 @@ import frc.robot.subsystems.PhotonVision;
 import frc.robot.commands.Climb;
 import frc.robot.commands.HoodCommand;
 import frc.robot.commands.IndexAndSpindexCommand;
+import frc.robot.commands.AlignedShotCommand;
 import frc.robot.commands.FlywheelCommand;
 import frc.robot.commands.FlywheelStart;
 import frc.robot.commands.FlywheelStop;
@@ -88,11 +90,11 @@ public class RobotContainer {
     public final TurretLeft turretLeft = new TurretLeft(m_turretvision, turretMovement);
     public final TurretRight turretRight = new TurretRight(m_turretvision, turretMovement);
     //public Command hoodAndFlywheel = new ParallelDeadlineGroup(flywheelCommand, hoodCommand);
-
+    public AlignedShotCommand alignedShotCommand = new AlignedShotCommand(flywheelSubsystem, hoodSubsystem);
     //elastic/smartdashboard intialization 
     private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision, allSubsystemsList);
 
-    public Bindings bindings = new Bindings(indexAndSpindexCommand, reverseIndexer, intakeCommand, flywheelCommand, hoodCommand, manualHoodUp, manualHoodDown, turretScanYaw, turretLeft, turretRight, turretScan);
+    public Bindings bindings = new Bindings(indexAndSpindexCommand, reverseIndexer, intakeCommand, flywheelCommand, hoodCommand, manualHoodUp, manualHoodDown, turretScanYaw, turretLeft, turretRight, turretScan, alignedShotCommand);
 
     public RobotContainer() {
         drivetrain.configureAutoBuilder();
@@ -134,6 +136,11 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser = null;
 
     public Command getAutonomousCommand() { 
+        
+        Autos autos =  new Autos(intakeSubsystem,vision,flywheelSubsystem,indexAndSpindexSubsystem,turretMovement);
+
+        return autos.neutralRightStartFar; //autos.ShoottoOutpost;
+        
         //elasticData..addChooser();
         /*IntakeExtend test = new IntakeExtend(intakeSubsystem);
         IntakeRetract intakeRetract = new IntakeRetract(intakeSubsystem);
@@ -146,9 +153,7 @@ public class RobotContainer {
         //trigger.onTrue(indexAndSpindexCommand);
         //return test.andThen(new WaitCommand(.5)).andThen(pathCommand).andThen(turretScan).andThen(flywheelStart).andThen(index).andThen(new WaitCommand(4)).andThen(intakeRetract).andThen(flywheelStop);//(Command) elastic.fieldWidget.commandChooser.getSelected();
         
-        Autos autos =  new Autos(intakeSubsystem,vision,flywheelSubsystem,indexAndSpindexSubsystem,turretMovement);
-
-        return autos.ShoottoOutpost;
+        
         //(Command) elastic.fieldWidget.commandChooser.getSelected();
         //System.out.println("*********: "+test.getName());
         //return test.andThen(IntakeCommand);

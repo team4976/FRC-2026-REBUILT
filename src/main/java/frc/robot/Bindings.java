@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import frc.robot.commands.AlignedShotCommand;
 import frc.robot.commands.FlywheelCommand;
 import frc.robot.commands.HoodCommand;
 import frc.robot.commands.IndexAndSpindexCommand;
@@ -25,10 +26,11 @@ public class Bindings {
     public TurretScanYaw turretScanYaw;
     public TurretLeft turretLeft;
     public TurretRight turretRight;
+    public AlignedShotCommand alignedShotCommand;
 
     public Bindings(IndexAndSpindexCommand indexAndSpindexCommand, IndexAndSpindexCommand reverseIndexer, IntakeCommand intakecommand, 
     FlywheelCommand flywheelCommand, HoodCommand hoodCommand, HoodCommand manualHoodUp, HoodCommand manualHoodDown, TurretScanYaw turretScanYaw, 
-    TurretLeft turretLeft, TurretRight turretRight, TurretScan turretScan){
+    TurretLeft turretLeft, TurretRight turretRight, TurretScan turretScan, AlignedShotCommand alignedShotCommand){
         this.indexAndSpindexCommand = indexAndSpindexCommand;
         this.reverseIndexer = reverseIndexer;
         this.intakeCommand = intakecommand;
@@ -40,6 +42,7 @@ public class Bindings {
         this.turretLeft = turretLeft;
         this.turretRight = turretRight;
         this.turretScan = turretScan;
+        this.alignedShotCommand = alignedShotCommand;
         System.out.println("Bindings Initialized");
     }
 
@@ -73,6 +76,9 @@ public class Bindings {
 
         //Turret scan
         operatorController.axisGreaterThan(2, 0.1).toggleOnTrue(turretScan);
+
+        //perfect shot from the aligned spot
+        operatorController.x().toggleOnTrue(alignedShotCommand);
 
         //---------------
         //Manual Overrides

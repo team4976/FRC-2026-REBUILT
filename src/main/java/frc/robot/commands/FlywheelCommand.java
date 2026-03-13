@@ -25,6 +25,7 @@ public class FlywheelCommand extends Command{
     public void initialize(){
         System.out.println("flywheel command initialize");
         flywheelSubsystem.spinFlywheel(0);
+        flywheelSubsystem.isAutoFlywheel = true;
     }
 
     @Override
@@ -48,9 +49,9 @@ public class FlywheelCommand extends Command{
         }
 
         if (operatorController.axisGreaterThan(1, 0.1).getAsBoolean()){
-            manualFlywheelSpeed = operatorController.getLeftY() * -10;
+            manualFlywheelSpeed = operatorController.getLeftY() * -8;
         } else if (operatorController.axisLessThan(1, -0.1).getAsBoolean()) {
-            manualFlywheelSpeed = operatorController.getLeftY() * -10;
+            manualFlywheelSpeed = operatorController.getLeftY() * -8;
         }
         
         totalFlywheelSpeed = manualFlywheelSpeed + autoFlywheelSpeed;
@@ -61,6 +62,7 @@ public class FlywheelCommand extends Command{
 
     @Override
     public void end(boolean isInterupted){
+        flywheelSubsystem.isAutoFlywheel = false;
         flywheelSubsystem.spinFlywheel(0);
     }
 

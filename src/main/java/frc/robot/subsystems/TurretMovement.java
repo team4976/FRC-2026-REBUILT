@@ -81,13 +81,13 @@ public class TurretMovement extends SubsystemBase{
 
     //When called it turns the motor to the right
     public void turnRight(double voltage) {
-    turretSpin.setVoltage(voltage*-1);
+        turretSpin.setVoltage(voltage*-1);
     //System.out.println("right switch: " + RightSwitch.get());
     }
 
     //When called it turns the motor to the left
     public void turnLeft(double voltage) {
-    turretSpin.setVoltage(voltage);
+        turretSpin.setVoltage(voltage);
     //System.out.println("left switch: " + LeftSwitch.get());
     }
 
@@ -139,15 +139,18 @@ public class TurretMovement extends SubsystemBase{
         turretSpinConfig.kD = SmartDashboard.getNumber("turret.kD", 0); // no output for error derivative
         SmartDashboard.putNumber("turretEncoderValue", turretSpin.getPosition().getValueAsDouble());
 
+        //turret override
         if (isAutoAiming) {
             return;
         } else if (!isAutoAiming){
             if (operatorController.axisGreaterThan(4, 0.3).getAsBoolean()){
                 rStickAxis = operatorController.getRightX();
-                turnLeft(rStickAxis * 2);
+                turnLeft(rStickAxis * -2);
             } else if (operatorController.axisLessThan(4, -0.3).getAsBoolean()){
                 rStickAxis = operatorController.getRightX();
-                turnRight(rStickAxis * 2);
+                turnLeft(rStickAxis * -2);
+            } else {
+                turnLeft(0);
             }
         }
         

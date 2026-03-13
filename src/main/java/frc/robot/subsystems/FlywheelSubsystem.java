@@ -8,7 +8,7 @@ import com.ctre.phoenix6.signals.MotorAlignmentValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import static frc.robot.Constants.*;
 
 public class FlywheelSubsystem extends SubsystemBase{
     public TalonFX shooterMotorLeader;
@@ -16,6 +16,8 @@ public class FlywheelSubsystem extends SubsystemBase{
     public String shooterState = "cantShoot";
     public double targetRPS;
     final VelocityVoltage shooterVelocityVoltage = new VelocityVoltage(0).withSlot(0);
+    public boolean isAutoFlywheel;
+    public double rStickAxis;
    
     public FlywheelSubsystem(){
         //the PID of the flywheel
@@ -27,8 +29,8 @@ public class FlywheelSubsystem extends SubsystemBase{
         flywheelConfig.kD = 0.0; // no output for error derivative*/
         
         //
-        shooterMotorLeader = new TalonFX(Constants.Flywheel_Lead_ID);
-        shooterMotorFollower = new TalonFX(Constants.Flywheel_Follower_ID);
+        shooterMotorLeader = new TalonFX(Flywheel_Lead_ID);
+        shooterMotorFollower = new TalonFX(Flywheel_Follower_ID);
         shooterMotorLeader.getConfigurator().apply(flywheelConfig);
         shooterMotorFollower.getConfigurator().apply(flywheelConfig);
         shooterMotorFollower.setControl(new Follower(shooterMotorLeader.getDeviceID(), MotorAlignmentValue.Aligned));
@@ -39,7 +41,7 @@ public class FlywheelSubsystem extends SubsystemBase{
     }
 
     public void spinFlywheel(double targetRPS){
-        System.out.println("targetRPS: " + targetRPS);
+        //System.out.println("targetRPS: " + targetRPS);
         shooterMotorLeader.setControl(shooterVelocityVoltage.withVelocity(targetRPS));
         this.targetRPS = targetRPS;
     }
@@ -62,6 +64,20 @@ public class FlywheelSubsystem extends SubsystemBase{
         }
         else {
             shooterState = "notReady";
+        }
+        //Flywheel Override
+        if (isAutoFlywheel) {
+            return;
+        } else if (!isAutoFlywheel){
+            if (operatorController.axisGreaterThan(1, 0.3).getAsBoolean()){
+                rStickAxis = operatorController.getLeftY();
+                spinFlywheel(rStickAxis * 65);
+            } else if (operatorController.axisLessThan(1, -0.3).getAsBoolean()){
+                rStickAxis = operatorController.getLeftY();
+                spinFlywheel(rStickAxis * 65);
+            } else {
+                spinFlywheel(0);
+            }
         }
     }
 }

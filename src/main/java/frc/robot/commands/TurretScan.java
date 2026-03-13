@@ -26,6 +26,7 @@ public class TurretScan extends Command {
     double turretTargetPosition;
     double manualLockedOn;
     double autoLockedOn = 0.0;
+    boolean isAuto = false;
 
     public TurretScan(PhotonVision turretVision, TurretMovement shooter){
         m_turretVision = turretVision;
@@ -35,6 +36,16 @@ public class TurretScan extends Command {
         addRequirements(shooter);
 
         field2d = new Field2d();
+    }
+    public TurretScan(PhotonVision turretVision, TurretMovement shooter, boolean isAuto){
+        m_turretVision = turretVision;
+        addRequirements(turretVision);
+
+        m_shooter = shooter;
+        addRequirements(shooter);
+
+        field2d = new Field2d();
+        this.isAuto  = isAuto;
     }
 
     @Override
@@ -105,14 +116,19 @@ public class TurretScan extends Command {
             manualLockedOn = operatorController.getRightX() * -1;
         } else if (operatorController.axisLessThan(4, -0.3).getAsBoolean()) {
             System.out.println("auto aim value:" + autoLockedOn);
-          //  if (autoLockedOn <= -0.6) {
-          //      manualLockedOn = operatorController.getRightX() * -2;
-          //  } else if (autoLockedOn > -0.5) {
-             //   manualLockedOn = operatorController.getRightX() * -1;
-           // }
+            if (autoLockedOn <= -0.6) {
+                manualLockedOn = operatorController.getRightX() * -2;
+            } else if (autoLockedOn > -0.5) {
+                manualLockedOn = operatorController.getRightX() * -1;
+            }
         }
         double totalLockedOn = autoLockedOn + manualLockedOn;
+        
+        if(totalLockedOn > 0.7) totalLockedOn = 0.7;
+
+        else if(totalLockedOn < -0.7) totalLockedOn = -0.7;
         m_shooter.lockedOn(totalLockedOn);
+        SmartDashboard.putNumber("Total Turret Voltage", totalLockedOn);
         m_turretVision.turretAngle = turretAngle;
         m_turretVision.turretTargetAngle = turretTargetAngle;
         
@@ -128,15 +144,15 @@ public class TurretScan extends Command {
     @Override
     public boolean isFinished() {
         // if rightTrigger is pressed or stopLocked = true then end command
+        if(isAuto) return m_turretVision.AutoShootFlag.getAsBoolean();
         
-        return m_turretVision.AutoShootFlag.getAsBoolean();
         
-       /*  if(Constants.stopbutton == true){
+       if(Constants.stopbutton == true){
             return true;
         }
         else{
             return false;
-        }*/
+        }
     }
     
 }

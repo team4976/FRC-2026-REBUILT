@@ -11,6 +11,8 @@ import frc.robot.commands.FlywheelStart;
 import frc.robot.commands.FlywheelStop;
 import frc.robot.commands.TurretScan;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
+import frc.robot.commands.Auto.AutoSequence.NeutralRightStartFar;
+import frc.robot.commands.Auto.AutoSequence.ShootToOutpost;
 import frc.robot.commands.Auto.IntakeExtend;
 import frc.robot.commands.Auto.IntakeRetract;
 
@@ -31,6 +33,15 @@ public class Autos {
         loadCommands();
     }
 
+    public Command neutralRightStartFar;
+    public Command shootToOutpost;
+    public void loadCommands(){
+        neutralRightStartFar = new NeutralRightStartFar(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
+        shootToOutpost = new ShootToOutpost(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
+    }
+}
+
+    /*
     IntakeExtend intakeExtend;
     IntakeRetract intakeRetract;
     FlywheelStart flywheelStart;
@@ -49,7 +60,7 @@ public class Autos {
      Command ShoottoOutpost2pathCommand;
      Command ShoottoOutpost3pathCommand;
 
-      Trigger trigger;
+    Trigger trigger;
 
     void loadCommands (){
         intakeExtend = new IntakeExtend(intakeSubsystem);
@@ -121,7 +132,8 @@ public class Autos {
             .andThen(index)
             .andThen(new WaitCommand(2))
             .andThen(intakeRetract)
-            .andThen(flywheelStop2);*/
+            .andThen(flywheelStop2);
     }
     
 }
+ */
