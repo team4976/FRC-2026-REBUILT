@@ -57,7 +57,7 @@ public class Bindings {
 
         //Intake
         driverController.x().onTrue(intakeCommand);
-
+        driverController.axisGreaterThan(3, 0.1).whileTrue(indexAndSpindexCommand);
     }
 
     public void operatorConfigureBindings(){

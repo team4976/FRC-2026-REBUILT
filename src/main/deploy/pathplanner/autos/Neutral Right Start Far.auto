@@ -7,13 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Human Player Mid"
+            "pathName": "Final Step 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Final Step 2"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Not Usings",
+  "folder": null,
   "choreoAuto": false
 }
