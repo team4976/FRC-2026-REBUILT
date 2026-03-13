@@ -5,4 +5,4 @@
 -Make sure network table is connected
 -Make sure QC is done everything
 -make sure multipose estimation is on
--Make sure the correct auto is selected in the code (Autos.java)
+-Make sure the correct auto is selected in the code (Autos.java) pay attention to names
