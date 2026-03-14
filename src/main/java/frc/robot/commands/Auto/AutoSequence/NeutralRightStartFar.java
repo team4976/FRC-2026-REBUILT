@@ -48,7 +48,7 @@ public class NeutralRightStartFar extends SequentialCommandGroup {
         addCommands(
             new PrintCommand("Neutral Right Start Far Started"),
             new IntakeExtend(intakeSubsystem),
-            new WaitCommand(3.5),
+            new WaitCommand(2),
             neutralRightFarPath,
             Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem),
