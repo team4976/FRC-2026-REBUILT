@@ -11,8 +11,7 @@ import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.IndexAndSpindexSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PhotonVision;
-import frc.robot.subsystems.TurretMovement;
-
+import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.commands.Auto.IntakeExtend;
 import frc.robot.commands.FlywheelStart;
 import frc.robot.commands.FlywheelStop;
@@ -26,7 +25,7 @@ public class ShootToOutpost extends SequentialCommandGroup {
     FlywheelSubsystem flywheelSubsystem;
     Intake intakeSubsystem;
     IndexAndSpindexSubsystem indxerSubsystem;
-    TurretMovement turretMovementSubsystem;
+    TurretSubsystem turretMovementSubsystem;
 
 
     public ShootToOutpost(
@@ -34,7 +33,7 @@ public class ShootToOutpost extends SequentialCommandGroup {
         FlywheelSubsystem flywheelSubsystem,
         Intake intakeSubsystem,
         IndexAndSpindexSubsystem indxerSubsystem,
-        TurretMovement turretMovementSubsystem
+        TurretSubsystem turretMovementSubsystem
     ){
         Command ShootToOutpost1pathCommand = AutoBuilder.buildAuto("Shoot to Outpost 1");
         Command ShootToOutpost2pathCommand = AutoBuilder.buildAuto("Shoot to Outpost 2");

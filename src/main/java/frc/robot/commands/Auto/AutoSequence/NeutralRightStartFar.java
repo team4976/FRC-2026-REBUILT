@@ -18,7 +18,7 @@ import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.IndexAndSpindexSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PhotonVision;
-import frc.robot.subsystems.TurretMovement;
+import frc.robot.subsystems.TurretSubsystem;
 
 public class NeutralRightStartFar extends SequentialCommandGroup {
 
@@ -26,14 +26,14 @@ public class NeutralRightStartFar extends SequentialCommandGroup {
     FlywheelSubsystem flywheelSubsystem;
     Intake intakeSubsystem;
     IndexAndSpindexSubsystem indxerSubsystem;
-    TurretMovement turretMovementSubsystem;
+    TurretSubsystem turretMovementSubsystem;
 
     public NeutralRightStartFar(
         PhotonVision visionSubsystem,
         FlywheelSubsystem flywheelSubsystem,
         Intake intakeSubsystem,
         IndexAndSpindexSubsystem indxerSubsystem,
-        TurretMovement turretMovementSubsystem
+        TurretSubsystem turretMovementSubsystem
     ){
         
         Command neutralRightFarPath = AutoBuilder.buildAuto("Neutral Right Start Far");

@@ -28,6 +28,16 @@ public class TurretScan extends Command {
     double autoLockedOn = 0.0;
     boolean isAuto = false;
 
+    public TurretScan(PhotonVision turretVision, TurretSubsystem shooter){
+        this.turretVision = turretVision;
+        addRequirements(turretVision);
+
+        this.shooter = shooter;
+        addRequirements(shooter);
+
+        field2d = new Field2d();
+    }
+
     public TurretScan(PhotonVision turretVision, TurretSubsystem shooter, boolean isAuto){
         this.turretVision = turretVision;
         addRequirements(turretVision);

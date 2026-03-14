@@ -22,9 +22,9 @@ public class Autos {
     PhotonVision vision;
     FlywheelSubsystem flywheelSubsystem;
     IndexAndSpindexSubsystem indexAndSpindexSubsystem;
-    TurretMovement turretMovement;
+    TurretSubsystem turretMovement;
 
-    public Autos(Intake intakeSubsystem, PhotonVision vision, FlywheelSubsystem flywheelSubsystem,IndexAndSpindexSubsystem indexAndSpindexSubsystem,TurretMovement turretMovement){
+    public Autos(Intake intakeSubsystem, PhotonVision vision, FlywheelSubsystem flywheelSubsystem,IndexAndSpindexSubsystem indexAndSpindexSubsystem, TurretSubsystem turretMovement){
         this.intakeSubsystem = intakeSubsystem;
         this.vision = vision;
         this.flywheelSubsystem = flywheelSubsystem;
