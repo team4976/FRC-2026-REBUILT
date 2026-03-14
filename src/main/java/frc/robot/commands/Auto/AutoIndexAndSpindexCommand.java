@@ -18,9 +18,8 @@ public class AutoIndexAndSpindexCommand extends Command{
 
     @Override
     public void initialize(){
-        //if (flywheelSubsystem.shooterMotorLeader.getMotorVoltage().getValueAsDouble() > 0) {
-            InSSubsystem.moveFeeder(0.8);
-        }
+        InSSubsystem.moveFeeder(0.8);
+    }
     
     
     @Override
@@ -30,11 +29,10 @@ public class AutoIndexAndSpindexCommand extends Command{
 
     @Override
     public void end(boolean interrupted) {
-        //InSSubsystem.moveFeeder(0.0);
     }
 
     @Override
     public boolean isFinished() {
-       return false;
+       return true;
     }
 }

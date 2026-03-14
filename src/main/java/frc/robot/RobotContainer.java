@@ -25,6 +25,7 @@ import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
 import frc.robot.commands.Auto.IntakeExtend;
 import frc.robot.commands.Auto.IntakeRetract;
+import frc.robot.commands.Auto.AutoSequence.NeutralRightStartFar;
 import frc.robot.generated.RebuiltTunerConstants;
 import frc.robot.subsystems.Autos;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -34,6 +35,7 @@ import frc.robot.subsystems.PhotonVision;
 import frc.robot.commands.Climb;
 import frc.robot.commands.HoodCommand;
 import frc.robot.commands.IndexAndSpindexCommand;
+import frc.robot.commands.AlignedShotCommand;
 import frc.robot.commands.AlignedShotCommand;
 import frc.robot.commands.FlywheelCommand;
 import frc.robot.commands.FlywheelStart;
@@ -142,21 +144,24 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser = null;
 
     public Command getAutonomousCommand() { 
+        
+        Autos autos =  new Autos(intakeSubsystem,vision,flywheelSubsystem,indexAndSpindexSubsystem,turretMovement);
+
+        return autos.neutralRightStartFar; //autos.ShoottoOutpost;
+        
         //elasticData..addChooser();
-        IntakeExtend test = new IntakeExtend(intakeSubsystem);
+        /*IntakeExtend test = new IntakeExtend(intakeSubsystem);
         IntakeRetract intakeRetract = new IntakeRetract(intakeSubsystem);
         Command pathCommand = AutoBuilder.buildAuto("Final Auto 1");
         FlywheelStart flywheelStart = new FlywheelStart(flywheelSubsystem,vision);
         FlywheelStop flywheelStop = new FlywheelStop(flywheelSubsystem,vision);
         Trigger trigger = new Trigger(vision.AutoShootFlag);
         AutoIndexAndSpindexCommand index = new AutoIndexAndSpindexCommand(indexAndSpindexSubsystem, MaxSpeed, flywheelSubsystem);
-        
-        trigger.onTrue(indexAndSpindexCommand);
+        */
+        //trigger.onTrue(indexAndSpindexCommand);
         //return test.andThen(new WaitCommand(.5)).andThen(pathCommand).andThen(turretScan).andThen(flywheelStart).andThen(index).andThen(new WaitCommand(4)).andThen(intakeRetract).andThen(flywheelStop);//(Command) elastic.fieldWidget.commandChooser.getSelected();
         
-       // Autos autos =  new Autos(intakeSubsystem);
-
-        return Commands.waitSeconds(1);
+        
         //(Command) elastic.fieldWidget.commandChooser.getSelected();
         //System.out.println("*********: "+test.getName());
         //return test.andThen(IntakeCommand);

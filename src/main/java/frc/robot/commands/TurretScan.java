@@ -26,8 +26,9 @@ public class TurretScan extends Command {
     double turretTargetPosition;
     double manualLockedOn;
     double autoLockedOn = 0.0;
+    boolean isAuto = false;
 
-    public TurretScan(PhotonVision turretVision, TurretSubsystem shooter){
+    public TurretScan(PhotonVision turretVision, TurretSubsystem shooter, boolean isAuto){
         this.turretVision = turretVision;
         addRequirements(turretVision);
 
@@ -35,6 +36,7 @@ public class TurretScan extends Command {
         addRequirements(shooter);
 
         field2d = new Field2d();
+        this.isAuto  = isAuto;
     }
 
     @Override
@@ -128,6 +130,7 @@ public class TurretScan extends Command {
     @Override
     public boolean isFinished() {
         // if rightTrigger is pressed or stopLocked = true then end command
+        if(isAuto) return turretVision.AutoShootFlag.getAsBoolean();
         
         //return m_turretVision.AutoShootFlag.getAsBoolean();
         
