@@ -1,8 +1,6 @@
 
 
 package frc.robot.commands;
-import static frc.robot.Constants.yaw;
-
 import java.util.OptionalDouble;
 
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -11,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.PhotonVision;
+import static frc.robot.Constants.*;
 
 public class TurretScanYaw extends Command {
     PhotonVision m_turretVision;
@@ -22,6 +21,8 @@ public class TurretScanYaw extends Command {
     Field2d field2d; // our estimated position on the field
     double turretyaw;
     double turretPosition;
+    public double autoLockedOn;
+    public double manualLockedOn;
 
     public TurretScanYaw(PhotonVision turretVision, TurretSubsystem shooter){
         m_turretVision = turretVision;
@@ -77,9 +78,25 @@ public class TurretScanYaw extends Command {
 
         turretyaw= yaw.getAsDouble();
         Double speedAdjust = 5.0;
-        m_shooter.lockedOn(Math.max(((turretyaw)/45*-speedAdjust),0.75));
-        System.out.println(Constants.turretManualVoltage);
+        autoLockedOn = (turretyaw)/45*-speedAdjust;
 
+        if (operatorController.axisGreaterThan(4, 0.3).getAsBoolean()){
+            manualLockedOn = operatorController.getRightX() * -1;
+        } else if (operatorController.axisLessThan(4, -0.3).getAsBoolean()) {
+            if (autoLockedOn <= -0.6) {
+                manualLockedOn = operatorController.getRightX() * -2;
+            } else if (autoLockedOn > -0.5) {
+                manualLockedOn = operatorController.getRightX() * -1;
+            }
+        }
+
+        double totalLockedOn = autoLockedOn + manualLockedOn;
+
+        if(totalLockedOn > 0.7) totalLockedOn = 0.7;
+
+        else if(totalLockedOn < -0.7) totalLockedOn = -0.7;
+
+        m_shooter.lockedOn(totalLockedOn);
 
         }
     }

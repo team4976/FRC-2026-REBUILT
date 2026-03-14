@@ -75,7 +75,7 @@ public class Bindings {
         operatorController.axisGreaterThan(3, 0.1).whileTrue(indexAndSpindexCommand);
 
         //Turret scan
-        operatorController.axisGreaterThan(2, 0.1).toggleOnTrue(turretScan);
+        operatorController.axisGreaterThan(2, 0.1).toggleOnTrue(turretScanYaw);
 
         //perfect shot from the aligned spot
         operatorController.x().toggleOnTrue(alignedShotCommand);
