@@ -3,22 +3,31 @@ package frc.robot.commands.Auto;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.IndexAndSpindexSubsystem;
+import frc.robot.subsystems.Intake;
 
 public class AutoIndexAndSpindexCommand extends Command{
     public IndexAndSpindexSubsystem InSSubsystem;
     public double speed;
     public FlywheelSubsystem flywheelSubsystem;
+    public Intake intakeSubsystem;
+    public double currentIntakeSpeed;
     
-    public AutoIndexAndSpindexCommand(IndexAndSpindexSubsystem InSSubsystem, double speed, FlywheelSubsystem flywheelSubsystem){
+    public AutoIndexAndSpindexCommand(IndexAndSpindexSubsystem InSSubsystem, double speed, FlywheelSubsystem flywheelSubsystem, Intake intakeSubsystem){
         this.InSSubsystem = InSSubsystem;
         this.flywheelSubsystem = flywheelSubsystem;
         this.speed = speed;
+        this.intakeSubsystem = intakeSubsystem;
+        
         addRequirements(InSSubsystem);
     }
 
     @Override
     public void initialize(){
         InSSubsystem.moveFeeder(speed);
+        currentIntakeSpeed = intakeSubsystem.currentIntakeSpeed;
+        if (flywheelSubsystem.shooterMotorLeader.getMotorVoltage().getValueAsDouble() > 0) {
+            intakeSubsystem.runIntakeMotor(.95);
+        }
     }
     
     

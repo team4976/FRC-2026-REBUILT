@@ -53,7 +53,7 @@ public class ShootToOutpost extends SequentialCommandGroup {
             ShootToOutpost3pathCommand,
             Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem),
-            new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem),
+            new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
             new WaitCommand(2),
             new IntakeRetract(intakeSubsystem),
             new FlywheelStop(flywheelSubsystem, visionSubsystem)

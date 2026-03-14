@@ -50,7 +50,8 @@ public class ElasticData extends SubsystemBase{
     Field2d field2d;
     Optional<Alliance> alliance;
     List<Pose2d> pose2ds = new ArrayList<>();
-
+    public double currentTime;
+    public double startTime;
 
     public ElasticData(Telemetry m_telemetry, PhotonVision camera1, PhotonVision camera2, List<Subsystem> subsystemList){
         //-------------------
@@ -58,11 +59,11 @@ public class ElasticData extends SubsystemBase{
         //-------------------
 
         //Misc Objects
-        alliance = DriverStation.getAlliance();
         telemetry = m_telemetry;
         cameraDataMain = camera1;
         cameraDataTurret = camera2;
         field2d = cameraDataMain.getRobotPos();
+        alliance = DriverStation.getAlliance();
         if (alliance.isPresent()){
             if (alliance.get() == Alliance.Blue){
                 field2d.getObject("Hub").setPose(4.6, 4, new Rotation2d(0.0));
@@ -122,6 +123,10 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Testing/Ben T's Stuff/flywheelSpeed", 0);
         SmartDashboard.putNumber("Testing/Ben T's Stuff/hood target position", 0);
 
+    }
+
+    public void autonomousInit(){
+        startTime = System.currentTimeMillis();
     }
 
     @Override
@@ -309,6 +314,13 @@ public class ElasticData extends SubsystemBase{
         //---------
         //MISC
         //---------
+
+        //Time
+        currentTime = System.currentTimeMillis();
+        double timeDifference = currentTime - startTime;
+        double timeInSeconds = timeDifference / 1000;
+        SmartDashboard.putNumber("Timer", timeInSeconds);
+
 
         //Ben T's smartdashboard stuff
         SmartDashboard.putString("Testing/Ben T's Stuff/shooter state", flywheelSubsystem.getShooterState());

@@ -82,9 +82,10 @@ public class RobotContainer {
         hoodSubsystem,
         indexAndSpindexSubsystem
     );
+    public Autos autos;
 
     //Command Objects
-    public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, 0.8, flywheelSubsystem, intakeSubsystem);//hoodSubsystem, flywheelSubsystem);
+    public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, 1.0, flywheelSubsystem, intakeSubsystem);//hoodSubsystem, flywheelSubsystem);
     public IndexAndSpindexCommand reverseIndexer = new IndexAndSpindexCommand(indexAndSpindexSubsystem, -0.8, flywheelSubsystem, intakeSubsystem);//hoodSubsystem, flywheelSubsystem);
     public IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
     public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem, m_turretvision, false);
@@ -105,9 +106,13 @@ public class RobotContainer {
 
     PowerDistribution pdp = new PowerDistribution(1, ModuleType.kRev);
 
+    public Command selectedAuto;
+
     public RobotContainer() {
         drivetrain.configureAutoBuilder();
         configureBindings();
+
+        autos =  new Autos(intakeSubsystem,vision,flywheelSubsystem,indexAndSpindexSubsystem,turretMovement);
 
         pdp.setSwitchableChannel(true);
 
@@ -152,22 +157,32 @@ public class RobotContainer {
 
     private final SendableChooser<Command> autoChooser = null;
 
-    public Command getAutonomousCommand() { 
+    public void autoInit(){
         teleopInit();
-        Autos autos =  new Autos(intakeSubsystem,vision,flywheelSubsystem,indexAndSpindexSubsystem,turretMovement);
+
+        elasticData.autonomousInit();
 
         String value = elasticData.autoChooser.getSelected()[0];
         switch(value){
             case "Neutral Right Start Far":
-                return autos.neutralRightStartFar;
+                selectedAuto = autos.neutralRightStartFar;
+                break;
             case "Neutral Left Start Far":
-                return autos.neutralLeftStartFar;
+                selectedAuto = autos.neutralLeftStartFar;
+                break;
             case "Shoot To Outpost 1":
-                return autos.shootToOutpost;
+                selectedAuto = autos.shootToOutpost;
+                break;
+            default: 
+                selectedAuto = Commands.waitSeconds(1);
+                break;
             
         }
+    }
 
-        return Commands.waitSeconds(1); //autos.ShoottoOutpost;
+    public Command getAutonomousCommand() { 
+    
+        return selectedAuto;
         
         //elasticData..addChooser();
         /*IntakeExtend test = new IntakeExtend(intakeSubsystem);
