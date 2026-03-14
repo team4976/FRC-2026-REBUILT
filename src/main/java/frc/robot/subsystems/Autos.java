@@ -11,6 +11,7 @@ import frc.robot.commands.FlywheelStart;
 import frc.robot.commands.FlywheelStop;
 import frc.robot.commands.TurretScan;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
+import frc.robot.commands.Auto.AutoSequence.NeutralLeftStartFar;
 import frc.robot.commands.Auto.AutoSequence.NeutralRightStartFar;
 import frc.robot.commands.Auto.AutoSequence.ShootToOutpost;
 import frc.robot.commands.Auto.IntakeExtend;
@@ -33,13 +34,13 @@ public class Autos {
         loadCommands();
     }
 
-    public Command NeutralRightStartFar;
-    public Command ShootToOutpost;
-    public Command NeutralLeftStartFar;
+    public Command neutralRightStartFar;
+    public Command shootToOutpost;
+    public Command neutralLeftStartFar;
     public void loadCommands(){
-        NeutralRightStartFar = new NeutralRightStartFar(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
-        ShootToOutpost = new ShootToOutpost(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
-        NeutralLeftStartFar = new NeutralLeftStartFar(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
+        neutralRightStartFar = new NeutralRightStartFar(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
+        shootToOutpost = new ShootToOutpost(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
+        neutralLeftStartFar = new NeutralLeftStartFar(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
     }
 }
 

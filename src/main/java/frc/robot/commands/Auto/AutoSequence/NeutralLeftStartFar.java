@@ -33,7 +33,7 @@ public class NeutralLeftStartFar extends SequentialCommandGroup {
         FlywheelSubsystem flywheelSubsystem,
         Intake intakeSubsystem,
         IndexAndSpindexSubsystem indxerSubsystem,
-        TurretSubsystem turretMovementSubsystem
+        TurretSubsystem turretSubsystem
     ){
         
         Command neutralLeftFarPath = AutoBuilder.buildAuto("Neutral Left Start Far");
@@ -41,7 +41,7 @@ public class NeutralLeftStartFar extends SequentialCommandGroup {
             new IntakeExtend(intakeSubsystem),
             new WaitCommand(2),
             neutralLeftFarPath,
-            Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
+            Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretSubsystem, true)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem),
             new WaitCommand(2),
