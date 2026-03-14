@@ -159,7 +159,7 @@ public class RobotContainer {
             
         }
 
-        return autos.neutralRightStartFar; //autos.ShoottoOutpost;
+        return Commands.waitSeconds(1); //autos.ShoottoOutpost;
         
         //elasticData..addChooser();
         /*IntakeExtend test = new IntakeExtend(intakeSubsystem);
