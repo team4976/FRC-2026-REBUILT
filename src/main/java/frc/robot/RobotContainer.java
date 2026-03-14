@@ -152,6 +152,8 @@ public class RobotContainer {
         switch(value){
             case "Neutral Right Start Far":
                 return autos.neutralRightStartFar;
+            case "Neutral Left Start Far":
+                return autos.neutralLeftStartFar;
             case "Shoot To Outpost 1":
                 return autos.shootToOutpost;
             
