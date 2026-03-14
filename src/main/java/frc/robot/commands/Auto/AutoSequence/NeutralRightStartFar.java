@@ -53,9 +53,9 @@ public class NeutralRightStartFar extends SequentialCommandGroup {
             Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem),
-            new WaitCommand(2),
+            new WaitCommand(4),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem),
-            new IntakeRetract(intakeSubsystem),
+            //new IntakeRetract(intakeSubsystem),
             new FlywheelStop(flywheelSubsystem, visionSubsystem)
         );
     }
