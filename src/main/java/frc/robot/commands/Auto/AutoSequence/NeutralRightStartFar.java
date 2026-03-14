@@ -39,6 +39,7 @@ public class NeutralRightStartFar extends SequentialCommandGroup {
         Command neutralRightFarPath = AutoBuilder.buildAuto("Neutral Right Start Far");
         addCommands(
             new IntakeExtend(intakeSubsystem),
+            new WaitCommand(2),
             neutralRightFarPath,
             Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem),

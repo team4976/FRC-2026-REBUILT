@@ -33,11 +33,13 @@ public class Autos {
         loadCommands();
     }
 
-    public Command neutralRightStartFar;
-    public Command shootToOutpost;
+    public Command NeutralRightStartFar;
+    public Command ShootToOutpost;
+    public Command NeutralLeftStartFar;
     public void loadCommands(){
-        neutralRightStartFar = new NeutralRightStartFar(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
-        shootToOutpost = new ShootToOutpost(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
+        NeutralRightStartFar = new NeutralRightStartFar(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
+        ShootToOutpost = new ShootToOutpost(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
+        NeutralLeftStartFar = new NeutralLeftStartFar(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
     }
 }
 
