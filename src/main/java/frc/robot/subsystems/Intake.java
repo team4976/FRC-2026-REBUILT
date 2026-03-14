@@ -22,17 +22,17 @@ import static frc.robot.Constants.*;
 public class Intake extends SubsystemBase {
   public TalonSRX IntakeMotor;
 
-  public static final PneumaticsControlModule pneumaticsControlModule = new PneumaticsControlModule(30);
-  private final Compressor compressor = new Compressor(30, PneumaticsModuleType.CTREPCM);
+  public static final PneumaticsControlModule pneumaticsControlModule = new PneumaticsControlModule(Solenoid_ID);
+  private final Compressor compressor = new Compressor(PCM_ID, PneumaticsModuleType.CTREPCM);
   private Solenoid solenoid;
   public boolean intakeStatus;
       
   public Intake() {
-    IntakeMotor = new TalonSRX(Intake_ID); //Defines motor 1
+    IntakeMotor = new TalonSRX(Intake_ID);
 
     intakeStatus = false;
     compressor.enableDigital(); 
-    solenoid = pneumaticsControlModule.makeSolenoid(2);
+    solenoid = pneumaticsControlModule.makeSolenoid(Solenoid_ID);
     solenoid.set(false);
   }   
 

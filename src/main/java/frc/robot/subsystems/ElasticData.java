@@ -188,7 +188,7 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Vision/Turret Cam/Turret Distance Test", cameraDataTurret.vision.turretDistance);
         SmartDashboard.putNumber("Vision/Turret Cam/Turret PoseX Test", cameraDataTurret.getDistanceAndAngle().getRobotPose().getX());
         SmartDashboard.putNumber("Vision/Turret Cam/Turret PoseX Test", cameraDataTurret.getDistanceAndAngle().getRobotPose().getY());
-        SmartDashboard.putNumber("turretTargetAngle", cameraDataTurret.getTurretTargetAngle());
+        SmartDashboard.putNumber("Vision/Turret Cam/turretTargetAngle", cameraDataTurret.getTurretTargetAngle());
         SmartDashboard.putNumber("Vision/Turret Cam/Turret Target Position", turretSubsystem.convertAngleRotation(cameraDataTurret.getTurretTargetAngle() - cameraDataTurret.getTurretAngle()));
 
         // Turret Limit Switches
@@ -199,9 +199,9 @@ public class ElasticData extends SubsystemBase{
                 - (0.4148098 * Math.pow(cameraDataMain.getDistance() + 0.5969, 2)));
 
 
-        //------------
-        //Field Widgets
-        //------------
+        //-------------
+        //FIELD WIDGETS
+        //-------------
         SmartDashboard.putData("Fields/Ideal Field", field2d);
         if (cameraDataMain.targetVisible() == true){
             SmartDashboard.putData("Fields/Robot Position Field", cameraDataMain.getRobotPos());
@@ -209,13 +209,14 @@ public class ElasticData extends SubsystemBase{
         }
 
         //AC- Additional Field2d Stuff
+        /* 
         if (turretSubsystem.turretMotor != null){
             rotation = (cameraDataTurret.getTurretAngle()/57) + field2d.getRobotPose().getRotation().getDegrees();
         } else {
             rotation = 0.0;
         }
         SmartDashboard.putBoolean("Will the Fuel make it?", fuelMakeIt);
-        field2d.getObject("Aim").setPose(field2d.getRobotPose().getX() + (radius * (Math.cos(rotation))), field2d.getRobotPose().getY() + (radius * (Math.sin(rotation))), new Rotation2d(rotation));
+    field2d.getObject("Aim").setPose(field2d.getRobotPose().getX() + (radius * (Math.cos(rotation))), field2d.getRobotPose().getY() + (radius * (Math.sin(rotation))), new Rotation2d(rotation));
         Pose2d aimPose = field2d.getObject("Aim").getPose();
         Pose2d hubPose = field2d.getObject("Hub").getPose();
         if (aimPose.getX() >= (hubPose.getX() - (hubWidth/2)) && aimPose.getX() <= (hubPose.getX() + (hubWidth/2))){
@@ -227,6 +228,7 @@ public class ElasticData extends SubsystemBase{
         } else {
             fuelMakeIt = false;
         } 
+            
         
 
 
@@ -237,10 +239,11 @@ public class ElasticData extends SubsystemBase{
                 field2d.getObject("RR").setPose(field2d.getRobotPose().getX() + 0.42, field2d.getRobotPose().getY() - 0.343, new Rotation2d(telemetry.m_moduleDirections[0].getAngle()));
                 field2d.getObject("RL").setPose(field2d.getRobotPose().getX() - 0.42, field2d.getRobotPose().getY() - 0.343, new Rotation2d(telemetry.m_moduleDirections[3].getAngle()));
         }
+                */
 
-        //------------
+        //-------------
         //MOTOR WIDGETS
-        //------------
+        //-------------
 
         //Voltage Widgets
         SmartDashboard.putNumber("QC/Motors/Indexer/Index Volatage", indexAndSpindexSubsystem.indexMotor.getAppliedOutput());
@@ -263,10 +266,6 @@ public class ElasticData extends SubsystemBase{
         //Position Widgets
         SmartDashboard.putNumber("QC/Motors/Hood/Hood Position", hoodSubsystem.HoodMotor.getPosition().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Turret/Turret Position", turretSubsystem.turretMotor.getPosition().getValueAsDouble());
-
-        //Limit Switch Pressed Widgets (not technically motor stuff but whatever)
-        SmartDashboard.putBoolean("QC/Limit Switch Left", turretSubsystem.getLeftSwitch());
-        SmartDashboard.putBoolean("QC/Limit Switch Right", turretSubsystem.getRightSwitch());
 
         //Motor id Widgets
         SmartDashboard.putStringArray("QC/Motors/Motor Id's", motorIDs);
@@ -294,6 +293,26 @@ public class ElasticData extends SubsystemBase{
              System.out.println("Error making motor string: " + motorInfo);
             }
         }
+
+
+        //--------
+        //BOOLEANS
+        //--------
+
+        //Limit Switch Pressed Widgets (not technically motor stuff but whatever)
+        SmartDashboard.putBoolean("QC/Limit Switch Left", turretSubsystem.getLeftSwitch());
+        SmartDashboard.putBoolean("QC/Limit Switch Right", turretSubsystem.getRightSwitch());
+
+        //Boolean Widgets
+        SmartDashboard.putBoolean("QC/Is Auto Aiming", turretSubsystem.isAutoAiming);
+        SmartDashboard.putBoolean("QC/Is Auto Flywheel", flywheelSubsystem.isAutoFlywheel);
+
+        
+
+
+        //---------
+        //MISC
+        //---------
 
         //Ben T's smartdashboard stuff
         SmartDashboard.putString("Testing/Ben T's Stuff/shooter state", flywheelSubsystem.getShooterState());

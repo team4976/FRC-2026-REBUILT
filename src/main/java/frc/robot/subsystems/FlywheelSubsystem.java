@@ -41,7 +41,7 @@ public class FlywheelSubsystem extends SubsystemBase{
     }
 
     public void spinFlywheel(double targetRPS){
-        System.out.println("targetRPS: " + targetRPS);
+        //System.out.println("targetRPS: " + targetRPS);
         shooterMotorLeader.setControl(shooterVelocityVoltage.withVelocity(targetRPS));
         this.targetRPS = targetRPS;
     }
@@ -56,7 +56,7 @@ public class FlywheelSubsystem extends SubsystemBase{
 
     @Override
     public void periodic(){
-        SmartDashboard.putNumber("Turret Rotate", shooterMotorLeader.getVelocity().getValueAsDouble());
+        SmartDashboard.putNumber("Testing/Ben T's Stuff/Turret Rotate", shooterMotorLeader.getVelocity().getValueAsDouble());
         
         if (shooterMotorLeader.getVelocity().getValueAsDouble() < targetRPS + 5 
          && shooterMotorLeader.getVelocity().getValueAsDouble() > targetRPS - 5 && targetRPS > 0) {
