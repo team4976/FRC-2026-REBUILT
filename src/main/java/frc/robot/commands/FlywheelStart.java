@@ -8,6 +8,7 @@ import frc.robot.subsystems.PhotonVision;
 public class FlywheelStart extends Command{
     public FlywheelSubsystem flywheelSubsystem;
     public PhotonVision photonVision;
+    
 
     public FlywheelStart(FlywheelSubsystem flywheelSubsystem, PhotonVision photonVision){
         this.flywheelSubsystem = flywheelSubsystem;
@@ -17,22 +18,7 @@ public class FlywheelStart extends Command{
 
     @Override
     public void initialize(){
-        System.out.println("flywheel command initialize");
-        /*if (flywheelSubsystem.getShooterState() == "cantShoot") {
-            flywheelSubsystem.spinFlywheel(
-                31.49597 + (10.19041 * (photonVision.getDistance() + 0.5969))  
-                - (0.4148098 * Math.pow(photonVision.getDistance() + 0.5969, 2)));//SmartDashboard.getNumber("Testing/Ben T's Stuff/flywheelSpeed", 40));
-            SmartDashboard.putBoolean("Flywheel spinnin", true);
-        }           
-        else if (flywheelSubsystem.getShooterState() == "windShooter"
-              || flywheelSubsystem.getShooterState() == "readyToShoot") {
-            flywheelSubsystem.spinFlywheel(0);
-            SmartDashboard.putBoolean("Flywheel spinnin", false);
-        }
-        flywheelSubsystem.spinFlywheel(
-                31.49597 + (10.19041 * (photonVision.getDistance() + 0.5969))  
-                - (0.4148098 * Math.pow(photonVision.getDistance() + 0.5969, 2)));//SmartDashboard.getNumber("Testing/Ben T's Stuff/flywheelSpeed", 40));
-        //flywheelSubsystem.setShooterState();*/
+        flywheelSubsystem.isAutoFlywheel = true;
         flywheelSubsystem.spinFlywheel(50);
     }
 

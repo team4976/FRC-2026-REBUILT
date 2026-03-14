@@ -1,9 +1,16 @@
 package frc.robot.commands.Auto.AutoSequence;
 
-import com.pathplanner.lib.auto.AutoBuilder;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
@@ -37,7 +44,9 @@ public class NeutralRightStartFar extends SequentialCommandGroup {
     ){
         
         Command neutralRightFarPath = AutoBuilder.buildAuto("Neutral Right Start Far");
+        
         addCommands(
+            new PrintCommand("Neutral Right Start Far Started"),
             new IntakeExtend(intakeSubsystem),
             neutralRightFarPath,
             Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),

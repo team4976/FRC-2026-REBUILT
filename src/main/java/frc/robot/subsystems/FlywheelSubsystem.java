@@ -19,6 +19,7 @@ public class FlywheelSubsystem extends SubsystemBase{
     final VelocityVoltage shooterVelocityVoltage = new VelocityVoltage(0).withSlot(0);
     public boolean isAutoFlywheel;
     public double lStickAxis;
+
    
     public FlywheelSubsystem(){
         //the PID of the flywheel
@@ -39,6 +40,7 @@ public class FlywheelSubsystem extends SubsystemBase{
 
     public void teleopInit(){
         shooterMotorLeader.set(0.0);
+        isAutoFlywheel = false;
     }
 
     public void spinFlywheel(double targetRPS){
@@ -66,6 +68,7 @@ public class FlywheelSubsystem extends SubsystemBase{
         else {
             shooterState = "notReady";
         }
+
         //Flywheel Override
         if (isAutoFlywheel) {
             return;

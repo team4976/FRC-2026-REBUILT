@@ -17,9 +17,11 @@ import frc.robot.Telemetry;
 import frc.robot.generated.RebuiltTunerConstants;
 import static edu.wpi.first.units.Units.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import frc.robot.subsystems.IndexAndSpindexSubsystem;
@@ -37,7 +39,7 @@ public class ElasticData extends SubsystemBase{
     private final FlywheelSubsystem flywheelSubsystem;
     private final TurretSubsystem turretSubsystem;
     private final Intake intakeSubsystem;
-    public SendableChooser<PathPlannerPath> sendableChooser = new SendableChooser<>();
+    public SendableChooser<String[]> autoChooser = new SendableChooser<>();
     double turretTargetAngle; // the angle we want the turret to be at so that we are aiming at the hub
     //double turretAngle; // the turret angle we are currently at
     //double distance; // distance from the hub to the turret
@@ -47,6 +49,7 @@ public class ElasticData extends SubsystemBase{
     double rotation;
     Field2d field2d;
     Optional<Alliance> alliance;
+    List<Pose2d> pose2ds = new ArrayList<>();
 
 
     public ElasticData(Telemetry m_telemetry, PhotonVision camera1, PhotonVision camera2, List<Subsystem> subsystemList){
@@ -106,20 +109,10 @@ public class ElasticData extends SubsystemBase{
         });
 
         //Auto Field Chooser 
-        SmartDashboard.putData("Testing/Autos/Field Auto", sendableChooser);
+        SmartDashboard.putData("Autos/Auto Select", autoChooser);
         try{
-            sendableChooser.setDefaultOption("Elastic Test", PathPlannerPath.fromPathFile("Elastic Test"));
-            sendableChooser.addOption("Human Player Left", PathPlannerPath.fromPathFile("Human Player Left"));
-            sendableChooser.addOption("Human Player Mid", PathPlannerPath.fromPathFile("Human Player Mid"));
-            sendableChooser.addOption("Human Player Right", PathPlannerPath.fromPathFile("Human Player Right"));
-            sendableChooser.addOption("Neutral Left", PathPlannerPath.fromPathFile("Neutral Left"));
-            sendableChooser.addOption("Neutral Right", PathPlannerPath.fromPathFile("Neutral Right"));
-            sendableChooser.addOption("Neutral Mid", PathPlannerPath.fromPathFile("Neutral Mid"));
-            sendableChooser.addOption("Depot Right", PathPlannerPath.fromPathFile("Depot Right"));
-            sendableChooser.addOption("Depot Left", PathPlannerPath.fromPathFile("Depot Left"));
-            sendableChooser.addOption("Depot Mid", PathPlannerPath.fromPathFile("Depot Mid"));
-            sendableChooser.addOption("Shoot+Climb", PathPlannerPath.fromPathFile("Shoot+Climb"));
-            sendableChooser.addOption("Long Auto Test", PathPlannerPath.fromPathFile("New Auto"));
+            autoChooser.setDefaultOption("Neutral Right Start Far", new String[]{"Neutral Right Start Far"});
+            autoChooser.addOption("Shoot To Outpost", new String[]{"Shoot To Outpost 1", "Shoot To Outpost 2", "Shoot To Outpost 3"});
 
         } catch (Exception e){
             System.out.print(e.getMessage());
@@ -137,6 +130,8 @@ public class ElasticData extends SubsystemBase{
         //--------
 
         //variables for the non turret camera values
+        
+        
         double[] targetIDs = cameraDataMain.getIDs().stream()
         .mapToDouble(Double::doubleValue)
         .toArray();
@@ -321,8 +316,24 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Testing/Ben T's Stuff/hood position", hoodSubsystem.returnMotor().getPosition().getValueAsDouble());
 
         //Changes The Path on the Field2d
-        sendableChooser.onChange((path)->{
-            if(path != null) field2d.getObject("AutoPath").setPoses(path.getPathPoses());;
+        autoChooser.onChange((autoPath)->{
+            pose2ds.clear();
+            try{
+                for (String auto : autoPath) {
+                    
+                
+                List<PathPlannerPath> paths = PathPlannerAuto.getPathGroupFromAutoFile(auto);
+        
+                for (PathPlannerPath path: paths) {
+                    pose2ds.addAll(path.getPathPoses());
+                }
+            }
+    
+            }catch(Exception e){
+                System.out.println(e.getMessage());
+            }
+            
+            if(pose2ds != null) field2d.getObject("AutoPath").setPoses(pose2ds);
         });
 
             

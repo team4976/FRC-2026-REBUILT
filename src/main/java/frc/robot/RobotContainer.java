@@ -26,6 +26,7 @@ import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
 import frc.robot.commands.Auto.IntakeExtend;
 import frc.robot.commands.Auto.IntakeRetract;
 import frc.robot.commands.Auto.AutoSequence.NeutralRightStartFar;
+import frc.robot.commands.Auto.AutoSequence.ShootToOutpost;
 import frc.robot.generated.RebuiltTunerConstants;
 import frc.robot.subsystems.Autos;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -144,8 +145,17 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser = null;
 
     public Command getAutonomousCommand() { 
-        
+        teleopInit();
         Autos autos =  new Autos(intakeSubsystem,vision,flywheelSubsystem,indexAndSpindexSubsystem,turretMovement);
+
+        String value = elasticData.autoChooser.getSelected()[0];
+        switch(value){
+            case "Neutral Right Start Far":
+                return autos.neutralRightStartFar;
+            case "Shoot To Outpost 1":
+                return autos.shootToOutpost;
+            
+        }
 
         return autos.neutralRightStartFar; //autos.ShoottoOutpost;
         
