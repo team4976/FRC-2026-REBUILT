@@ -118,8 +118,10 @@ public class TurretSubsystem extends SubsystemBase{
 
         //Check for Hitting Limit Switch Before the Override
         if (!rightSwitch.get() || getEncoderValue() < turretLimitRight){
+            turnLeft(0);
             return;
         } else if (!leftSwitch.get() || getEncoderValue() > Constants.turretLimitLeft) {
+            turnLeft(0);
             return;
         }
 
