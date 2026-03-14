@@ -28,7 +28,7 @@ public class AlignedShotCommand extends Command{
 
     @Override
     public void execute(){ 
-        flywheelSubsystem.spinFlywheel(63);
+        flywheelSubsystem.spinFlywheel(65);
     }
 
     @Override

@@ -26,6 +26,7 @@ public class Intake extends SubsystemBase {
   private final Compressor compressor = new Compressor(PCM_ID, PneumaticsModuleType.CTREPCM);
   private Solenoid solenoid;
   public boolean intakeStatus;
+  public double currentIntakeSpeed;
       
   public Intake() {
     IntakeMotor = new TalonSRX(Intake_ID);
@@ -37,19 +38,22 @@ public class Intake extends SubsystemBase {
   }   
 
   public void teleopInit(){
-    IntakeMotor.set(ControlMode.PercentOutput, intakeSpeed); 
+    IntakeMotor.set(ControlMode.PercentOutput, currentIntakeSpeed); 
     solenoid.set(false);
     Commands.waitSeconds(4);
     IntakeMotor.set(ControlMode.PercentOutput, 0); 
     intakeStatus = false;
+    currentIntakeSpeed = 0;
   }
              
   public void stopIntakeMotor() {
     IntakeMotor.set(ControlMode.PercentOutput, 0); 
+    currentIntakeSpeed = 0;
   }
     
   public void runIntakeMotor(double speed) {
     IntakeMotor.set(ControlMode.PercentOutput, speed);
+    currentIntakeSpeed = speed;
     System.out.println("running at speed:" + speed);
   }
 
