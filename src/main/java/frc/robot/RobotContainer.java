@@ -10,6 +10,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Time;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -52,6 +53,8 @@ import frc.robot.subsystems.TurretSubsystem;
 import static frc.robot.Constants.*;
 
 import java.util.List;
+
+import org.photonvision.PhotonCamera;
 
 
 
@@ -107,6 +110,11 @@ public class RobotContainer {
         configureBindings();
 
         pdp.setSwitchableChannel(true);
+
+        //Warnings Suppression
+        PhotonCamera.setVersionCheckEnabled(false);
+        DriverStation.silenceJoystickConnectionWarning(true);
+
 
     }
 

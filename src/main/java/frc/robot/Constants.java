@@ -97,5 +97,5 @@ public final class Constants {
 
   public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
   public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(0.0, 0.0, 0.635), new Rotation3d(0, 0, 0));
-  public static final double intakeSpeed = 0.65;
+  public static final double intakeSpeed = 0.75;
 }
