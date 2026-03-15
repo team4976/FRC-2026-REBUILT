@@ -19,10 +19,11 @@ public class TurretScanYaw extends Command {
     double distance; // distance from the hub to the turret
     boolean stopLockedOn = false; // flag to track if the turret is hitting the limit switch in lockedOn mode
     Field2d field2d; // our estimated position on the field
-    double turretyaw;
+    double turretYaw;
     double turretPosition;
     public double autoLockedOn;
     public double manualLockedOn;
+    public double tagRotation;
 
     public TurretScanYaw(PhotonVision turretVision, TurretSubsystem shooter){
         m_turretVision = turretVision;
@@ -76,9 +77,11 @@ public class TurretScanYaw extends Command {
         OptionalDouble yaw = m_turretVision.getTargetYaw(Constants.hubId);
         if (yaw.isEmpty()) return;
 
-        turretyaw= yaw.getAsDouble();
+        tagRotation = m_turretVision.getTargetZRotation(Constants.hubId);
+
+        turretYaw = yaw.getAsDouble();
         Double speedAdjust = 5.0;
-        autoLockedOn = (turretyaw)/45*-speedAdjust;
+        autoLockedOn = (turretYaw)/45*-speedAdjust;
 
         if (operatorController.axisGreaterThan(4, 0.3).getAsBoolean()){
             manualLockedOn = operatorController.getRightX() * -1;

@@ -96,4 +96,8 @@ public class PhotonVision extends SubsystemBase{
         return vision.getTurretTargetAngle();
     }
 
+    public double getTargetZRotation(int targetID){
+        return vision.getTargetZRotation(targetID);
+    }
+
 }
