@@ -36,6 +36,7 @@ import frc.robot.subsystems.Autos;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElasticData;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.JitterSubsystem;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.commands.Climb;
 import frc.robot.commands.HoodCommand;
@@ -86,6 +87,7 @@ public class RobotContainer {
         indexAndSpindexSubsystem
     );
     public Autos autos;
+    public JitterSubsystem jitterSubsystem = new JitterSubsystem();
 
     //Command Objects
     public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, 1.0, flywheelSubsystem, intakeSubsystem);//hoodSubsystem, flywheelSubsystem);
@@ -118,7 +120,7 @@ public class RobotContainer {
 
         autos =  new Autos(intakeSubsystem,vision,flywheelSubsystem,indexAndSpindexSubsystem,turretMovement);
 
-        bindings = new Bindings(indexAndSpindexCommand, reverseIndexer, intakeCommand, flywheelCommand, hoodCommand, manualHoodUp, manualHoodDown, turretScanYaw, turretLeft, turretRight, turretScan, alignedShotCommand, autos);
+        bindings = new Bindings(indexAndSpindexCommand, reverseIndexer, intakeCommand, flywheelCommand, hoodCommand, manualHoodUp, manualHoodDown, turretScanYaw, turretLeft, turretRight, turretScan, alignedShotCommand, autos, jitterSubsystem);
 
         configureBindings();
 
