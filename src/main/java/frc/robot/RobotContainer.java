@@ -173,6 +173,9 @@ public class RobotContainer {
             case "Shoot To Outpost 1":
                 selectedAuto = autos.shootToOutpost;
                 break;
+            case "No Auto":
+                selectedAuto = Commands.waitSeconds(1);
+                break;
             default: 
                 selectedAuto = Commands.waitSeconds(1);
                 break;
