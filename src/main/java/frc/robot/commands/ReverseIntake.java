@@ -10,6 +10,7 @@ import frc.robot.subsystems.Intake;
 public class ReverseIntake extends Command{
 
     public Intake intake;
+    public double currentIntakeSpeed;
 
     public ReverseIntake(Intake intake){
         this.intake = intake;
@@ -19,6 +20,7 @@ public class ReverseIntake extends Command{
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {  
+        this.currentIntakeSpeed = intake.currentIntakeSpeed;
     }
 
     @Override
@@ -29,7 +31,7 @@ public class ReverseIntake extends Command{
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {  
-        intake.runIntakeMotor(0.0);
+        intake.runIntakeMotor(currentIntakeSpeed);
     } 
 
 
