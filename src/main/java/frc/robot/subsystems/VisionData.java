@@ -229,6 +229,18 @@ public class VisionData{
         }
     }
 
+    public double getTargetZRotation(int tagID){
+        if (latestResult != null && latestResult.hasTargets()){
+            for (var target : latestResult.getTargets()){
+                if (target.getFiducialId() == tagID){
+                    double rotationZ = target.getBestCameraToTarget().getRotation().getZ();
+                    return rotationZ;
+                }
+            }
+        }
+        return 0.0;
+    }
+
     //gets the plain distance of the camera from the apriltag in meters
     public double getDistance(){
         if (latestResult != null && latestResult.hasTargets()){

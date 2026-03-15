@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left to Neutral (No)"
+            "pathName": "Jitter 2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Close"
+            "pathName": "Jitter 1"
           }
         }
       ]

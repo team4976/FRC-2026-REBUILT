@@ -104,7 +104,7 @@ public class RobotContainer {
     //elastic/smartdashboard intialization 
     private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision, allSubsystemsList);
 
-    public Bindings bindings = new Bindings(indexAndSpindexCommand, reverseIndexer, intakeCommand, flywheelCommand, hoodCommand, manualHoodUp, manualHoodDown, turretScanYaw, turretLeft, turretRight, turretScan, alignedShotCommand, reverseIntake);
+    public Bindings bindings;
 
     PowerDistribution pdp = new PowerDistribution(1, ModuleType.kRev);
 
@@ -112,9 +112,12 @@ public class RobotContainer {
 
     public RobotContainer() {
         drivetrain.configureAutoBuilder();
-        configureBindings();
 
         autos =  new Autos(intakeSubsystem,vision,flywheelSubsystem,indexAndSpindexSubsystem,turretMovement);
+
+        bindings = new Bindings(indexAndSpindexCommand, reverseIndexer, intakeCommand, flywheelCommand, hoodCommand, manualHoodUp, manualHoodDown, turretScanYaw, turretLeft, turretRight, turretScan, alignedShotCommand, autos, reverseIntake);
+
+        configureBindings();
 
         pdp.setSwitchableChannel(true);
 

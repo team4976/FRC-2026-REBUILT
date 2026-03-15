@@ -7,13 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left to Neutral (No)"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left Close"
+            "pathName": "New Left to N"
           }
         }
       ]

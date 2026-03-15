@@ -11,6 +11,7 @@ import frc.robot.commands.TurretLeft;
 import frc.robot.commands.TurretRight;
 import frc.robot.commands.TurretScan;
 import frc.robot.commands.TurretScanYaw;
+import frc.robot.subsystems.Autos;
 
 import static frc.robot.Constants.*;
 
@@ -28,11 +29,12 @@ public class Bindings {
     public TurretLeft turretLeft;
     public TurretRight turretRight;
     public AlignedShotCommand alignedShotCommand;
+    public Autos autos;
     public ReverseIntake reverseIntake;
 
     public Bindings(IndexAndSpindexCommand indexAndSpindexCommand, IndexAndSpindexCommand reverseIndexer, IntakeCommand intakecommand, 
     FlywheelCommand flywheelCommand, HoodCommand hoodCommand, HoodCommand manualHoodUp, HoodCommand manualHoodDown, TurretScanYaw turretScanYaw, 
-    TurretLeft turretLeft, TurretRight turretRight, TurretScan turretScan, AlignedShotCommand alignedShotCommand, ReverseIntake reverseIntake){
+    TurretLeft turretLeft, TurretRight turretRight, TurretScan turretScan, AlignedShotCommand alignedShotCommand, Autos autos, ReverseIntake reverseIntake){
         this.indexAndSpindexCommand = indexAndSpindexCommand;
         this.reverseIndexer = reverseIndexer;
         this.intakeCommand = intakecommand;
@@ -45,6 +47,7 @@ public class Bindings {
         this.turretRight = turretRight;
         this.turretScan = turretScan;
         this.alignedShotCommand = alignedShotCommand;
+        this.autos = autos;
         this.reverseIntake = reverseIntake;
         System.out.println("Bindings Initialized");
     }
@@ -83,6 +86,8 @@ public class Bindings {
         //perfect shot from the aligned spot
         operatorController.x().toggleOnTrue(alignedShotCommand);
 
+        //Jitter Robot
+        operatorController.y().onTrue(autos.jitterCommand1.andThen(autos.jitterCommand2));
 
         //---------------
         //Manual Overrides

@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import static frc.robot.Constants.MaxSpeed;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.FollowPathCommand;
+import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -37,10 +39,20 @@ public class Autos {
     public Command neutralRightStartFar;
     public Command shootToOutpost;
     public Command neutralLeftStartFar;
+    public Command jitterCommand1;
+    public Command jitterCommand2;
     public void loadCommands(){
         neutralRightStartFar = new NeutralRightStartFar(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
         shootToOutpost = new ShootToOutpost(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
         neutralLeftStartFar = new NeutralLeftStartFar(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
+        
+        try{
+            PathPlannerPath jitterPath1 = PathPlannerPath.fromPathFile("Jitter 1");
+                        PathPlannerPath jitterPath2 = PathPlannerPath.fromPathFile("Jitter 2");
+            jitterCommand1 = AutoBuilder.followPath(jitterPath1);
+            jitterCommand2 = AutoBuilder.followPath(jitterPath2);
+
+        }catch(Exception e){}
     }
 }
 
