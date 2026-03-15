@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Jitter 1"
+            "pathName": "Jitter 2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Jitter 2"
+            "pathName": "Jitter 1"
           }
         }
       ]
