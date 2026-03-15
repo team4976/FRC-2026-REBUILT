@@ -22,8 +22,8 @@ import static frc.robot.Constants.*;
 public class Intake extends SubsystemBase {
   public TalonSRX IntakeMotor;
 
-  public static final PneumaticsControlModule pneumaticsControlModule = new PneumaticsControlModule(Solenoid_ID);
-  private final Compressor compressor = new Compressor(PCM_ID, PneumaticsModuleType.CTREPCM);
+  public static final PneumaticsControlModule pneumaticsControlModule = new PneumaticsControlModule(PCM_ID);
+  private final Compressor compressor = new Compressor(Compressor_ID, PneumaticsModuleType.CTREPCM);
   private Solenoid solenoid;
   public boolean intakeStatus;
   public double currentIntakeSpeed;

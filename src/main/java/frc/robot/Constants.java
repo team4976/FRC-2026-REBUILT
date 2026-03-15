@@ -54,7 +54,8 @@ public final class Constants {
 
   //id constants
   public static final int PCM_ID = 2;
-  public static final int Solenoid_ID = 2;
+  public static final int Compressor_ID = 2;
+  public static final int Solenoid_ID = 7;
   public static final int Index_ID = 31;
   public static final int Spindex_ID = 40;
   public static final int Intake_ID = 41;
