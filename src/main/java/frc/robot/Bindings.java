@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.commands.AlignedShotCommand;
 import frc.robot.commands.FlywheelCommand;
 import frc.robot.commands.HoodCommand;
@@ -11,6 +12,7 @@ import frc.robot.commands.TurretRight;
 import frc.robot.commands.TurretScan;
 import frc.robot.commands.TurretScanYaw;
 import frc.robot.subsystems.Autos;
+import frc.robot.subsystems.JitterSubsystem;
 
 import static frc.robot.Constants.*;
 
@@ -29,10 +31,11 @@ public class Bindings {
     public TurretRight turretRight;
     public AlignedShotCommand alignedShotCommand;
     public Autos autos;
+    public JitterSubsystem jitterSubsystem;
 
     public Bindings(IndexAndSpindexCommand indexAndSpindexCommand, IndexAndSpindexCommand reverseIndexer, IntakeCommand intakecommand, 
     FlywheelCommand flywheelCommand, HoodCommand hoodCommand, HoodCommand manualHoodUp, HoodCommand manualHoodDown, TurretScanYaw turretScanYaw, 
-    TurretLeft turretLeft, TurretRight turretRight, TurretScan turretScan, AlignedShotCommand alignedShotCommand, Autos autos){
+    TurretLeft turretLeft, TurretRight turretRight, TurretScan turretScan, AlignedShotCommand alignedShotCommand, Autos autos, JitterSubsystem jitterSubsystem){
         this.indexAndSpindexCommand = indexAndSpindexCommand;
         this.reverseIndexer = reverseIndexer;
         this.intakeCommand = intakecommand;
@@ -46,6 +49,7 @@ public class Bindings {
         this.turretScan = turretScan;
         this.alignedShotCommand = alignedShotCommand;
         this.autos = autos;
+        this.jitterSubsystem = jitterSubsystem;
         System.out.println("Bindings Initialized");
     }
 
@@ -84,7 +88,12 @@ public class Bindings {
         operatorController.x().toggleOnTrue(alignedShotCommand);
 
         //Jitter Robot
-        operatorController.y().onTrue(autos.jitterCommand1.andThen(autos.jitterCommand2));
+        operatorController.y().whileTrue(
+            Commands.repeatingSequence(jitterSubsystem.jitterRobotForward()
+                .andThen(Commands.waitSeconds(0.2)).andThen(jitterSubsystem.jitterRobotBackward())
+                .andThen(Commands.waitSeconds(0.2))
+            )
+        );
 
         //---------------
         //Manual Overrides
