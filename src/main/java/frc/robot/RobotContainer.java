@@ -8,8 +8,11 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Time;
+import edu.wpi.first.util.datalog.StringLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -104,6 +107,8 @@ public class RobotContainer {
 
     public Bindings bindings;
 
+    public StringLogEntry logEntry = new StringLogEntry(DataLogManager.getLog(), "positionLog");
+
     PowerDistribution pdp = new PowerDistribution(1, ModuleType.kRev);
 
     public Command selectedAuto;
@@ -132,6 +137,12 @@ public class RobotContainer {
         indexAndSpindexSubsystem.teleopInit();
         intakeSubsystem.teleopInit();
         turretMovement.teleopInit();
+    }
+
+    public void getOdometryPose(){
+        Pose2d currentRobotPose = drivetrain.getState().Pose;
+        String currentRobotPoseString = currentRobotPose.toString();
+        logEntry.append(currentRobotPoseString);
     }
 
     private void configureBindings() {
