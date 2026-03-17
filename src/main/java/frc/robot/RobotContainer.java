@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
 import frc.robot.commands.Auto.IntakeExtend;
 import frc.robot.commands.Auto.IntakeRetract;
@@ -104,6 +105,7 @@ public class RobotContainer {
     public final TurretRight turretRight = new TurretRight(m_turretvision, turretMovement);
     //public Command hoodAndFlywheel = new ParallelDeadlineGroup(flywheelCommand, hoodCommand);
     public AlignedShotCommand alignedShotCommand = new AlignedShotCommand(flywheelSubsystem, hoodSubsystem);
+    public ReverseIntake reverseIntake = new ReverseIntake(intakeSubsystem);
     //elastic/smartdashboard intialization 
     private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision, allSubsystemsList);
 
@@ -120,7 +122,7 @@ public class RobotContainer {
 
         autos =  new Autos(intakeSubsystem,vision,flywheelSubsystem,indexAndSpindexSubsystem,turretMovement);
 
-        bindings = new Bindings(indexAndSpindexCommand, reverseIndexer, intakeCommand, flywheelCommand, hoodCommand, manualHoodUp, manualHoodDown, turretScanYaw, turretLeft, turretRight, turretScan, alignedShotCommand, autos, jitterSubsystem);
+        bindings = new Bindings(indexAndSpindexCommand, reverseIndexer, intakeCommand, flywheelCommand, hoodCommand, manualHoodUp, manualHoodDown, turretScanYaw, turretLeft, turretRight, turretScan, alignedShotCommand, autos, reverseIntake, jitterSubsystem);
 
         configureBindings();
 

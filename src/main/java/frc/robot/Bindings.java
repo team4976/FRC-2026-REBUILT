@@ -7,6 +7,7 @@ import frc.robot.commands.FlywheelCommand;
 import frc.robot.commands.HoodCommand;
 import frc.robot.commands.IndexAndSpindexCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.TurretLeft;
 import frc.robot.commands.TurretRight;
 import frc.robot.commands.TurretScan;
@@ -31,11 +32,12 @@ public class Bindings {
     public TurretRight turretRight;
     public AlignedShotCommand alignedShotCommand;
     public Autos autos;
+    public ReverseIntake reverseIntake;
     public JitterSubsystem jitterSubsystem;
 
     public Bindings(IndexAndSpindexCommand indexAndSpindexCommand, IndexAndSpindexCommand reverseIndexer, IntakeCommand intakecommand, 
     FlywheelCommand flywheelCommand, HoodCommand hoodCommand, HoodCommand manualHoodUp, HoodCommand manualHoodDown, TurretScanYaw turretScanYaw, 
-    TurretLeft turretLeft, TurretRight turretRight, TurretScan turretScan, AlignedShotCommand alignedShotCommand, Autos autos, JitterSubsystem jitterSubsystem){
+    TurretLeft turretLeft, TurretRight turretRight, TurretScan turretScan, AlignedShotCommand alignedShotCommand, Autos autos, ReverseIntake reverseIntake, JitterSubsystem jitterSubsystem){
         this.indexAndSpindexCommand = indexAndSpindexCommand;
         this.reverseIndexer = reverseIndexer;
         this.intakeCommand = intakecommand;
@@ -49,6 +51,7 @@ public class Bindings {
         this.turretScan = turretScan;
         this.alignedShotCommand = alignedShotCommand;
         this.autos = autos;
+        this.reverseIntake = reverseIntake;
         this.jitterSubsystem = jitterSubsystem;
         System.out.println("Bindings Initialized");
     }
@@ -110,5 +113,8 @@ public class Bindings {
 
         //Indexer
         operatorController.b().whileTrue(reverseIndexer);
+
+        //Reverse Intake
+        operatorController.start().whileTrue(reverseIntake);
     }
 }
