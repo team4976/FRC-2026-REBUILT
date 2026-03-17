@@ -89,9 +89,8 @@ public class Bindings {
 
         //Jitter Robot
         operatorController.y().whileTrue(
-            Commands.repeatingSequence(jitterSubsystem.jitterRobotForward()
-                .andThen(Commands.waitSeconds(0.2)).andThen(jitterSubsystem.jitterRobotBackward())
-                .andThen(Commands.waitSeconds(0.2))
+            Commands.repeatingSequence(jitterSubsystem.jitterRobotForward(), 
+            (jitterSubsystem.jitterRobotBackward())
             )
         );
 
