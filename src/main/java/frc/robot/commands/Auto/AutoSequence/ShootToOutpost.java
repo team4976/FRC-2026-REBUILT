@@ -13,6 +13,7 @@ import frc.robot.subsystems.IndexAndSpindexSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.subsystems.UpdateHubInfo;
 import frc.robot.commands.Auto.IntakeExtend;
 import frc.robot.commands.TurretScan;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
@@ -30,6 +31,7 @@ public class ShootToOutpost extends SequentialCommandGroup {
 
 
     public ShootToOutpost(
+        UpdateHubInfo updateHubInfo,
         PhotonVision visionSubsystem,
         FlywheelSubsystem flywheelSubsystem,
         Intake intakeSubsystem,
@@ -44,14 +46,14 @@ public class ShootToOutpost extends SequentialCommandGroup {
             new IntakeExtend(intakeSubsystem),
             new WaitCommand(.5),
             ShootToOutpost1pathCommand,
-            Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
+            Commands.deadline(new WaitCommand(1),new TurretScan(updateHubInfo,visionSubsystem, turretMovementSubsystem, true)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem),
             new WaitCommand(2),
             new FlywheelStop(flywheelSubsystem, visionSubsystem),
             ShootToOutpost2pathCommand,
             new WaitCommand(2),
             ShootToOutpost3pathCommand,
-            Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
+            Commands.deadline(new WaitCommand(1),new TurretScan(updateHubInfo,visionSubsystem, turretMovementSubsystem, true)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
             new WaitCommand(2),

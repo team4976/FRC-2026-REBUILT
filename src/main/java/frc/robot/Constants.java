@@ -94,10 +94,14 @@ public final class Constants {
   public static final double turretLimitLeft = 21.7626953125; // software limits on turret motion
   public static final double turretLimitRight = -11.59228515625;
   public static final double turretDeadzoneSize = 41.667 - (Constants.turretLimitLeft - Constants.turretLimitRight);// the turret encoder position the turret cannot go
-  // 8.6056
+
+  public static final double maxAcceptableAmbiguity = 0.1;
+  public static final double maxAcceptableDistance = 4.1;
 
 
   public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
-  public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(0.0, 0.0, 0.635), new Rotation3d(0, 0, 0));
+  public static final Transform3d leftBackCamTransform3d = new Transform3d(new Translation3d(-0.314325, 0.314325, 0.635), new Rotation3d(0, Math.toRadians(30), Math.toRadians(135)));
+  public static final Transform3d rightBackCamTransform3d = new Transform3d(new Translation3d(-0.314325, -0.314325, 0.635), new Rotation3d(0, Math.toRadians(30), Math.toRadians(-135)));
+  public static final Transform3d backCamTransform3d = new Transform3d(new Translation3d(0.0, 0.0, 0.635), new Rotation3d(0, 0, 0));
   public static final double intakeSpeed = 0.70;
 }

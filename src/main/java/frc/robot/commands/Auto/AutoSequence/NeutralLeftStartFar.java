@@ -26,9 +26,11 @@ import frc.robot.subsystems.IndexAndSpindexSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.subsystems.UpdateHubInfo;
 
 public class NeutralLeftStartFar extends SequentialCommandGroup {
 
+    UpdateHubInfo updateHubInfo;
     PhotonVision visionSubsystem;
     FlywheelSubsystem flywheelSubsystem;
     Intake intakeSubsystem;
@@ -36,7 +38,8 @@ public class NeutralLeftStartFar extends SequentialCommandGroup {
     TurretSubsystem turretMovementSubsystem;
 
     public NeutralLeftStartFar(
-        PhotonVision visionSubsystem,
+        UpdateHubInfo updateHubInfo,
+       PhotonVision visionSubsystem,
         FlywheelSubsystem flywheelSubsystem,
         Intake intakeSubsystem,
         IndexAndSpindexSubsystem indxerSubsystem,
@@ -50,7 +53,7 @@ public class NeutralLeftStartFar extends SequentialCommandGroup {
             new IntakeExtend(intakeSubsystem),
             new WaitCommand(0.5),
             neutralLeftFarPath,
-            Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
+            Commands.deadline(new WaitCommand(1),new TurretScan(updateHubInfo,visionSubsystem, turretMovementSubsystem, true)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
             new WaitCommand(15)

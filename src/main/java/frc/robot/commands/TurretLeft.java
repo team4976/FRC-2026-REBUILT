@@ -7,12 +7,9 @@ import frc.robot.subsystems.PhotonVision;
 
 public class TurretLeft extends Command {
     boolean stopSwitch;
-    PhotonVision m_turretVision;
     TurretSubsystem m_shooter; 
 
-    public TurretLeft(PhotonVision turretVision, TurretSubsystem shooter){
-        m_turretVision = turretVision;
-        addRequirements(turretVision);
+    public TurretLeft(TurretSubsystem shooter){
 
          m_shooter = shooter;
         addRequirements(shooter);

@@ -4,19 +4,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.PhotonVision;
+import frc.robot.subsystems.UpdateHubInfo;
+
 import static frc.robot.Constants.*;
 
 public class FlywheelCommand extends Command{
     public FlywheelSubsystem flywheelSubsystem;
-    public PhotonVision photonVision;
+    public UpdateHubInfo updateHubInfo;
     public boolean isOverriden;
     public double autoFlywheelSpeed;
     public double manualFlywheelSpeed;
     public double totalFlywheelSpeed;
 
-    public FlywheelCommand(FlywheelSubsystem flywheelSubsystem, PhotonVision photonVision, boolean isOverriden){
+    public FlywheelCommand(FlywheelSubsystem flywheelSubsystem, UpdateHubInfo updateHubInfo, boolean isOverriden){
         this.flywheelSubsystem = flywheelSubsystem;
-        this.photonVision = photonVision;
+        this.updateHubInfo= updateHubInfo;
         this.isOverriden = isOverriden;
         addRequirements(flywheelSubsystem);
     }
@@ -31,9 +33,9 @@ public class FlywheelCommand extends Command{
     @Override
     public void execute(){ 
         //Sets the auto flywheel speed
-        if (photonVision.getDistance() != 0) {
-            autoFlywheelSpeed = (31.49597 + (10.19041 * (photonVision.getDistance() + 0.5969))  
-                - (0.4148098 * Math.pow(photonVision.getDistance() + 0.5969, 2))) * 0.9;
+        if (updateHubInfo.getHubDistance() != 0) {
+            autoFlywheelSpeed = (31.49597 + (10.19041 * (updateHubInfo.getHubDistance() + 0.5969))  
+                - (0.4148098 * Math.pow(updateHubInfo.getHubDistance()+ 0.5969, 2))) * 0.9;
         } else {
             autoFlywheelSpeed = 50;
         }

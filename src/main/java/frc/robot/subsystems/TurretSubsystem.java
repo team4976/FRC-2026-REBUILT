@@ -58,6 +58,10 @@ public class TurretSubsystem extends SubsystemBase{
         return angle*RotationsPerDegree;
     }
 
+    public double convertRotationAngle(double rotation){
+        return rotation/RotationsPerDegree;
+    }
+
     //When called it turns the motor to the right
     public void turnRight(double voltage) {
         turretMotor.setVoltage(voltage*-1);

@@ -10,13 +10,16 @@ import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
@@ -54,9 +57,13 @@ import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.IndexAndSpindexSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.subsystems.UpdateHubInfo;
+import frc.robot.subsystems.UpdateOdometry;
+
 import static frc.robot.Constants.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.photonvision.PhotonCamera;
 
@@ -68,8 +75,14 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(Constants.MaxSpeed);
 
     //Vision Objects, may be good idea to merge into one class and just have dif objects
-    private final PhotonVision vision = new PhotonVision("testingCamera", logger);
-    private final PhotonVision m_turretvision = new PhotonVision("testingCamera", logger);
+    private final PhotonVision leftBackCam = new PhotonVision("leftBackCam", logger, drivetrain, leftBackCamTransform3d);
+    private final PhotonVision rightBackCam = new PhotonVision("rightBackCam", logger, drivetrain, rightBackCamTransform3d);
+
+    private final UpdateOdometry updateOdometryRight = new UpdateOdometry(drivetrain, rightBackCam);
+    private final UpdateOdometry updateOdometryLeft = new UpdateOdometry(drivetrain, leftBackCam);
+
+    //Hub Object, use to get info on hub distance and angle
+    private final UpdateHubInfo updateHubInfo = new UpdateHubInfo(drivetrain);
 
     //Subsystem Objects/Subsystem Initialization
     private final Intake intakeSubsystem = new Intake();
@@ -93,20 +106,20 @@ public class RobotContainer {
     public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, 1.0, flywheelSubsystem, intakeSubsystem);//hoodSubsystem, flywheelSubsystem);
     public IndexAndSpindexCommand reverseIndexer = new IndexAndSpindexCommand(indexAndSpindexSubsystem, -0.8, flywheelSubsystem, intakeSubsystem);//hoodSubsystem, flywheelSubsystem);
     public IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
-    public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem, m_turretvision, false);
-    public FlywheelCommand flywheelOverrideCommand = new FlywheelCommand(flywheelSubsystem, m_turretvision, true);
-    public HoodCommand hoodCommand = new HoodCommand(hoodSubsystem, m_turretvision, false, 0);
-    public HoodCommand manualHoodUp = new HoodCommand(hoodSubsystem, m_turretvision, true, 0.5);
-    public HoodCommand manualHoodDown = new HoodCommand(hoodSubsystem, m_turretvision, true, -0.5);
-    public final TurretScan turretScan = new TurretScan(m_turretvision, turretMovement);
-    public final TurretScanYaw turretScanYaw = new TurretScanYaw(m_turretvision, turretMovement);
-    public final TurretLeft turretLeft = new TurretLeft(m_turretvision, turretMovement);
-    public final TurretRight turretRight = new TurretRight(m_turretvision, turretMovement);
+    public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem, updateHubInfo, false);
+    public FlywheelCommand flywheelOverrideCommand = new FlywheelCommand(flywheelSubsystem, updateHubInfo, true);
+    public HoodCommand hoodCommand = new HoodCommand(hoodSubsystem, updateHubInfo, false, 0);
+    public HoodCommand manualHoodUp = new HoodCommand(hoodSubsystem, updateHubInfo, true, 0.5);
+    public HoodCommand manualHoodDown = new HoodCommand(hoodSubsystem, updateHubInfo, true, -0.5);
+    public final TurretScan turretScan = new TurretScan(updateHubInfo, rightBackCam, turretMovement, drivetrain);
+    public final TurretScanYaw turretScanYaw = new TurretScanYaw(rightBackCam, turretMovement);
+    public final TurretLeft turretLeft = new TurretLeft(turretMovement);
+    public final TurretRight turretRight = new TurretRight(turretMovement);
     //public Command hoodAndFlywheel = new ParallelDeadlineGroup(flywheelCommand, hoodCommand);
     public AlignedShotCommand alignedShotCommand = new AlignedShotCommand(flywheelSubsystem, hoodSubsystem);
     public ReverseIntake reverseIntake = new ReverseIntake(intakeSubsystem);
     //elastic/smartdashboard intialization 
-    private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision, allSubsystemsList);
+    private ElasticData elasticData = new ElasticData(logger, leftBackCam, rightBackCam, allSubsystemsList, drivetrain);
 
     public Bindings bindings;
 
@@ -117,9 +130,10 @@ public class RobotContainer {
     public Command selectedAuto;
 
     public RobotContainer() {
+
         drivetrain.configureAutoBuilder();
 
-        autos =  new Autos(intakeSubsystem,vision,flywheelSubsystem,indexAndSpindexSubsystem,turretMovement);
+        autos =  new Autos(updateHubInfo,intakeSubsystem,leftBackCam,flywheelSubsystem,indexAndSpindexSubsystem,turretMovement);
 
         bindings = new Bindings(indexAndSpindexCommand, reverseIndexer, intakeCommand, flywheelCommand, hoodCommand, manualHoodUp, manualHoodDown, turretScanYaw, turretLeft, turretRight, turretScan, alignedShotCommand, autos, reverseIntake, jitterSubsystem);
 

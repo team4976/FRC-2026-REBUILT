@@ -21,18 +21,20 @@ import frc.robot.commands.Auto.IntakeRetract;
 
 public class Autos {
 
+    UpdateHubInfo updateHubInfo;
     Intake intakeSubsystem;
     PhotonVision vision;
     FlywheelSubsystem flywheelSubsystem;
     IndexAndSpindexSubsystem indexAndSpindexSubsystem;
     TurretSubsystem turretMovement;
 
-    public Autos(Intake intakeSubsystem, PhotonVision vision, FlywheelSubsystem flywheelSubsystem,IndexAndSpindexSubsystem indexAndSpindexSubsystem, TurretSubsystem turretMovement){
+    public Autos(UpdateHubInfo updateHubInfo, Intake intakeSubsystem, PhotonVision vision, FlywheelSubsystem flywheelSubsystem,IndexAndSpindexSubsystem indexAndSpindexSubsystem, TurretSubsystem turretMovement){
         this.intakeSubsystem = intakeSubsystem;
         this.vision = vision;
         this.flywheelSubsystem = flywheelSubsystem;
         this.indexAndSpindexSubsystem = indexAndSpindexSubsystem;
         this.turretMovement = turretMovement;
+        this.updateHubInfo = updateHubInfo;
         loadCommands();
     }
 
@@ -42,9 +44,9 @@ public class Autos {
     public Command jitterCommand1;
     public Command jitterCommand2;
     public void loadCommands(){
-        neutralRightStartFar = new NeutralRightStartFar(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
-        shootToOutpost = new ShootToOutpost(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
-        neutralLeftStartFar = new NeutralLeftStartFar(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
+        neutralRightStartFar = new NeutralRightStartFar(updateHubInfo,vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
+        shootToOutpost = new ShootToOutpost(updateHubInfo,vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
+        neutralLeftStartFar = new NeutralLeftStartFar(updateHubInfo, vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
         
         try{
             PathPlannerPath jitterPath1 = PathPlannerPath.fromPathFile("Jitter 1");

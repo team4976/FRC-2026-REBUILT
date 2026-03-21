@@ -5,11 +5,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.OptionalDouble;
 
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -33,16 +36,17 @@ public class VisionData{
     //field (as in the java field not the smartdashboard field) decalrations 
     private PhotonCamera camera;
     private Telemetry logger;
+    CommandSwerveDrivetrain swerve;
+    Transform3d transform3d;
     private PhotonPipelineResult latestResult;
-    private Optional<Alliance> alliance;
+    List<PhotonPipelineResult> photonResult;
+    PhotonPoseEstimator estimator;
     public double hubOrigX;
     public double hubOrigY;
     private double DriveVelocityX; // the velocity we are travelling in Y direction
     private double DriveVelocityY; // the velocity we are travelling in the X direction
-    private double distanceX; // the distance between us and the virtual hub on the X plane
-    private double distanceY; // the distance between us and the virtual hub on the Y plane
     public double turretDistance;
-    public double turretAngle;
+    public double botAngle;
     public double turretTargetAngle;
     public double hubId;
     Field2d field2d = new Field2d();
@@ -52,28 +56,13 @@ public class VisionData{
     //means the methods in this class can be used dynamically--
     //with any camera and dont need to be changed if the camera--
     //name gets changed throughout the season.
-    public VisionData(String cameraName, Telemetry logger){
+    public VisionData(String cameraName, Telemetry logger, CommandSwerveDrivetrain swerve, Transform3d camOffsets){
         camera = new PhotonCamera(cameraName);
+        estimator = new PhotonPoseEstimator(kTagLayout, camOffsets);
         this.logger = logger;
+        this.swerve = swerve;
+        transform3d = camOffsets;
 
-        alliance = DriverStation.getAlliance();
-
-        if (alliance.isPresent()) {
-            if (alliance.get() == Alliance.Blue) {
-                hubOrigX = BlueHubX; 
-                hubOrigY = BlueHubY;
-                
-                Constants.hubId = 26;
-            }
-            if (alliance.get() == Alliance.Red) {
-                hubOrigX = RedHubX; 
-                hubOrigY = RedHubY;
-                Constants.hubId = 10;
-            }
-            SmartDashboard.putString("Testing/Alliance", alliance.get().name() );
-        }
-        SmartDashboard.putNumber("Testing/Hub Location X", hubOrigX );
-        SmartDashboard.putNumber("Testing/Hub Location Y", hubOrigY );
     }
 
     //called at the top of the periodic in PhotonVision, keeps the camera frame used uniform.
@@ -87,7 +76,6 @@ public class VisionData{
         DriveVelocityX = logger.driveState.Speeds.vxMetersPerSecond;
         DriveVelocityY = logger.driveState.Speeds.vyMetersPerSecond;
         }
-        getDistanceAndAngle();
     }
     
     //gets the abiguity
@@ -185,6 +173,33 @@ public class VisionData{
         return field2d;
     }
 
+    public List<PhotonTrackedTarget> getTargets() {
+        if(photonResult == null || photonResult.isEmpty())
+            return List.of();
+
+        var result = photonResult.get(photonResult.size() - 1);
+        return result.getTargets();
+    }
+
+    /**
+     * Gets the current vision pose
+     * @return Returns the current vision pose
+     */
+    public Optional<EstimatedRobotPose> getRobotPoseVision() {
+        if(photonResult == null || photonResult.isEmpty()){
+            return Optional.empty();
+        }
+
+        PhotonPipelineResult latest = photonResult.get(photonResult.size() - 1);
+        Optional<EstimatedRobotPose> pose = estimator.estimateCoprocMultiTagPose(latest);
+
+        if(pose.isEmpty()){
+            pose = estimator.estimateLowestAmbiguityPose(latest);
+        }
+
+        return pose;
+    }   
+
     //changes the pipline type, for us thats from apriltag to ball
     public void pipelineSwitcher(int pipelineID){
         camera.setPipelineIndex(pipelineID);
@@ -251,42 +266,6 @@ public class VisionData{
         return 0.0;
     }
 
-    
-    // gets the robot pose based on two april tags or tries with one
-    public Field2d getDistanceAndAngle(){
-        double hubX = hubOrigX;
-        double hubY = hubOrigY;
-
-        if (latestResult != null && latestResult.hasTargets()){
-            var cameraResult = latestResult.getMultiTagResult();
-            if (cameraResult != null && cameraResult.isEmpty() == false) {
-                var fieldToCamera = cameraResult.get().estimatedPose.best;
-                field2d.setRobotPose(new Pose2d(fieldToCamera.getX(), fieldToCamera.getY(), fieldToCamera.getRotation().toRotation2d()));
-
-            // Initial Distance calculation
-            distanceX = hubX - field2d.getRobotPose().getX();
-            distanceY = hubY - field2d.getRobotPose().getY();
-
-            turretDistance = Math.sqrt(distanceX*distanceX + distanceY*distanceY);
-            SmartDashboard.putString("Testing/DistanceX",""+String.format("%.2f",hubX)+" - "+String.format("%.2f",field2d.getRobotPose().getX()) +"= "+String.format("%.2f",distanceX));
-            SmartDashboard.putString("Testing/DistanceY",""+String.format("%.2f",hubY)+" - "+String.format("%.2f",field2d.getRobotPose().getY()) +"= "+String.format("%.2f",distanceY));
-            SmartDashboard.putString("Testing/turretDistance Split", "sqrt("+String.format("%.2f",distanceX)+"*"+String.format("%.2f",distanceX) +"+"+ String.format("%.2f",distanceY)+"*"+(String.format("%.2f",distanceY)+")=" +turretDistance));
-
-            System.err.println(hubOrigX);
-            System.err.println(hubOrigY);
-
-            // calculates the angle we want to get to
-            turretTargetAngle = Math.toDegrees(Math.atan2( distanceY,distanceX));
-            // calculates the angle of the bot from the middle
-            turretAngle = (fieldToCamera.getRotation().toRotation2d().getDegrees());
-            } else {
-            field2d.setRobotPose(new Pose2d()); //Maybe not such a good idea
-            }
-        } else {
-            field2d.setRobotPose(new Pose2d());
-        }
-        return field2d;
-    }
 
     // when called gives you the turret distance calculated previously
     public double getTurretDistance(){
@@ -294,8 +273,8 @@ public class VisionData{
     }
 
     // when called gives you the turret angle calculated previously
-    public double getTurretAngle(){
-        return turretAngle;
+    public double getBotAngle(){
+        return botAngle;
     }
 
     // when called gives you the targetTurretAngle calculated previously

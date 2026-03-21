@@ -1,15 +1,21 @@
 package frc.robot.subsystems;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.function.BooleanSupplier;
 
+import org.photonvision.EstimatedRobotPose;
+
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Telemetry;
 
 public class PhotonVision extends SubsystemBase{
     VisionData vision;
+    CommandSwerveDrivetrain swerve;
+    Transform3d transform3d;
     public Double turretTargetAngle = 0.0;
     public Double turretAngle = 0.0;
 
@@ -19,8 +25,8 @@ public class PhotonVision extends SubsystemBase{
             return hasVaildTarget;
          };
 
-    public PhotonVision(String cameraName, Telemetry logger){
-        vision = new VisionData(cameraName, logger);
+    public PhotonVision(String cameraName, Telemetry logger, CommandSwerveDrivetrain swerve, Transform3d transform3d){
+        vision = new VisionData(cameraName, logger, swerve, transform3d);
     }
 
     @Override
@@ -64,6 +70,10 @@ public class PhotonVision extends SubsystemBase{
         return vision.findRobotPos();
     }
 
+    public Optional<EstimatedRobotPose> getRobotPoseVision(){
+        return vision.getRobotPoseVision();
+    }
+
     public double getYRotation(){
         return vision.getYRotation();
     }
@@ -80,12 +90,8 @@ public class PhotonVision extends SubsystemBase{
         return vision.getDistance();
     }
 
-    public Field2d getDistanceAndAngle(){
-        return vision.getDistanceAndAngle();
-    }
-
-    public double getTurretAngle(){
-        return vision.getTurretAngle();
+    public double getBotAngle(){
+        return vision.getBotAngle();
     }
 
     public double getTurretDistance(){

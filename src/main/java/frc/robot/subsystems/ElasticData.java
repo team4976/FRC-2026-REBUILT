@@ -39,6 +39,7 @@ public class ElasticData extends SubsystemBase{
     private final FlywheelSubsystem flywheelSubsystem;
     private final TurretSubsystem turretSubsystem;
     private final Intake intakeSubsystem;
+    private final CommandSwerveDrivetrain swerve;
     public SendableChooser<String[]> autoChooser = new SendableChooser<>();
     double turretTargetAngle; // the angle we want the turret to be at so that we are aiming at the hub
     //double turretAngle; // the turret angle we are currently at
@@ -53,7 +54,7 @@ public class ElasticData extends SubsystemBase{
     public double currentTime;
     public double startTime;
 
-    public ElasticData(Telemetry m_telemetry, PhotonVision camera1, PhotonVision camera2, List<Subsystem> subsystemList){
+    public ElasticData(Telemetry m_telemetry, PhotonVision camera1, PhotonVision camera2, List<Subsystem> subsystemList, CommandSwerveDrivetrain swerve){
         //-------------------
         //Object Assignments
         //-------------------
@@ -62,6 +63,7 @@ public class ElasticData extends SubsystemBase{
         telemetry = m_telemetry;
         cameraDataMain = camera1;
         cameraDataTurret = camera2;
+        this.swerve = swerve;
         field2d = cameraDataMain.getRobotPos();
         alliance = DriverStation.getAlliance();
         if (alliance.isPresent()){
@@ -186,12 +188,12 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Vision/Turret Cam/turretPoseY",  cameraDataTurret.getRobotPos().getRobotPose().getY());
         SmartDashboard.putNumber("Vision/Turret Cam/turretRotation", cameraDataTurret.getRobotPos().getRobotPose().getRotation().getDegrees());
         SmartDashboard.putNumber("Vision/Turret Cam/targetAngle", cameraDataTurret.getTurretTargetAngle());
-        SmartDashboard.putNumber("Vision/Turret Cam/turretAngle", cameraDataTurret.getTurretAngle());
+        SmartDashboard.putNumber("Vision/Turret Cam/turretAngle", cameraDataTurret.getBotAngle());
         SmartDashboard.putNumber("Vision/Turret Cam/Turret Distance Test", cameraDataTurret.vision.turretDistance);
-        SmartDashboard.putNumber("Vision/Turret Cam/Turret PoseX Test", cameraDataTurret.getDistanceAndAngle().getRobotPose().getX());
-        SmartDashboard.putNumber("Vision/Turret Cam/Turret PoseX Test", cameraDataTurret.getDistanceAndAngle().getRobotPose().getY());
+        SmartDashboard.putNumber("Vision/Turret Cam/Turret PoseX Test", swerve.getState().Pose.getX());
+        SmartDashboard.putNumber("Vision/Turret Cam/Turret PoseX Test", swerve.getState().Pose.getY());
         SmartDashboard.putNumber("Vision/Turret Cam/turretTargetAngle", cameraDataTurret.getTurretTargetAngle());
-        SmartDashboard.putNumber("Vision/Turret Cam/Turret Target Position", turretSubsystem.convertAngleRotation(cameraDataTurret.getTurretTargetAngle() - cameraDataTurret.getTurretAngle()));
+        SmartDashboard.putNumber("Vision/Turret Cam/Turret Target Position", turretSubsystem.convertAngleRotation(cameraDataTurret.getTurretTargetAngle() - cameraDataTurret.getBotAngle()));
 
         // Turret Limit Switches
         SmartDashboard.putBoolean("Testing/Left Limit Switch Status", turretSubsystem.getLeftSwitch());
@@ -206,8 +208,7 @@ public class ElasticData extends SubsystemBase{
         //-------------
         SmartDashboard.putData("Fields/Ideal Field", field2d);
         if (cameraDataMain.targetVisible() == true){
-            SmartDashboard.putData("Fields/Robot Position Field", cameraDataMain.getRobotPos());
-            SmartDashboard.putData("Fields/Turret Position Field", cameraDataTurret.getDistanceAndAngle());
+            SmartDashboard.putData("Fields/Robot Position Field", cameraDataMain.getRobotPos());     
         }
 
         //AC- Additional Field2d Stuff

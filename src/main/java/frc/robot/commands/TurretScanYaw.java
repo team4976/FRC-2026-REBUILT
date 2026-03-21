@@ -58,8 +58,7 @@ public class TurretScanYaw extends Command {
             m_shooter.stopTurn();
         }
         else{
-            field2d = m_turretVision.getDistanceAndAngle();
-            System.err.println("hasTargets = false");
+
 
             distance = m_turretVision.getTurretDistance();
 
