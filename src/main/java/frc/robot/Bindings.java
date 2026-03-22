@@ -7,7 +7,6 @@ import frc.robot.commands.FlywheelCommand;
 import frc.robot.commands.HoodCommand;
 import frc.robot.commands.IndexAndSpindexCommand;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.TurretScan;
 import frc.robot.commands.TurretScanYaw;
 import frc.robot.subsystems.Autos;
@@ -28,12 +27,12 @@ public class Bindings {
     public TurretScanYaw turretScanYaw;
     public AlignedShotCommand alignedShotCommand;
     public Autos autos;
-    public ReverseIntake reverseIntake;
+    public IntakeCommand reverseIntake;
     public JitterSubsystem jitterSubsystem;
 
     public Bindings(IndexAndSpindexCommand indexAndSpindexCommand, IndexAndSpindexCommand reverseIndexer, IntakeCommand intakecommand, 
     FlywheelCommand flywheelCommand, HoodCommand hoodCommand, HoodCommand manualHoodUp, HoodCommand manualHoodDown, TurretScanYaw turretScanYaw, 
-    TurretScan turretScan, AlignedShotCommand alignedShotCommand, Autos autos, ReverseIntake reverseIntake, JitterSubsystem jitterSubsystem){
+    TurretScan turretScan, AlignedShotCommand alignedShotCommand, Autos autos, IntakeCommand reverseIntake, JitterSubsystem jitterSubsystem){
         this.indexAndSpindexCommand = indexAndSpindexCommand;
         this.reverseIndexer = reverseIndexer;
         this.intakeCommand = intakecommand;

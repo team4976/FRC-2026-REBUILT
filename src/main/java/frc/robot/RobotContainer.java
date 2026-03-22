@@ -4,46 +4,25 @@
 //test
 package frc.robot;
 
-import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
-import com.ctre.phoenix6.swerve.SwerveRequest;
-import com.pathplanner.lib.auto.AutoBuilder;
-
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.ReverseIntake;
-import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
-import frc.robot.commands.Auto.FlywheelStop;
-import frc.robot.commands.Auto.IntakeExtend;
-import frc.robot.commands.Auto.IntakeRetract;
-import frc.robot.commands.Auto.AutoSequence.NeutralRightStartFar;
-import frc.robot.commands.Auto.AutoSequence.ShootToOutpost;
-import frc.robot.generated.RebuiltTunerConstants;
 import frc.robot.subsystems.Autos;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElasticData;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.JitterSubsystem;
 import frc.robot.subsystems.PhotonVision;
-import frc.robot.commands.Climb;
 import frc.robot.commands.HoodCommand;
 import frc.robot.commands.IndexAndSpindexCommand;
-import frc.robot.commands.AlignedShotCommand;
 import frc.robot.commands.AlignedShotCommand;
 import frc.robot.commands.FlywheelCommand;
 import frc.robot.commands.TurretScan;
