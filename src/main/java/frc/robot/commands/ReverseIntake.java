@@ -25,7 +25,7 @@ public class ReverseIntake extends Command{
 
     @Override
     public void execute() {
-        intake.runIntakeMotor(-intakeSpeed);
+
     }
   
     // Called once the command ends or is interrupted.

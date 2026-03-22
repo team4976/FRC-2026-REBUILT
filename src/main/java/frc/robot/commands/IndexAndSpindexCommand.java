@@ -11,7 +11,7 @@ public class IndexAndSpindexCommand extends Command{
     public IndexAndSpindexSubsystem InSSubsystem;
     public double speed;
     public FlywheelSubsystem flywheelSubsystem;
-    public double currentIntakeSpeed;
+    public double startingIntakeSpeed;
     public Intake intakeSubsystem;
     
     public IndexAndSpindexCommand(IndexAndSpindexSubsystem InSSubsystem, double speed, FlywheelSubsystem flywheelSubsystem, Intake intakeSubsystem){
@@ -24,8 +24,7 @@ public class IndexAndSpindexCommand extends Command{
 
     @Override
     public void initialize(){
-        currentIntakeSpeed = intakeSubsystem.currentIntakeSpeed;
-        
+        startingIntakeSpeed = intakeSubsystem.currentIntakeSpeed;
     }
     
     @Override
@@ -44,7 +43,7 @@ public class IndexAndSpindexCommand extends Command{
     @Override
     public void end(boolean interrupted) {
         InSSubsystem.moveFeeder(0.0);
-        intakeSubsystem.runIntakeMotor(currentIntakeSpeed);
+        intakeSubsystem.runIntakeMotor(startingIntakeSpeed);
     }
 
     @Override

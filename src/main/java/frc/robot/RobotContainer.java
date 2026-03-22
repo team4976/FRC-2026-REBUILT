@@ -46,8 +46,6 @@ import frc.robot.commands.IndexAndSpindexCommand;
 import frc.robot.commands.AlignedShotCommand;
 import frc.robot.commands.AlignedShotCommand;
 import frc.robot.commands.FlywheelCommand;
-import frc.robot.commands.TurretLeft;
-import frc.robot.commands.TurretRight;
 import frc.robot.commands.TurretScan;
 import frc.robot.commands.TurretScanYaw;
 import frc.robot.subsystems.HoodSubsystem;
@@ -92,7 +90,8 @@ public class RobotContainer {
     //Command Objects
     public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, 1.0, flywheelSubsystem, intakeSubsystem);//hoodSubsystem, flywheelSubsystem);
     public IndexAndSpindexCommand reverseIndexer = new IndexAndSpindexCommand(indexAndSpindexSubsystem, -0.8, flywheelSubsystem, intakeSubsystem);//hoodSubsystem, flywheelSubsystem);
-    public IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
+    public IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem, false);
+    public IntakeCommand reverseIntake = new IntakeCommand(intakeSubsystem, true);
     public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem, m_turretvision, false);
     public FlywheelCommand flywheelOverrideCommand = new FlywheelCommand(flywheelSubsystem, m_turretvision, true);
     public HoodCommand hoodCommand = new HoodCommand(hoodSubsystem, m_turretvision, false, 0);
@@ -100,11 +99,9 @@ public class RobotContainer {
     public HoodCommand manualHoodDown = new HoodCommand(hoodSubsystem, m_turretvision, true, -0.5);
     public final TurretScan turretScan = new TurretScan(m_turretvision, turretMovement);
     public final TurretScanYaw turretScanYaw = new TurretScanYaw(m_turretvision, turretMovement);
-    public final TurretLeft turretLeft = new TurretLeft(m_turretvision, turretMovement);
-    public final TurretRight turretRight = new TurretRight(m_turretvision, turretMovement);
     //public Command hoodAndFlywheel = new ParallelDeadlineGroup(flywheelCommand, hoodCommand);
     public AlignedShotCommand alignedShotCommand = new AlignedShotCommand(flywheelSubsystem, hoodSubsystem);
-    public ReverseIntake reverseIntake = new ReverseIntake(intakeSubsystem);
+    //public ReverseIntake reverseIntake = new ReverseIntake(intakeSubsystem);
     //elastic/smartdashboard intialization 
     private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision, allSubsystemsList);
 
@@ -121,7 +118,8 @@ public class RobotContainer {
 
         autos =  new Autos(intakeSubsystem,vision,flywheelSubsystem,indexAndSpindexSubsystem,turretMovement);
 
-        bindings = new Bindings(indexAndSpindexCommand, reverseIndexer, intakeCommand, flywheelCommand, hoodCommand, manualHoodUp, manualHoodDown, turretScanYaw, turretLeft, turretRight, turretScan, alignedShotCommand, autos, reverseIntake, jitterSubsystem);
+        bindings = new Bindings(indexAndSpindexCommand, reverseIndexer, intakeCommand, flywheelCommand, hoodCommand, manualHoodUp, manualHoodDown, turretScanYaw, 
+        turretScan, alignedShotCommand, autos, reverseIntake, jitterSubsystem);
 
         configureBindings();
 
@@ -172,8 +170,6 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
-    private final SendableChooser<Command> autoChooser = null;
-
     public void autoInit(){
         teleopInit();
 
@@ -203,58 +199,5 @@ public class RobotContainer {
     public Command getAutonomousCommand() { 
     
         return selectedAuto;
-        
-        //elasticData..addChooser();
-        /*IntakeExtend test = new IntakeExtend(intakeSubsystem);
-        IntakeRetract intakeRetract = new IntakeRetract(intakeSubsystem);
-        Command pathCommand = AutoBuilder.buildAuto("Final Auto 1");
-        FlywheelStart flywheelStart = new FlywheelStart(flywheelSubsystem,vision);
-        FlywheelStop flywheelStop = new FlywheelStop(flywheelSubsystem,vision);
-        Trigger trigger = new Trigger(vision.AutoShootFlag);
-        AutoIndexAndSpindexCommand index = new AutoIndexAndSpindexCommand(indexAndSpindexSubsystem, MaxSpeed, flywheelSubsystem);
-        */
-        //trigger.onTrue(indexAndSpindexCommand);
-        //return test.andThen(new WaitCommand(.5)).andThen(pathCommand).andThen(turretScan).andThen(flywheelStart).andThen(index).andThen(new WaitCommand(4)).andThen(intakeRetract).andThen(flywheelStop);//(Command) elastic.fieldWidget.commandChooser.getSelected();
-        
-        
-        //(Command) elastic.fieldWidget.commandChooser.getSelected();
-        //System.out.println("*********: "+test.getName());
-        //return test.andThen(IntakeCommand);
-        //return test.andThen(flyWheelStart).andThen(new WaitCommand(.5)).andThen(indexAndSpindexCommand).andThen(new WaitCommand(.5)).andThen(flywheelStop);//(Command) elastic.fieldWidget.commandChooser.getSelected();
-        
-        //.alongWith(new TurretScan(m_turretvision, turretMovement))
-        // Simple drive forward auton
-        /*
-            // Reset our field centric heading to match the robot
-            // facing away from our alliance station wall (0 deg).
-            drivetrain.runOnce(() -> drivetrain.seedFieldCentric(Rotation2d.kZero)),
-            // Then slowly drive forward (away from us) for 5 seconds.
-            drivetrain.applyRequest(() ->
-                drive.withVelocityX(0.5)
-                    .withVelocityY(0)
-                    .withRotationalRate(0)
-            )
-            .withTimeout(5.0);
-            // Finally idle for the rest of auton
-            drivetrain.applyRequest(() -> idle)
-           
-        );
-        */
     }
 }
-//PRE ORGANIZATION COMMENTS, PROBABLY USELESS (IS USELESS)
-
-    //driverController.back().and(driverController.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-    //driverController.back().and(driverController.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-    //driverController.start().and(driverController.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-    //driverController.start().and(driverController.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-    //driverController.x().onTrue(pipelineSwitcher());
-    //driverController.y().onTrue(toggleJoystix());
-    //driverController.leftTrigger(0.5).whileTrue(moveAprilTagLeft());
-    //driverController.rightTrigger(0.5).whileTrue(moveAprilTagRight());
-    //driverController.a().onTrue(elastic.fieldWidget.getAuto("Test Wait Command"));
-    //driverController.b().onTrue(elastic.fieldWidget.getAuto("First Test"));
-    //driverController.x().onTrue(elastic.fieldWidget.getAuto("Test Auto"));
-    //driverController.y().onTrue(elastic.fieldWidget.getAuto("HPR"));
-    //onTrue(getAutonomousCommand());//(new Activation(Pneumatics));
-
