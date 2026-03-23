@@ -45,19 +45,24 @@ public class UpdateOdometry extends SubsystemBase {
 
         EstPose = vision.getRobotPoseVision();
 
+        // if EstPose returns empty then exit the method
         if(EstPose.isEmpty()){
             return;
         }
 
+        // set robotPose(Pose2d) to the EstPose
         robotPos = EstPose.get().estimatedPose.toPose2d();
         tagAmbiguity = vision.getAmbiguity();
+        //get when the picture was taken
         timeStamp = EstPose.get().timestampSeconds;
         double distanceToTag = -1.0;
 
+        // if targets is not empty get the distance from vision
         if(!targets.isEmpty()){ 
             distanceToTag = vision.getDistance();
         }
 
+        // if bot is disabled reset the pose to a position you get off of april tags
         if(DriverStation.isDisabled()) {
             InitialPose = robotPos;
             swerve.resetPose(InitialPose); // link to auto
@@ -68,7 +73,7 @@ public class UpdateOdometry extends SubsystemBase {
             if (numOfTags > 1) {
                 swerve.addVisionMeasurement(robotPos, timeStamp);
             } else {
-                //qualifying checks for poses derived from a single apriltag
+                //qualifying checks for poses gotten from a single apriltag
                 if ((Math.abs(tagAmbiguity) < Constants.maxAcceptableAmbiguity) && (numOfTags > 0) 
                     && (distanceToTag < Constants.maxAcceptableDistance)) {
                         swerve.addVisionMeasurement(robotPos, timeStamp); 

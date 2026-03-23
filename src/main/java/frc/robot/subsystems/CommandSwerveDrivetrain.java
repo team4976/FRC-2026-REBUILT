@@ -1,10 +1,6 @@
 package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.*;
-import static frc.robot.Constants.BlueHubX;
-import static frc.robot.Constants.BlueHubY;
-import static frc.robot.Constants.RedHubX;
-import static frc.robot.Constants.RedHubY;
 
 import java.util.Optional;
 import java.util.function.Supplier;

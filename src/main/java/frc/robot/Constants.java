@@ -77,12 +77,6 @@ public final class Constants {
   public static final double targetYaw = 0.0;
   public static double currentYaw;
   public static double currentSkew;
-  public static final boolean targetVisible = false;
-  public static final int framesMissed = 0; //How many frames has the turret not seen the april tag
-  public static final double turretCameraHeight = .4826;
-  public static final double TagHeight = 1.084;
-  public static final double CameraPitch = 0;
-  public static final double TagPitch = 0;
 // middle of the hub red: 13.0155555556, 4.41236111111
 // middle of the hub blue: 5.05861111111, 4.41236111111
   public static final double RedHubX = 11.915394;
@@ -96,7 +90,7 @@ public final class Constants {
   public static final double turretDeadzoneSize = 41.667 - (Constants.turretLimitLeft - Constants.turretLimitRight);// the turret encoder position the turret cannot go
 
   public static final double maxAcceptableAmbiguity = 0.1;
-  public static final double maxAcceptableDistance = 4.1;
+  public static final double maxAcceptableDistance = 4;
 
 
   public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);

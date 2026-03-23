@@ -9,9 +9,10 @@ import java.util.Optional;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class UpdateHubInfo {
+public class UpdateHubInfo extends SubsystemBase{
         CommandSwerveDrivetrain swerve;
         // Hub Information
     private Optional<Alliance> alliance;  //Team alliance (Red or Blue)
@@ -47,6 +48,7 @@ public class UpdateHubInfo {
         double hubX = hubOrigX;
         double hubY = hubOrigY;
 
+        // using odometry to get the distance from us and the hub
         distanceX = hubX - swerve.getState().Pose.getX();
         distanceY = hubY - swerve.getState().Pose.getY();
 
