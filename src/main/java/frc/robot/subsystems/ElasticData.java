@@ -11,11 +11,8 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import frc.robot.Telemetry;
 import frc.robot.generated.RebuiltTunerConstants;
-import static edu.wpi.first.units.Units.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +21,6 @@ import java.util.Optional;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
-import frc.robot.subsystems.IndexAndSpindexSubsystem;
 import frc.robot.Constants;
 //was designed to be the only elastic subsystem/container but it isnt currently
 //the other two can be merged with this one later, gott set it up for multiple camers with some renaming

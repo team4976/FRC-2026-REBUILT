@@ -1,23 +1,12 @@
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.MaxSpeed;
-
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.TurretScan;
-import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
-import frc.robot.commands.Auto.FlywheelStart;
-import frc.robot.commands.Auto.FlywheelStop;
 import frc.robot.commands.Auto.AutoSequence.NeutralLeftStartFar;
 import frc.robot.commands.Auto.AutoSequence.NeutralRightStartFar;
 import frc.robot.commands.Auto.AutoSequence.ShootToOutpost;
-import frc.robot.commands.Auto.IntakeExtend;
-import frc.robot.commands.Auto.IntakeRetract;
 
 public class Autos {
 
