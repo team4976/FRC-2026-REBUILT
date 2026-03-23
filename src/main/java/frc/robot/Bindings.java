@@ -42,6 +42,8 @@ public class Bindings {
         this.manualHoodDown = manualHoodDown;
         this.turretScanYaw = turretScanYaw;
         this.turretScan = turretScan;
+        this.autos = autos;
+        this.reverseIntake = reverseIntake;
         this.alignedShotCommand = alignedShotCommand;
         this.autos = autos;
         this.reverseIntake = reverseIntake;
