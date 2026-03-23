@@ -163,9 +163,6 @@ public class RobotContainer {
             case "Neutral Left Start Far":
                 selectedAuto = autos.neutralLeftStartFar;
                 break;
-            case "Shoot To Outpost 1":
-                selectedAuto = autos.shootToOutpost;
-                break;
             case "No Auto":
                 selectedAuto = Commands.waitSeconds(1);
                 break;

@@ -109,7 +109,6 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putData("Autos/Auto Select", autoChooser);
         try{
             autoChooser.setDefaultOption("Neutral Right Start Far", new String[]{"Neutral Right Start Far"});
-            autoChooser.addOption("Shoot To Outpost", new String[]{"Shoot To Outpost 1", "Shoot To Outpost 2", "Shoot To Outpost 3"});
             autoChooser.addOption("Neutral Left Start Far", new String[]{"Neutral Left Start Far"});
             autoChooser.addOption("No Auto", new String[]{"No Auto"});
 
