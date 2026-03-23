@@ -131,10 +131,8 @@ public class ElasticData extends SubsystemBase{
         //--------
         //Variables
         //--------
-
-        //variables for the non turret camera values
         
-        
+        //Non Turret Camera Variables
         double[] targetIDs = cameraDataMain.getIDs().stream()
         .mapToDouble(Double::doubleValue)
         .toArray();

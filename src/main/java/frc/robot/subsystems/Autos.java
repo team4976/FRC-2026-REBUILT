@@ -34,14 +34,6 @@ public class Autos {
         neutralRightStartFar = new NeutralRightStartFar(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
         shootToOutpost = new ShootToOutpost(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
         neutralLeftStartFar = new NeutralLeftStartFar(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
-        
-        try{
-            PathPlannerPath jitterPath1 = PathPlannerPath.fromPathFile("Jitter 1");
-                        PathPlannerPath jitterPath2 = PathPlannerPath.fromPathFile("Jitter 2");
-            jitterCommand1 = AutoBuilder.followPath(jitterPath1);
-            jitterCommand2 = AutoBuilder.followPath(jitterPath2);
-
-        }catch(Exception e){}
     }
 }
 

@@ -40,7 +40,6 @@ import org.photonvision.PhotonCamera;
 
 
 public class RobotContainer {
-//Shooting is op, Intake is drive 
     //Logging
     private final Telemetry logger = new Telemetry(Constants.MaxSpeed);
 
@@ -63,6 +62,7 @@ public class RobotContainer {
         hoodSubsystem,
         indexAndSpindexSubsystem
     );
+    
     public Autos autos;
     public JitterSubsystem jitterSubsystem = new JitterSubsystem();
 
@@ -81,6 +81,7 @@ public class RobotContainer {
     //public Command hoodAndFlywheel = new ParallelDeadlineGroup(flywheelCommand, hoodCommand);
     public AlignedShotCommand alignedShotCommand = new AlignedShotCommand(flywheelSubsystem, hoodSubsystem);
     //public ReverseIntake reverseIntake = new ReverseIntake(intakeSubsystem);
+
     //elastic/smartdashboard intialization 
     private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision, allSubsystemsList);
 
