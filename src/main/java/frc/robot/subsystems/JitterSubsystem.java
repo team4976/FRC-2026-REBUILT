@@ -12,14 +12,14 @@ public class JitterSubsystem extends SubsystemBase{
 
     public Command jitterRobotForward(){
         System.out.println("Starting Forwards Swerve");
-        return Commands.deadline(Commands.waitSeconds(0.2), drivetrain.applyRequest(() ->
+        return Commands.deadline(Commands.waitSeconds(0.1), drivetrain.applyRequest(() ->
                 robotCentricDrive.withVelocityX(0.5 * MaxSpeed))
         );
     }
 
     public Command jitterRobotBackward(){
         System.out.println("Starting Backwards Swerve");
-        return Commands.deadline(Commands.waitSeconds(0.2), drivetrain.applyRequest(() ->
+        return Commands.deadline(Commands.waitSeconds(0.1), drivetrain.applyRequest(() ->
                 robotCentricDrive.withVelocityX(-0.5 * MaxSpeed))
         );
     }

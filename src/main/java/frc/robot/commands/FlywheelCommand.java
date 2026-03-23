@@ -33,8 +33,6 @@ public class FlywheelCommand extends Command{
         if (photonVision.getDistance() != 0) {
             autoFlywheelSpeed = (31.49597 + (10.19041 * (photonVision.getDistance() + 0.5969))  
                 - (0.4148098 * Math.pow(photonVision.getDistance() + 0.5969, 2))) * 0.9;
-        } else {
-            autoFlywheelSpeed = 50;
         }
 
         //Sets the adder/substractor to the flywheel speed
