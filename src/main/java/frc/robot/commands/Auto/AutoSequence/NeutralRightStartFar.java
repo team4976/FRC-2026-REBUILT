@@ -43,7 +43,7 @@ public class NeutralRightStartFar extends SequentialCommandGroup {
         TurretSubsystem turretMovementSubsystem
     ){
         
-        Command neutralRightFarPath = AutoBuilder.buildAuto("Neutral Right Start Far");
+        Command neutralRightFarPath = AutoBuilder.buildAuto("Neutral Right Start Comp");
         
         addCommands(
             new PrintCommand("Neutral Right Start Far Started"),
