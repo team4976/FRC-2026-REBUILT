@@ -329,18 +329,15 @@ public class ElasticData extends SubsystemBase{
             try{
                 for (String auto : autoPath) {
                     
-                
-                List<PathPlannerPath> paths = PathPlannerAuto.getPathGroupFromAutoFile(auto);
-        
-                for (PathPlannerPath path: paths) {
-                    pose2ds.addAll(path.getPathPoses());
+                    List<PathPlannerPath> paths = PathPlannerAuto.getPathGroupFromAutoFile(auto);
+
+                    for (PathPlannerPath path : paths) {
+                        pose2ds.addAll(path.getPathPoses());
+                    }
                 }
-            }
-    
             }catch(Exception e){
                 System.out.println(e.getMessage());
-            }
-            
+            }            
             if(pose2ds != null) field2d.getObject("AutoPath").setPoses(pose2ds);
         });
 
