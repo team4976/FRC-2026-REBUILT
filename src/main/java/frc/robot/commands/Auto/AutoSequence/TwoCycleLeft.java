@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-import frc.robot.commands.FlywheelStart;
-import frc.robot.commands.FlywheelStop;
+import frc.robot.commands.Auto.FlywheelStart;
+import frc.robot.commands.Auto.FlywheelStop;
 import frc.robot.commands.TurretScan;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
 import frc.robot.commands.Auto.IntakeExtend;

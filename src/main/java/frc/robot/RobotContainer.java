@@ -157,22 +157,22 @@ public class RobotContainer {
 
         String value = elasticData.autoChooser.getSelected()[0];
         switch(value){
-            case "One Cycle Right":
+            case "1 Cycle - Right":
                 selectedAuto = autos.OneCycleRight;
                 break;
-            case "One Cycle Left":
+            case "1 Cycle - Left":
                 selectedAuto = autos.OneCycleLeft;
                 break;
-            case "One and Half Cycle Right":
+            case "1.5 Cycle - Right":
                 selectedAuto = autos.OneandHalfCycleRight;
                 break;
-            case "One and Half Cycle Left;":
+            case "1.5 Cycle - Left":
                 selectedAuto = autos.OneandHalfCycleLeft;
                 break;
-            case "Two Cycle Right":
+            case "2 Cycle - Right":
                 selectedAuto = autos.TwoCycleRight;
                 break;
-            case "Two Cycle Left":
+            case "2 Cycle - Left":
                 selectedAuto = autos.TwoCycleLeft;
                 break;
             case "No Auto":

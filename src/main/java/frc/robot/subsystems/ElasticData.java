@@ -108,8 +108,12 @@ public class ElasticData extends SubsystemBase{
         //Auto Field Chooser 
         SmartDashboard.putData("Autos/Auto Select", autoChooser);
         try{
-            autoChooser.setDefaultOption("Neutral Right Start Far", new String[]{"Neutral Right Start Far"});
-            autoChooser.addOption("Neutral Left Start Far", new String[]{"Neutral Left Start Far"});
+            autoChooser.setDefaultOption("1 Cycle - Right", new String[]{"1 Cycle - Right"});
+            autoChooser.addOption("1 Cycle - Left", new String[]{"1 Cycle - Left"});
+            autoChooser.addOption("1.5 Cycle - Right", new String[]{"1 Cycle - Right", "1.5 Cycle - Right"});
+            autoChooser.addOption("1.5 Cycle - Left", new String[]{"1 Cycle - Left", "1.5 Cycle - Left"});
+            autoChooser.addOption("2 Cycle - Right", new String[]{"1 Cycle - Right", "1.5 Cycle - Right", "2 Cycle - Right"});
+            autoChooser.addOption("2 Cycle - Left", new String[]{"1 Cycle - Left", "1.5 Cycle - Left", "2 Cycle - Left"});
             autoChooser.addOption("No Auto", new String[]{"No Auto"});
 
         } catch (Exception e){
