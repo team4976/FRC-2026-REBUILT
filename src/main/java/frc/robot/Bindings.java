@@ -48,7 +48,6 @@ public class Bindings {
         this.autos = autos;
         this.reverseIntake = reverseIntake;
         this.jitterSubsystem = jitterSubsystem;
-        System.out.println("Bindings Initialized");
     }
 
      public void driverConfigureBindings(){

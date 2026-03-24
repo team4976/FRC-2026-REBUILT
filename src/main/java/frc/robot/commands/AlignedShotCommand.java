@@ -18,7 +18,6 @@ public class AlignedShotCommand extends Command{
 
     @Override
     public void initialize(){
-        System.out.println("perfect command initialize");
         hoodSubsystem.moveHood(0);
         flywheelSubsystem.spinFlywheel(0);
     }

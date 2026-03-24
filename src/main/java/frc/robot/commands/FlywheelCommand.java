@@ -22,7 +22,6 @@ public class FlywheelCommand extends Command{
 
     @Override
     public void initialize(){
-        System.out.println("flywheel command initialize");
         flywheelSubsystem.spinFlywheel(0);
         flywheelSubsystem.isAutoFlywheel = true;
     }

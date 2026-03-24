@@ -50,7 +50,6 @@ public class TurretSubsystem extends SubsystemBase{
     }
 
     public void turretRotationPID(double targetTurretPos){
-        System.out.println("turret target position" + targetTurretPos);
         turretMotor.setControl(turretPosition.withPosition(targetTurretPos));
     }
 
