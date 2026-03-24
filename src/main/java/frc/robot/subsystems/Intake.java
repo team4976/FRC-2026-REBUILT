@@ -35,7 +35,7 @@ public class Intake extends SubsystemBase {
   public static final PneumaticsControlModule pneumaticsControlModule = new PneumaticsControlModule(PCM_ID);
   private final Compressor compressor = new Compressor(Compressor_ID, PneumaticsModuleType.CTREPCM);
   private Solenoid solenoid;
-  public boolean intakeStatus;
+  public boolean intakeExtend;
   public double currentIntakeSpeed;
       
   public Intake() {
@@ -44,27 +44,21 @@ public class Intake extends SubsystemBase {
     intakeArmRight = new TalonFX(Intake_Arm_Right_ID);
 
 
-    intakeStatus = false;
+    intakeExtend = false;
     compressor.enableDigital(); 
     solenoid = pneumaticsControlModule.makeSolenoid(Solenoid_ID);
     solenoid.set(false);
   }   
 
   public void teleopInit(){
-    intakeStatus = false;
-    intakeMotor.set(ControlMode.PercentOutput, currentIntakeSpeed); 
-    intakeUp();
-    Commands.waitSeconds(4);
-    intakeMotor.set(ControlMode.PercentOutput, 0); 
-    currentIntakeSpeed = 0;
   }
 
   //was used for pnuematics.
   public void toggleIntake(){
-    if (!intakeStatus) {
+    if (!intakeExtend) {
       intakeDown();
       runIntakeMotor(intakeSpeed);
-    } else if (intakeStatus) {
+    } else if (intakeExtend) {
       intakeUp();
       Commands.waitSeconds(1);
       stopIntakeMotor();
@@ -82,7 +76,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void intakeDown(){
-    if (intakeStatus){
+    if (intakeExtend){
       return;
     }
 
@@ -93,7 +87,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void intakeUp(){
-    if (!intakeStatus){
+    if (!intakeExtend){
       return;
     }
     intakeArmLeft.setVoltage(-1);
@@ -108,7 +102,7 @@ public class Intake extends SubsystemBase {
       intakeArmRight.setVoltage(0);
       
       //intake is fully extended
-      intakeStatus = true;
+      intakeExtend = true;
       return;
 
     } else if (intakeArmLeft.getPosition().getValueAsDouble() <= minLeftEncoderPos 
@@ -117,7 +111,7 @@ public class Intake extends SubsystemBase {
       intakeArmRight.setVoltage(0);
 
       //intake is fully retracted
-      intakeStatus = false;
+      intakeExtend = false;
       return;
     }
 
