@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left to Neutral (No)"
+            "pathName": null
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Close"
+            "pathName": null
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "not rlly sure if we should use ngl",
   "choreoAuto": false
 }

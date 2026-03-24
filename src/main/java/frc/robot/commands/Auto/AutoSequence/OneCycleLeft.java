@@ -1,4 +1,3 @@
-
 package frc.robot.commands.Auto.AutoSequence;
 
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.TurretSubsystem;
 
-public class NeutralLeftStartFar extends SequentialCommandGroup {
+public class OneCycleLeft extends SequentialCommandGroup {
 
     PhotonVision visionSubsystem;
     FlywheelSubsystem flywheelSubsystem;
@@ -36,7 +35,7 @@ public class NeutralLeftStartFar extends SequentialCommandGroup {
     IndexAndSpindexSubsystem indxerSubsystem;
     TurretSubsystem turretMovementSubsystem;
 
-    public NeutralLeftStartFar(
+    public OneCycleLeft(
         PhotonVision visionSubsystem,
         FlywheelSubsystem flywheelSubsystem,
         Intake intakeSubsystem,
@@ -44,17 +43,17 @@ public class NeutralLeftStartFar extends SequentialCommandGroup {
         TurretSubsystem turretMovementSubsystem
     ){
         
-        Command neutralLeftFarPath = AutoBuilder.buildAuto("Neutral Left Start Comp");
+        Command OneCycleLeft = AutoBuilder.buildAuto("1 Cycle - Left");
         
         addCommands(
             new PrintCommand("Neutral Left Start Far Started"),
             new IntakeExtend(intakeSubsystem),
-            new WaitCommand(2),
-            neutralLeftFarPath,
+            new WaitCommand(0.5),
+            OneCycleLeft,
             Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
-            new WaitCommand(15)
+            new WaitCommand(6)
             //new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem),
             //new IntakeRetract(intakeSubsystem),
             //new FlywheelStop(flywheelSubsystem, visionSubsystem)

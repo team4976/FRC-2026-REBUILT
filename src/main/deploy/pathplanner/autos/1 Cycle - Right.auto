@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Jitter 2"
+            "pathName": "1 Cycle - Right to Neutral"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Jitter 1"
+            "pathName": "Right Shoot"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Jitter",
+  "folder": null,
   "choreoAuto": false
 }

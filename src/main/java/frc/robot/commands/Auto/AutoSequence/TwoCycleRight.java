@@ -27,7 +27,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.TurretSubsystem;
 
-public class NeutralRightStartFar extends SequentialCommandGroup {
+public class TwoCycleRight extends SequentialCommandGroup {
 
     PhotonVision visionSubsystem;
     FlywheelSubsystem flywheelSubsystem;
@@ -35,7 +35,7 @@ public class NeutralRightStartFar extends SequentialCommandGroup {
     IndexAndSpindexSubsystem indxerSubsystem;
     TurretSubsystem turretMovementSubsystem;
 
-    public NeutralRightStartFar(
+    public TwoCycleRight(
         PhotonVision visionSubsystem,
         FlywheelSubsystem flywheelSubsystem,
         Intake intakeSubsystem,
@@ -43,28 +43,34 @@ public class NeutralRightStartFar extends SequentialCommandGroup {
         TurretSubsystem turretMovementSubsystem
     ){
         
-        Command neutralRightFarPath = AutoBuilder.buildAuto("Neutral Right Start Comp");
+        Command OneCycleRight = AutoBuilder.buildAuto("1 Cycle - Right");
+        Command OneandHalfCycleRight = AutoBuilder.buildAuto("1.5 Cycle - Right"); 
+        Command TwoCycleRight = AutoBuilder.buildAuto("2 Cycle - Right");
         
         addCommands(
-            new PrintCommand("Neutral Right Start Far Started"),
+            new PrintCommand("Two Cycle Right Started"),
             new IntakeExtend(intakeSubsystem),
             new WaitCommand(0.5),
-            neutralRightFarPath,
+            OneCycleRight,
             Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
-            new WaitCommand(15)
-            //new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem),
-            //new IntakeRetract(intakeSubsystem),
-            //new FlywheelStop(flywheelSubsystem, visionSubsystem)
+            new WaitCommand(6),
+            new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem, intakeSubsystem),
+            new FlywheelStop(flywheelSubsystem, visionSubsystem),
+            OneandHalfCycleRight,
+            Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
+            new FlywheelStart(flywheelSubsystem, visionSubsystem),
+            new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
+            new WaitCommand(6),
+            new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem, intakeSubsystem),
+            new FlywheelStop(flywheelSubsystem, visionSubsystem),
+            TwoCycleRight,
+            Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
+            new FlywheelStart(flywheelSubsystem, visionSubsystem),
+            new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
+            new WaitCommand(6)
         );
     }
-
-    /*
-    Auto Fireing Command
-        Trigger shootTrigger = new Trigger(visionSubsystem.AutoShootFlag);
-        Command indexTrigger =  new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem);
-        shootTrigger.onTrue(indexTrigger);
-    */
-    
 }
+

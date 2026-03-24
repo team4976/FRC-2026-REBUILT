@@ -7,19 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Jitter 2"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Jitter 1"
+            "pathName": "1.5 Cycle - Left"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Jitter",
+  "folder": null,
   "choreoAuto": false
 }

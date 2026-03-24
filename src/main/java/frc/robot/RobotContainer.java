@@ -27,8 +27,13 @@ import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
 import frc.robot.commands.Auto.IntakeExtend;
 import frc.robot.commands.Auto.IntakeRetract;
-import frc.robot.commands.Auto.AutoSequence.NeutralRightStartFar;
-import frc.robot.commands.Auto.AutoSequence.ShootToOutpost;
+import frc.robot.commands.Auto.AutoSequence.OneCycleRight;
+import frc.robot.commands.Auto.AutoSequence.OneCycleLeft;
+import frc.robot.commands.Auto.AutoSequence.OneandHalfCycleRight;
+import frc.robot.commands.Auto.AutoSequence.OneandHalfCycleLeft;
+import frc.robot.commands.Auto.AutoSequence.TwoCycleRight;
+import frc.robot.commands.Auto.AutoSequence.TwoCycleLeft;
+//import frc.robot.commands.Auto.AutoSequence.ShootToOutpost;
 import frc.robot.generated.RebuiltTunerConstants;
 import frc.robot.subsystems.Autos;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -169,15 +174,27 @@ public class RobotContainer {
 
         String value = elasticData.autoChooser.getSelected()[0];
         switch(value){
-            case "Neutral Right Start Far":
-                selectedAuto = autos.neutralRightStartFar;
+            case "One Cycle Right":
+                selectedAuto = autos.OneCycleRight;
                 break;
-            case "Neutral Left Start Far":
-                selectedAuto = autos.neutralLeftStartFar;
+            case "One Cycle Left":
+                selectedAuto = autos.OneCycleLeft;
                 break;
-            case "Shoot To Outpost 1":
+            case "One and Half Cycle Right":
+                selectedAuto = autos.OneandHalfCycleRight;
+                break;
+            case "One and Half Cycle Left;":
+                selectedAuto = autos.OneandHalfCycleLeft;
+                break;
+            case "Two Cycle Right":
+                selectedAuto = autos.TwoCycleRight;
+                break;
+            case "Two Cycle Left":
+                selectedAuto = autos.TwoCycleLeft;
+                break;
+            /*case "Shoot To Outpost 1":
                 selectedAuto = autos.shootToOutpost;
-                break;
+                break;*/
             case "No Auto":
                 selectedAuto = Commands.waitSeconds(1);
                 break;

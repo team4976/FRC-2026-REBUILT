@@ -13,9 +13,13 @@ import frc.robot.commands.FlywheelStart;
 import frc.robot.commands.FlywheelStop;
 import frc.robot.commands.TurretScan;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
-import frc.robot.commands.Auto.AutoSequence.NeutralLeftStartFar;
-import frc.robot.commands.Auto.AutoSequence.NeutralRightStartFar;
-import frc.robot.commands.Auto.AutoSequence.ShootToOutpost;
+import frc.robot.commands.Auto.AutoSequence.OneCycleLeft;
+import frc.robot.commands.Auto.AutoSequence.OneCycleRight;
+import frc.robot.commands.Auto.AutoSequence.OneandHalfCycleRight;
+import frc.robot.commands.Auto.AutoSequence.OneandHalfCycleLeft;
+import frc.robot.commands.Auto.AutoSequence.TwoCycleRight;
+import frc.robot.commands.Auto.AutoSequence.TwoCycleLeft;
+//import frc.robot.commands.Auto.AutoSequence.ShootToOutpost;
 import frc.robot.commands.Auto.IntakeExtend;
 import frc.robot.commands.Auto.IntakeRetract;
 
@@ -36,16 +40,25 @@ public class Autos {
         loadCommands();
     }
 
-    public Command neutralRightStartFar;
-    public Command shootToOutpost;
-    public Command neutralLeftStartFar;
+    public Command OneCycleRight;
+    public Command OneCycleLeft;
+    public Command OneandHalfCycleRight;
+    public Command OneandHalfCycleLeft;
+    public Command TwoCycleRight;
+    public Command TwoCycleLeft;
+    //public Command shootToOutpost;
     public Command jitterCommand1;
     public Command jitterCommand2;
+
     public void loadCommands(){
-        neutralRightStartFar = new NeutralRightStartFar(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
-        shootToOutpost = new ShootToOutpost(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
-        neutralLeftStartFar = new NeutralLeftStartFar(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
-        
+        OneCycleRight = new OneCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
+        OneCycleLeft = new OneCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
+        OneandHalfCycleRight = new OneandHalfCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
+        OneandHalfCycleLeft = new OneandHalfCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
+        TwoCycleRight = new TwoCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
+        TwoCycleLeft = new TwoCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
+        //shootToOutpost = new ShootToOutpost(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
+
         try{
             PathPlannerPath jitterPath1 = PathPlannerPath.fromPathFile("Jitter 1");
                         PathPlannerPath jitterPath2 = PathPlannerPath.fromPathFile("Jitter 2");
