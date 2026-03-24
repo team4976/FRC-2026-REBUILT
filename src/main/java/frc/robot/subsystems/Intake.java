@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -41,6 +43,7 @@ public class Intake extends SubsystemBase {
     intakeMotor = new SparkMax(Intake_ID, MotorType.kBrushless);
     intakeArmLeft = new SparkMax(Intake_Arm_Left_ID, MotorType.kBrushless);
     intakeArmRight = new SparkMax(Intake_Arm_Right_ID, MotorType.kBrushless);
+    SmartDashboard.putBoolean("Manual Intake", false);
 
     intakeExtended = false;
   }   
@@ -61,8 +64,16 @@ public class Intake extends SubsystemBase {
     if (!intakeExtended) {
       intakeDown();
       runIntakeMotor(intakeSpeed);
+      Commands.waitSeconds(3);
+      intakeArmLeft.set(0);
+      intakeArmRight.set(0);
+      intakeExtended = true;
     } else if (intakeExtended) {
       intakeUp();
+      Commands.waitSeconds(3);
+      intakeArmLeft.set(0);
+      intakeArmRight.set(0);
+      intakeExtended = false;
       Commands.waitSeconds(3);
       stopIntakeMotor();
     }
@@ -81,21 +92,23 @@ public class Intake extends SubsystemBase {
   public void intakeDown(){
     intakeArmLeft.set(0.5);
     intakeArmRight.set(0.5);
-    Commands.waitSeconds(3);
-    intakeArmLeft.set(0);
-    intakeArmRight.set(0);
-
-    intakeExtended = true;
   }
 
   public void intakeUp(){
     intakeArmLeft.set(-0.5);
     intakeArmRight.set(-0.5);
-    Commands.waitSeconds(3);
-    intakeArmLeft.set(0);
-    intakeArmRight.set(0);
+  }
 
-    intakeExtended = false;
+  public Command intakeDownCommand(){
+    return runOnce(()-> 
+      intakeDown()
+    );
+  }
+
+  public Command intakeUpCommand(){
+    return runOnce(()-> 
+      intakeUp()
+    );
   }
 
   public void intakeDownEncoder(){
@@ -139,6 +152,17 @@ public class Intake extends SubsystemBase {
       intakeExtend = false;
       return;
       */
+
+      if (SmartDashboard.getBoolean("Manual Intake", false)) {
+        if (!driverController.povUp().getAsBoolean() || !driverController.povDown().getAsBoolean()){
+          intakeArmLeft.set(0);
+          intakeArmRight.set(0);
+        }
+        driverController.povUp().whileTrue(intakeDownCommand());
+        driverController.povDown().whileTrue(intakeUpCommand());
+      }
+
+
     }
 
 }
