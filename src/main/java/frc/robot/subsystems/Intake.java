@@ -40,6 +40,9 @@ public class Intake extends SubsystemBase {
       
   public Intake() {
     intakeMotor = new TalonSRX(Intake_ID);
+    intakeArmLeft = new TalonFX(Intake_Arm_Left_ID);
+    intakeArmRight = new TalonFX(Intake_Arm_Right_ID);
+
 
     intakeStatus = false;
     compressor.enableDigital(); 

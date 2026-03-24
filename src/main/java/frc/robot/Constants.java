@@ -54,6 +54,8 @@ public final class Constants {
   public static final SwerveRequest idle = new SwerveRequest.Idle();
 
   //id constants
+  public static final int Intake_Arm_Left_ID = 0;
+  public static final int Intake_Arm_Right_ID = 0;
   public static final int PCM_ID = 2;
   public static final int Compressor_ID = 2;
   public static final int Solenoid_ID = 7;
