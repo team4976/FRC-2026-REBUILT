@@ -247,7 +247,9 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("QC/Motors/Turret/Turret Voltage", turretSubsystem.turretMotor.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Lead/Flywheel Lead Voltage", flywheelSubsystem.shooterMotorLeader.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Follow/Flywheel Follow Voltage", flywheelSubsystem.shooterMotorFollower.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Motors/Intake/Intake Voltage", intakeSubsystem.intakeMotor.getMotorOutputVoltage());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Voltage", intakeSubsystem.intakeMotor.getAppliedOutput());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Left Voltage", intakeSubsystem.intakeArmLeft.getAppliedOutput());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Right Voltage", intakeSubsystem.intakeArmRight.getAppliedOutput());
 
         //RPM Widgets
         SmartDashboard.putNumber("QC/Motors/Indexer/Index RPM", indexAndSpindexSubsystem.indexMotor.getEncoder().getVelocity());
@@ -256,7 +258,9 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("QC/Motors/Turret/Turret RPS", turretSubsystem.turretMotor.getVelocity().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Lead/Flywheel Lead RPS", flywheelSubsystem.shooterMotorLeader.getVelocity().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Follow/Flywheel Follow RPS", flywheelSubsystem.shooterMotorFollower.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Motors/Intake/Intake Speed (Raw)", intakeSubsystem.intakeMotor.getSelectedSensorVelocity());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Speed (Raw)", intakeSubsystem.intakeMotor.getEncoder().getVelocity());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Left Speed (Raw)", intakeSubsystem.intakeArmLeft.getEncoder().getVelocity());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Right Speed (Raw)", intakeSubsystem.intakeArmRight.getEncoder().getVelocity());
 
         //Position Widgets
         SmartDashboard.putNumber("QC/Motors/Hood/Hood Position", hoodSubsystem.HoodMotor.getPosition().getValueAsDouble());

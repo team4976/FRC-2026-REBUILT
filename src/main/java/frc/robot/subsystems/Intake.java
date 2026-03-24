@@ -9,6 +9,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
@@ -22,88 +24,105 @@ import static frc.robot.Constants.*;
 
 
 public class Intake extends SubsystemBase {
-  public TalonSRX intakeMotor; 
+  public SparkMax intakeMotor; 
   //Will change intakeMotor to Sparkmax
-  public TalonFX intakeArmLeft;
-  public TalonFX intakeArmRight;
+  public SparkMax intakeArmLeft;
+  public SparkMax intakeArmRight;
 
   public final double maxLeftEncoderPos = 0.0;
   public final double maxRightEncoderPos = 0.0;
   public final double minLeftEncoderPos = 0.0;
   public final double minRightEncoderPos = 0.0;
 
-  public static final PneumaticsControlModule pneumaticsControlModule = new PneumaticsControlModule(PCM_ID);
-  private final Compressor compressor = new Compressor(Compressor_ID, PneumaticsModuleType.CTREPCM);
-  private Solenoid solenoid;
-  public boolean intakeExtend;
+  public boolean intakeExtended;
   public double currentIntakeSpeed;
       
   public Intake() {
-    intakeMotor = new TalonSRX(Intake_ID);
-    intakeArmLeft = new TalonFX(Intake_Arm_Left_ID);
-    intakeArmRight = new TalonFX(Intake_Arm_Right_ID);
+    intakeMotor = new SparkMax(Intake_ID, MotorType.kBrushless);
+    intakeArmLeft = new SparkMax(Intake_Arm_Left_ID, MotorType.kBrushless);
+    intakeArmRight = new SparkMax(Intake_Arm_Right_ID, MotorType.kBrushless);
 
-
-    intakeExtend = false;
-    compressor.enableDigital(); 
-    solenoid = pneumaticsControlModule.makeSolenoid(Solenoid_ID);
-    solenoid.set(false);
+    intakeExtended = false;
   }   
 
   public void teleopInit(){ 
+    /* 
     //*TESTING* Check what we want the threshold value to be before using
-    if (intakeArmLeft.getPosition().getValueAsDouble() >= 0.0 
-    || intakeArmLeft.getPosition().getValueAsDouble() >= 0.0){
+    if (intakeArmLeft.getEncoder().getPosition() >= 0.0 
+    || intakeArmLeft.getEncoder().getPosition() >= 0.0){
       return;
     }
-    intakeMotor.set(ControlMode.PercentOutput, 0); 
+    */
+    intakeMotor.set(0); 
   }
 
-  //was used for pnuematics.
+
   public void toggleIntake(){
-    if (!intakeExtend) {
+    if (!intakeExtended) {
       intakeDown();
       runIntakeMotor(intakeSpeed);
-    } else if (intakeExtend) {
+    } else if (intakeExtended) {
       intakeUp();
-      Commands.waitSeconds(1);
+      Commands.waitSeconds(3);
       stopIntakeMotor();
     }
   }
              
   public void stopIntakeMotor() {
-    intakeMotor.set(ControlMode.PercentOutput, 0); 
+    intakeMotor.set(0); 
     currentIntakeSpeed = 0;
   }
     
   public void runIntakeMotor(double speed) {
-    intakeMotor.set(ControlMode.PercentOutput, speed);
+    intakeMotor.set(speed);
     currentIntakeSpeed = speed;
   }
 
   public void intakeDown(){
-    if (intakeExtend){
+    intakeArmLeft.set(0.5);
+    intakeArmRight.set(0.5);
+    Commands.waitSeconds(3);
+    intakeArmLeft.set(0);
+    intakeArmRight.set(0);
+
+    intakeExtended = true;
+  }
+
+  public void intakeUp(){
+    intakeArmLeft.set(-0.5);
+    intakeArmRight.set(-0.5);
+    Commands.waitSeconds(3);
+    intakeArmLeft.set(0);
+    intakeArmRight.set(0);
+
+    intakeExtended = false;
+  }
+
+  public void intakeDownEncoder(){
+    if (intakeExtended){
       return;
     }
 
     // *TESTING* MAKE SURE THEY BOTH MOVE IN THE SAME DIRECTION Eg. clockwise on left is counterclockwise on right (BAD)
-    intakeArmLeft.setVoltage(1);
-    intakeArmRight.setVoltage(1);
+    intakeArmLeft.set(0.5);
+    intakeArmRight.set(0.5);
 
   }
 
-  public void intakeUp(){
-    if (!intakeExtend){
+  public void intakeUpEncoder(){
+    if (!intakeExtended){
       return;
     }
-    intakeArmLeft.setVoltage(-1);
-    intakeArmRight.setVoltage(-1);
+    intakeArmLeft.set(-1);
+    intakeArmRight.set(-1);
   }
 
   @Override
   public void periodic(){
-    if (intakeArmLeft.getPosition().getValueAsDouble() >= maxLeftEncoderPos 
-    || intakeArmLeft.getPosition().getValueAsDouble() >= maxRightEncoderPos){
+
+    /* 
+    if (intakeArmLeft.getEncoder().getPosition() >= maxLeftEncoderPos 
+    || intakeArmLeft.getEncoder().getPosition() >= maxRightEncoderPos){
       intakeArmLeft.setVoltage(0);
       intakeArmRight.setVoltage(0);
       
@@ -111,14 +130,15 @@ public class Intake extends SubsystemBase {
       intakeExtend = true;
       return;
 
-    } else if (intakeArmLeft.getPosition().getValueAsDouble() <= minLeftEncoderPos 
-    || intakeArmLeft.getPosition().getValueAsDouble() <= minRightEncoderPos)
+    } else if (intakeArmLeft.getEncoder().getPosition() <= minLeftEncoderPos 
+    || intakeArmLeft.getEncoder().getPosition() <= minRightEncoderPos)
       intakeArmLeft.setVoltage(0);
       intakeArmRight.setVoltage(0);
 
       //intake is fully retracted
       intakeExtend = false;
       return;
+      */
     }
 
 }
