@@ -50,7 +50,13 @@ public class Intake extends SubsystemBase {
     solenoid.set(false);
   }   
 
-  public void teleopInit(){
+  public void teleopInit(){ 
+    //*TESTING* Check what we want the threshold value to be before using
+    if (intakeArmLeft.getPosition().getValueAsDouble() >= 0.0 
+    || intakeArmLeft.getPosition().getValueAsDouble() >= 0.0){
+      return;
+    }
+    intakeMotor.set(ControlMode.PercentOutput, 0); 
   }
 
   //was used for pnuematics.
