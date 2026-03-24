@@ -10,12 +10,13 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
 import static frc.robot.Constants.*;
 
 
@@ -44,6 +45,21 @@ public class Intake extends SubsystemBase {
     IntakeMotor.set(ControlMode.PercentOutput, 0); 
     intakeStatus = false;
     currentIntakeSpeed = 0;
+  }
+
+  public void runIntake(boolean isReversed){
+
+  }
+
+  public void toggleIntake(){
+    if (!intakeStatus) {
+      forwardSolenoid();
+      runIntakeMotor(Constants.intakeSpeed);
+    } else if (intakeStatus) {
+      reverseSolenoid();
+      Commands.waitSeconds(2);
+      stopIntakeMotor();
+    }
   }
              
   public void stopIntakeMotor() {

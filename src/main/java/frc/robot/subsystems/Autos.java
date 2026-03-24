@@ -1,9 +1,6 @@
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.MaxSpeed;
-
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.wpilibj2.command.Command;

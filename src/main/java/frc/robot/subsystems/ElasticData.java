@@ -11,11 +11,8 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import frc.robot.Telemetry;
 import frc.robot.generated.RebuiltTunerConstants;
-import static edu.wpi.first.units.Units.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +21,6 @@ import java.util.Optional;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
-import frc.robot.subsystems.IndexAndSpindexSubsystem;
 import frc.robot.Constants;
 //was designed to be the only elastic subsystem/container but it isnt currently
 //the other two can be merged with this one later, gott set it up for multiple camers with some renaming
@@ -113,7 +109,6 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putData("Autos/Auto Select", autoChooser);
         try{
             autoChooser.setDefaultOption("Neutral Right Start Far", new String[]{"Neutral Right Start Far"});
-            autoChooser.addOption("Shoot To Outpost", new String[]{"Shoot To Outpost 1", "Shoot To Outpost 2", "Shoot To Outpost 3"});
             autoChooser.addOption("Neutral Left Start Far", new String[]{"Neutral Left Start Far"});
             autoChooser.addOption("No Auto", new String[]{"No Auto"});
 
@@ -135,10 +130,8 @@ public class ElasticData extends SubsystemBase{
         //--------
         //Variables
         //--------
-
-        //variables for the non turret camera values
         
-        
+        //Non Turret Camera Variables
         double[] targetIDs = cameraDataMain.getIDs().stream()
         .mapToDouble(Double::doubleValue)
         .toArray();
@@ -335,18 +328,15 @@ public class ElasticData extends SubsystemBase{
             try{
                 for (String auto : autoPath) {
                     
-                
-                List<PathPlannerPath> paths = PathPlannerAuto.getPathGroupFromAutoFile(auto);
-        
-                for (PathPlannerPath path: paths) {
-                    pose2ds.addAll(path.getPathPoses());
+                    List<PathPlannerPath> paths = PathPlannerAuto.getPathGroupFromAutoFile(auto);
+
+                    for (PathPlannerPath path : paths) {
+                        pose2ds.addAll(path.getPathPoses());
+                    }
                 }
-            }
-    
             }catch(Exception e){
                 System.out.println(e.getMessage());
-            }
-            
+            }            
             if(pose2ds != null) field2d.getObject("AutoPath").setPoses(pose2ds);
         });
 

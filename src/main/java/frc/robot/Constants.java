@@ -44,6 +44,7 @@ public final class Constants {
   public static final double MaxSpeed = RebuiltTunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.5; // kSpeedAt12Volts desired top speed
   public static final double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); //rotations per second max angular velocity
   /* Setting up bindings for necessary control of the swerve drive platform */
+  public static final SwerveRequest.RobotCentric robotCentricDrive = new SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage);
   public static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
           .withDeadband(0.2).withRotationalDeadband(0.2) // Add a 10% deadband
           .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors

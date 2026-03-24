@@ -19,6 +19,8 @@ OPERATOR:
     - Manual Aim (Move Turret) on Right Stick, REQUIRES AUTO AIM TO BE OFF
     - Manual Hood on "D-Pad" (Up/Down)
     - Reverse Index/Spindex on "B"
+    - Aligned Shot on "X", Aligned to the Trench Line Thing
+    - Jitter Robot on "Y", Press to Jitter as Many Times as Needed
     
     - Menu Will Be Climb Once we Have a Climber
     

@@ -26,6 +26,10 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
+        try{
+           m_robotContainer.getOdometryPose();
+        } catch (Exception e) {}
+        
         m_timeAndJoystickReplay.update();
         CommandScheduler.getInstance().run(); 
     }

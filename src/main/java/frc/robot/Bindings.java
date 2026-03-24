@@ -1,17 +1,16 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.commands.AlignedShotCommand;
 import frc.robot.commands.FlywheelCommand;
 import frc.robot.commands.HoodCommand;
 import frc.robot.commands.IndexAndSpindexCommand;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.ReverseIntake;
-import frc.robot.commands.TurretLeft;
-import frc.robot.commands.TurretRight;
 import frc.robot.commands.TurretScan;
 import frc.robot.commands.TurretScanYaw;
 import frc.robot.subsystems.Autos;
+import frc.robot.subsystems.JitterSubsystem;
 
 import static frc.robot.Constants.*;
 
@@ -26,15 +25,14 @@ public class Bindings {
     public HoodCommand manualHoodDown;
     public TurretScan turretScan;
     public TurretScanYaw turretScanYaw;
-    public TurretLeft turretLeft;
-    public TurretRight turretRight;
     public AlignedShotCommand alignedShotCommand;
-    public ReverseIntake reverseIntake;
     public Autos autos;
+    public IntakeCommand reverseIntake;
+    public JitterSubsystem jitterSubsystem;
 
     public Bindings(IndexAndSpindexCommand indexAndSpindexCommand, IndexAndSpindexCommand reverseIndexer, IntakeCommand intakecommand, 
     FlywheelCommand flywheelCommand, HoodCommand hoodCommand, HoodCommand manualHoodUp, HoodCommand manualHoodDown, TurretScanYaw turretScanYaw, 
-    TurretLeft turretLeft, TurretRight turretRight, TurretScan turretScan, AlignedShotCommand alignedShotCommand, Autos autos, ReverseIntake reverseIntake){
+    TurretScan turretScan, AlignedShotCommand alignedShotCommand, Autos autos, IntakeCommand reverseIntake, JitterSubsystem jitterSubsystem){
         this.indexAndSpindexCommand = indexAndSpindexCommand;
         this.reverseIndexer = reverseIndexer;
         this.intakeCommand = intakecommand;
@@ -43,12 +41,13 @@ public class Bindings {
         this.manualHoodUp = manualHoodUp;
         this.manualHoodDown = manualHoodDown;
         this.turretScanYaw = turretScanYaw;
-        this.turretLeft = turretLeft;
-        this.turretRight = turretRight;
         this.turretScan = turretScan;
         this.autos = autos;
         this.reverseIntake = reverseIntake;
         this.alignedShotCommand = alignedShotCommand;
+        this.autos = autos;
+        this.reverseIntake = reverseIntake;
+        this.jitterSubsystem = jitterSubsystem;
         System.out.println("Bindings Initialized");
     }
 
@@ -87,7 +86,11 @@ public class Bindings {
         operatorController.x().toggleOnTrue(alignedShotCommand);
 
         //Jitter Robot
-        operatorController.y().onTrue(autos.jitterCommand1.andThen(autos.jitterCommand2));
+        operatorController.y().whileTrue(
+            Commands.repeatingSequence(jitterSubsystem.jitterRobotForward(), 
+            (jitterSubsystem.jitterRobotBackward())
+            )
+        );
 
         //---------------
         //Manual Overrides

@@ -14,10 +14,10 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.commands.Auto.IntakeExtend;
-import frc.robot.commands.FlywheelStart;
-import frc.robot.commands.FlywheelStop;
 import frc.robot.commands.TurretScan;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
+import frc.robot.commands.Auto.FlywheelStart;
+import frc.robot.commands.Auto.FlywheelStop;
 import frc.robot.commands.Auto.IntakeRetract;
 
 public class ShootToOutpost extends SequentialCommandGroup {

@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import static frc.robot.Constants.intakeSpeed;
+
 import javax.naming.LimitExceededException;
 
 import com.revrobotics.spark.config.LimitSwitchConfig;
@@ -12,38 +14,40 @@ import frc.robot.subsystems.Intake;
  * @param <Drive> */
 @SuppressWarnings("unused")
 public class IntakeCommand extends Command {
-boolean SolenoidStatus;
-Intake intake;
-boolean stop;
+
+  public boolean SolenoidStatus;
+  public Intake intake;
+  public boolean endCommand;
+  public boolean isIntakeReversed;
+  public double startingIntakeSpeed;
   /**
        * Creates a new IntakeCommand
        *
        * @param intake The subsystem used by this command.
        */
 
-public IntakeCommand(Intake intake) {
+  public IntakeCommand(Intake intake, boolean isIntakeReversed) {
     // Use addRequirements() here to declare subsystem dependencies.
-  this.intake = intake;
-  addRequirements(intake);  
-}
+    this.intake = intake;
+    this.isIntakeReversed = isIntakeReversed;
+    addRequirements(intake);  
+  }
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {  
-  
-    if (!intake.intakeStatus) {
-      intake.forwardSolenoid();
-      intake.runIntakeMotor(Constants.intakeSpeed);
-      stop = true;
-    } else if (intake.intakeStatus) {
-      intake.reverseSolenoid();
-      Commands.waitSeconds(2);
-      intake.stopIntakeMotor();
-      stop = true;
-    }
-  
-}
+    endCommand = false; 
+    startingIntakeSpeed = intake.currentIntakeSpeed;
 
-@Override
+    if (isIntakeReversed) {
+      intake.runIntakeMotor(-intakeSpeed);
+    } else if (!isIntakeReversed) {
+      intake.toggleIntake();
+      endCommand = true; 
+    }
+
+  }
+
+  @Override
   public void execute() {
   }
   
@@ -51,12 +55,14 @@ public IntakeCommand(Intake intake) {
 
   @Override
   public void end(boolean interrupted) {  
-
+    if (isIntakeReversed) {
+      intake.runIntakeMotor(startingIntakeSpeed);
+    }
   }
 
 
   @Override
   public boolean isFinished() { 
-    return stop;
+    return endCommand;
   }
 }
