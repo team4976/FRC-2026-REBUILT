@@ -63,7 +63,7 @@ public class Intake extends SubsystemBase {
   public void toggleIntake(){
     if (!intakeStatus) {
       intakeDown();
-      runIntakeMotor(Constants.intakeSpeed);
+      runIntakeMotor(intakeSpeed);
     } else if (intakeStatus) {
       intakeUp();
       Commands.waitSeconds(1);
@@ -111,8 +111,8 @@ public class Intake extends SubsystemBase {
       intakeStatus = true;
       return;
 
-    } else if (intakeArmLeft.getPosition().getValueAsDouble() >= minLeftEncoderPos 
-    || intakeArmLeft.getPosition().getValueAsDouble() >= minRightEncoderPos)
+    } else if (intakeArmLeft.getPosition().getValueAsDouble() <= minLeftEncoderPos 
+    || intakeArmLeft.getPosition().getValueAsDouble() <= minRightEncoderPos)
       intakeArmLeft.setVoltage(0);
       intakeArmRight.setVoltage(0);
 
