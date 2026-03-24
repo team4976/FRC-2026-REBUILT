@@ -29,6 +29,9 @@ public class FlywheelCommand extends Command{
     @Override
     public void execute(){ 
         //Sets the auto flywheel speed
+        //this equation is for the quadratic made by the relation of the distance to flywheel speed. 
+        //the y is the flywheel speed and the x is the distance from the target 
+        //(if we dont use a turret camera then the x needs to be changed to the calculated distance of the robot from the hub)
         if (photonVision.getDistance() != 0) {
             autoFlywheelSpeed = (31.49597 + (10.19041 * (photonVision.getDistance() + 0.5969))  
                 - (0.4148098 * Math.pow(photonVision.getDistance() + 0.5969, 2))) * 0.9;
