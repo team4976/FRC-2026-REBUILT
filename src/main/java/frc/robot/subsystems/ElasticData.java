@@ -48,7 +48,8 @@ public class ElasticData extends SubsystemBase{
     double radius = 3;
     boolean fuelMakeIt = false;
     double rotation;
-    Field2d field2d;
+    Pose2d robotPose;
+    Field2d field2d = new Field2d();
     Optional<Alliance> alliance;
     List<Pose2d> pose2ds = new ArrayList<>();
     public double currentTime;
@@ -64,7 +65,7 @@ public class ElasticData extends SubsystemBase{
         cameraDataMain = camera1;
         cameraDataTurret = camera2;
         this.swerve = swerve;
-        field2d = cameraDataMain.getRobotPos();
+        
         alliance = DriverStation.getAlliance();
         if (alliance.isPresent()){
             if (alliance.get() == Alliance.Blue){
@@ -191,7 +192,7 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Vision/Turret Cam/turretAngle", cameraDataTurret.getBotAngle());
         SmartDashboard.putNumber("Vision/Turret Cam/Turret Distance Test", cameraDataTurret.vision.turretDistance);
         SmartDashboard.putNumber("Vision/Turret Cam/Turret PoseX Test", swerve.getState().Pose.getX());
-        SmartDashboard.putNumber("Vision/Turret Cam/Turret PoseX Test", swerve.getState().Pose.getY());
+        SmartDashboard.putNumber("Vision/Turret Cam/Turret PoseY Test", swerve.getState().Pose.getY());
         SmartDashboard.putNumber("Vision/Turret Cam/turretTargetAngle", cameraDataTurret.getTurretTargetAngle());
         SmartDashboard.putNumber("Vision/Turret Cam/Turret Target Position", turretSubsystem.convertAngleRotation(cameraDataTurret.getTurretTargetAngle() - cameraDataTurret.getBotAngle()));
 
@@ -207,9 +208,7 @@ public class ElasticData extends SubsystemBase{
         //FIELD WIDGETS
         //-------------
         SmartDashboard.putData("Fields/Ideal Field", field2d);
-        if (cameraDataMain.targetVisible() == true){
-            SmartDashboard.putData("Fields/Robot Position Field", cameraDataMain.getRobotPos());     
-        }
+        SmartDashboard.putData("Fields/Robot Position Field", cameraDataMain.vision.field2dSwerve);     
 
         //AC- Additional Field2d Stuff
         /* 

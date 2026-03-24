@@ -6,6 +6,7 @@ import java.util.OptionalDouble;
 import java.util.function.BooleanSupplier;
 
 import org.photonvision.EstimatedRobotPose;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -68,6 +69,10 @@ public class PhotonVision extends SubsystemBase{
 
     public Field2d getRobotPos(){
         return vision.findRobotPos();
+    }
+
+    public List<PhotonTrackedTarget> getTargets(){
+        return vision.getTargets();
     }
 
     public Optional<EstimatedRobotPose> getRobotPoseVision(){

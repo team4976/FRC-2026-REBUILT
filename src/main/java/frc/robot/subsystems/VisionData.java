@@ -37,8 +37,10 @@ public class VisionData{
     private PhotonCamera camera;
     private Telemetry logger;
     CommandSwerveDrivetrain swerve;
+    String cameraName;
     Transform3d transform3d;
     private PhotonPipelineResult latestResult;
+    List<PhotonPipelineResult> results;
     List<PhotonPipelineResult> photonResult;
     PhotonPoseEstimator estimator;
     public double hubOrigX;
@@ -50,6 +52,7 @@ public class VisionData{
     public double turretTargetAngle;
     public double hubId;
     Field2d field2d = new Field2d();
+    public Field2d field2dSwerve = new Field2d();
 
 
     //the constructor, having the camera as a parameter--
@@ -61,14 +64,18 @@ public class VisionData{
         estimator = new PhotonPoseEstimator(kTagLayout, camOffsets);
         this.logger = logger;
         this.swerve = swerve;
+        this.cameraName = cameraName;
         transform3d = camOffsets;
+        System.out.println(cameraName);
 
     }
 
     //called at the top of the periodic in PhotonVision, keeps the camera frame used uniform.
     //also updates the Drive Velocities and the turrret distance and angle by calling the method but doesnt use the returned value.
     public void update() {
-        var results = camera.getAllUnreadResults();
+        field2dSwerve.setRobotPose(logger.driveState.Pose);
+        results = camera.getAllUnreadResults();
+        System.out.println(results.toString());
         if (!results.isEmpty()) {
             latestResult = results.get(results.size() - 1);
         }
@@ -117,6 +124,7 @@ public class VisionData{
     //returns the pitch of a desired target if that target is seen by the camera.
     public OptionalDouble getTargetPitch(int tagID){
         if(latestResult != null && latestResult.hasTargets()){
+            System.out.println("hasTarget");
             for (var target : latestResult.getTargets()){
                 if (target.getFiducialId() == tagID){
                     return OptionalDouble.of(target.getPitch());
@@ -174,10 +182,10 @@ public class VisionData{
     }
 
     public List<PhotonTrackedTarget> getTargets() {
-        if(photonResult == null || photonResult.isEmpty())
+        if(results == null || results.isEmpty())
             return List.of();
 
-        var result = photonResult.get(photonResult.size() - 1);
+        var result = results.get(results.size() - 1);
         return result.getTargets();
     }
 
@@ -186,11 +194,12 @@ public class VisionData{
      * @return Returns the current vision pose
      */
     public Optional<EstimatedRobotPose> getRobotPoseVision() {
-        if(photonResult == null || photonResult.isEmpty()){
+        if(results == null || results.isEmpty()){
+            System.err.println("NOT GOOD");
             return Optional.empty();
         }
 
-        PhotonPipelineResult latest = photonResult.get(photonResult.size() - 1);
+        PhotonPipelineResult latest = results.get(results.size() - 1);
         Optional<EstimatedRobotPose> pose = estimator.estimateCoprocMultiTagPose(latest);
 
         if(pose.isEmpty()){
