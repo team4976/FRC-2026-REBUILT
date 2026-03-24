@@ -9,8 +9,11 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
@@ -31,6 +34,8 @@ public class Intake extends SubsystemBase {
   public SparkMax intakeArmLeft;
   public SparkMax intakeArmRight;
 
+  private SparkMaxConfig sparkConfig = new SparkMaxConfig();
+
   public final double maxLeftEncoderPos = 0.0;
   public final double maxRightEncoderPos = 0.0;
   public final double minLeftEncoderPos = 0.0;
@@ -44,6 +49,9 @@ public class Intake extends SubsystemBase {
     intakeArmLeft = new SparkMax(Intake_Arm_Left_ID, MotorType.kBrushless);
     intakeArmRight = new SparkMax(Intake_Arm_Right_ID, MotorType.kBrushless);
     SmartDashboard.putBoolean("Manual Intake", false);
+
+    sparkConfig.inverted(true);
+    intakeArmLeft.configure(sparkConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
 
     intakeExtended = false;
   }   
