@@ -16,7 +16,6 @@ public class FlywheelStop extends Command{
 
     @Override
     public void initialize(){
-        System.out.println("flywheel command initialize");
         /*if (flywheelSubsystem.getShooterState() == "cantShoot") {
             flywheelSubsystem.spinFlywheel(
                 31.49597 + (10.19041 * (photonVision.getDistance() + 0.5969))  

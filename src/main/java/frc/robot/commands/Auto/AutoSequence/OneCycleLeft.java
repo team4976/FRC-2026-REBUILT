@@ -8,10 +8,11 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.TurretScan;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
 import frc.robot.commands.Auto.FlywheelStart;
-import frc.robot.commands.Auto.IntakeExtend;
+//import frc.robot.commands.Auto.IntakeExtend;
 
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.IndexAndSpindexSubsystem;

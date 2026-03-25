@@ -8,11 +8,19 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -21,69 +29,145 @@ import static frc.robot.Constants.*;
 
 
 public class Intake extends SubsystemBase {
-  public TalonSRX IntakeMotor;
+  public SparkMax intakeMotor; 
+  //Will change intakeMotor to Sparkmax
+  public SparkMax intakeArmLeft;
+  public SparkMax intakeArmRight;
 
-  public static final PneumaticsControlModule pneumaticsControlModule = new PneumaticsControlModule(PCM_ID);
-  private final Compressor compressor = new Compressor(Compressor_ID, PneumaticsModuleType.CTREPCM);
-  private Solenoid solenoid;
-  public boolean intakeStatus;
+  private SparkMaxConfig sparkConfig = new SparkMaxConfig();
+
+  public final double maxLeftEncoderPos = 0.0;
+  public final double maxRightEncoderPos = 0.0;
+  public final double minLeftEncoderPos = 0.0;
+  public final double minRightEncoderPos = 0.0;
+
+  public boolean intakeExtended;
   public double currentIntakeSpeed;
       
   public Intake() {
-    IntakeMotor = new TalonSRX(Intake_ID);
+    intakeMotor = new SparkMax(Intake_ID, MotorType.kBrushed);
+    intakeArmLeft = new SparkMax(Intake_Arm_Left_ID, MotorType.kBrushless);
+    intakeArmRight = new SparkMax(Intake_Arm_Right_ID, MotorType.kBrushless);
+    SmartDashboard.putBoolean("Manual Intake", false);
 
-    intakeStatus = false;
-    compressor.enableDigital(); 
-    solenoid = pneumaticsControlModule.makeSolenoid(Solenoid_ID);
-    solenoid.set(false);
+    intakeExtended = false;
   }   
 
-  public void teleopInit(){
-    IntakeMotor.set(ControlMode.PercentOutput, currentIntakeSpeed); 
-    solenoid.set(false);
-    Commands.waitSeconds(4);
-    IntakeMotor.set(ControlMode.PercentOutput, 0); 
-    intakeStatus = false;
-    currentIntakeSpeed = 0;
+  public void teleopInit(){ 
+    /* 
+    //*TESTING* Check what we want the threshold value to be before using
+    if (intakeArmLeft.getEncoder().getPosition() >= 0.0 
+    || intakeArmLeft.getEncoder().getPosition() >= 0.0){
+      return;
+    }
+    */
   }
 
-  public void runIntake(boolean isReversed){
-
-  }
 
   public void toggleIntake(){
-    if (!intakeStatus) {
-      forwardSolenoid();
-      runIntakeMotor(Constants.intakeSpeed);
-    } else if (intakeStatus) {
-      reverseSolenoid();
+    if (!intakeExtended) {
+      intakeDown();
+      runIntakeMotor(intakeSpeed);
+      Commands.waitSeconds(0.5);
+      intakeArmLeft.set(0);
+      intakeArmRight.set(0);
+      intakeExtended = true;
+    } else if (intakeExtended) {
+      intakeUp();
+      Commands.waitSeconds(0.5);
+      intakeArmLeft.set(0);
+      intakeArmRight.set(0);
+      intakeExtended = false;
       Commands.waitSeconds(2);
       stopIntakeMotor();
     }
   }
              
   public void stopIntakeMotor() {
-    IntakeMotor.set(ControlMode.PercentOutput, 0); 
+    intakeMotor.set(0); 
     currentIntakeSpeed = 0;
   }
     
   public void runIntakeMotor(double speed) {
-    IntakeMotor.set(ControlMode.PercentOutput, speed);
+    intakeMotor.set(speed);
     currentIntakeSpeed = speed;
-    System.out.println("running at speed:" + speed);
   }
 
-  public void forwardSolenoid(){
-    System.out.println("solenoid on");   
-    solenoid.set(true);
-    intakeStatus = true;
+  public void intakeDown(){
+    intakeArmLeft.set(-0.5);
+    intakeArmRight.set(-0.5);
   }
 
-  public void reverseSolenoid(){
-    System.out.println("solenoid off");
-    solenoid.set(false);
-    intakeStatus = false;
+  public void intakeUp(){
+    intakeArmLeft.set(0.5);
+    intakeArmRight.set(0.5);
   }
+
+  public Command intakeDownCommand(){
+    return runOnce(()-> 
+      intakeDown()
+    );
+  }
+
+  public Command intakeUpCommand(){
+    return runOnce(()-> 
+      intakeUp()
+    );
+  }
+
+  public void intakeDownEncoder(){
+    if (intakeExtended){
+      return;
+    }
+
+    // *TESTING* MAKE SURE THEY BOTH MOVE IN THE SAME DIRECTION Eg. clockwise on left is counterclockwise on right (BAD)
+    intakeArmLeft.set(0.5);
+    intakeArmRight.set(0.5);
+
+  }
+
+  public void intakeUpEncoder(){
+    if (!intakeExtended){
+      return;
+    }
+    intakeArmLeft.set(-0.5);
+    intakeArmRight.set(-0.5);
+  }
+
+  @Override
+  public void periodic(){
+
+    /* 
+    if (intakeArmLeft.getEncoder().getPosition() >= maxLeftEncoderPos 
+    || intakeArmLeft.getEncoder().getPosition() >= maxRightEncoderPos){
+      intakeArmLeft.setVoltage(0);
+      intakeArmRight.setVoltage(0);
+      
+      //intake is fully extended
+      intakeExtend = true;
+      return;
+
+    } else if (intakeArmLeft.getEncoder().getPosition() <= minLeftEncoderPos 
+    || intakeArmLeft.getEncoder().getPosition() <= minRightEncoderPos)
+      intakeArmLeft.setVoltage(0);
+      intakeArmRight.setVoltage(0);
+
+      //intake is fully retracted
+      intakeExtend = false;
+      return;
+      */
+
+      if (SmartDashboard.getBoolean("Manual Intake", false)) {
+        if (!driverController.povUp().getAsBoolean() || !driverController.povDown().getAsBoolean()){
+          intakeArmLeft.set(0);
+          intakeArmRight.set(0);
+        }
+        driverController.povUp().whileTrue(intakeDownCommand());
+        driverController.povDown().whileTrue(intakeUpCommand());
+      }
+
+
+    }
 
 }
 

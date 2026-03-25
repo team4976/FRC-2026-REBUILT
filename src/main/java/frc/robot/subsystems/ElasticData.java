@@ -70,6 +70,12 @@ public class ElasticData extends SubsystemBase{
             field2d.getObject("Hub").setPose(11.9, 4, new Rotation2d(0.0));
         }
 
+        //Motor id List
+        String[] motorIDs = {"[FRS Swerve] Motor Id:"+ RebuiltTunerConstants.kFrontRightSteerMotorId,"[FRD Swerve] Motor Id:" + RebuiltTunerConstants.kFrontRightDriveMotorId,"[FLS Swerve] Motor Id:"+RebuiltTunerConstants.kFrontLeftSteerMotorId,
+        "[FLD Swerve] Motor Id:"+RebuiltTunerConstants.kFrontLeftDriveMotorId,"[RRS Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightSteerMotorId,"[RRD Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightDriveMotorId,"[RLS Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftSteerMotorId,"[RLD Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftDriveMotorId,
+        "[Turret] Motor Id:"+ 1,"[Hood] Motor Id:"+ 2,"[Flywheel Lead] Motor Id:"+ Constants.Flywheel_Lead_ID,"[Flywheel Follow] Motor Id:"+ Constants.Flywheel_Follower_ID,"[Spindex] Motor Id:"+ Constants.Spindex_ID,
+        "[Indexer] Motor Id:"+ Constants.Index_ID,"[Intake] Motor Id:"+ Constants.Intake_ID,"[PCM] Motor Id:","[Pidgeon] Motor Id:"};
+
         //Subsystem Objects
         indexAndSpindexSubsystem = (IndexAndSpindexSubsystem) subsystemList.get(5);
         hoodSubsystem = (HoodSubsystem) subsystemList.get(4);
@@ -120,6 +126,24 @@ public class ElasticData extends SubsystemBase{
             System.out.print(e.getMessage());
         }
 
+        //Changes The Path on the Field2d
+        autoChooser.onChange((autoPath)->{
+            pose2ds.clear();
+            try{
+                for (String auto : autoPath) {
+                    
+                    List<PathPlannerPath> paths = PathPlannerAuto.getPathGroupFromAutoFile(auto);
+
+                    for (PathPlannerPath path : paths) {
+                        pose2ds.addAll(path.getPathPoses());
+                    }
+                }
+            }catch(Exception e){
+                System.out.println(e.getMessage());
+            }            
+            if(pose2ds != null) field2d.getObject("AutoPath").setPoses(pose2ds);
+        });
+
         SmartDashboard.putNumber("Testing/Ben T's Stuff/flywheelSpeed", 0);
         SmartDashboard.putNumber("Testing/Ben T's Stuff/hood target position", 0);
 
@@ -140,12 +164,6 @@ public class ElasticData extends SubsystemBase{
         .mapToDouble(Double::doubleValue)
         .toArray();
 
-        //Motor id Array
-        String[] motorIDs = {"[FRS Swerve] Motor Id:"+ RebuiltTunerConstants.kFrontRightSteerMotorId,"[FRD Swerve] Motor Id:" + RebuiltTunerConstants.kFrontRightDriveMotorId,"[FLS Swerve] Motor Id:"+RebuiltTunerConstants.kFrontLeftSteerMotorId,
-        "[FLD Swerve] Motor Id:"+RebuiltTunerConstants.kFrontLeftDriveMotorId,"[RRS Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightSteerMotorId,"[RRD Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightDriveMotorId,"[RLS Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftSteerMotorId,"[RLD Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftDriveMotorId,
-        "[Turret] Motor Id:"+ 1,"[Hood] Motor Id:"+ 2,"[Flywheel Lead] Motor Id:"+ Constants.Flywheel_Lead_ID,"[Flywheel Follow] Motor Id:"+ Constants.Flywheel_Follower_ID,"[Spindex] Motor Id:"+ Constants.Spindex_ID,
-        "[Indexer] Motor Id:"+ Constants.Index_ID,"[Intake] Motor Id:"+ Constants.Intake_ID,"[PCM] Motor Id:","[Pidgeon] Motor Id:"};
-
         //-------------
         //Vision Widgets
         //-------------
@@ -160,22 +178,6 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Vision/Main Cam/X Rotation", cameraDataMain.getXRotation());
         SmartDashboard.putNumber("Vision/Main Cam/Z Rotation", cameraDataMain.getZRotation());
         SmartDashboard.putNumber("Vision/Main Cam/Distance", cameraDataMain.getDistance());
-        for(var id : targetIDs){
-            double yaw = cameraDataMain
-            .getTargetYaw((int) id)
-            .orElse(Double.NaN);
-            if (!Double.isNaN(yaw)){
-                SmartDashboard.putNumber("Vision/Main Cam/Target" + id + "yaw", yaw);
-            }
-        }
-        for(var id : targetIDs){
-            double pitch = cameraDataMain
-            .getTargetYaw((int) id)
-            .orElse(Double.NaN);
-            if (!Double.isNaN(pitch)){
-                SmartDashboard.putNumber("Vision/Main Cam/Target" + id + "pitch", pitch);
-            }
-        }
 
         //Turret Based Vision Widgets
         SmartDashboard.putNumber("Vision/Turret Cam/turretDistance", cameraDataTurret.getTurretDistance());
@@ -198,14 +200,12 @@ public class ElasticData extends SubsystemBase{
                 - (0.4148098 * Math.pow(cameraDataMain.getDistance() + 0.5969, 2)));
 
 
-        //-------------
+        //------------- 
         //FIELD WIDGETS
         //-------------
         SmartDashboard.putData("Fields/Ideal Field", field2d);
-        if (cameraDataMain.targetVisible() == true){
-            SmartDashboard.putData("Fields/Robot Position Field", cameraDataMain.getRobotPos());
-            SmartDashboard.putData("Fields/Turret Position Field", cameraDataTurret.getDistanceAndAngle());
-        }
+        SmartDashboard.putData("Fields/Turret Position Field", cameraDataTurret.getDistanceAndAngle());
+        
 
         //AC- Additional Field2d Stuff
         /* 
@@ -251,7 +251,9 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("QC/Motors/Turret/Turret Voltage", turretSubsystem.turretMotor.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Lead/Flywheel Lead Voltage", flywheelSubsystem.shooterMotorLeader.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Follow/Flywheel Follow Voltage", flywheelSubsystem.shooterMotorFollower.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Motors/Intake/Intake Voltage", intakeSubsystem.IntakeMotor.getMotorOutputVoltage());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Voltage", intakeSubsystem.intakeMotor.getAppliedOutput());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Left Voltage", intakeSubsystem.intakeArmLeft.getAppliedOutput());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Right Voltage", intakeSubsystem.intakeArmRight.getAppliedOutput());
 
         //RPM Widgets
         SmartDashboard.putNumber("QC/Motors/Indexer/Index RPM", indexAndSpindexSubsystem.indexMotor.getEncoder().getVelocity());
@@ -260,39 +262,13 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("QC/Motors/Turret/Turret RPS", turretSubsystem.turretMotor.getVelocity().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Lead/Flywheel Lead RPS", flywheelSubsystem.shooterMotorLeader.getVelocity().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Follow/Flywheel Follow RPS", flywheelSubsystem.shooterMotorFollower.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Motors/Intake/Intake Speed (Raw)", intakeSubsystem.IntakeMotor.getSelectedSensorVelocity());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Speed (Raw)", intakeSubsystem.intakeMotor.getEncoder().getVelocity());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Left Speed (Raw)", intakeSubsystem.intakeArmLeft.getEncoder().getVelocity());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Right Speed (Raw)", intakeSubsystem.intakeArmRight.getEncoder().getVelocity());
 
         //Position Widgets
         SmartDashboard.putNumber("QC/Motors/Hood/Hood Position", hoodSubsystem.HoodMotor.getPosition().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Turret/Turret Position", turretSubsystem.turretMotor.getPosition().getValueAsDouble());
-
-        //Motor id Widgets
-        SmartDashboard.putStringArray("QC/Motors/Motor Id's", motorIDs);
-        for (String motorInfo : motorIDs) {
-            try {
-                int openBracket = motorInfo.indexOf("[");
-                int closeBracket = motorInfo.indexOf("]");
-                int colonIndex = motorInfo.indexOf(":");
-
-                //gets what is inside the [brackets]
-                String folderName = motorInfo.substring(openBracket + 1, closeBracket).trim();
-        
-                //gets everything after the colon
-                String motorId = motorInfo.substring(colonIndex + 1).trim();
-
-                if (!motorId.isEmpty()) {
-                    if (folderName.contains("Swerve")){
-                        SmartDashboard.putString("QC/Motors/Swerve/" + folderName + "/Motor Id", motorId);
-                    } else {
-                        SmartDashboard.putString("QC/Motors/" + folderName + "/Motor Id", motorId);
-                    }
-                }
-            } catch (Exception e) {
-             //this prevents the code from crashing if one string is formatted weirdly
-             System.out.println("Error making motor string: " + motorInfo);
-            }
-        }
-
 
         //--------
         //BOOLEANS
@@ -325,25 +301,6 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Testing/Ben T's Stuff/shooter speed", flywheelSubsystem.getShooterSpeed());
         SmartDashboard.putString("Testing/Ben T's Stuff/hood State", hoodSubsystem.getHoodState());
         SmartDashboard.putNumber("Testing/Ben T's Stuff/hood position", hoodSubsystem.returnMotor().getPosition().getValueAsDouble());
-
-        //Changes The Path on the Field2d
-        autoChooser.onChange((autoPath)->{
-            pose2ds.clear();
-            try{
-                for (String auto : autoPath) {
-                    
-                    List<PathPlannerPath> paths = PathPlannerAuto.getPathGroupFromAutoFile(auto);
-
-                    for (PathPlannerPath path : paths) {
-                        pose2ds.addAll(path.getPathPoses());
-                    }
-                }
-            }catch(Exception e){
-                System.out.println(e.getMessage());
-            }            
-            if(pose2ds != null) field2d.getObject("AutoPath").setPoses(pose2ds);
-        });
-
             
         //updates the Smartdash board Values
         SmartDashboard.updateValues();
