@@ -78,7 +78,7 @@ public class Intake extends SubsystemBase {
       intakeArmLeft.set(0);
       intakeArmRight.set(0);
       intakeExtended = false;
-      Commands.waitSeconds(2);
+      Commands.waitSeconds(1);
       stopIntakeMotor();
     }
   }
