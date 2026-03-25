@@ -45,13 +45,10 @@ public class Intake extends SubsystemBase {
   public double currentIntakeSpeed;
       
   public Intake() {
-    intakeMotor = new SparkMax(Intake_ID, MotorType.kBrushless);
+    intakeMotor = new SparkMax(Intake_ID, MotorType.kBrushed);
     intakeArmLeft = new SparkMax(Intake_Arm_Left_ID, MotorType.kBrushless);
     intakeArmRight = new SparkMax(Intake_Arm_Right_ID, MotorType.kBrushless);
     SmartDashboard.putBoolean("Manual Intake", false);
-
-    sparkConfig.inverted(true);
-    intakeArmLeft.configure(sparkConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
 
     intakeExtended = false;
   }   
@@ -71,17 +68,17 @@ public class Intake extends SubsystemBase {
     if (!intakeExtended) {
       intakeDown();
       runIntakeMotor(intakeSpeed);
-      Commands.waitSeconds(3);
+      Commands.waitSeconds(0.5);
       intakeArmLeft.set(0);
       intakeArmRight.set(0);
       intakeExtended = true;
     } else if (intakeExtended) {
       intakeUp();
-      Commands.waitSeconds(3);
+      Commands.waitSeconds(0.5);
       intakeArmLeft.set(0);
       intakeArmRight.set(0);
       intakeExtended = false;
-      Commands.waitSeconds(3);
+      Commands.waitSeconds(2);
       stopIntakeMotor();
     }
   }
@@ -97,13 +94,13 @@ public class Intake extends SubsystemBase {
   }
 
   public void intakeDown(){
-    intakeArmLeft.set(0.5);
-    intakeArmRight.set(0.5);
+    intakeArmLeft.set(-0.5);
+    intakeArmRight.set(-0.5);
   }
 
   public void intakeUp(){
-    intakeArmLeft.set(-0.5);
-    intakeArmRight.set(-0.5);
+    intakeArmLeft.set(0.5);
+    intakeArmRight.set(0.5);
   }
 
   public Command intakeDownCommand(){
@@ -133,8 +130,8 @@ public class Intake extends SubsystemBase {
     if (!intakeExtended){
       return;
     }
-    intakeArmLeft.set(-1);
-    intakeArmRight.set(-1);
+    intakeArmLeft.set(-0.5);
+    intakeArmRight.set(-0.5);
   }
 
   @Override
