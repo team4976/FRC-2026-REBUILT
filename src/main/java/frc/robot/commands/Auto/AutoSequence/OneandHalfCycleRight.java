@@ -16,10 +16,9 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 import frc.robot.commands.Auto.FlywheelStart;
 import frc.robot.commands.Auto.FlywheelStop;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.TurretScan;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
-import frc.robot.commands.Auto.IntakeExtend;
-import frc.robot.commands.Auto.IntakeRetract;
 
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.IndexAndSpindexSubsystem;
@@ -48,7 +47,7 @@ public class OneandHalfCycleRight extends SequentialCommandGroup {
         
         addCommands(
             new PrintCommand("One and a Half Cycle Right Started"),
-            new IntakeExtend(intakeSubsystem),
+            new IntakeCommand(intakeSubsystem, false),
             new WaitCommand(0.5),
             OneCycleRight,
             Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),

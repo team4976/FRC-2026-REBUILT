@@ -17,8 +17,6 @@ import frc.robot.commands.Auto.AutoSequence.OneandHalfCycleLeft;
 import frc.robot.commands.Auto.AutoSequence.TwoCycleRight;
 import frc.robot.commands.Auto.AutoSequence.TwoCycleLeft;
 //import frc.robot.commands.Auto.AutoSequence.ShootToOutpost;
-import frc.robot.commands.Auto.IntakeExtend;
-import frc.robot.commands.Auto.IntakeRetract;
 
 public class Autos {
 
