@@ -68,13 +68,6 @@ public class Bindings {
 
         //Intake
         driverController.x().onTrue(Commands.deadline(Commands.waitSeconds(0.2), intakeCommand));
-
-        //Intake Jitter
-        driverController.start().whileTrue(
-            Commands.repeatingSequence(intakeSubsystem.jitterIntakeUp(), 
-            (intakeSubsystem.jitterIntakeDown()))
-        ).onFalse(Commands.runOnce(()->intakeCommand.end(true)));
-        
     }
 
     public void operatorConfigureBindings(){
@@ -85,23 +78,21 @@ public class Bindings {
         //Spin up flywheels
         //operatorController.a().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
         operatorController.a().toggleOnTrue(flywheelCommand);
-
+        Command repeatJidderCommand = //indexAndSpindexCommand.alongWith(
+            Commands.repeatingSequence(
+                Commands.deadline(Commands.waitSeconds(0.1), intakeSubsystem.intakeUpCommand()),
+                Commands.deadline(Commands.waitSeconds(0.1), intakeSubsystem.intakeDownCommand())           
+            );
+        //);
         //Operator Shoot
         operatorController
             .axisGreaterThan(3, 0.1)
-            .whileTrue(indexAndSpindexCommand
-                .alongWith(
-                    Commands.repeatingSequence(
-                        intakeSubsystem.jitterIntakeUp(),
-                        intakeSubsystem.jitterIntakeDown()
-                    )
-                )
-            )
-            .onFalse(
+            .whileTrue(repeatJidderCommand);
+            /*.onFalse(
                 Commands.runOnce(
                     ()->intakeCommand.end(true)
                 )
-            );
+            );*/
 
         //Turret scan
         operatorController.axisGreaterThan(2, 0.1).toggleOnTrue(turretScanYaw);
