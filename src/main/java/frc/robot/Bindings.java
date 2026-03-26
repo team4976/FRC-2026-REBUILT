@@ -87,10 +87,21 @@ public class Bindings {
         operatorController.a().toggleOnTrue(flywheelCommand);
 
         //Operator Shoot
-        operatorController.axisGreaterThan(3, 0.1).whileTrue(indexAndSpindexCommand
-        .alongWith(Commands.repeatingSequence(intakeSubsystem.jitterIntakeUp(), 
-        (intakeSubsystem.jitterIntakeDown()))
-        )).onFalse(Commands.runOnce(()->intakeCommand.end(true)));
+        operatorController
+            .axisGreaterThan(3, 0.1)
+            .whileTrue(indexAndSpindexCommand
+                .alongWith(
+                    Commands.repeatingSequence(
+                        intakeSubsystem.jitterIntakeUp(),
+                        intakeSubsystem.jitterIntakeDown()
+                    )
+                )
+            )
+            .onFalse(
+                Commands.runOnce(
+                    ()->intakeCommand.end(true)
+                )
+            );
 
         //Turret scan
         operatorController.axisGreaterThan(2, 0.1).toggleOnTrue(turretScanYaw);
