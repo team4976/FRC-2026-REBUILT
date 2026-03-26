@@ -48,7 +48,7 @@ public class TwoCycleRight extends SequentialCommandGroup {
         
         addCommands(
             new PrintCommand("Two Cycle Right Started"),
-            new IntakeCommand(intakeSubsystem, false),
+            Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
             new WaitCommand(0.5),
             OneCycleRight,
             Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),

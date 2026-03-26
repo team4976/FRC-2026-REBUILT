@@ -47,7 +47,7 @@ public class OneandHalfCycleLeft extends SequentialCommandGroup {
         
         addCommands(
             new PrintCommand("One and a Half Cycle Left Started"),
-            new IntakeCommand(intakeSubsystem, false),
+            Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
             new WaitCommand(0.5),
             OneCycleLeft,
             Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
