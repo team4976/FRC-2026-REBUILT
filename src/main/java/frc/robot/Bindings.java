@@ -91,9 +91,7 @@ public class Bindings {
         //operatorController.a().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
         operatorController.a().toggleOnTrue(flywheelCommand);
         
-        //indexAndSpindexCommand.alongWith();
         //Operator Shoot
-        
         operatorController.axisGreaterThan(3, 0.1).whileTrue(indexAndSpindexCommand);
 
         //Turret scan
