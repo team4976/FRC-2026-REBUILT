@@ -26,7 +26,7 @@ public class AutoIndexAndSpindexCommand extends Command{
         InSSubsystem.moveFeeder(speed);
         currentIntakeSpeed = intakeSubsystem.currentIntakeSpeed;
         if (flywheelSubsystem.shooterMotorLeader.getMotorVoltage().getValueAsDouble() > 0) {
-            intakeSubsystem.runIntakeMotor(.95);
+            intakeSubsystem.runIntakeMotor(-0.95);
         }
     }
     
