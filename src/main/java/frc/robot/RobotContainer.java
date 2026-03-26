@@ -77,9 +77,11 @@ public class RobotContainer {
     //Vision Objects, may be good idea to merge into one class and just have dif objects
     private final PhotonVision leftBackCam = new PhotonVision("leftBackCam", logger, drivetrain, leftBackCamTransform3d);
     private final PhotonVision rightBackCam = new PhotonVision("rightBackCam", logger, drivetrain, rightBackCamTransform3d);
+    private final PhotonVision turretCam = new PhotonVision("testingCamera", logger, drivetrain, turretCamTransform);
 
     private final UpdateOdometry updateOdometryRight = new UpdateOdometry(drivetrain, rightBackCam);
     private final UpdateOdometry updateOdometryLeft = new UpdateOdometry(drivetrain, leftBackCam);
+    private final UpdateOdometry updateOdometryTurret = new UpdateOdometry(drivetrain, turretCam);
 
     //Hub Object, use to get info on hub distance and angle
     private final UpdateHubInfo updateHubInfo = new UpdateHubInfo(drivetrain);
@@ -119,7 +121,7 @@ public class RobotContainer {
     public AlignedShotCommand alignedShotCommand = new AlignedShotCommand(flywheelSubsystem, hoodSubsystem);
     public ReverseIntake reverseIntake = new ReverseIntake(intakeSubsystem);
     //elastic/smartdashboard intialization 
-    private ElasticData elasticData = new ElasticData(logger, leftBackCam, rightBackCam, allSubsystemsList, drivetrain);
+    private ElasticData elasticData = new ElasticData(logger, leftBackCam, turretCam, allSubsystemsList, drivetrain);
 
     public Bindings bindings;
 

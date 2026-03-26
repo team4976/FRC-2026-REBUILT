@@ -292,7 +292,7 @@ public class ElasticData extends SubsystemBase{
                 }
             } catch (Exception e) {
              //this prevents the code from crashing if one string is formatted weirdly
-             System.out.println("Error making motor string: " + motorInfo);
+             //System.out.println("Error making motor string: " + motorInfo);
             }
         }
 

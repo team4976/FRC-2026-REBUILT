@@ -50,8 +50,8 @@ public class FlywheelCommand extends Command{
         //adds the flywheel speeds then spinds the flywheel
         totalFlywheelSpeed = manualFlywheelSpeed + autoFlywheelSpeed;
         flywheelSubsystem.spinFlywheel(totalFlywheelSpeed);
-        System.out.println("manual flywheel speed:"  + manualFlywheelSpeed);
-        System.out.println("total flywheel speed" + totalFlywheelSpeed);
+        //System.out.println("manual flywheel speed:"  + manualFlywheelSpeed);
+        //System.out.println("total flywheel speed" + totalFlywheelSpeed);
     }
 
     @Override

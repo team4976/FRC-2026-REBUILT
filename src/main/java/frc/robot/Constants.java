@@ -71,7 +71,7 @@ public final class Constants {
 
   public static final int kDriverControllerPort = 0;
   public static final int LEFT_LEADER_ID = 1;
-  public static final double turretScanVoltage = 0.8;
+  public static final double turretScanVoltage = 2;
   public static final double turretManualVoltage = 1.5; //2
   public static double yaw;
   public static final double targetYaw = 0.0;
@@ -92,10 +92,12 @@ public final class Constants {
   public static final double maxAcceptableAmbiguity = 0.1;
   public static final double maxAcceptableDistance = 4;
 
+  public static double TurretCamYaw;
+
 
   public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
-  public static final Transform3d leftBackCamTransform3d = new Transform3d(new Translation3d(-0.314325, 0.314325, 0.635), new Rotation3d(0, Math.toRadians(30), Math.toRadians(135)));
-  public static final Transform3d rightBackCamTransform3d = new Transform3d(new Translation3d(-0.314325, -0.314325, 0.635), new Rotation3d(0, Math.toRadians(30), Math.toRadians(-135)));
-  public static final Transform3d backCamTransform3d = new Transform3d(new Translation3d(0.0, 0.0, 0.635), new Rotation3d(0, 0, 0));
+  public static final Transform3d leftBackCamTransform3d = new Transform3d(new Translation3d(-0.314325, 0.314325, 0.1524), new Rotation3d(0, Math.toRadians(-30), Math.toRadians(150)));
+  public static final Transform3d rightBackCamTransform3d = new Transform3d(new Translation3d(-0.314325, -0.314325, 0.1524), new Rotation3d(0, Math.toRadians(-30), Math.toRadians(-150)));
+  public static final Transform3d turretCamTransform = new Transform3d(new Translation3d(0.0762, -0.1238, 0.52), new Rotation3d(0, Math.toRadians(-30), TurretCamYaw));
   public static final double intakeSpeed = 0.70;
 }

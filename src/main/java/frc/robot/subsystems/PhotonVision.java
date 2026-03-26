@@ -22,7 +22,7 @@ public class PhotonVision extends SubsystemBase{
 
     public BooleanSupplier AutoShootFlag = ()->{
             boolean hasVaildTarget = ((turretTargetAngle-turretAngle) < 2.5 && (turretTargetAngle-turretAngle) > -2.5);
-            System.out.println("Has Vaild Target: " + hasVaildTarget);
+          //  System.out.println("Has Vaild Target: " + hasVaildTarget);
             return hasVaildTarget;
          };
 

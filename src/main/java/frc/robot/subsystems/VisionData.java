@@ -66,16 +66,17 @@ public class VisionData{
         this.swerve = swerve;
         this.cameraName = cameraName;
         transform3d = camOffsets;
-        System.out.println(cameraName);
+       // System.out.println(cameraName);
 
     }
 
     //called at the top of the periodic in PhotonVision, keeps the camera frame used uniform.
     //also updates the Drive Velocities and the turrret distance and angle by calling the method but doesnt use the returned value.
     public void update() {
+        try{
         field2dSwerve.setRobotPose(logger.driveState.Pose);
         results = camera.getAllUnreadResults();
-        System.out.println(results.toString());
+       // System.out.println(results.toString());
         if (!results.isEmpty()) {
             latestResult = results.get(results.size() - 1);
         }
@@ -83,6 +84,7 @@ public class VisionData{
         DriveVelocityX = logger.driveState.Speeds.vxMetersPerSecond;
         DriveVelocityY = logger.driveState.Speeds.vyMetersPerSecond;
         }
+        }catch(Exception e){}
     }
     
     //gets the abiguity
@@ -124,7 +126,7 @@ public class VisionData{
     //returns the pitch of a desired target if that target is seen by the camera.
     public OptionalDouble getTargetPitch(int tagID){
         if(latestResult != null && latestResult.hasTargets()){
-            System.out.println("hasTarget");
+           // System.out.println("hasTarget");
             for (var target : latestResult.getTargets()){
                 if (target.getFiducialId() == tagID){
                     return OptionalDouble.of(target.getPitch());
@@ -195,7 +197,7 @@ public class VisionData{
      */
     public Optional<EstimatedRobotPose> getRobotPoseVision() {
         if(results == null || results.isEmpty()){
-            System.err.println("NOT GOOD");
+            //System.err.println("NOT GOOD");
             return Optional.empty();
         }
 

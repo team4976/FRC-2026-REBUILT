@@ -34,9 +34,9 @@ public class UpdateOdometry extends SubsystemBase {
     public void periodic() {
         targets = vision.getTargets();
         numOfTags = vision.getIDs().size();
-        System.out.println(vision.vision.cameraName);
+        //System.out.println(vision.vision.cameraName);
         updateOdometryWithVision(vision);
-        System.err.println("periodic working in updateOdometry");
+        //System.err.println("periodic working in updateOdometry");
     }
 
     public void updateOdometryWithVision(PhotonVision vision){
@@ -64,7 +64,7 @@ public class UpdateOdometry extends SubsystemBase {
         if(!targets.isEmpty()){ 
             distanceToTag = vision.getDistance();
         }
-        System.err.println("made it past !targets.isEmpty");
+        ///System.err.println("made it past !targets.isEmpty");
 
         // if bot is disabled reset the pose to a position you get off of april tags
         if(DriverStation.isDisabled()) {
@@ -76,21 +76,21 @@ public class UpdateOdometry extends SubsystemBase {
             // Use the multi-target pose for reliable vision poses
             if (numOfTags > 1) {
                 swerve.addVisionMeasurement(robotPos, timeStamp);
-                System.err.println(" 2 tags seen");
+            //    System.err.println(" 2 tags seen");
             } else {
                 //qualifying checks for poses gotten from a single apriltag
                 if ((Math.abs(tagAmbiguity) < Constants.maxAcceptableAmbiguity) && (numOfTags > 0) 
                     && (distanceToTag < Constants.maxAcceptableDistance)) {
                         swerve.addVisionMeasurement(robotPos, timeStamp); 
-                        System.err.println("1 tag seen");
+          //              System.err.println("1 tag seen");
                 }
             }
             
         }
         double endTime = System.currentTimeMillis();
 
-        System.out.println(startTime);
-        System.out.println(endTime);
+        //System.out.println(startTime);
+       // System.out.println(endTime);
 
     }
 }
