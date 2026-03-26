@@ -154,8 +154,7 @@ public class RobotContainer {
         teleopInit();
 
         elasticData.autonomousInit();
-
-        String value = elasticData.autoChooser.getSelected()[0];
+        String value = elasticData.autoChooser.getSelected()[elasticData.autoChooser.getSelected().length -1];
         switch(value){
             case "1 Cycle - Right":
                 selectedAuto = autos.OneCycleRight;

@@ -58,6 +58,7 @@ public class TwoCycleRight extends SequentialCommandGroup {
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem, intakeSubsystem),
             new FlywheelStop(flywheelSubsystem, visionSubsystem),
             OneandHalfCycleRight,
+            new PrintCommand("TEST A"),
             Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
