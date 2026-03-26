@@ -65,7 +65,19 @@ public class Bindings {
 
         //Regular Shooting
         driverController.axisGreaterThan(3, 0.1).whileTrue(indexAndSpindexCommand);
+        
+        Command repeatJidderCommand = 
+            Commands.repeatingSequence(
+                Commands.deadline(Commands.waitSeconds(0.1), intakeSubsystem.intakeUpCommand()),
+                Commands.deadline(Commands.waitSeconds(0.1), intakeSubsystem.intakeDownCommand())           
+            );
 
+        driverController.rightBumper().whileTrue(repeatJidderCommand).onFalse(
+                Commands.runOnce(
+                    ()->intakeCommand.end(true)
+                )
+            );
+        
         //Intake
         driverController.x().onTrue(Commands.deadline(Commands.waitSeconds(0.2), intakeCommand));
     }
@@ -78,21 +90,11 @@ public class Bindings {
         //Spin up flywheels
         //operatorController.a().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
         operatorController.a().toggleOnTrue(flywheelCommand);
-        Command repeatJidderCommand = //indexAndSpindexCommand.alongWith(
-            Commands.repeatingSequence(
-                Commands.deadline(Commands.waitSeconds(0.1), intakeSubsystem.intakeUpCommand()),
-                Commands.deadline(Commands.waitSeconds(0.1), intakeSubsystem.intakeDownCommand())           
-            );
-        //);
+        
+        //indexAndSpindexCommand.alongWith();
         //Operator Shoot
-        operatorController
-            .axisGreaterThan(3, 0.1)
-            .whileTrue(repeatJidderCommand);
-            /*.onFalse(
-                Commands.runOnce(
-                    ()->intakeCommand.end(true)
-                )
-            );*/
+        
+        operatorController.axisGreaterThan(3, 0.1).whileTrue(indexAndSpindexCommand);
 
         //Turret scan
         operatorController.axisGreaterThan(2, 0.1).toggleOnTrue(turretScanYaw);
