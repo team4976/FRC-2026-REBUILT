@@ -40,7 +40,7 @@ public class OneCycleLeft extends SequentialCommandGroup {
         
         addCommands(
             new PrintCommand("Neutral Left Start Far Started"),
-            new IntakeCommand(intakeSubsystem, false),
+            new IntakeCommand(intakeSubsystem, false),            
             new WaitCommand(0.5),
             OneCycleLeft,
             Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
