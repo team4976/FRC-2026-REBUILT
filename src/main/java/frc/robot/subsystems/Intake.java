@@ -27,6 +27,8 @@ import frc.robot.Constants;
 
 import static frc.robot.Constants.*;
 
+import java.util.Date;
+
 
 public class Intake extends SubsystemBase {
   public SparkMax intakeMotor; 
@@ -65,24 +67,34 @@ public class Intake extends SubsystemBase {
 
 
   public void toggleIntake(){
-    if (!intakeExtended) {
-      intakeDown();
-      runIntakeMotor(intakeSpeed);
-      Commands.waitSeconds(0.5);
-      intakeArmLeft.set(0);
-      intakeArmRight.set(0);
-      intakeExtended = true;
-    } else if (intakeExtended) {
+    //Commands.deadline(Commands.waitSeconds(0.1), testIntakeCommand);  
+    
+    //intakeDown();
+      //runIntakeMotor(intakeSpeed);
+      //Commands.waitSeconds(0.1).andThen(testIntakeCommand);
+      //intakeExtended = true;
+      /* 
       intakeUp();
-      Commands.waitSeconds(0.5);
-      intakeArmLeft.set(0);
-      intakeArmRight.set(0);
-      intakeExtended = false;
+      Commands.deadline(Commands.waitSeconds(0.2), stopIntakeCommand());
       Commands.waitSeconds(1);
-      stopIntakeMotor();
-    }
+       */
+
   }
-             
+
+  Command testCommand (){
+    stopIntake();
+    stopIntakeMotor();
+    return Commands.print("DONE");
+  }
+/* 
+    public Command jitterIntakeUp(){
+        return Commands.deadline(Commands.waitSeconds(0.1), intakeUpCommand());
+    }
+
+    public Command jitterIntakeDown(){
+        return Commands.deadline(Commands.waitSeconds(0.1), intakeDownCommand());
+    }
+     */        
   public void stopIntakeMotor() {
     intakeMotor.set(0); 
     currentIntakeSpeed = 0;
@@ -92,15 +104,30 @@ public class Intake extends SubsystemBase {
     intakeMotor.set(speed);
     currentIntakeSpeed = speed;
   }
+  //Stops the intake arms motors
+  public void stopIntake(){
+    System.out.println("DONE");
+    intakeArmLeft.set(0);
+    intakeArmRight.set(0);
+  }
 
   public void intakeDown(){
-    intakeArmLeft.set(-0.5);
-    intakeArmRight.set(-0.5);
+    intakeArmLeft.set(-0.25);
+    intakeArmRight.set(-0.25);
   }
 
   public void intakeUp(){
-    intakeArmLeft.set(0.5);
-    intakeArmRight.set(0.5);
+    intakeArmLeft.set(0.25);
+    intakeArmRight.set(0.25);
+  }
+
+  public Command stopIntakeCommand(){
+    return runOnce(()->{
+        System.out.println("TEST");
+           stopIntake();
+    }
+ 
+    );
   }
 
   public Command intakeDownCommand(){

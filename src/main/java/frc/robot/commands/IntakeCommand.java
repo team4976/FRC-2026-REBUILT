@@ -35,6 +35,9 @@ public class IntakeCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {  
+    intake.runIntakeMotor(intakeSpeed);
+    intake.intakeDown();
+    /*
     endCommand = false; 
     startingIntakeSpeed = intake.currentIntakeSpeed;
 
@@ -43,7 +46,7 @@ public class IntakeCommand extends Command {
     } else if (!isIntakeReversed) {
       intake.toggleIntake();
       endCommand = true; 
-    }
+    } */
 
   }
 
@@ -55,9 +58,10 @@ public class IntakeCommand extends Command {
 
   @Override
   public void end(boolean interrupted) {  
-    if (isIntakeReversed) {
+    intake.stopIntake();
+    /*if (isIntakeReversed) {
       intake.runIntakeMotor(startingIntakeSpeed);
-    }
+    }*/
   }
 
 

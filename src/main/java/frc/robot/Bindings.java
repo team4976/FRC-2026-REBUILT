@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.commands.AlignedShotCommand;
 import frc.robot.commands.FlywheelCommand;
@@ -10,6 +11,7 @@ import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.TurretScan;
 import frc.robot.commands.TurretScanYaw;
 import frc.robot.subsystems.Autos;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.JitterSubsystem;
 
 import static frc.robot.Constants.*;
@@ -29,10 +31,11 @@ public class Bindings {
     public Autos autos;
     public IntakeCommand reverseIntake;
     public JitterSubsystem jitterSubsystem;
+    public Intake intakeSubsystem;
 
     public Bindings(IndexAndSpindexCommand indexAndSpindexCommand, IndexAndSpindexCommand reverseIndexer, IntakeCommand intakecommand, 
     FlywheelCommand flywheelCommand, HoodCommand hoodCommand, HoodCommand manualHoodUp, HoodCommand manualHoodDown, TurretScanYaw turretScanYaw, 
-    TurretScan turretScan, AlignedShotCommand alignedShotCommand, Autos autos, IntakeCommand reverseIntake, JitterSubsystem jitterSubsystem){
+    TurretScan turretScan, AlignedShotCommand alignedShotCommand, Autos autos, IntakeCommand reverseIntake, JitterSubsystem jitterSubsystem, Intake intakeSubsystem){
         this.indexAndSpindexCommand = indexAndSpindexCommand;
         this.reverseIndexer = reverseIndexer;
         this.intakeCommand = intakecommand;
@@ -48,6 +51,7 @@ public class Bindings {
         this.autos = autos;
         this.reverseIntake = reverseIntake;
         this.jitterSubsystem = jitterSubsystem;
+        this.intakeSubsystem = intakeSubsystem;
     }
 
      public void driverConfigureBindings(){
@@ -63,7 +67,14 @@ public class Bindings {
         driverController.axisGreaterThan(3, 0.1).whileTrue(indexAndSpindexCommand);
 
         //Intake
-        driverController.x().onTrue(intakeCommand);
+        driverController.x().onTrue(Commands.deadline(Commands.waitSeconds(0.2), intakeCommand));
+
+        //Intake Jitter
+        /*driverController.start().whileTrue(
+            Commands.repeatingSequence(intakeSubsystem.jitterIntakeUp(), 
+            (intakeSubsystem.jitterIntakeDown())
+            )
+        );*/
     }
 
     public void operatorConfigureBindings(){

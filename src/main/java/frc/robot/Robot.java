@@ -16,6 +16,7 @@ public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
 
     private final RobotContainer m_robotContainer;
+    private boolean autoRan = false;
 
     /* log and replay timestamp and Joystick data */
     private final HootAutoReplay m_timeAndJoystickReplay = new HootAutoReplay()
@@ -48,7 +49,9 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        
+
+        autoRan = true;
+
         m_robotContainer.autoInit();
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
@@ -71,6 +74,11 @@ public class Robot extends TimedRobot {
             CommandScheduler.getInstance().cancel(m_autonomousCommand);
         }
         m_robotContainer.teleopInit();
+
+        if (autoRan){
+            return;
+        }
+        m_robotContainer.intakeSubsystem.stopIntakeMotor();
     }
 
     @Override

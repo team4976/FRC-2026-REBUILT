@@ -48,9 +48,9 @@ public class RobotContainer {
     private final PhotonVision m_turretvision = new PhotonVision("testingCamera", logger);
 
     //Subsystem Objects/Subsystem Initialization
-    private final Intake intakeSubsystem = new Intake();
-    private final ClimberSubsystem climber = new ClimberSubsystem();
-    private final TurretSubsystem turretMovement = new TurretSubsystem();
+    public final Intake intakeSubsystem = new Intake();
+    public final ClimberSubsystem climber = new ClimberSubsystem();
+    public final TurretSubsystem turretMovement = new TurretSubsystem();
     public final FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
     public final HoodSubsystem hoodSubsystem = new HoodSubsystem();
     public final IndexAndSpindexSubsystem indexAndSpindexSubsystem = new IndexAndSpindexSubsystem(hoodSubsystem, flywheelSubsystem);
@@ -99,7 +99,7 @@ public class RobotContainer {
         autos =  new Autos(intakeSubsystem,vision,flywheelSubsystem,indexAndSpindexSubsystem,turretMovement);
 
         bindings = new Bindings(indexAndSpindexCommand, reverseIndexer, intakeCommand, flywheelCommand, hoodCommand, manualHoodUp, manualHoodDown, turretScanYaw, 
-        turretScan, alignedShotCommand, autos, reverseIntake, jitterSubsystem);
+        turretScan, alignedShotCommand, autos, reverseIntake, jitterSubsystem, intakeSubsystem);
 
         configureBindings();
 

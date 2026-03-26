@@ -32,7 +32,7 @@ public class IndexAndSpindexCommand extends Command{
         } else {
             if (flywheelSubsystem.shooterMotorLeader.getMotorVoltage().getValueAsDouble() > 0) {
               InSSubsystem.moveFeeder(speed);
-              intakeSubsystem.runIntakeMotor(.95);
+              intakeSubsystem.runIntakeMotor(-0.90);
             }
         }   
 
