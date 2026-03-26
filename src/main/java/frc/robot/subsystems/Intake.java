@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -67,6 +68,7 @@ public class Intake extends SubsystemBase {
 
 
   public void toggleIntake(){
+    //CommandScheduler.getInstance().schedule(Commands);
     //Commands.deadline(Commands.waitSeconds(0.1), testIntakeCommand);  
     
     //intakeDown();
@@ -86,15 +88,15 @@ public class Intake extends SubsystemBase {
     stopIntakeMotor();
     return Commands.print("DONE");
   }
-/* 
+ 
     public Command jitterIntakeUp(){
-        return Commands.deadline(Commands.waitSeconds(0.1), intakeUpCommand());
+        return Commands.deadline(Commands.waitSeconds(0.15), intakeUpCommand());
     }
 
     public Command jitterIntakeDown(){
         return Commands.deadline(Commands.waitSeconds(0.1), intakeDownCommand());
     }
-     */        
+             
   public void stopIntakeMotor() {
     intakeMotor.set(0); 
     currentIntakeSpeed = 0;
@@ -121,6 +123,11 @@ public class Intake extends SubsystemBase {
     intakeArmRight.set(0.25);
   }
 
+  public void intakeUpMoreSpeed(){
+    intakeArmLeft.set(0.60);
+    intakeArmRight.set(0.60);
+  }
+
   public Command stopIntakeCommand(){
     return runOnce(()->{
         System.out.println("TEST");
@@ -138,7 +145,7 @@ public class Intake extends SubsystemBase {
 
   public Command intakeUpCommand(){
     return runOnce(()-> 
-      intakeUp()
+      intakeUpMoreSpeed()
     );
   }
 

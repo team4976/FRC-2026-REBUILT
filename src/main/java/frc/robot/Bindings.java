@@ -70,11 +70,11 @@ public class Bindings {
         driverController.x().onTrue(Commands.deadline(Commands.waitSeconds(0.2), intakeCommand));
 
         //Intake Jitter
-        /*driverController.start().whileTrue(
+        driverController.start().whileTrue(
             Commands.repeatingSequence(intakeSubsystem.jitterIntakeUp(), 
-            (intakeSubsystem.jitterIntakeDown())
-            )
-        );*/
+            (intakeSubsystem.jitterIntakeDown()))
+        ).onFalse(Commands.runOnce(()->intakeCommand.end(true)));
+        
     }
 
     public void operatorConfigureBindings(){
