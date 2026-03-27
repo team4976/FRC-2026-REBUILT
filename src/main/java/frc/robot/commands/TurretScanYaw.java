@@ -3,6 +3,7 @@
 package frc.robot.commands;
 import java.util.OptionalDouble;
 
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -51,6 +52,7 @@ public class TurretScanYaw extends Command {
         hasTargets = m_turretVision.targetVisible();
         // set the yaw to what the yaw of the april tag is
 
+        operatorController.setRumble(RumbleType.kBothRumble, 0.2);
 
         if(hasTargets == false || stopLockedOn == true){
             stopLockedOn = false;
@@ -107,6 +109,7 @@ public class TurretScanYaw extends Command {
     @Override
     public void end(boolean interrupted) {
         m_shooter.stopTurn();
+        operatorController.setRumble(RumbleType.kBothRumble, 0.0);
         //System.err.println(Constants.turretManualVoltage);
     }
 

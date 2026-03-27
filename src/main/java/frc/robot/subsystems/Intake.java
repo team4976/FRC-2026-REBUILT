@@ -149,9 +149,14 @@ public class Intake extends SubsystemBase {
   }
 
   public Command intakeUpCommand(){
-    return runOnce(()-> 
+    return Commands.runOnce(()->
       intakeUpJitter()
     );
+    /* 
+    runOnce(()-> 
+      intakeUpJitter()
+    );
+    */
   }
 
   public void intakeDownEncoder(){

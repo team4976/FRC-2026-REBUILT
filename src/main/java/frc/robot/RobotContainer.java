@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.Jitter;
 import frc.robot.subsystems.Autos;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElasticData;
@@ -96,7 +97,7 @@ public class RobotContainer {
     public RobotContainer() {
         drivetrain.configureAutoBuilder();
 
-        autos =  new Autos(intakeSubsystem, vision, flywheelSubsystem, indexAndSpindexSubsystem, turretMovement, repeatJidderCommand);
+        autos =  new Autos(intakeSubsystem, vision, flywheelSubsystem, indexAndSpindexSubsystem, turretMovement);
 
         bindings = new Bindings(indexAndSpindexCommand, reverseIndexer, intakeCommand, flywheelCommand, hoodCommand, manualHoodUp, manualHoodDown, turretScanYaw, 
         turretScan, alignedShotCommand, autos, reverseIntake, jitterSubsystem, intakeSubsystem, repeatJidderCommand);
@@ -132,6 +133,14 @@ public class RobotContainer {
             Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeUpCommand()),
             Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeDownCommand())           
         );
+        
+    
+    public Command repeatJidderCommand2(){
+        //Commands.repeatingSequence(new Jitter());
+        
+        return repeatJidderCommand;
+
+    }
 
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
