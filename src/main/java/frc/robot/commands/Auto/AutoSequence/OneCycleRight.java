@@ -35,7 +35,7 @@ public class OneCycleRight extends SequentialCommandGroup {
         Command controlledRepeatJidder = 
             Commands.repeatingSequence(
                 Commands.deadline(Commands.waitSeconds(2), repeatJidderCommand),
-                Commands.waitSeconds(2)
+                Commands.waitSeconds(1)
             );
         
         addCommands(
@@ -46,7 +46,7 @@ public class OneCycleRight extends SequentialCommandGroup {
             Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
-            controlledRepeatJidder,
+            Commands.deadline(Commands.waitSeconds(6), controlledRepeatJidder),
             new WaitCommand(6)
             //new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem),
             //new IntakeRetract(intakeSubsystem),
