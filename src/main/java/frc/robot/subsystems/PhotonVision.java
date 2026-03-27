@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalDouble;
 import java.util.function.BooleanSupplier;
@@ -14,9 +15,9 @@ public class PhotonVision extends SubsystemBase{
     public Double turretAngle = 0.0;
 
     public BooleanSupplier AutoShootFlag = ()->{
-            boolean hasVaildTarget = ((turretTargetAngle-turretAngle) < 2.5 && (turretTargetAngle-turretAngle) > -2.5);
-            return hasVaildTarget;
-         };
+        boolean hasVaildTarget = ((turretTargetAngle-turretAngle) < 2.5 && (turretTargetAngle-turretAngle) > -2.5);
+        return hasVaildTarget;
+    };
 
     public PhotonVision(String cameraName, Telemetry logger){
         vision = new VisionData(cameraName, logger);
@@ -29,10 +30,6 @@ public class PhotonVision extends SubsystemBase{
 
     public double getAmbiguity(){
         return vision.getAmbiguity();
-    }
-
-    public boolean hasTarget(int id) {
-        return vision.hasTarget(id);
     }
 
     public boolean targetVisible() {
@@ -51,8 +48,8 @@ public class PhotonVision extends SubsystemBase{
         return vision.getIDs();
     }
 
-    public OptionalDouble getTargetYaw(int id) {
-        return vision.getTargetYaw(id);
+    public OptionalDouble getTargetYaw(ArrayList<Integer> IDs) {
+        return vision.getTargetYaw(IDs);
     }
 
     public OptionalDouble getTargetPitch(int id) {

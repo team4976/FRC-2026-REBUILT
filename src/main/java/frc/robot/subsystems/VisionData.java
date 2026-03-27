@@ -43,6 +43,7 @@ public class VisionData{
     public double turretTargetAngle;
     public double hubId;
     Field2d field2d = new Field2d();
+    List<Double> idYaws;
 
 
     //the constructor, having the camera as a parameter--
@@ -112,13 +113,16 @@ public class VisionData{
     }
 
     //returns the yaw of a desired target if that target is seen by the camera.
-    public OptionalDouble getTargetYaw(int tagID){
+    public OptionalDouble getTargetYaw(ArrayList<Integer> tagIDs){
+        idYaws.clear();
         if(latestResult != null && latestResult.hasTargets()){
             for (var target : latestResult.getTargets()){
-                if (target.getFiducialId() == tagID){
-                    return OptionalDouble.of(target.getYaw());
-                }
+                for (var tagID : tagIDs)
+                    if (target.getFiducialId() == tagID){
+                        idYaws.add(target.getYaw());
+                    }
             }
+            return OptionalDouble.of(idYaws.get(0) + idYaws.get(1));
         }
         return OptionalDouble.empty();
     }
@@ -159,11 +163,6 @@ public class VisionData{
     //returns a boolean for if the camera sees a target.
     public boolean targetVisible(){
         return latestResult != null && latestResult.hasTargets();
-    }
-
-    //returns a boolean for if the camera sees a desired target.
-    public boolean hasTarget(int tagID){
-        return getTargetYaw(tagID).isPresent();
     }
 
     //gets and sets robot pose and returns a field with the modified robot pose, may be better to just modify the pose of a preexisting field but this works too

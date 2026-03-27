@@ -76,6 +76,8 @@ public class Bindings {
         
         //Intake
         driverController.x().onTrue(Commands.deadline(Commands.waitSeconds(0.2), intakeCommand));
+
+        driverController.y().onTrue(intakeSubsystem.stopIntakeMotorCommand());
     }
 
     public void operatorConfigureBindings(){

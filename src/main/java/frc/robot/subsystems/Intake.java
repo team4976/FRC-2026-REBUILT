@@ -136,9 +136,15 @@ public class Intake extends SubsystemBase {
   public Command stopIntakeCommand(){
     return runOnce(()->{
         System.out.println("TEST");
-           stopIntake();
+        stopIntake();
     }
  
+    );
+  }
+
+  public Command stopIntakeMotorCommand(){
+    return runOnce(()-> 
+      stopIntakeMotor()
     );
   }
 
