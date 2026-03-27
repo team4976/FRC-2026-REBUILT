@@ -96,7 +96,7 @@ public class RobotContainer {
     public RobotContainer() {
         drivetrain.configureAutoBuilder();
 
-        autos =  new Autos(intakeSubsystem, vision, flywheelSubsystem, indexAndSpindexSubsystem, turretMovement, repeatJidderCommand);
+        autos =  new Autos(intakeSubsystem, vision, flywheelSubsystem, indexAndSpindexSubsystem, turretMovement);
 
         bindings = new Bindings(indexAndSpindexCommand, reverseIndexer, intakeCommand, flywheelCommand, hoodCommand, manualHoodUp, manualHoodDown, turretScanYaw, 
         turretScan, alignedShotCommand, autos, reverseIntake, jitterSubsystem, intakeSubsystem, repeatJidderCommand);

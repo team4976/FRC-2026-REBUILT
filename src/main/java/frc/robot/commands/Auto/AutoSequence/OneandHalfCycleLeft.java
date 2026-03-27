@@ -28,12 +28,6 @@ import frc.robot.subsystems.TurretSubsystem;
 
 public class OneandHalfCycleLeft extends SequentialCommandGroup {
 
-    PhotonVision visionSubsystem;
-    FlywheelSubsystem flywheelSubsystem;
-    Intake intakeSubsystem;
-    IndexAndSpindexSubsystem indxerSubsystem;
-    TurretSubsystem turretMovementSubsystem;
-
     public OneandHalfCycleLeft(
         PhotonVision visionSubsystem,
         FlywheelSubsystem flywheelSubsystem,
@@ -44,6 +38,7 @@ public class OneandHalfCycleLeft extends SequentialCommandGroup {
         
         Command OneCycleLeft = AutoBuilder.buildAuto("1 Cycle - Left");
         Command OneandHalfCycleLeft = AutoBuilder.buildAuto("1.5 Cycle - Left"); 
+        
         
         addCommands(
             new PrintCommand("One and a Half Cycle Left Started"),

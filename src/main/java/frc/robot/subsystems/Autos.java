@@ -25,15 +25,13 @@ public class Autos {
     FlywheelSubsystem flywheelSubsystem;
     IndexAndSpindexSubsystem indexAndSpindexSubsystem;
     TurretSubsystem turretMovement;
-    Command repeatJidderCommand;
 
-    public Autos(Intake intakeSubsystem, PhotonVision vision, FlywheelSubsystem flywheelSubsystem,IndexAndSpindexSubsystem indexAndSpindexSubsystem, TurretSubsystem turretMovement, Command repeatJidderCommand ){
+    public Autos(Intake intakeSubsystem, PhotonVision vision, FlywheelSubsystem flywheelSubsystem,IndexAndSpindexSubsystem indexAndSpindexSubsystem, TurretSubsystem turretMovement){
         this.intakeSubsystem = intakeSubsystem;
         this.vision = vision;
         this.flywheelSubsystem = flywheelSubsystem;
         this.indexAndSpindexSubsystem = indexAndSpindexSubsystem;
         this.turretMovement = turretMovement;
-        this.repeatJidderCommand = repeatJidderCommand;
         loadCommands();
     }
 
@@ -48,7 +46,7 @@ public class Autos {
     public Command jitterCommand2;
 
     public void loadCommands(){
-        OneCycleRight = new OneCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement, repeatJidderCommand); 
+        OneCycleRight = new OneCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
         OneCycleLeft = new OneCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
         OneandHalfCycleRight = new OneandHalfCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
         OneandHalfCycleLeft = new OneandHalfCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
