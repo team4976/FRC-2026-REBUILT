@@ -18,6 +18,7 @@ import frc.robot.commands.Auto.FlywheelStart;
 import frc.robot.commands.Auto.FlywheelStop;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.TurretScan;
+import frc.robot.commands.TurretScanYaw;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
 
 import frc.robot.subsystems.FlywheelSubsystem;
@@ -45,7 +46,7 @@ public class OneandHalfCycleLeft extends SequentialCommandGroup {
             Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
             new WaitCommand(0.5),
             OneCycleLeft,
-            Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
+            Commands.deadline(new WaitCommand(1),new TurretScanYaw(visionSubsystem, turretMovementSubsystem)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
             new WaitCommand(6),
