@@ -22,21 +22,21 @@ import frc.robot.subsystems.TurretSubsystem;
 
 public class OneCycleRight extends SequentialCommandGroup {
 
-    PhotonVision visionSubsystem;
-    FlywheelSubsystem flywheelSubsystem;
-    Intake intakeSubsystem;
-    IndexAndSpindexSubsystem indxerSubsystem;
-    TurretSubsystem turretMovementSubsystem;
-
     public OneCycleRight(
         PhotonVision visionSubsystem,
         FlywheelSubsystem flywheelSubsystem,
         Intake intakeSubsystem,
         IndexAndSpindexSubsystem indxerSubsystem,
-        TurretSubsystem turretMovementSubsystem
+        TurretSubsystem turretMovementSubsystem,
+        Command repeatJidderCommand
     ){
         
         Command OneCycleRight = AutoBuilder.buildAuto("1 Cycle - Right");
+        Command controlledRepeatJidder = 
+            Commands.repeatingSequence(
+                Commands.deadline(Commands.waitSeconds(2), repeatJidderCommand),
+                Commands.waitSeconds(2)
+            );
         
         addCommands(
             new PrintCommand("Neutral Right Start Far Started"),
@@ -46,6 +46,7 @@ public class OneCycleRight extends SequentialCommandGroup {
             Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
+            controlledRepeatJidder,
             new WaitCommand(6)
             //new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem),
             //new IntakeRetract(intakeSubsystem),

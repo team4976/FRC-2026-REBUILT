@@ -25,13 +25,15 @@ public class Autos {
     FlywheelSubsystem flywheelSubsystem;
     IndexAndSpindexSubsystem indexAndSpindexSubsystem;
     TurretSubsystem turretMovement;
+    Command repeatJidderCommand;
 
-    public Autos(Intake intakeSubsystem, PhotonVision vision, FlywheelSubsystem flywheelSubsystem,IndexAndSpindexSubsystem indexAndSpindexSubsystem, TurretSubsystem turretMovement){
+    public Autos(Intake intakeSubsystem, PhotonVision vision, FlywheelSubsystem flywheelSubsystem,IndexAndSpindexSubsystem indexAndSpindexSubsystem, TurretSubsystem turretMovement, Command repeatJidderCommand ){
         this.intakeSubsystem = intakeSubsystem;
         this.vision = vision;
         this.flywheelSubsystem = flywheelSubsystem;
         this.indexAndSpindexSubsystem = indexAndSpindexSubsystem;
         this.turretMovement = turretMovement;
+        this.repeatJidderCommand = repeatJidderCommand;
         loadCommands();
     }
 
@@ -46,21 +48,12 @@ public class Autos {
     public Command jitterCommand2;
 
     public void loadCommands(){
-        OneCycleRight = new OneCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
+        OneCycleRight = new OneCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement, repeatJidderCommand); 
         OneCycleLeft = new OneCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
         OneandHalfCycleRight = new OneandHalfCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
         OneandHalfCycleLeft = new OneandHalfCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
         TwoCycleRight = new TwoCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
         TwoCycleLeft = new TwoCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
-        //shootToOutpost = new ShootToOutpost(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
-
-        try{
-            PathPlannerPath jitterPath1 = PathPlannerPath.fromPathFile("Jitter 1");
-                        PathPlannerPath jitterPath2 = PathPlannerPath.fromPathFile("Jitter 2");
-            jitterCommand1 = AutoBuilder.followPath(jitterPath1);
-            jitterCommand2 = AutoBuilder.followPath(jitterPath2);
-
-        }catch(Exception e){}
     }
 }
 
