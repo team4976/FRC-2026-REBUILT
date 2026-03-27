@@ -116,13 +116,15 @@ public class Bindings {
         //Inside of the flywheel subystemcs periodic()
 
         //Hood
-        operatorController.povUp().whileTrue(manualHoodUp);
-        operatorController.povDown().whileTrue(manualHoodDown);
+        //operatorController.povUp().whileTrue(manualHoodUp);
+        //operatorController.povDown().whileTrue(manualHoodDown);
+
+
 
         //Indexer
         operatorController.b().whileTrue(reverseIndexer);
 
         //Reverse Intake
-        operatorController.start().whileTrue(reverseIntake);
+        operatorController.povDown().whileTrue(reverseIntake);
     }
 }
