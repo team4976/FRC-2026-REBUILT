@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Auto.FlywheelStart;
 import frc.robot.commands.Auto.FlywheelStop;
+import frc.robot.RobotContainer;
 import frc.robot.commands.TurretScan;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
 import frc.robot.commands.Auto.AutoSequence.OneCycleLeft;
@@ -19,19 +20,21 @@ import frc.robot.commands.Auto.AutoSequence.TwoCycleLeft;
 //import frc.robot.commands.Auto.AutoSequence.ShootToOutpost;
 
 public class Autos {
-
+    
+    RobotContainer robotContainer;
     Intake intakeSubsystem;
     PhotonVision vision;
     FlywheelSubsystem flywheelSubsystem;
     IndexAndSpindexSubsystem indexAndSpindexSubsystem;
-    TurretSubsystem turretMovement;
+    TurretSubsystem turretSubsystem;
 
-    public Autos(Intake intakeSubsystem, PhotonVision vision, FlywheelSubsystem flywheelSubsystem,IndexAndSpindexSubsystem indexAndSpindexSubsystem, TurretSubsystem turretMovement){
-        this.intakeSubsystem = intakeSubsystem;
-        this.vision = vision;
-        this.flywheelSubsystem = flywheelSubsystem;
-        this.indexAndSpindexSubsystem = indexAndSpindexSubsystem;
-        this.turretMovement = turretMovement;
+    public Autos(RobotContainer robotContainer){
+        this.robotContainer = robotContainer;
+        this.intakeSubsystem = robotContainer.intakeSubsystem;
+        this.vision = robotContainer.vision;
+        this.flywheelSubsystem = robotContainer.flywheelSubsystem;
+        this.indexAndSpindexSubsystem = robotContainer.indexAndSpindexSubsystem;
+        this.turretSubsystem = robotContainer.turretSubsystem;
         loadCommands();
     }
 
@@ -46,20 +49,12 @@ public class Autos {
     public Command jitterCommand2;
 
     public void loadCommands(){
-        OneCycleRight = new OneCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
-        OneCycleLeft = new OneCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
-        OneandHalfCycleRight = new OneandHalfCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
-        OneandHalfCycleLeft = new OneandHalfCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
-        TwoCycleRight = new TwoCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
-        TwoCycleLeft = new TwoCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
-
-        try{
-            PathPlannerPath jitterPath1 = PathPlannerPath.fromPathFile("Jitter 1");
-            PathPlannerPath jitterPath2 = PathPlannerPath.fromPathFile("Jitter 2");
-            jitterCommand1 = AutoBuilder.followPath(jitterPath1);
-            jitterCommand2 = AutoBuilder.followPath(jitterPath2);
-
-        }catch(Exception e){}
+        OneCycleRight = new OneCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretSubsystem); 
+        OneCycleLeft = new OneCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretSubsystem);
+        OneandHalfCycleRight = new OneandHalfCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretSubsystem); 
+        OneandHalfCycleLeft = new OneandHalfCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretSubsystem); 
+        TwoCycleRight = new TwoCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretSubsystem); 
+        TwoCycleLeft = new TwoCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretSubsystem); 
     }
 }
 

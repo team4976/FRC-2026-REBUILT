@@ -43,18 +43,18 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(Constants.MaxSpeed);
 
     //Vision Objects, may be good idea to merge into one class and just have dif objects
-    private final PhotonVision vision = new PhotonVision("testingCamera", logger);
+    public final PhotonVision vision = new PhotonVision("testingCamera", logger);
     private final PhotonVision m_turretvision = new PhotonVision("testingCamera", logger);
 
     //Subsystem Objects/Subsystem Initialization
     public final Intake intakeSubsystem = new Intake();
-    public final TurretSubsystem turretMovement = new TurretSubsystem();
+    public final TurretSubsystem turretSubsystem = new TurretSubsystem();
     public final FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
     public final HoodSubsystem hoodSubsystem = new HoodSubsystem();
     public final IndexAndSpindexSubsystem indexAndSpindexSubsystem = new IndexAndSpindexSubsystem(hoodSubsystem, flywheelSubsystem);
     public final List<Subsystem> allSubsystemsList = List.of(
         intakeSubsystem,
-        turretMovement,
+        turretSubsystem,
         flywheelSubsystem,
         hoodSubsystem,
         indexAndSpindexSubsystem
@@ -73,8 +73,8 @@ public class RobotContainer {
     public HoodCommand hoodCommand = new HoodCommand(hoodSubsystem, m_turretvision, false, 0);
     public HoodCommand manualHoodUp = new HoodCommand(hoodSubsystem, m_turretvision, true, 0.5);
     public HoodCommand manualHoodDown = new HoodCommand(hoodSubsystem, m_turretvision, true, -0.5);
-    public final TurretScan turretScan = new TurretScan(m_turretvision, turretMovement);
-    public final TurretScanYaw turretScanYaw = new TurretScanYaw(m_turretvision, turretMovement);
+    public final TurretScan turretScan = new TurretScan(m_turretvision, turretSubsystem);
+    public final TurretScanYaw turretScanYaw = new TurretScanYaw(m_turretvision, turretSubsystem);
     //public Command hoodAndFlywheel = new ParallelDeadlineGroup(flywheelCommand, hoodCommand);
     public AlignedShotCommand alignedShotCommand = new AlignedShotCommand(flywheelSubsystem, hoodSubsystem);
     //public ReverseIntake reverseIntake = new ReverseIntake(intakeSubsystem);
@@ -93,7 +93,7 @@ public class RobotContainer {
     public RobotContainer() {
         drivetrain.configureAutoBuilder();
 
-        autos =  new Autos(intakeSubsystem,vision,flywheelSubsystem,indexAndSpindexSubsystem,turretMovement);
+        autos =  new Autos(this);
 
         bindings = new Bindings(this);
 
@@ -113,7 +113,7 @@ public class RobotContainer {
         hoodSubsystem.teleopInit();
         indexAndSpindexSubsystem.teleopInit();
         intakeSubsystem.teleopInit();
-        turretMovement.teleopInit();
+        turretSubsystem.teleopInit();
     }
 
     public void getOdometryPose(){

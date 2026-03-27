@@ -22,12 +22,6 @@ import frc.robot.subsystems.TurretSubsystem;
 
 public class OneCycleRight extends SequentialCommandGroup {
 
-    PhotonVision visionSubsystem;
-    FlywheelSubsystem flywheelSubsystem;
-    Intake intakeSubsystem;
-    IndexAndSpindexSubsystem indxerSubsystem;
-    TurretSubsystem turretMovementSubsystem;
-
     public OneCycleRight(
         PhotonVision visionSubsystem,
         FlywheelSubsystem flywheelSubsystem,
