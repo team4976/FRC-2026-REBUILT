@@ -68,8 +68,8 @@ public class Bindings {
         
         Command repeatJidderCommand = 
             Commands.repeatingSequence(
-                Commands.deadline(Commands.waitSeconds(0.1), intakeSubsystem.intakeUpCommand()),
-                Commands.deadline(Commands.waitSeconds(0.1), intakeSubsystem.intakeDownCommand())           
+                Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeUpCommand()),
+                Commands.deadline(Commands.waitSeconds(0.20, intakeSubsystem.intakeDownCommand())           
             );
 
         driverController.rightBumper().whileTrue(repeatJidderCommand).onFalse(

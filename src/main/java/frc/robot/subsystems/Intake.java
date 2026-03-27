@@ -123,9 +123,14 @@ public class Intake extends SubsystemBase {
     intakeArmRight.set(0.5);
   }
 
-  public void intakeUpMoreSpeed(){
-    intakeArmLeft.set(0.60);
-    intakeArmRight.set(0.60);
+  public void intakeUpJitter(){
+    intakeArmLeft.set(0.50);
+    intakeArmRight.set(0.50);
+  }
+
+  public void intakeDownJitter(){
+    intakeArmLeft.set(-0.40);
+    intakeArmRight.set(-0.40);
   }
 
   public Command stopIntakeCommand(){
@@ -145,7 +150,7 @@ public class Intake extends SubsystemBase {
 
   public Command intakeUpCommand(){
     return runOnce(()-> 
-      intakeUpMoreSpeed()
+      intakeUpJitter()
     );
   }
 
