@@ -44,13 +44,6 @@ public class Intake extends SubsystemBase {
   }   
 
   public void teleopInit(){ 
-    /* 
-    //*TESTING* Check what we want the threshold value to be before using
-    if (intakeArmLeft.getEncoder().getPosition() >= 0.0 
-    || intakeArmLeft.getEncoder().getPosition() >= 0.0){
-      return;
-    }
-    */
   }
 
 
@@ -186,6 +179,22 @@ public class Intake extends SubsystemBase {
 
 
     }
+
+    //--------------------------
+    //EVERYTHING ENCODER RELATED
+    //--------------------------
+
+    //In Constructor:
+      /* 
+      //*TESTING* Check what we want the threshold value to be before using
+      if (intakeArmLeft.getEncoder().getPosition() >= 0.0 
+      || intakeArmLeft.getEncoder().getPosition() >= 0.0){
+        return;
+      }
+      */
+
+
+      
 
 }
 
