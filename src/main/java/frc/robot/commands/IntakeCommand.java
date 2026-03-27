@@ -60,7 +60,7 @@ public class IntakeCommand extends Command {
       intake.runIntakeMotor(startingIntakeSpeed);
       return;
     }
-    intake.stopIntake();
+    intake.stopIntakeArms();
   }
 
 

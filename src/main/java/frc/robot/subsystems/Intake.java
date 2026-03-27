@@ -84,7 +84,7 @@ public class Intake extends SubsystemBase {
   }
 
   Command testCommand (){
-    stopIntake();
+    stopIntakeArms();
     stopIntakeMotor();
     return Commands.print("DONE");
   }
@@ -106,8 +106,9 @@ public class Intake extends SubsystemBase {
     intakeMotor.set(speed);
     currentIntakeSpeed = speed;
   }
+
   //Stops the intake arms motors
-  public void stopIntake(){
+  public void stopIntakeArms(){
     System.out.println("DONE");
     intakeArmLeft.set(0);
     intakeArmRight.set(0);
@@ -135,11 +136,8 @@ public class Intake extends SubsystemBase {
 
   public Command stopIntakeCommand(){
     return runOnce(()->{
-        System.out.println("TEST");
-           stopIntake();
-    }
- 
-    );
+        stopIntakeArms();
+    });
   }
 
   public Command intakeDownCommand(){
