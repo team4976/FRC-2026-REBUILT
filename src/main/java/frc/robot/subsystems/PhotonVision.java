@@ -48,7 +48,7 @@ public class PhotonVision extends SubsystemBase{
         return vision.getIDs();
     }
 
-    public OptionalDouble getTargetYaw(ArrayList<Integer> IDs) {
+    public OptionalDouble getTargetYaw(int[] IDs) {
         return vision.getTargetYaw(IDs);
     }
 

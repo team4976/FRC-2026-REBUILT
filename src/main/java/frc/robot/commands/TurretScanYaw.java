@@ -27,7 +27,7 @@ public class TurretScanYaw extends Command {
     public double autoLockedOn;
     public double manualLockedOn;
     public double tagRotation;
-    ArrayList<Integer> tagIDs = new ArrayList<>(1);
+    int[] tagIDs = new int[]{10,26};
 
     public TurretScanYaw(PhotonVision turretVision, TurretSubsystem shooter){
         m_turretVision = turretVision;
@@ -45,8 +45,8 @@ public class TurretScanYaw extends Command {
         hasTargets = false;
         m_shooter.stopbutton = false;
         stopLockedOn = false;
-        tagIDs.add(26);
-        tagIDs.add(10);
+        //tagIDs.add(26);
+        //tagIDs.add(10);
 
     }
 

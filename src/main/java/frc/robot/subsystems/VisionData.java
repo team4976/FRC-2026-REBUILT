@@ -113,16 +113,19 @@ public class VisionData{
     }
 
     //returns the yaw of a desired target if that target is seen by the camera.
-    public OptionalDouble getTargetYaw(ArrayList<Integer> tagIDs){
-        idYaws.clear();
+    public OptionalDouble getTargetYaw(int[] tagIDs){
+       double yaw = Double.NaN;
         if(latestResult != null && latestResult.hasTargets()){
             for (var target : latestResult.getTargets()){
                 for (var tagID : tagIDs)
                     if (target.getFiducialId() == tagID){
-                        idYaws.add(target.getYaw());
+                        yaw = target.getYaw();
+                        break;
+                        //idYaws.add(target.getYaw());
                     }
             }
-            return OptionalDouble.of(idYaws.get(0) + idYaws.get(1));
+            if(yaw == Double.NaN) return OptionalDouble.empty();
+            return OptionalDouble.of(yaw);
         }
         return OptionalDouble.empty();
     }
