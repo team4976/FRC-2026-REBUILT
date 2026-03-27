@@ -144,7 +144,7 @@ public class Intake extends SubsystemBase {
 
   public Command intakeDownCommand(){
     return runOnce(()-> 
-      intakeDown()
+      intakeDownJitter()
     );
   }
 
@@ -201,6 +201,7 @@ public class Intake extends SubsystemBase {
           intakeArmLeft.set(0);
           intakeArmRight.set(0);
         }
+        //intake down is set higher, DONT USE.
         driverController.povUp().whileTrue(intakeDownCommand());
         driverController.povDown().whileTrue(intakeUpCommand());
       }
