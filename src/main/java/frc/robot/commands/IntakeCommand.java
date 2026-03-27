@@ -43,7 +43,7 @@ public class IntakeCommand extends Command {
       intake.runIntakeMotor(-intakeSpeed);
     } else if (!isIntakeReversed) {
       intake.runIntakeMotor(intakeSpeed);
-      intake.intakeDown();
+      intake.intakeDown(false);
     } 
 
   }

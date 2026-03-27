@@ -113,7 +113,12 @@ public class Intake extends SubsystemBase {
     intakeArmRight.set(0);
   }
 
-  public void intakeDown(){
+  public void intakeDown(boolean isJitter){
+    if (isJitter){
+      intakeArmLeft.set(0.60);
+      intakeArmRight.set(0.60);
+      return;
+    }
     intakeArmLeft.set(-0.5);
     intakeArmRight.set(-0.5);
   }
@@ -139,7 +144,7 @@ public class Intake extends SubsystemBase {
 
   public Command intakeDownCommand(){
     return runOnce(()-> 
-      intakeDown()
+      intakeDown(true)
     );
   }
 
