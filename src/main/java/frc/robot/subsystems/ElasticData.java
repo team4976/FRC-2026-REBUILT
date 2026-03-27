@@ -77,10 +77,10 @@ public class ElasticData extends SubsystemBase{
         "[Indexer] Motor Id:"+ Constants.Index_ID,"[Intake] Motor Id:"+ Constants.Intake_ID,"[PCM] Motor Id:","[Pidgeon] Motor Id:"};
 
         //Subsystem Objects
-        indexAndSpindexSubsystem = (IndexAndSpindexSubsystem) subsystemList.get(5);
-        hoodSubsystem = (HoodSubsystem) subsystemList.get(4);
-        flywheelSubsystem = (FlywheelSubsystem) subsystemList.get(3);
-        turretSubsystem = (TurretSubsystem) subsystemList.get(2);
+        indexAndSpindexSubsystem = (IndexAndSpindexSubsystem) subsystemList.get(4);
+        hoodSubsystem = (HoodSubsystem) subsystemList.get(3);
+        flywheelSubsystem = (FlywheelSubsystem) subsystemList.get(2);
+        turretSubsystem = (TurretSubsystem) subsystemList.get(1);
         intakeSubsystem = (Intake) subsystemList.get(0);
 
 

@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.Autos;
-import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElasticData;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.JitterSubsystem;
@@ -49,14 +48,12 @@ public class RobotContainer {
 
     //Subsystem Objects/Subsystem Initialization
     public final Intake intakeSubsystem = new Intake();
-    public final ClimberSubsystem climber = new ClimberSubsystem();
     public final TurretSubsystem turretMovement = new TurretSubsystem();
     public final FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
     public final HoodSubsystem hoodSubsystem = new HoodSubsystem();
     public final IndexAndSpindexSubsystem indexAndSpindexSubsystem = new IndexAndSpindexSubsystem(hoodSubsystem, flywheelSubsystem);
     public final List<Subsystem> allSubsystemsList = List.of(
         intakeSubsystem,
-        climber,
         turretMovement,
         flywheelSubsystem,
         hoodSubsystem,
@@ -98,8 +95,7 @@ public class RobotContainer {
 
         autos =  new Autos(intakeSubsystem,vision,flywheelSubsystem,indexAndSpindexSubsystem,turretMovement);
 
-        bindings = new Bindings(indexAndSpindexCommand, reverseIndexer, intakeCommand, flywheelCommand, hoodCommand, manualHoodUp, manualHoodDown, turretScanYaw, 
-        turretScan, alignedShotCommand, autos, reverseIntake, jitterSubsystem, intakeSubsystem);
+        bindings = new Bindings(this);
 
         configureBindings();
 

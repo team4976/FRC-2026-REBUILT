@@ -3,55 +3,14 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.commands.AlignedShotCommand;
-import frc.robot.commands.FlywheelCommand;
-import frc.robot.commands.HoodCommand;
-import frc.robot.commands.IndexAndSpindexCommand;
-import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.TurretScan;
-import frc.robot.commands.TurretScanYaw;
-import frc.robot.subsystems.Autos;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.JitterSubsystem;
 
 import static frc.robot.Constants.*;
 
 public class Bindings {
-    public IndexAndSpindexCommand indexAndSpindexCommand;
-    public IndexAndSpindexCommand reverseIndexer;
-    public IntakeCommand intakeCommand;
-    public FlywheelCommand flywheelCommand;
-    public FlywheelCommand flywheelOverrideCommand;
-    public HoodCommand hoodCommand;
-    public HoodCommand manualHoodUp;
-    public HoodCommand manualHoodDown;
-    public TurretScan turretScan;
-    public TurretScanYaw turretScanYaw;
-    public AlignedShotCommand alignedShotCommand;
-    public Autos autos;
-    public IntakeCommand reverseIntake;
-    public JitterSubsystem jitterSubsystem;
-    public Intake intakeSubsystem;
+    public RobotContainer robotContainer;
 
-    public Bindings(IndexAndSpindexCommand indexAndSpindexCommand, IndexAndSpindexCommand reverseIndexer, IntakeCommand intakecommand, 
-    FlywheelCommand flywheelCommand, HoodCommand hoodCommand, HoodCommand manualHoodUp, HoodCommand manualHoodDown, TurretScanYaw turretScanYaw, 
-    TurretScan turretScan, AlignedShotCommand alignedShotCommand, Autos autos, IntakeCommand reverseIntake, JitterSubsystem jitterSubsystem, Intake intakeSubsystem){
-        this.indexAndSpindexCommand = indexAndSpindexCommand;
-        this.reverseIndexer = reverseIndexer;
-        this.intakeCommand = intakecommand;
-        this.flywheelCommand = flywheelCommand;
-        this.hoodCommand = hoodCommand;
-        this.manualHoodUp = manualHoodUp;
-        this.manualHoodDown = manualHoodDown;
-        this.turretScanYaw = turretScanYaw;
-        this.turretScan = turretScan;
-        this.autos = autos;
-        this.reverseIntake = reverseIntake;
-        this.alignedShotCommand = alignedShotCommand;
-        this.autos = autos;
-        this.reverseIntake = reverseIntake;
-        this.jitterSubsystem = jitterSubsystem;
-        this.intakeSubsystem = intakeSubsystem;
+    public Bindings(RobotContainer robotContainer){
+        this.robotContainer = robotContainer;
     }
 
      public void driverConfigureBindings(){
@@ -64,22 +23,22 @@ public class Bindings {
         driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
         //Regular Shooting
-        driverController.axisGreaterThan(3, 0.1).whileTrue(indexAndSpindexCommand);
+        driverController.axisGreaterThan(3, 0.1).whileTrue(robotContainer.indexAndSpindexCommand);
         
         Command repeatJidderCommand = 
             Commands.repeatingSequence(
-                Commands.deadline(Commands.waitSeconds(0.1), intakeSubsystem.intakeUpCommand()),
-                Commands.deadline(Commands.waitSeconds(0.1), intakeSubsystem.intakeDownCommand())           
+                Commands.deadline(Commands.waitSeconds(0.1), robotContainer.intakeSubsystem.intakeUpCommand()),
+                Commands.deadline(Commands.waitSeconds(0.1), robotContainer.intakeSubsystem.intakeDownCommand())           
             );
 
         driverController.rightBumper().whileTrue(repeatJidderCommand).onFalse(
                 Commands.runOnce(
-                    ()->intakeCommand.end(true)
+                    ()->robotContainer.intakeCommand.end(true)
                 )
             );
         
         //Intake
-        driverController.x().onTrue(Commands.deadline(Commands.waitSeconds(0.2), intakeCommand));
+        driverController.x().onTrue(Commands.deadline(Commands.waitSeconds(0.2), robotContainer.intakeCommand));
     }
 
     public void operatorConfigureBindings(){
@@ -89,21 +48,21 @@ public class Bindings {
         //------------
         //Spin up flywheels
         //operatorController.a().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
-        operatorController.a().toggleOnTrue(flywheelCommand);
+        operatorController.a().toggleOnTrue(robotContainer.flywheelCommand);
         
         //Operator Shoot
-        operatorController.axisGreaterThan(3, 0.1).whileTrue(indexAndSpindexCommand);
+        operatorController.axisGreaterThan(3, 0.1).whileTrue(robotContainer.indexAndSpindexCommand);
 
         //Turret scan
-        operatorController.axisGreaterThan(2, 0.1).toggleOnTrue(turretScanYaw);
+        operatorController.axisGreaterThan(2, 0.1).toggleOnTrue(robotContainer.turretScanYaw);
 
         //perfect shot from the aligned spot
-        operatorController.x().toggleOnTrue(alignedShotCommand);
+        operatorController.x().toggleOnTrue(robotContainer.alignedShotCommand);
 
         //Jitter Robot
         operatorController.y().whileTrue(
-            Commands.repeatingSequence(jitterSubsystem.jitterRobotForward(), 
-            (jitterSubsystem.jitterRobotBackward())
+            Commands.repeatingSequence(robotContainer.jitterSubsystem.jitterRobotForward(), 
+            (robotContainer.jitterSubsystem.jitterRobotBackward())
             )
         );
 
@@ -118,13 +77,13 @@ public class Bindings {
         //Inside of the flywheel subystemcs periodic()
 
         //Hood
-        operatorController.povUp().whileTrue(manualHoodUp);
-        operatorController.povDown().whileTrue(manualHoodDown);
+        operatorController.povUp().whileTrue(robotContainer.manualHoodUp);
+        operatorController.povDown().whileTrue(robotContainer.manualHoodDown);
 
         //Indexer
-        operatorController.b().whileTrue(reverseIndexer);
+        operatorController.b().whileTrue(robotContainer.reverseIndexer);
 
         //Reverse Intake
-        operatorController.start().whileTrue(reverseIntake);
+        operatorController.start().whileTrue(robotContainer.reverseIntake);
     }
 }
