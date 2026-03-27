@@ -56,11 +56,11 @@ public class OneandHalfCycleLeft extends SequentialCommandGroup {
             new WaitCommand(6),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem, intakeSubsystem),
             new FlywheelStop(flywheelSubsystem, visionSubsystem),
-            OneandHalfCycleLeft,
-            Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
+            OneandHalfCycleLeft
+            /*Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
-            new WaitCommand(6)
+            new WaitCommand(6)*/
         );
     }
 }
