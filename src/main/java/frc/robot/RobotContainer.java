@@ -168,6 +168,8 @@ public class RobotContainer {
 
     public void autoInit(){
         teleopInit();
+        vision.getHubPose();
+        m_turretvision.getHubPose();
 
         elasticData.autonomousInit();
         String value = elasticData.autoChooser.getSelected()[elasticData.autoChooser.getSelected().length -1];

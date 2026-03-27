@@ -28,6 +28,10 @@ public class PhotonVision extends SubsystemBase{
         vision.update();
     }
 
+    public void getHubPose(){
+        vision.getHubPose();
+    }
+
     public double getAmbiguity(){
         return vision.getAmbiguity();
     }

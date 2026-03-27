@@ -53,6 +53,12 @@ public class VisionData{
     public VisionData(String cameraName, Telemetry logger){
         camera = new PhotonCamera(cameraName);
         this.logger = logger;
+        
+        SmartDashboard.putNumber("Testing/Hub Location X", hubOrigX );
+        SmartDashboard.putNumber("Testing/Hub Location Y", hubOrigY );
+    }
+
+    public void getHubPose(){
 
         alliance = DriverStation.getAlliance();
 
@@ -68,10 +74,7 @@ public class VisionData{
                 hubOrigY = RedHubY;
                 Constants.hubId = 10;
             }
-            SmartDashboard.putString("Testing/Alliance", alliance.get().name() );
         }
-        SmartDashboard.putNumber("Testing/Hub Location X", hubOrigX );
-        SmartDashboard.putNumber("Testing/Hub Location Y", hubOrigY );
     }
 
     //called at the top of the periodic in PhotonVision, keeps the camera frame used uniform.
