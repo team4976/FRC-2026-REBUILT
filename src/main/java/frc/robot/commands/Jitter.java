@@ -15,8 +15,8 @@ public class Jitter extends SequentialCommandGroup {
                 Commands.deadline(Commands.waitSeconds(2), 
                     Commands.repeatingSequence(
                         Commands.print("RepeatJitter Started"),
-                        Commands.deadline(Commands.waitSeconds(0.40), intakeSubsystem.intakeUpCommand()),
-                        Commands.deadline(Commands.waitSeconds(0.40), intakeSubsystem.intakeDownCommand())
+                        Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeUpCommand(-0.15)),
+                        Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeDownCommand(0.15))
                         )
                     ),
                 Commands.waitSeconds(1)

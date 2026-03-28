@@ -88,7 +88,7 @@ public class Intake extends SubsystemBase {
     stopIntakeMotor();
     return Commands.print("DONE");
   }
- 
+  /* 
     public Command jitterIntakeUp(){
         return Commands.deadline(Commands.waitSeconds(0.15), intakeUpCommand());
     }
@@ -96,6 +96,7 @@ public class Intake extends SubsystemBase {
     public Command jitterIntakeDown(){
         return Commands.deadline(Commands.waitSeconds(0.1), intakeDownCommand());
     }
+        */
              
   public void stopIntakeMotor() {
     intakeMotor.set(0); 
@@ -123,14 +124,14 @@ public class Intake extends SubsystemBase {
     intakeArmRight.set(0.5);
   }
 
-  public void intakeUpJitter(){
-    intakeArmLeft.set(0.20);
-    intakeArmRight.set(0.20);
+  public void intakeUpJitter(double offset){
+    intakeArmLeft.set(0.45 + offset);
+    intakeArmRight.set(0.45 + offset);
   }
 
-  public void intakeDownJitter(){
-    intakeArmLeft.set(-0.20);
-    intakeArmRight.set(-0.20);
+  public void intakeDownJitter(double offset){
+    intakeArmLeft.set(-0.45 + offset);
+    intakeArmRight.set(-0.45 + offset);
   }
 
   public Command stopIntakeCommand(){
@@ -148,15 +149,15 @@ public class Intake extends SubsystemBase {
     );
   }
 
-  public Command intakeDownCommand(){
+  public Command intakeDownCommand(double offset){
     return runOnce(()-> 
-      intakeDownJitter()
+      intakeDownJitter(offset)
     );
   }
 
-  public Command intakeUpCommand(){
+  public Command intakeUpCommand(double offset){
     return Commands.runOnce(()->
-      intakeUpJitter()
+      intakeUpJitter(offset)
     );
     /* 
     runOnce(()-> 
@@ -213,8 +214,8 @@ public class Intake extends SubsystemBase {
           intakeArmRight.set(0);
         }
         //intake down is set higher, DONT USE.
-        driverController.povUp().whileTrue(intakeDownCommand());
-        driverController.povDown().whileTrue(intakeUpCommand());
+        driverController.povUp().whileTrue(intakeDownCommand(0));
+        driverController.povDown().whileTrue(intakeUpCommand(0));
       }
 
 
