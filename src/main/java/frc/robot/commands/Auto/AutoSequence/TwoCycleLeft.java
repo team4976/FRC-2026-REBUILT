@@ -17,7 +17,9 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Auto.FlywheelStart;
 import frc.robot.commands.Auto.FlywheelStop;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.Jitter;
 import frc.robot.commands.TurretScan;
+import frc.robot.commands.TurretScanYaw;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
 
 import frc.robot.subsystems.FlywheelSubsystem;
@@ -51,19 +53,20 @@ public class TwoCycleLeft extends SequentialCommandGroup {
             Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
             new WaitCommand(0.5),
             OneCycleLeft,
-            Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
+            Commands.deadline(new WaitCommand(1),new TurretScanYaw(visionSubsystem, turretMovementSubsystem)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
-            new WaitCommand(6),
+            Commands.deadline(Commands.waitSeconds(6), new Jitter(intakeSubsystem)),
+            Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem, intakeSubsystem),
             new FlywheelStop(flywheelSubsystem, visionSubsystem),
             OneandHalfCycleLeft,
-            Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
+            /*Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
             new WaitCommand(6),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem, intakeSubsystem),
-            new FlywheelStop(flywheelSubsystem, visionSubsystem),
+            new FlywheelStop(flywheelSubsystem, visionSubsystem), */
             TwoCycleLeft,
             Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem),

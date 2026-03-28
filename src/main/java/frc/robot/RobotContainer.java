@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.Jitter;
 import frc.robot.subsystems.Autos;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElasticData;
@@ -81,6 +82,8 @@ public class RobotContainer {
     //public Command hoodAndFlywheel = new ParallelDeadlineGroup(flywheelCommand, hoodCommand);
     public AlignedShotCommand alignedShotCommand = new AlignedShotCommand(flywheelSubsystem, hoodSubsystem);
     //public ReverseIntake reverseIntake = new ReverseIntake(intakeSubsystem);
+    
+
 
     //elastic/smartdashboard intialization 
     private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision, allSubsystemsList);
@@ -96,10 +99,10 @@ public class RobotContainer {
     public RobotContainer() {
         drivetrain.configureAutoBuilder();
 
-        autos =  new Autos(intakeSubsystem,vision,flywheelSubsystem,indexAndSpindexSubsystem,turretMovement);
+        autos =  new Autos(intakeSubsystem, vision, flywheelSubsystem, indexAndSpindexSubsystem, turretMovement);
 
         bindings = new Bindings(indexAndSpindexCommand, reverseIndexer, intakeCommand, flywheelCommand, hoodCommand, manualHoodUp, manualHoodDown, turretScanYaw, 
-        turretScan, alignedShotCommand, autos, reverseIntake, jitterSubsystem, intakeSubsystem);
+        turretScan, alignedShotCommand, autos, reverseIntake, jitterSubsystem, intakeSubsystem, repeatJidderCommand);
 
         configureBindings();
 
@@ -124,6 +127,21 @@ public class RobotContainer {
         Pose2d currentRobotPose = drivetrain.getState().Pose;
         String currentRobotPoseString = currentRobotPose.toString();
         logEntry.append(currentRobotPoseString);
+    }
+
+    Command repeatJidderCommand = 
+        Commands.repeatingSequence(
+            Commands.print("RepeatJitter Started"),
+            Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeUpCommand()),
+            Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeDownCommand())           
+        );
+        
+    
+    public Command repeatJidderCommand2(){
+        //Commands.repeatingSequence(new Jitter());
+        
+        return repeatJidderCommand;
+
     }
 
     private void configureBindings() {
@@ -152,6 +170,8 @@ public class RobotContainer {
 
     public void autoInit(){
         teleopInit();
+        vision.getHubPose();
+        m_turretvision.getHubPose();
 
         elasticData.autonomousInit();
         String value = elasticData.autoChooser.getSelected()[elasticData.autoChooser.getSelected().length -1];

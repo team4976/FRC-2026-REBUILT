@@ -32,10 +32,11 @@ public class Bindings {
     public IntakeCommand reverseIntake;
     public JitterSubsystem jitterSubsystem;
     public Intake intakeSubsystem;
+    public Command repeatJidderCommand;
 
     public Bindings(IndexAndSpindexCommand indexAndSpindexCommand, IndexAndSpindexCommand reverseIndexer, IntakeCommand intakecommand, 
     FlywheelCommand flywheelCommand, HoodCommand hoodCommand, HoodCommand manualHoodUp, HoodCommand manualHoodDown, TurretScanYaw turretScanYaw, 
-    TurretScan turretScan, AlignedShotCommand alignedShotCommand, Autos autos, IntakeCommand reverseIntake, JitterSubsystem jitterSubsystem, Intake intakeSubsystem){
+    TurretScan turretScan, AlignedShotCommand alignedShotCommand, Autos autos, IntakeCommand reverseIntake, JitterSubsystem jitterSubsystem, Intake intakeSubsystem, Command repeatJidderCommand){
         this.indexAndSpindexCommand = indexAndSpindexCommand;
         this.reverseIndexer = reverseIndexer;
         this.intakeCommand = intakecommand;
@@ -52,6 +53,7 @@ public class Bindings {
         this.reverseIntake = reverseIntake;
         this.jitterSubsystem = jitterSubsystem;
         this.intakeSubsystem = intakeSubsystem;
+        this.repeatJidderCommand = repeatJidderCommand;
     }
 
      public void driverConfigureBindings(){
@@ -65,12 +67,6 @@ public class Bindings {
 
         //Regular Shooting
         driverController.axisGreaterThan(3, 0.1).whileTrue(indexAndSpindexCommand);
-        
-        Command repeatJidderCommand = 
-            Commands.repeatingSequence(
-                Commands.deadline(Commands.waitSeconds(0.1), intakeSubsystem.intakeUpCommand()),
-                Commands.deadline(Commands.waitSeconds(0.1), intakeSubsystem.intakeDownCommand())           
-            );
 
         driverController.rightBumper().whileTrue(repeatJidderCommand).onFalse(
                 Commands.runOnce(
@@ -80,6 +76,8 @@ public class Bindings {
         
         //Intake
         driverController.x().onTrue(Commands.deadline(Commands.waitSeconds(0.2), intakeCommand));
+
+        driverController.y().onTrue(intakeSubsystem.stopIntakeMotorCommand());
     }
 
     public void operatorConfigureBindings(){
@@ -118,13 +116,15 @@ public class Bindings {
         //Inside of the flywheel subystemcs periodic()
 
         //Hood
-        operatorController.povUp().whileTrue(manualHoodUp);
-        operatorController.povDown().whileTrue(manualHoodDown);
+        //operatorController.povUp().whileTrue(manualHoodUp);
+        //operatorController.povDown().whileTrue(manualHoodDown);
+
+
 
         //Indexer
         operatorController.b().whileTrue(reverseIndexer);
 
         //Reverse Intake
-        operatorController.start().whileTrue(reverseIntake);
+        operatorController.povDown().whileTrue(reverseIntake);
     }
 }

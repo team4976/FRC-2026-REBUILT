@@ -43,6 +43,7 @@ public class VisionData{
     public double turretTargetAngle;
     public double hubId;
     Field2d field2d = new Field2d();
+    List<Double> idYaws;
 
 
     //the constructor, having the camera as a parameter--
@@ -52,6 +53,12 @@ public class VisionData{
     public VisionData(String cameraName, Telemetry logger){
         camera = new PhotonCamera(cameraName);
         this.logger = logger;
+        
+        SmartDashboard.putNumber("Testing/Hub Location X", hubOrigX );
+        SmartDashboard.putNumber("Testing/Hub Location Y", hubOrigY );
+    }
+
+    public void getHubPose(){
 
         alliance = DriverStation.getAlliance();
 
@@ -67,10 +74,7 @@ public class VisionData{
                 hubOrigY = RedHubY;
                 Constants.hubId = 10;
             }
-            SmartDashboard.putString("Testing/Alliance", alliance.get().name() );
         }
-        SmartDashboard.putNumber("Testing/Hub Location X", hubOrigX );
-        SmartDashboard.putNumber("Testing/Hub Location Y", hubOrigY );
     }
 
     //called at the top of the periodic in PhotonVision, keeps the camera frame used uniform.
@@ -112,13 +116,19 @@ public class VisionData{
     }
 
     //returns the yaw of a desired target if that target is seen by the camera.
-    public OptionalDouble getTargetYaw(int tagID){
+    public OptionalDouble getTargetYaw(int[] tagIDs){
+       double yaw = Double.NaN;
         if(latestResult != null && latestResult.hasTargets()){
             for (var target : latestResult.getTargets()){
-                if (target.getFiducialId() == tagID){
-                    return OptionalDouble.of(target.getYaw());
-                }
+                for (var tagID : tagIDs)
+                    if (target.getFiducialId() == tagID){
+                        yaw = target.getYaw();
+                        break;
+                        //idYaws.add(target.getYaw());
+                    }
             }
+            if(yaw == Double.NaN) return OptionalDouble.empty();
+            return OptionalDouble.of(yaw);
         }
         return OptionalDouble.empty();
     }
@@ -159,11 +169,6 @@ public class VisionData{
     //returns a boolean for if the camera sees a target.
     public boolean targetVisible(){
         return latestResult != null && latestResult.hasTargets();
-    }
-
-    //returns a boolean for if the camera sees a desired target.
-    public boolean hasTarget(int tagID){
-        return getTargetYaw(tagID).isPresent();
     }
 
     //gets and sets robot pose and returns a field with the modified robot pose, may be better to just modify the pose of a preexisting field but this works too

@@ -114,39 +114,53 @@ public class Intake extends SubsystemBase {
   }
 
   public void intakeDown(){
-    intakeArmLeft.set(-0.25);
-    intakeArmRight.set(-0.25);
+    intakeArmLeft.set(-0.5);
+    intakeArmRight.set(-0.5);
   }
 
   public void intakeUp(){
-    intakeArmLeft.set(0.25);
-    intakeArmRight.set(0.25);
+    intakeArmLeft.set(0.5);
+    intakeArmRight.set(0.5);
   }
 
-  public void intakeUpMoreSpeed(){
-    intakeArmLeft.set(0.60);
-    intakeArmRight.set(0.60);
+  public void intakeUpJitter(){
+    intakeArmLeft.set(0.40);
+  }
+
+  public void intakeDownJitter(){
+    intakeArmLeft.set(-0.40);
   }
 
   public Command stopIntakeCommand(){
     return runOnce(()->{
         System.out.println("TEST");
-           stopIntake();
+        stopIntake();
     }
  
     );
   }
 
+  public Command stopIntakeMotorCommand(){
+    return runOnce(()-> 
+      stopIntakeMotor()
+    );
+  }
+
   public Command intakeDownCommand(){
     return runOnce(()-> 
-      intakeDown()
+      intakeDownJitter()
     );
   }
 
   public Command intakeUpCommand(){
-    return runOnce(()-> 
-      intakeUpMoreSpeed()
+    return Commands.runOnce(()->
+      intakeUpJitter()
     );
+    /* 
+    runOnce(()-> 
+      intakeUpJitter()
+    );
+    */
   }
 
   public void intakeDownEncoder(){
@@ -196,6 +210,7 @@ public class Intake extends SubsystemBase {
           intakeArmLeft.set(0);
           intakeArmRight.set(0);
         }
+        //intake down is set higher, DONT USE.
         driverController.povUp().whileTrue(intakeDownCommand());
         driverController.povDown().whileTrue(intakeUpCommand());
       }

@@ -28,9 +28,9 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.TurretSubsystem;
 
-public class OneandHalfCycleRight extends SequentialCommandGroup {
+public class HubtoShoot extends SequentialCommandGroup {
 
-    public OneandHalfCycleRight(
+    public HubtoShoot(
         PhotonVision visionSubsystem,
         FlywheelSubsystem flywheelSubsystem,
         Intake intakeSubsystem,
@@ -38,26 +38,19 @@ public class OneandHalfCycleRight extends SequentialCommandGroup {
         TurretSubsystem turretMovementSubsystem
     ){
         
-        Command OneCycleRight = AutoBuilder.buildAuto("1 Cycle - Right");
-        Command OneandHalfCycleRight = AutoBuilder.buildAuto("1.5 Cycle - Right"); 
+        Command HubtoShoot = AutoBuilder.buildAuto("Hub to Shoot");
         
         addCommands(
-            new PrintCommand("One and a Half Cycle Right Started"),
+            new PrintCommand("Hub to Shoot Started"),
             Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
-            new WaitCommand(0.5),
-            OneCycleRight,
-            Commands.deadline(new WaitCommand(1), new TurretScanYaw(visionSubsystem, turretMovementSubsystem)),
+            HubtoShoot,
+            //Commands.deadline(new WaitCommand(1),new TurretScanYaw(visionSubsystem, turretMovementSubsystem)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
             Commands.deadline(Commands.waitSeconds(6), new Jitter(intakeSubsystem)),
             Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem, intakeSubsystem),
-            new FlywheelStop(flywheelSubsystem, visionSubsystem),
-            OneandHalfCycleRight
-            /*Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
-            new FlywheelStart(flywheelSubsystem, visionSubsystem),
-            new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
-            new WaitCommand(6)*/
+            new FlywheelStop(flywheelSubsystem, visionSubsystem)
         );
     }
 }
