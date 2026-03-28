@@ -10,6 +10,7 @@ import frc.robot.commands.Auto.FlywheelStart;
 import frc.robot.commands.Auto.FlywheelStop;
 import frc.robot.commands.TurretScan;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
+import frc.robot.commands.Auto.AutoSequence.HubtoShoottoDepot;
 import frc.robot.commands.Auto.AutoSequence.OneCycleLeft;
 import frc.robot.commands.Auto.AutoSequence.OneCycleRight;
 import frc.robot.commands.Auto.AutoSequence.OneandHalfCycleRight;
@@ -41,6 +42,7 @@ public class Autos {
     public Command OneandHalfCycleLeft;
     public Command TwoCycleRight;
     public Command TwoCycleLeft;
+    public Command HubtoShoottoDepot;
     //public Command shootToOutpost;
     public Command jitterCommand1;
     public Command jitterCommand2;
@@ -52,15 +54,7 @@ public class Autos {
         OneandHalfCycleLeft = new OneandHalfCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
         TwoCycleRight = new TwoCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
         TwoCycleLeft = new TwoCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
-        //shootToOutpost = new ShootToOutpost(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
-
-        try{
-            PathPlannerPath jitterPath1 = PathPlannerPath.fromPathFile("Jitter 1");
-                        PathPlannerPath jitterPath2 = PathPlannerPath.fromPathFile("Jitter 2");
-            jitterCommand1 = AutoBuilder.followPath(jitterPath1);
-            jitterCommand2 = AutoBuilder.followPath(jitterPath2);
-
-        }catch(Exception e){}
+        HubtoShoottoDepot = new HubtoShoottoDepot(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
     }
 }
 
