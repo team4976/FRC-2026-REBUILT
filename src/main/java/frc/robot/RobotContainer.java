@@ -192,6 +192,9 @@ public class RobotContainer {
             case "2 Cycle - Left":
                 selectedAuto = autos.TwoCycleLeft;
                 break;
+            case "Hub to Shoot":
+                selectedAuto = autos.HubtoShoot;
+                break;
             case "No Auto":
                 selectedAuto = Commands.waitSeconds(1);
                 break;
