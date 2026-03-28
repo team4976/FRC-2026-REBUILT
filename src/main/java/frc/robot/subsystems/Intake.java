@@ -37,6 +37,10 @@ public class Intake extends SubsystemBase {
   public void teleopInit(){ 
   }
   
+  //---------------
+  //Intake Methods:
+  //---------------
+
   //Stops motor for intake bar, alternitively you can pass 0 to runIntakeMotor
   public void stopIntakeMotor() {
     intakeMotor.set(0); 
