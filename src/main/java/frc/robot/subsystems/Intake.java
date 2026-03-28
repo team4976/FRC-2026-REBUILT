@@ -62,14 +62,21 @@ public class Intake extends SubsystemBase {
        */
 
   }
- 
-  public Command jitterIntakeUp(){
-    return Commands.deadline(Commands.waitSeconds(0.15), intakeUpCommand());
-  }
 
-  public Command jitterIntakeDown(){
-    return Commands.deadline(Commands.waitSeconds(0.1), intakeDownCommand());
+  Command testCommand (){
+    stopIntake();
+    stopIntakeMotor();
+    return Commands.print("DONE");
   }
+  /* 
+    public Command jitterIntakeUp(){
+        return Commands.deadline(Commands.waitSeconds(0.15), intakeUpCommand());
+    }
+
+    public Command jitterIntakeDown(){
+        return Commands.deadline(Commands.waitSeconds(0.1), intakeDownCommand());
+    }
+        */
              
   public void stopIntakeMotor() {
     intakeMotor.set(0); 
@@ -120,7 +127,7 @@ public class Intake extends SubsystemBase {
     );
   }
 
-  public Command intakeDownCommand(){
+  public Command intakeDownCommand(double offset){
     return runOnce(()-> 
       intakeDown(true)
     );
@@ -181,12 +188,28 @@ public class Intake extends SubsystemBase {
           intakeArmRight.set(0);
         }
         //intake down is set higher, DONT USE.
-        driverController.povUp().whileTrue(intakeDownCommand());
-        driverController.povDown().whileTrue(intakeUpCommand());
+        driverController.povUp().whileTrue(intakeDownCommand(0));
+        driverController.povDown().whileTrue(intakeUpCommand(0));
       }
 
 
     }
+
+    //--------------------------
+    //EVERYTHING ENCODER RELATED
+    //--------------------------
+
+    //In Constructor:
+      /* 
+      //*TESTING* Check what we want the threshold value to be before using
+      if (intakeArmLeft.getEncoder().getPosition() >= 0.0 
+      || intakeArmLeft.getEncoder().getPosition() >= 0.0){
+        return;
+      }
+      */
+
+
+      
 
     //--------------------------
     //EVERYTHING ENCODER RELATED

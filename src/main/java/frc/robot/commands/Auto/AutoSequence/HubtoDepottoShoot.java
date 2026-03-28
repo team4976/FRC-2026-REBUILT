@@ -28,8 +28,9 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.TurretSubsystem;
 
-public class HubtoShoot extends SequentialCommandGroup {
-public HubtoShoot(
+public class HubtoDepottoShoot extends SequentialCommandGroup {
+
+    public HubtoDepottoShoot(
         PhotonVision visionSubsystem,
         FlywheelSubsystem flywheelSubsystem,
         Intake intakeSubsystem,
@@ -38,9 +39,10 @@ public HubtoShoot(
     ){
         
         Command HubtoShoot = AutoBuilder.buildAuto("Hub to Shoot");
+        Command DepottoShoot = AutoBuilder.buildAuto("Depot to Shoot");
         
         addCommands(
-            new PrintCommand("Hub to Shoot Started"),
+            new PrintCommand("Hub to Depot to Shoot Started"),
             Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
             HubtoShoot,
             //Commands.deadline(new WaitCommand(1),new TurretScanYaw(visionSubsystem, turretMovementSubsystem)),
@@ -49,7 +51,12 @@ public HubtoShoot(
             Commands.deadline(Commands.waitSeconds(6), new Jitter(intakeSubsystem)),
             Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem, intakeSubsystem),
-            new FlywheelStop(flywheelSubsystem, visionSubsystem)
+            new FlywheelStop(flywheelSubsystem, visionSubsystem),
+            DepottoShoot,
+            new FlywheelStart(flywheelSubsystem, visionSubsystem),
+            new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
+            Commands.deadline(Commands.waitSeconds(6), new Jitter(intakeSubsystem)),
+            Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false))
 
         );
     }

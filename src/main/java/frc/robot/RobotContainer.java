@@ -79,6 +79,8 @@ public class RobotContainer {
     //public Command hoodAndFlywheel = new ParallelDeadlineGroup(flywheelCommand, hoodCommand);
     public AlignedShotCommand alignedShotCommand = new AlignedShotCommand(flywheelSubsystem, hoodSubsystem);
     //public ReverseIntake reverseIntake = new ReverseIntake(intakeSubsystem);
+    
+
 
     //elastic/smartdashboard intialization 
     private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision, allSubsystemsList);
@@ -126,8 +128,8 @@ public class RobotContainer {
     Command repeatJidderCommand = 
         Commands.repeatingSequence(
             Commands.print("RepeatJitter Started"),
-            Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeUpCommand()),
-            Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeDownCommand())           
+            Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeUpCommand(0.0)),
+            Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeDownCommand(0.0))           
         );
         
     
@@ -187,6 +189,9 @@ public class RobotContainer {
                 break;
             case "2 Cycle - Left":
                 selectedAuto = autos.TwoCycleLeft;
+                break;
+            case "Depot to Shoot":
+                selectedAuto = autos.HubtoShoottoDepot;
                 break;
             case "Hub to Shoot":
                 selectedAuto = autos.HubtoShoot;
