@@ -41,7 +41,7 @@ public final class Constants {
 
   //serve constants
   //swerve drive variables and objects
-  public static final double MaxSpeed = RebuiltTunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.5; // kSpeedAt12Volts desired top speed
+  public static final double MaxSpeed = RebuiltTunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.75; // kSpeedAt12Volts desired top speed
   public static final double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); //rotations per second max angular velocity
   /* Setting up bindings for necessary control of the swerve drive platform */
   public static final SwerveRequest.RobotCentric robotCentricDrive = new SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage);
