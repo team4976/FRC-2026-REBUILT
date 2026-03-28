@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Auto.FlywheelStart;
 import frc.robot.commands.Auto.FlywheelStop;
 import frc.robot.commands.TurretScan;
+import frc.robot.commands.TurretScanYaw;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
 import frc.robot.commands.Auto.AutoSequence.HubtoDepottoShoot;
 import frc.robot.commands.Auto.AutoSequence.HubtoShoot;

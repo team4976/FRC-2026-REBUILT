@@ -42,7 +42,7 @@ public class OneCycleRight extends SequentialCommandGroup {
             Commands.deadline(new WaitCommand(1), new TurretScanYaw(visionSubsystem, turretMovementSubsystem)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
-            Commands.deadline(Commands.waitSeconds(6), new Jitter(intakeSubsystem)),
+            Commands.deadline(Commands.waitSeconds(6), new Jitter(intakeSubsystem).alongWith(new TurretScanYaw(visionSubsystem, turretMovementSubsystem))),
             Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false))
             //new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem),
             //new IntakeRetract(intakeSubsystem),
