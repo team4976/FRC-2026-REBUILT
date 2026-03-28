@@ -114,6 +114,12 @@ public class Intake extends SubsystemBase {
     });
   }
 
+  public Command stopIntakeMotorCommand(){
+    return runOnce(()-> 
+      stopIntakeMotor()
+    );
+  }
+
   public Command intakeDownCommand(){
     return runOnce(()-> 
       intakeDown(true)
@@ -124,6 +130,7 @@ public class Intake extends SubsystemBase {
     return runOnce(()-> 
       intakeUp(true)
     );
+    */
   }
 
   public void intakeDownEncoder(){
@@ -173,6 +180,7 @@ public class Intake extends SubsystemBase {
           intakeArmLeft.set(0);
           intakeArmRight.set(0);
         }
+        //intake down is set higher, DONT USE.
         driverController.povUp().whileTrue(intakeDownCommand());
         driverController.povDown().whileTrue(intakeUpCommand());
       }

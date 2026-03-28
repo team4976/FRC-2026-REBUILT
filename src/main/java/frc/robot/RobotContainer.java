@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.Jitter;
 import frc.robot.subsystems.Autos;
 import frc.robot.subsystems.ElasticData;
 import frc.robot.subsystems.Intake;
@@ -122,6 +123,21 @@ public class RobotContainer {
         logEntry.append(currentRobotPoseString);
     }
 
+    Command repeatJidderCommand = 
+        Commands.repeatingSequence(
+            Commands.print("RepeatJitter Started"),
+            Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeUpCommand()),
+            Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeDownCommand())           
+        );
+        
+    
+    public Command repeatJidderCommand2(){
+        //Commands.repeatingSequence(new Jitter());
+        
+        return repeatJidderCommand;
+
+    }
+
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
@@ -148,6 +164,8 @@ public class RobotContainer {
 
     public void autoInit(){
         teleopInit();
+        vision.getHubPose();
+        m_turretvision.getHubPose();
 
         elasticData.autonomousInit();
         String value = elasticData.autoChooser.getSelected()[elasticData.autoChooser.getSelected().length -1];
@@ -169,6 +187,9 @@ public class RobotContainer {
                 break;
             case "2 Cycle - Left":
                 selectedAuto = autos.TwoCycleLeft;
+                break;
+            case "Hub to Shoot":
+                selectedAuto = autos.HubtoShoot;
                 break;
             case "No Auto":
                 selectedAuto = Commands.waitSeconds(1);

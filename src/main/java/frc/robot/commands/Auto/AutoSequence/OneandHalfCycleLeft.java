@@ -18,6 +18,7 @@ import frc.robot.commands.Auto.FlywheelStart;
 import frc.robot.commands.Auto.FlywheelStop;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.TurretScan;
+import frc.robot.commands.TurretScanYaw;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
 
 import frc.robot.subsystems.FlywheelSubsystem;
@@ -27,12 +28,6 @@ import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.TurretSubsystem;
 
 public class OneandHalfCycleLeft extends SequentialCommandGroup {
-
-    PhotonVision visionSubsystem;
-    FlywheelSubsystem flywheelSubsystem;
-    Intake intakeSubsystem;
-    IndexAndSpindexSubsystem indxerSubsystem;
-    TurretSubsystem turretMovementSubsystem;
 
     public OneandHalfCycleLeft(
         PhotonVision visionSubsystem,
@@ -45,22 +40,23 @@ public class OneandHalfCycleLeft extends SequentialCommandGroup {
         Command OneCycleLeft = AutoBuilder.buildAuto("1 Cycle - Left");
         Command OneandHalfCycleLeft = AutoBuilder.buildAuto("1.5 Cycle - Left"); 
         
+        
         addCommands(
             new PrintCommand("One and a Half Cycle Left Started"),
             Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
             new WaitCommand(0.5),
             OneCycleLeft,
-            Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
+            Commands.deadline(new WaitCommand(1),new TurretScanYaw(visionSubsystem, turretMovementSubsystem)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
             new WaitCommand(6),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem, intakeSubsystem),
             new FlywheelStop(flywheelSubsystem, visionSubsystem),
-            OneandHalfCycleLeft,
-            Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
+            OneandHalfCycleLeft
+            /*Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
-            new WaitCommand(6)
+            new WaitCommand(6)*/
         );
     }
 }

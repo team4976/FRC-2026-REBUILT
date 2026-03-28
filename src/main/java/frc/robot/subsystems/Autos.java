@@ -11,6 +11,7 @@ import frc.robot.commands.Auto.FlywheelStop;
 import frc.robot.RobotContainer;
 import frc.robot.commands.TurretScan;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
+import frc.robot.commands.Auto.AutoSequence.HubtoShoot;
 import frc.robot.commands.Auto.AutoSequence.OneCycleLeft;
 import frc.robot.commands.Auto.AutoSequence.OneCycleRight;
 import frc.robot.commands.Auto.AutoSequence.OneandHalfCycleRight;
@@ -44,17 +45,19 @@ public class Autos {
     public Command OneandHalfCycleLeft;
     public Command TwoCycleRight;
     public Command TwoCycleLeft;
+    public Command HubtoShoot;
     //public Command shootToOutpost;
     public Command jitterCommand1;
     public Command jitterCommand2;
 
     public void loadCommands(){
-        OneCycleRight = new OneCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretSubsystem); 
-        OneCycleLeft = new OneCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretSubsystem);
-        OneandHalfCycleRight = new OneandHalfCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretSubsystem); 
-        OneandHalfCycleLeft = new OneandHalfCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretSubsystem); 
-        TwoCycleRight = new TwoCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretSubsystem); 
-        TwoCycleLeft = new TwoCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretSubsystem); 
+        OneCycleRight = new OneCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
+        OneCycleLeft = new OneCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
+        OneandHalfCycleRight = new OneandHalfCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
+        OneandHalfCycleLeft = new OneandHalfCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
+        TwoCycleRight = new TwoCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
+        TwoCycleLeft = new TwoCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
+        HubtoShoot = new HubtoShoot(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
     }
 }
 

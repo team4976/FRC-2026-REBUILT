@@ -39,6 +39,8 @@ public class Bindings {
         
         //Intake
         driverController.x().onTrue(Commands.deadline(Commands.waitSeconds(0.2), robotContainer.intakeCommand));
+
+        driverController.y().onTrue(intakeSubsystem.stopIntakeMotorCommand());
     }
 
     public void operatorConfigureBindings(){
@@ -77,13 +79,15 @@ public class Bindings {
         //Inside of the flywheel subystemcs periodic()
 
         //Hood
-        operatorController.povUp().whileTrue(robotContainer.manualHoodUp);
-        operatorController.povDown().whileTrue(robotContainer.manualHoodDown);
+        //operatorController.povUp().whileTrue(manualHoodUp);
+        //operatorController.povDown().whileTrue(manualHoodDown);
+
+
 
         //Indexer
         operatorController.b().whileTrue(robotContainer.reverseIndexer);
 
         //Reverse Intake
-        operatorController.start().whileTrue(robotContainer.reverseIntake);
+        operatorController.povDown().whileTrue(reverseIntake);
     }
 }
