@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Shoot to Depot"
+            "pathName": null
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Depot to Shoot"
+            "pathName": null
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "not rlly sure if we should use ngl",
   "choreoAuto": false
 }
