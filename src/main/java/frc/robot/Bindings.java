@@ -3,14 +3,55 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.commands.AlignedShotCommand;
+import frc.robot.commands.FlywheelCommand;
+import frc.robot.commands.HoodCommand;
+import frc.robot.commands.IndexAndSpindexCommand;
+import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.TurretScan;
+import frc.robot.commands.TurretScanYaw;
+import frc.robot.subsystems.Autos;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.JitterSubsystem;
 
 import static frc.robot.Constants.*;
 
 public class Bindings {
     public RobotContainer robotContainer;
+    public IndexAndSpindexCommand indexAndSpindexCommand;
+    public IndexAndSpindexCommand reverseIndexer;
+    public IntakeCommand intakeCommand;
+    public FlywheelCommand flywheelCommand;
+    public FlywheelCommand flywheelOverrideCommand;
+    public HoodCommand hoodCommand;
+    public HoodCommand manualHoodUp;
+    public HoodCommand manualHoodDown;
+    public TurretScan turretScan;
+    public TurretScanYaw turretScanYaw;
+    public AlignedShotCommand alignedShotCommand;
+    public Autos autos;
+    public IntakeCommand reverseIntake;
+    public JitterSubsystem jitterSubsystem;
+    public Intake intakeSubsystem;
+    public Command repeatJidderCommand;
 
     public Bindings(RobotContainer robotContainer){
         this.robotContainer = robotContainer;
+        this.indexAndSpindexCommand = robotContainer.indexAndSpindexCommand;
+        this.reverseIndexer = robotContainer.reverseIndexer;
+        this.intakeCommand = robotContainer.intakeCommand;
+        this.flywheelCommand = robotContainer.flywheelCommand;
+        this.hoodCommand = robotContainer.hoodCommand;
+        this.manualHoodUp = robotContainer.manualHoodUp;
+        this.manualHoodDown = robotContainer.manualHoodDown;
+        this.turretScanYaw = robotContainer.turretScanYaw;
+        this.turretScan = robotContainer.turretScan;
+        this.autos = robotContainer.autos;
+        this.reverseIntake = robotContainer.reverseIntake;
+        this.alignedShotCommand = robotContainer.alignedShotCommand;
+        this.jitterSubsystem = robotContainer.jitterSubsystem;
+        this.intakeSubsystem = robotContainer.intakeSubsystem;
+        this.repeatJidderCommand = robotContainer.repeatJidderCommand;
     }
 
      public void driverConfigureBindings(){
