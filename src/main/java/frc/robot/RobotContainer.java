@@ -132,8 +132,8 @@ public class RobotContainer {
     Command repeatJidderCommand = 
         Commands.repeatingSequence(
             Commands.print("RepeatJitter Started"),
-            Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeUpCommand()),
-            Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeDownCommand())           
+            Commands.deadline(Commands.waitSeconds(0.35), intakeSubsystem.intakeUpCommand()),
+            Commands.deadline(Commands.waitSeconds(0.35), intakeSubsystem.intakeDownCommand())           
         );
         
     
