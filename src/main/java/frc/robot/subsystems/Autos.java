@@ -53,14 +53,14 @@ public class Autos {
     public Command jitterCommand2;
 
     public void loadCommands(){
-        OneCycleRight = new OneCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
-        OneCycleLeft = new OneCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement);
-        OneandHalfCycleRight = new OneandHalfCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
-        OneandHalfCycleLeft = new OneandHalfCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
-        TwoCycleRight = new TwoCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
-        TwoCycleLeft = new TwoCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
-        HubtoShoottoDepot = new HubtoDepottoShoot(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
-        HubtoShoot = new HubtoShoot(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
+        OneCycleRight = new OneCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretSubsystem); 
+        OneCycleLeft = new OneCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretSubsystem);
+        OneandHalfCycleRight = new OneandHalfCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretSubsystem); 
+        OneandHalfCycleLeft = new OneandHalfCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretSubsystem); 
+        TwoCycleRight = new TwoCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretSubsystem); 
+        TwoCycleLeft = new TwoCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretSubsystem); 
+        HubtoShoottoDepot = new HubtoDepottoShoot(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretSubsystem); 
+        HubtoShoot = new HubtoShoot(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretSubsystem); 
     }
     }
 

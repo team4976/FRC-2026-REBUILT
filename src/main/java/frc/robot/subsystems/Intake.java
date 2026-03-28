@@ -20,18 +20,11 @@ import static frc.robot.Constants.*;
 
 public class Intake extends SubsystemBase {
   public SparkMax intakeMotor; 
-  //Will change intakeMotor to Sparkmax
   public SparkMax intakeArmLeft;
   public SparkMax intakeArmRight;
 
   private SparkMaxConfig sparkConfig = new SparkMaxConfig();
 
-  public final double maxLeftEncoderPos = 0.0;
-  public final double maxRightEncoderPos = 0.0;
-  public final double minLeftEncoderPos = 0.0;
-  public final double minRightEncoderPos = 0.0;
-
-  public boolean intakeExtended;
   public double currentIntakeSpeed;
       
   public Intake() {
@@ -39,50 +32,18 @@ public class Intake extends SubsystemBase {
     intakeArmLeft = new SparkMax(Intake_Arm_Left_ID, MotorType.kBrushless);
     intakeArmRight = new SparkMax(Intake_Arm_Right_ID, MotorType.kBrushless);
     SmartDashboard.putBoolean("Manual Intake", false);
-
-    intakeExtended = false;
   }   
 
   public void teleopInit(){ 
   }
-
-
-  public void toggleIntake(){
-    //CommandScheduler.getInstance().schedule(Commands);
-    //Commands.deadline(Commands.waitSeconds(0.1), testIntakeCommand);  
-    
-    //intakeDown();
-      //runIntakeMotor(intakeSpeed);
-      //Commands.waitSeconds(0.1).andThen(testIntakeCommand);
-      //intakeExtended = true;
-      /* 
-      intakeUp();
-      Commands.deadline(Commands.waitSeconds(0.2), stopIntakeCommand());
-      Commands.waitSeconds(1);
-       */
-
-  }
-
-  Command testCommand (){
-    stopIntake();
-    stopIntakeMotor();
-    return Commands.print("DONE");
-  }
-  /* 
-    public Command jitterIntakeUp(){
-        return Commands.deadline(Commands.waitSeconds(0.15), intakeUpCommand());
-    }
-
-    public Command jitterIntakeDown(){
-        return Commands.deadline(Commands.waitSeconds(0.1), intakeDownCommand());
-    }
-        */
-             
+  
+  //Stops motor for intake bar, alternitively you can pass 0 to runIntakeMotor
   public void stopIntakeMotor() {
     intakeMotor.set(0); 
     currentIntakeSpeed = 0;
   }
-    
+  
+  //Runs the motor for the intake bar
   public void runIntakeMotor(double speed) {
     intakeMotor.set(speed);
     currentIntakeSpeed = speed;
@@ -95,93 +56,61 @@ public class Intake extends SubsystemBase {
     intakeArmRight.set(0);
   }
 
-  public void intakeDown(boolean isJitter){
+  //Jitter speed is different than manual speed, isJitter checks which
+  //Pass a negative number for offset to lower the default speed, like in auto
+  public void intakeDown(boolean isJitter, double offset){
     if (isJitter){
-      intakeArmLeft.set(0.40);
-      intakeArmRight.set(0.40);
+      intakeArmLeft.set(-0.45 - offset);
+      intakeArmRight.set(-0.45 - offset);
       return;
     }
-    intakeArmLeft.set(-0.5);
-    intakeArmRight.set(-0.5);
+    intakeArmLeft.set(-0.25);
+    intakeArmRight.set(-0.25);
   }
 
-  public void intakeUp(boolean isJitter){
+  //Jitter speed is different than manual speed, isJitter checks which
+  //Pass a negative number for offset to lower the default speed, like in auto
+  public void intakeUp(boolean isJitter, double offset){
     if (isJitter){
-      intakeArmLeft.set(0.60);
-      intakeArmRight.set(0.60);
+      intakeArmLeft.set(0.45 + offset);
+      intakeArmRight.set(0.45 + offset);
       return;
     }
     intakeArmLeft.set(0.25);
     intakeArmRight.set(0.25);
   }
 
-  public Command stopIntakeCommand(){
-    return runOnce(()->{
-        stopIntakeArms();
-    });
+  //Stops the intakes arms from moving, in the form of a command to provide a runnable
+  public Command stopIntakeArmsCommand(){
+    return runOnce(()->
+      stopIntakeArms()
+    );
   }
 
+  //Stops the intake bar motor from moving, in the form of a command to provide a runnable
   public Command stopIntakeMotorCommand(){
     return runOnce(()-> 
       stopIntakeMotor()
     );
   }
 
+  //Puts the intakes arms down has the same parameters as the method, in the form of a command to provide a runnable
   public Command intakeDownCommand(double offset){
     return runOnce(()-> 
-      intakeDown(true)
+      intakeDown(true, offset)
     );
   }
 
-  public Command intakeUpCommand(){
+  //Puts the intakes arms up has the same parameters as the method, in the form of a command to provide a runnable
+  public Command intakeUpCommand(double offset){
     return runOnce(()-> 
-      intakeUp(true)
+      intakeUp(true, offset)
     );
-    */
   }
 
-  public void intakeDownEncoder(){
-    if (intakeExtended){
-      return;
-    }
-
-    // *TESTING* MAKE SURE THEY BOTH MOVE IN THE SAME DIRECTION Eg. clockwise on left is counterclockwise on right (BAD)
-    intakeArmLeft.set(0.5);
-    intakeArmRight.set(0.5);
-
-  }
-
-  public void intakeUpEncoder(){
-    if (!intakeExtended){
-      return;
-    }
-    intakeArmLeft.set(-0.5);
-    intakeArmRight.set(-0.5);
-  }
-
+  //Manual Control if selected in elastic, when on the normal control wont work (most likely)
   @Override
   public void periodic(){
-
-    /* 
-    if (intakeArmLeft.getEncoder().getPosition() >= maxLeftEncoderPos 
-    || intakeArmLeft.getEncoder().getPosition() >= maxRightEncoderPos){
-      intakeArmLeft.setVoltage(0);
-      intakeArmRight.setVoltage(0);
-      
-      //intake is fully extended
-      intakeExtend = true;
-      return;
-
-    } else if (intakeArmLeft.getEncoder().getPosition() <= minLeftEncoderPos 
-    || intakeArmLeft.getEncoder().getPosition() <= minRightEncoderPos)
-      intakeArmLeft.setVoltage(0);
-      intakeArmRight.setVoltage(0);
-
-      //intake is fully retracted
-      intakeExtend = false;
-      return;
-      */
-
       if (SmartDashboard.getBoolean("Manual Intake", false)) {
         if (!driverController.povUp().getAsBoolean() || !driverController.povDown().getAsBoolean()){
           intakeArmLeft.set(0);
@@ -191,39 +120,84 @@ public class Intake extends SubsystemBase {
         driverController.povUp().whileTrue(intakeDownCommand(0));
         driverController.povDown().whileTrue(intakeUpCommand(0));
       }
+  }
 
+    //--------------------------
+    //EVERYTHING ENCODER RELATED
+    //--------------------------
 
+    //There was a method for toggling the intake that used the intakeExtended status to control its state
+
+    //,,,,,,,,
+    //FIELDS:
+    //''''''''
+
+    /* 
+      public final double maxLeftEncoderPos = 0.0;
+      public final double maxRightEncoderPos = 0.0;
+      public final double minLeftEncoderPos = 0.0;
+      public final double minRightEncoderPos = 0.0;
+
+      public boolean intakeExtended;
+    */
+
+    //,,,,,,,,,,,,,,
+    //IN CONSTUCTOR:
+    //''''''''''''''
+
+      /* 
+      //*TESTING* Check what we want the threshold value to be before using
+      if (intakeArmLeft.getEncoder().getPosition() >= 0.0 
+      || intakeArmLeft.getEncoder().getPosition() >= 0.0){
+        return;
+      }
+      intakeExtended = false;
+      */
+
+    //,,,,,,,,
+    //METHODS:
+    //''''''''
+    /* 
+      public void intakeDownEncoder(){
+        if (intakeExtended){
+          return;
+        }
+        // *TESTING* MAKE SURE THEY BOTH MOVE IN THE SAME DIRECTION Eg. clockwise on left is counterclockwise on right (BAD)
+        intakeArmLeft.set(0.5);
+        intakeArmRight.set(0.5);
+      }
+
+      public void intakeUpEncoder(){
+        if (!intakeExtended){
+        return;
+      }
+      intakeArmLeft.set(-0.5);
+      intakeArmRight.set(-0.5);
     }
-
-    //--------------------------
-    //EVERYTHING ENCODER RELATED
-    //--------------------------
-
-    //In Constructor:
-      /* 
-      //*TESTING* Check what we want the threshold value to be before using
-      if (intakeArmLeft.getEncoder().getPosition() >= 0.0 
-      || intakeArmLeft.getEncoder().getPosition() >= 0.0){
-        return;
-      }
       */
 
+    //,,,,,,,,,,,,
+    //In Periodic:
+    //''''''''''''
 
-      
-
-    //--------------------------
-    //EVERYTHING ENCODER RELATED
-    //--------------------------
-
-    //In Constructor:
       /* 
-      //*TESTING* Check what we want the threshold value to be before using
-      if (intakeArmLeft.getEncoder().getPosition() >= 0.0 
-      || intakeArmLeft.getEncoder().getPosition() >= 0.0){
-        return;
-      }
-      */
+      if (intakeArmLeft.getEncoder().getPosition() >= maxLeftEncoderPos 
+      || intakeArmLeft.getEncoder().getPosition() >= maxRightEncoderPos){
+        intakeArmLeft.setVoltage(0);
+        intakeArmRight.setVoltage(0);
 
+        //intake is fully extended
+        intakeExtend = true;
+        return;
+      } else if (intakeArmLeft.getEncoder().getPosition() <= minLeftEncoderPos 
+      || intakeArmLeft.getEncoder().getPosition() <= minRightEncoderPos)
+        intakeArmLeft.setVoltage(0);
+        intakeArmRight.setVoltage(0);
+
+        //intake is fully retracted
+        intakeExtend = false;
+        return;
+      */
 
       
 

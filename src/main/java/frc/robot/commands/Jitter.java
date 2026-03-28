@@ -8,6 +8,8 @@ import frc.robot.subsystems.Intake;
 
 
 public class Jitter extends SequentialCommandGroup {
+
+    //Runs an emulated tapping of the jitter button.
     public Jitter(Intake intakeSubsystem){
         addRequirements(intakeSubsystem);
         addCommands(
@@ -16,15 +18,11 @@ public class Jitter extends SequentialCommandGroup {
                     Commands.repeatingSequence(
                         Commands.print("RepeatJitter Started"),
                         Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeUpCommand(-0.15)),
-                        Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeDownCommand(0.15))
+                        Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeDownCommand(-0.15))
                         )
                     ),
                 Commands.waitSeconds(1)
             )
-            //intakeSubsystem.intakeUpCommand(),
-            //intakeSubsystem.intakeUpCommand()
-            //A
-            //B
         );
     }
 }

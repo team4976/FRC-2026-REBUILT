@@ -27,6 +27,7 @@ public class IndexAndSpindexCommand extends Command{
     
     @Override
     public void execute() {
+        /* 
         if (speed < 0) {
             InSSubsystem.moveFeeder(speed);
         } else {
@@ -35,7 +36,11 @@ public class IndexAndSpindexCommand extends Command{
               intakeSubsystem.runIntakeMotor(-0.90);
             }
         }   
-
+            */
+        InSSubsystem.moveFeeder(speed);
+        if (speed > 0){
+            intakeSubsystem.runIntakeMotor(-0.90);
+        }
     }
 
     @Override

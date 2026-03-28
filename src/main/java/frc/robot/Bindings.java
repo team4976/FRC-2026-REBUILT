@@ -65,12 +65,6 @@ public class Bindings {
 
         //Regular Shooting
         driverController.axisGreaterThan(3, 0.1).whileTrue(robotContainer.indexAndSpindexCommand);
-        
-        Command repeatJidderCommand = 
-            Commands.repeatingSequence(
-                Commands.deadline(Commands.waitSeconds(0.1), robotContainer.intakeSubsystem.intakeUpCommand()),
-                Commands.deadline(Commands.waitSeconds(0.1), robotContainer.intakeSubsystem.intakeDownCommand())           
-            );
 
         driverController.rightBumper().whileTrue(repeatJidderCommand).onFalse(
                 Commands.runOnce(
