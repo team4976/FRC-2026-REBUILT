@@ -42,7 +42,7 @@ public class HubtoDepottoShoot extends SequentialCommandGroup {
         Command DepottoShoot = AutoBuilder.buildAuto("Depot to Shoot");
         
         addCommands(
-            new PrintCommand("Hub to Shoot Started"),
+            new PrintCommand("Hub to Depot to Shoot Started"),
             Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
             HubtoShoot,
             //Commands.deadline(new WaitCommand(1),new TurretScanYaw(visionSubsystem, turretMovementSubsystem)),

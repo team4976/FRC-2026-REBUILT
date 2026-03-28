@@ -11,6 +11,7 @@ import frc.robot.commands.Auto.FlywheelStop;
 import frc.robot.commands.TurretScan;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
 import frc.robot.commands.Auto.AutoSequence.HubtoDepottoShoot;
+import frc.robot.commands.Auto.AutoSequence.HubtoShoot;
 import frc.robot.commands.Auto.AutoSequence.OneCycleLeft;
 import frc.robot.commands.Auto.AutoSequence.OneCycleRight;
 import frc.robot.commands.Auto.AutoSequence.OneandHalfCycleRight;
@@ -43,6 +44,7 @@ public class Autos {
     public Command TwoCycleRight;
     public Command TwoCycleLeft;
     public Command HubtoShoottoDepot;
+    public Command HubtoShoot;
     //public Command shootToOutpost;
     public Command jitterCommand1;
     public Command jitterCommand2;
@@ -55,8 +57,9 @@ public class Autos {
         TwoCycleRight = new TwoCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
         TwoCycleLeft = new TwoCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
         HubtoShoottoDepot = new HubtoDepottoShoot(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
+        HubtoShoot = new HubtoShoot(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
     }
-}
+    }
 
     /*
     IntakeExtend intakeExtend;
