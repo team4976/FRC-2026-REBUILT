@@ -37,6 +37,8 @@ public class Intake extends SubsystemBase {
   public void teleopInit(){ 
   }
   
+
+
   //---------------
   //Intake Methods:
   //---------------
@@ -84,6 +86,12 @@ public class Intake extends SubsystemBase {
     intakeArmRight.set(0.25);
   }
 
+
+
+  //-----------------------
+  //Intake Command Methods:
+  //-----------------------
+
   //Stops the intakes arms from moving, in the form of a command to provide a runnable
   public Command stopIntakeArmsCommand(){
     return runOnce(()->
@@ -112,6 +120,12 @@ public class Intake extends SubsystemBase {
     );
   }
 
+  
+
+  //---------
+  //Periodic
+  //---------
+
   //Manual Control if selected in elastic, when on the normal control wont work (most likely)
   @Override
   public void periodic(){
@@ -125,6 +139,9 @@ public class Intake extends SubsystemBase {
         driverController.povDown().whileTrue(intakeUpCommand(0));
       }
   }
+
+
+
 
     //--------------------------
     //EVERYTHING ENCODER RELATED
