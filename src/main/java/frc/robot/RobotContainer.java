@@ -67,11 +67,8 @@ public class RobotContainer {
     public HoodCommand manualHoodDown = new HoodCommand(hoodSubsystem, m_turretvision, true, -0.5);
     public final TurretScan turretScan = new TurretScan(m_turretvision, turretSubsystem);
     public final TurretScanYaw turretScanYaw = new TurretScanYaw(m_turretvision, turretSubsystem);
-    //public Command hoodAndFlywheel = new ParallelDeadlineGroup(flywheelCommand, hoodCommand);
     public AlignedShotCommand alignedShotCommand = new AlignedShotCommand(flywheelSubsystem, hoodSubsystem);
-    //public ReverseIntake reverseIntake = new ReverseIntake(intakeSubsystem);
     
-
 
     //elastic/smartdashboard intialization 
     private ElasticData elasticData = new ElasticData(this);
@@ -122,14 +119,6 @@ public class RobotContainer {
             Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeUpCommand(0.0)),
             Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeDownCommand(0.0))           
         );
-        
-    
-    public Command repeatJidderCommand2(){
-        //Commands.repeatingSequence(new Jitter());
-        
-        return repeatJidderCommand;
-
-    }
 
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
