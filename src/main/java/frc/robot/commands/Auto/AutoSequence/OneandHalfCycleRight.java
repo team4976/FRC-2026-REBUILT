@@ -1,11 +1,6 @@
 package frc.robot.commands.Auto.AutoSequence;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -17,26 +12,27 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Auto.FlywheelStart;
 import frc.robot.commands.Auto.FlywheelStop;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.Jitter;
+import frc.robot.commands.JitterIntake;
 import frc.robot.commands.TurretScan;
 import frc.robot.commands.TurretScanYaw;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
-
+import frc.robot.subsystems.Autos;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.IndexAndSpindexSubsystem;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.TurretSubsystem;
 
 public class OneandHalfCycleRight extends SequentialCommandGroup {
 
     public OneandHalfCycleRight(
-        PhotonVision visionSubsystem,
-        FlywheelSubsystem flywheelSubsystem,
-        Intake intakeSubsystem,
-        IndexAndSpindexSubsystem indxerSubsystem,
-        TurretSubsystem turretMovementSubsystem
+        Autos autos
     ){
+        PhotonVision visionSubsystem = autos.vision;
+        FlywheelSubsystem flywheelSubsystem = autos.flywheelSubsystem;
+        IntakeSubsystem intakeSubsystem = autos.intakeSubsystem;
+        IndexAndSpindexSubsystem indxerSubsystem = autos.indexAndSpindexSubsystem;
+        TurretSubsystem turretSubsystem = autos.turretSubsystem;
         
         Command OneCycleRight = AutoBuilder.buildAuto("1 Cycle - Right");
         Command OneandHalfCycleRight = AutoBuilder.buildAuto("1.5 Cycle - Right"); 
@@ -46,18 +42,14 @@ public class OneandHalfCycleRight extends SequentialCommandGroup {
             Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
             new WaitCommand(0.5),
             OneCycleRight,
-            Commands.deadline(new WaitCommand(1), new TurretScanYaw(visionSubsystem, turretMovementSubsystem)),
+            Commands.deadline(new WaitCommand(1), new TurretScanYaw(visionSubsystem, turretSubsystem)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
-            Commands.deadline(Commands.waitSeconds(6), new Jitter(intakeSubsystem)),
+            Commands.deadline(Commands.waitSeconds(6), new JitterIntake(intakeSubsystem)),
             Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem, intakeSubsystem),
             new FlywheelStop(flywheelSubsystem, visionSubsystem),
             OneandHalfCycleRight
-            /*Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
-            new FlywheelStart(flywheelSubsystem, visionSubsystem),
-            new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
-            new WaitCommand(6)*/
         );
     }
 }

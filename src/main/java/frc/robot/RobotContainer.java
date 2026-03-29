@@ -15,10 +15,10 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.Jitter;
+import frc.robot.commands.JitterIntake;
 import frc.robot.subsystems.Autos;
 import frc.robot.subsystems.ElasticData;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.JitterSubsystem;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.commands.HoodCommand;
@@ -48,7 +48,7 @@ public class RobotContainer {
     private final PhotonVision m_turretvision = new PhotonVision("testingCamera", logger);
 
     //Subsystem Objects/Subsystem Initialization
-    public final Intake intakeSubsystem = new Intake();
+    public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     public final TurretSubsystem turretSubsystem = new TurretSubsystem();
     public final FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
     public final HoodSubsystem hoodSubsystem = new HoodSubsystem();

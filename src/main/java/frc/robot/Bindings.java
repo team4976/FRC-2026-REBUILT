@@ -11,7 +11,7 @@ import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.TurretScan;
 import frc.robot.commands.TurretScanYaw;
 import frc.robot.subsystems.Autos;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.JitterSubsystem;
 
 import static frc.robot.Constants.*;
@@ -32,7 +32,7 @@ public class Bindings {
     public Autos autos;
     public IntakeCommand reverseIntake;
     public JitterSubsystem jitterSubsystem;
-    public Intake intakeSubsystem;
+    public IntakeSubsystem intakeSubsystem;
     public Command repeatJidderCommand;
 
     public Bindings(RobotContainer robotContainer){
@@ -66,6 +66,7 @@ public class Bindings {
         //Regular Shooting
         driverController.axisGreaterThan(3, 0.1).whileTrue(robotContainer.indexAndSpindexCommand);
 
+        //Jitter the Intake
         driverController.rightBumper().whileTrue(repeatJidderCommand).onFalse(
                 Commands.runOnce(
                     ()->robotContainer.intakeCommand.end(true)
@@ -75,6 +76,7 @@ public class Bindings {
         //Intake
         driverController.x().onTrue(Commands.deadline(Commands.waitSeconds(0.2), robotContainer.intakeCommand));
 
+        //Stops Intake Motor
         driverController.y().onTrue(intakeSubsystem.stopIntakeMotorCommand());
     }
 

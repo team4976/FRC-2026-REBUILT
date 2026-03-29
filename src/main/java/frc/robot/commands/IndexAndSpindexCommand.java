@@ -3,16 +3,16 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.IndexAndSpindexSubsystem;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakeSubsystem;
 
 public class IndexAndSpindexCommand extends Command{
     public IndexAndSpindexSubsystem InSSubsystem;
     public double speed;
     public FlywheelSubsystem flywheelSubsystem;
     public double startingIntakeSpeed;
-    public Intake intakeSubsystem;
+    public IntakeSubsystem intakeSubsystem;
     
-    public IndexAndSpindexCommand(IndexAndSpindexSubsystem InSSubsystem, double speed, FlywheelSubsystem flywheelSubsystem, Intake intakeSubsystem){
+    public IndexAndSpindexCommand(IndexAndSpindexSubsystem InSSubsystem, double speed, FlywheelSubsystem flywheelSubsystem, IntakeSubsystem intakeSubsystem){
         this.InSSubsystem = InSSubsystem;
         this.flywheelSubsystem = flywheelSubsystem;
         this.intakeSubsystem = intakeSubsystem;

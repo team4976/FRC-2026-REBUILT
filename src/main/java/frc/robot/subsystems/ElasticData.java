@@ -34,7 +34,7 @@ public class ElasticData extends SubsystemBase{
     private final HoodSubsystem hoodSubsystem;
     private final FlywheelSubsystem flywheelSubsystem;
     private final TurretSubsystem turretSubsystem;
-    private final Intake intakeSubsystem;
+    private final IntakeSubsystem intakeSubsystem;
     public SendableChooser<String[]> autoChooser = new SendableChooser<>();
     double turretTargetAngle; // the angle we want the turret to be at so that we are aiming at the hub
     //double turretAngle; // the turret angle we are currently at
@@ -81,7 +81,7 @@ public class ElasticData extends SubsystemBase{
         hoodSubsystem = (HoodSubsystem) subsystemList.get(3);
         flywheelSubsystem = (FlywheelSubsystem) subsystemList.get(2);
         turretSubsystem = (TurretSubsystem) subsystemList.get(1);
-        intakeSubsystem = (Intake) subsystemList.get(0);
+        intakeSubsystem = (IntakeSubsystem) subsystemList.get(0);
 
 
         //-------------------

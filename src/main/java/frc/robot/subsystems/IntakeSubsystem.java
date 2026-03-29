@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import static frc.robot.Constants.*;
 
 
-public class Intake extends SubsystemBase {
+public class IntakeSubsystem extends SubsystemBase {
   public SparkMax intakeMotor; 
   public SparkMax intakeArmLeft;
   public SparkMax intakeArmRight;
@@ -28,7 +28,7 @@ public class Intake extends SubsystemBase {
 
   public double currentIntakeSpeed;
       
-  public Intake() {
+  public IntakeSubsystem() {
     intakeMotor = new SparkMax(Intake_ID, MotorType.kBrushed);
     intakeArmLeft = new SparkMax(Intake_Arm_Left_ID, MotorType.kBrushless);
     intakeArmRight = new SparkMax(Intake_Arm_Right_ID, MotorType.kBrushless);
