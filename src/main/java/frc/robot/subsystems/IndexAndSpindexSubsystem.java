@@ -32,11 +32,18 @@ public class IndexAndSpindexSubsystem extends SubsystemBase{
         spindexMotor.set(0);
     }
 
+    /**
+     * A method to stop the indexer and spindexer together. Alternitively you could just call moveFeeder with 0.0 as the argument.
+     */
     public void stopFeeder(){
         indexMotor.set(0);
         spindexMotor.set(0);
     }
 
+    /**
+     * Spins both the indexer and the spindexer at the desired speed. 
+     * @param speed The Speed to set. Value should be between -1.0 and 1.0.
+     */
     public void moveFeeder(double speed){
         indexMotor.set(speed);
         spindexMotor.set(speed);
@@ -44,12 +51,5 @@ public class IndexAndSpindexSubsystem extends SubsystemBase{
 
     @Override
     public void periodic() {
-        if (hoodSubsystem.getHoodState() == "readyToShoot" 
-        && flywheelSubsystem.getShooterState() == "readyToShoot") {
-            //driverController.setRumble(GenericHID.RumbleType.kBothRumble, 100);
-        }
-        else {
-            //driverController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
-        }
     }
 }

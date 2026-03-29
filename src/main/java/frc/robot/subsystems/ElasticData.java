@@ -266,7 +266,6 @@ public class ElasticData extends SubsystemBase{
 
 
         //Ben T's smartdashboard stuff
-        SmartDashboard.putString("Testing/Ben T's Stuff/shooter state", flywheelSubsystem.getShooterState());
         SmartDashboard.putNumber("Testing/Ben T's Stuff/shooter speed", flywheelSubsystem.getShooterSpeed());
         SmartDashboard.putString("Testing/Ben T's Stuff/hood State", hoodSubsystem.getHoodState());
         SmartDashboard.putNumber("Testing/Ben T's Stuff/hood position", hoodSubsystem.returnMotor().getPosition().getValueAsDouble());
