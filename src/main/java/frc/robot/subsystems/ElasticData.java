@@ -25,8 +25,10 @@ import frc.robot.Constants;
 //was designed to be the only elastic subsystem/container but it isnt currently
 //the other two can be merged with this one later, gott set it up for multiple camers with some renaming
 //and gotta add all the other stuff.
+import frc.robot.RobotContainer;
 
 public class ElasticData extends SubsystemBase{
+    private RobotContainer robotContainer;
     private final Telemetry telemetry;
     private final PhotonVision cameraDataMain;
     private final PhotonVision cameraDataTurret;
@@ -36,28 +38,21 @@ public class ElasticData extends SubsystemBase{
     private final TurretSubsystem turretSubsystem;
     private final IntakeSubsystem intakeSubsystem;
     public SendableChooser<String[]> autoChooser = new SendableChooser<>();
-    double turretTargetAngle; // the angle we want the turret to be at so that we are aiming at the hub
-    //double turretAngle; // the turret angle we are currently at
-    //double distance; // distance from the hub to the turret
-    double hubWidth = 0.6;
-    double radius = 3;
-    boolean fuelMakeIt = false;
-    double rotation;
     Field2d field2d;
     Optional<Alliance> alliance;
     List<Pose2d> pose2ds = new ArrayList<>();
     public double currentTime;
     public double startTime;
 
-    public ElasticData(Telemetry m_telemetry, PhotonVision camera1, PhotonVision camera2, List<Subsystem> subsystemList){
+    public ElasticData(RobotContainer robotContainer){
         //-------------------
         //Object Assignments
         //-------------------
 
         //Misc Objects
-        telemetry = m_telemetry;
-        cameraDataMain = camera1;
-        cameraDataTurret = camera2;
+        telemetry = robotContainer.logger;
+        cameraDataMain = robotContainer.vision;
+        cameraDataTurret = robotContainer.m_turretvision;
         field2d = cameraDataMain.getRobotPos();
         alliance = DriverStation.getAlliance();
         if (alliance.isPresent()){
@@ -77,11 +72,12 @@ public class ElasticData extends SubsystemBase{
         "[Indexer] Motor Id:"+ Constants.Index_ID,"[Intake] Motor Id:"+ Constants.Intake_ID,"[PCM] Motor Id:","[Pidgeon] Motor Id:"};
 
         //Subsystem Objects
-        indexAndSpindexSubsystem = (IndexAndSpindexSubsystem) subsystemList.get(4);
-        hoodSubsystem = (HoodSubsystem) subsystemList.get(3);
-        flywheelSubsystem = (FlywheelSubsystem) subsystemList.get(2);
-        turretSubsystem = (TurretSubsystem) subsystemList.get(1);
-        intakeSubsystem = (IntakeSubsystem) subsystemList.get(0);
+        this.robotContainer = robotContainer;
+        indexAndSpindexSubsystem = robotContainer.indexAndSpindexSubsystem;
+        hoodSubsystem = robotContainer.hoodSubsystem;
+        flywheelSubsystem = robotContainer.flywheelSubsystem;
+        turretSubsystem = robotContainer.turretSubsystem;
+        intakeSubsystem = robotContainer.intakeSubsystem;
 
 
         //-------------------
@@ -202,6 +198,7 @@ public class ElasticData extends SubsystemBase{
                 - (0.4148098 * Math.pow(cameraDataMain.getDistance() + 0.5969, 2)));
 
 
+
         //------------- 
         //FIELD WIDGETS
         //-------------
@@ -209,38 +206,6 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putData("Fields/Turret Position Field", cameraDataTurret.getDistanceAndAngle());
         
 
-        //AC- Additional Field2d Stuff
-        /* 
-        if (turretSubsystem.turretMotor != null){
-            rotation = (cameraDataTurret.getTurretAngle()/57) + field2d.getRobotPose().getRotation().getDegrees();
-        } else {
-            rotation = 0.0;
-        }
-        SmartDashboard.putBoolean("Will the Fuel make it?", fuelMakeIt);
-    field2d.getObject("Aim").setPose(field2d.getRobotPose().getX() + (radius * (Math.cos(rotation))), field2d.getRobotPose().getY() + (radius * (Math.sin(rotation))), new Rotation2d(rotation));
-        Pose2d aimPose = field2d.getObject("Aim").getPose();
-        Pose2d hubPose = field2d.getObject("Hub").getPose();
-        if (aimPose.getX() >= (hubPose.getX() - (hubWidth/2)) && aimPose.getX() <= (hubPose.getX() + (hubWidth/2))){
-            if (aimPose.getY() >= (hubPose.getY() - hubWidth) && aimPose.getY() <= (hubPose.getY() + hubWidth)) {
-                fuelMakeIt = true;
-            } else {
-                fuelMakeIt = false;
-            }
-        } else {
-            fuelMakeIt = false;
-        } 
-            
-        
-
-
-        //Swerve Direction on Field
-        if(telemetry != null){
-                field2d.getObject("FR").setPose(field2d.getRobotPose().getX() + 0.42, field2d.getRobotPose().getY() + 0.343, new Rotation2d(telemetry.m_moduleDirections[2].getAngle()));
-                field2d.getObject("FL").setPose(field2d.getRobotPose().getX() - 0.42, field2d.getRobotPose().getY() + 0.343, new Rotation2d(telemetry.m_moduleDirections[1].getAngle()));
-                field2d.getObject("RR").setPose(field2d.getRobotPose().getX() + 0.42, field2d.getRobotPose().getY() - 0.343, new Rotation2d(telemetry.m_moduleDirections[0].getAngle()));
-                field2d.getObject("RL").setPose(field2d.getRobotPose().getX() - 0.42, field2d.getRobotPose().getY() - 0.343, new Rotation2d(telemetry.m_moduleDirections[3].getAngle()));
-        }
-                */
 
         //-------------
         //MOTOR WIDGETS
@@ -271,6 +236,8 @@ public class ElasticData extends SubsystemBase{
         //Position Widgets
         SmartDashboard.putNumber("QC/Motors/Hood/Hood Position", hoodSubsystem.HoodMotor.getPosition().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Turret/Turret Position", turretSubsystem.turretMotor.getPosition().getValueAsDouble());
+
+
 
         //--------
         //BOOLEANS

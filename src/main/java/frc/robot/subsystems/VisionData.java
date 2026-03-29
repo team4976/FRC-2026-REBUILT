@@ -43,8 +43,6 @@ public class VisionData{
     public double turretTargetAngle;
     public double hubId;
     Field2d field2d = new Field2d();
-    List<Double> idYaws;
-
 
     //the constructor, having the camera as a parameter--
     //means the methods in this class can be used dynamically--
@@ -66,7 +64,6 @@ public class VisionData{
             if (alliance.get() == Alliance.Blue) {
                 hubOrigX = BlueHubX; 
                 hubOrigY = BlueHubY;
-                
                 hubId = 26;
             }
             if (alliance.get() == Alliance.Red) {

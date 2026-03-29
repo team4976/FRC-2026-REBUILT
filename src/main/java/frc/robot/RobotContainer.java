@@ -33,19 +33,17 @@ import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import static frc.robot.Constants.*;
 
-import java.util.List;
-
 import org.photonvision.PhotonCamera;
 
 
 
 public class RobotContainer {
     //Logging
-    private final Telemetry logger = new Telemetry(Constants.MaxSpeed);
+    public final Telemetry logger = new Telemetry(Constants.MaxSpeed);
 
     //Vision Objects, may be good idea to merge into one class and just have dif objects
     public final PhotonVision vision = new PhotonVision("testingCamera", logger);
-    private final PhotonVision m_turretvision = new PhotonVision("testingCamera", logger);
+    public final PhotonVision m_turretvision = new PhotonVision("testingCamera", logger);
 
     //Subsystem Objects/Subsystem Initialization
     public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
@@ -53,13 +51,6 @@ public class RobotContainer {
     public final FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
     public final HoodSubsystem hoodSubsystem = new HoodSubsystem();
     public final IndexAndSpindexSubsystem indexAndSpindexSubsystem = new IndexAndSpindexSubsystem(hoodSubsystem, flywheelSubsystem);
-    public final List<Subsystem> allSubsystemsList = List.of(
-        intakeSubsystem,
-        turretSubsystem,
-        flywheelSubsystem,
-        hoodSubsystem,
-        indexAndSpindexSubsystem
-    );
     
     public Autos autos;
     public JitterSubsystem jitterSubsystem = new JitterSubsystem();
@@ -83,7 +74,7 @@ public class RobotContainer {
 
 
     //elastic/smartdashboard intialization 
-    private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision, allSubsystemsList);
+    private ElasticData elasticData = new ElasticData(this);
 
     public Bindings bindings;
 
