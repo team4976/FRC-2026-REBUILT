@@ -161,9 +161,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
 
 
-    //--------------------------
-    //EVERYTHING ENCODER RELATED
-    //--------------------------
+    //-------------------------------------------------------
+    //EVERYTHING ENCODER RELATED (Was Planned But Never Used)
+    //-------------------------------------------------------
 
     //There was a method for toggling the intake that used the intakeExtended status to control its state
 

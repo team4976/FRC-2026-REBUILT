@@ -39,7 +39,7 @@ public final class Constants {
   public static final CommandXboxController driverController = new CommandXboxController(0);
   public static final CommandXboxController operatorController = new CommandXboxController(1);
 
-  //serve constants
+  //Swerve Constants
   //swerve drive variables and objects
   public static final double MaxSpeed = RebuiltTunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.75; // kSpeedAt12Volts desired top speed
   public static final double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); //rotations per second max angular velocity
@@ -53,7 +53,7 @@ public final class Constants {
   public static final CommandSwerveDrivetrain drivetrain = RebuiltTunerConstants.createDrivetrain(); //TurretTunerConstants.createDrivetrain();
   public static final SwerveRequest idle = new SwerveRequest.Idle();
 
-  //id constants
+  //ID constants
   public static final int Index_ID = 31;
   public static final int Spindex_ID = 40;
   public static final int Intake_ID = 41;
@@ -64,39 +64,21 @@ public final class Constants {
   public static final int Intake_Arm_Left_ID = 51;
   public static final int Intake_Arm_Right_ID = 50;
 
+  //Speed Constants
+  public static final double intakeSpeed = -0.95;
 
-
-
-
-  public static final int kDriverControllerPort = 0;
-  public static final int LEFT_LEADER_ID = 1;
-  public static final double turretScanVoltage = 0.8;
-  public static final double turretManualVoltage = 1.5; //2
-  public static double yaw;
-  public static final double targetYaw = 0.0;
-  public static double currentYaw;
-  public static double currentSkew;
-  public static final boolean targetVisible = false;
-  public static final int framesMissed = 0; //How many frames has the turret not seen the april tag
-  public static final double turretCameraHeight = .4826;
+  //Unsed and potentially no longer accurate but I left for refernce just in case.
+  public static final double turretCameraHeight = 0.4826;
   public static final double TagHeight = 1.084;
-  public static final double CameraPitch = 0;
-  public static final double TagPitch = 0;
-// middle of the hub red: 13.0155555556, 4.41236111111
-// middle of the hub blue: 5.05861111111, 4.41236111111
+
+  //X and Y of the hub centers I believe
   public static final double RedHubX = 11.915394;
   public static final double RedHubY = 4.042283;
   public static final double BlueHubX = 4.625594;
   public static final double BlueHubY = 4.042283;
-  public static int hubId = 0;
 
+  //Important turret limits
   public static final double turretLimitLeft = 21.7626953125; // software limits on turret motion
   public static final double turretLimitRight = -11.59228515625;
   public static final double turretDeadzoneSize = 41.667 - (Constants.turretLimitLeft - Constants.turretLimitRight);// the turret encoder position the turret cannot go
-  // 8.6056
-
-
-  public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
-  public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(0.0, 0.0, 0.635), new Rotation3d(0, 0, 0));
-  public static final double intakeSpeed = -0.95;
 }

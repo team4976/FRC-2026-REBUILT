@@ -67,12 +67,12 @@ public class VisionData{
                 hubOrigX = BlueHubX; 
                 hubOrigY = BlueHubY;
                 
-                Constants.hubId = 26;
+                hubId = 26;
             }
             if (alliance.get() == Alliance.Red) {
                 hubOrigX = RedHubX; 
                 hubOrigY = RedHubY;
-                Constants.hubId = 10;
+                hubId = 10;
             }
         }
     }
