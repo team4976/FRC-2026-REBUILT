@@ -274,9 +274,6 @@ public class VisionData{
             SmartDashboard.putString("Testing/DistanceY",""+String.format("%.2f",hubY)+" - "+String.format("%.2f",field2d.getRobotPose().getY()) +"= "+String.format("%.2f",distanceY));
             SmartDashboard.putString("Testing/turretDistance Split", "sqrt("+String.format("%.2f",distanceX)+"*"+String.format("%.2f",distanceX) +"+"+ String.format("%.2f",distanceY)+"*"+(String.format("%.2f",distanceY)+")=" +turretDistance));
 
-            System.err.println(hubOrigX);
-            System.err.println(hubOrigY);
-
             // calculates the angle we want to get to
             turretTargetAngle = Math.toDegrees(Math.atan2( distanceY,distanceX));
             // calculates the angle of the bot from the middle

@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 import static frc.robot.Constants.*;
 
@@ -74,6 +75,11 @@ public class Intake extends SubsystemBase {
     intakeArmRight.set(-0.25);
   }
 
+  /**
+   * 
+   * @param isJitter whether the method is being called for the jitter or manual
+   * @param offset the speed offset from the default of 0.45. Enter a negative value to lower the speed.
+  */
   //Jitter speed is different than manual speed, isJitter checks which
   //Pass a negative number for offset to lower the default speed, like in auto
   public void intakeUp(boolean isJitter, double offset){
@@ -106,6 +112,12 @@ public class Intake extends SubsystemBase {
     );
   }
 
+    /**
+   * Constructs a command that moves the intakes arms down
+   *
+   * @param offset the speed offset from the default of 0.45. Enter a negative value to lower the speed.
+   * @return the command
+   */
   //Puts the intakes arms down has the same parameters as the method, in the form of a command to provide a runnable
   public Command intakeDownCommand(double offset){
     return runOnce(()-> 
@@ -113,6 +125,12 @@ public class Intake extends SubsystemBase {
     );
   }
 
+  /**
+   * Constructs a command that moves the intakes arms up
+   *
+   * @param offset the speed offset from the default of 0.45. Enter a negative value to lower the speed.
+   * @return the command
+   */
   //Puts the intakes arms up has the same parameters as the method, in the form of a command to provide a runnable
   public Command intakeUpCommand(double offset){
     return runOnce(()-> 

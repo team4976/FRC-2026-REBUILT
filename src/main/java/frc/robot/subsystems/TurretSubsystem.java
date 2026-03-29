@@ -67,6 +67,12 @@ public class TurretSubsystem extends SubsystemBase{
         turretMotor.setVoltage(voltage);
     }
 
+    /**
+     * The method that moves the turrets motor at a desired voltage using the passed voltage value.
+     * <p> 
+     * Why was it named like this???????
+     * @param voltage the voltage to move the turret with. 
+     */
     public void lockedOn(double voltage){
         turretMotor.setVoltage(voltage);
     }
@@ -107,18 +113,6 @@ public class TurretSubsystem extends SubsystemBase{
 
     @Override
     public void periodic(){
-        /*
-        var turretSpinConfig = new Slot0Configs();
-
-        turretSpinConfig.kS = SmartDashboard.getNumber("turret.kS", 0.1); // Add 0.1 V output to overcome static friction
-        turretSpinConfig.kV = SmartDashboard.getNumber("turret.kV", 0.12); // A velocity target of 1 rps results in 0.12 V output
-        turretSpinConfig.kP = SmartDashboard.getNumber("turret.kP", 0.1); // An error of 1 rps results in 0.11 V output
-        turretSpinConfig.kI = SmartDashboard.getNumber("turret.kI", 0); // no output for integrated error
-        turretSpinConfig.kD = SmartDashboard.getNumber("turret.kD", 0); // no output for error derivative
-        //SmartDashboard.putNumber("turretEncoderValue", turretMotor.getPosition().getValueAsDouble());
-        */
-
-
         //Check for Hitting Limit Switch Before the Override
         if (!rightSwitch.get() || getEncoderValue() < turretLimitRight){
             turnLeft(0);
