@@ -95,46 +95,106 @@ public class PhotonVision extends SubsystemBase{
         return vision.getTargetYaw(IDs);
     }
 
+    /**
+     * NEEDS TO BE UPDATED. 
+     * <p> Get the pitch of a singular desired april tag ID.
+     * @param id The id to get the yaw of.
+     * @return The pitch of the desired tag if seen at the time of the method call.
+     */
     public OptionalDouble getTargetPitch(int id) {
         return vision.getTargetPitch(id);
     }
 
+    /**
+     * Gets the pose of the robot based on any seen april tags. Robot pose is placed on a Field2d and can be gotten through the .getRobotPose() method.
+     * @return The field2d with the robot pose. Is 0.0 if not tags are seen at time of call.
+     */
     public Field2d getRobotPos(){
         return vision.findRobotPos();
     }
 
+    /**
+     * Gets the Y rotation of the target highest in the pipeline. 
+     * <p> Y rotation is a 3d rotation of the april tag on the Y rotation axis. 
+     * Y rotation is if the apriltag is rotated on a horizontal centered line along the imaginary X axis of the tag. 
+     * Imagine it spinning like one of those rotating whiteboards or mirrors that allow you to rotate to see both sides.
+     * Eg. the top half of the apriltag is closer to the camera than the bottom half. 
+     * @return The Y rotation of the target in radians as a double.
+     */
     public double getYRotation(){
         return vision.getYRotation();
     }
 
+    /**
+     * Gets the X rotation of the target highest in the pipeline. 
+     * <p> X rotation is a 2d rotation of the april tag on the X rotation axis. 
+     * X rotation is if the apriltag is rotated on a 3d centered line along an imaginary Z axis going through the tag. 
+     * Imagine it like the face of the tag rotating in 2d.
+     * Eg. the top of the apriltag rotates 90 degrees clockwise resulting in 
+     * the top now being the right side, the right side becoming the bottom, the bottom becoming the left side, and the left side becoming the top. 
+     * @return The X rotation of the target in radians as a double.
+     */
     public double getXRotation(){
         return vision.getXRotation();
     }
 
+    /**
+     * Gets the Z rotation of the target highest in the pipeline. 
+     * <p> Z rotation is a 3d rotation of the april tag on the Z rotation axis. 
+     * Z rotation is if the apriltag is rotated on a vertical centered line along an imaginary Y axis. 
+     * Imagine it like a rotating hidden door or just a door in general. 
+     * Eg. The right side of the tag is closer to the camera than the left side of the tag
+     * @return The Z rotation of the target in radians as a double.
+     */
     public double getZRotation(){
         return vision.getZRotation();
     }
 
+    /**
+     * 
+     * @return
+     */
     public double getDistance(){
         return vision.getDistance();
     }
 
+    /**
+     * 
+     * @return
+     */
     public Field2d getDistanceAndAngle(){
         return vision.getDistanceAndAngle();
     }
 
+    /**
+     * 
+     * @return
+     */
     public double getTurretAngle(){
         return vision.getTurretAngle();
     }
 
+    /**
+     * 
+     * @return
+     */
     public double getTurretDistance(){
         return vision.getTurretDistance();
     }
 
+    /**
+     * 
+     * @return
+     */
     public double getTurretTargetAngle(){
         return vision.getTurretTargetAngle();
     }
 
+    /**
+     * 
+     * @param targetID
+     * @return
+     */
     public double getTargetZRotation(int targetID){
         return vision.getTargetZRotation(targetID);
     }
