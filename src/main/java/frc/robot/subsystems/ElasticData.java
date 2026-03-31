@@ -239,8 +239,8 @@ public class ElasticData extends SubsystemBase{
         //Position Widgets
         SmartDashboard.putNumber("QC/Motors/Hood/Hood Position", hoodSubsystem.HoodMotor.getPosition().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Turret/Turret Position", turretSubsystem.turretMotor.getPosition().getValueAsDouble());
-
-
+        SmartDashboard.putNumber("Intake Left Arm Encoder", intakeSubsystem.intakeArmLeft.getEncoder().getPosition());
+        SmartDashboard.putNumber("Intake Right Arm Encoder", intakeSubsystem.intakeArmRight.getEncoder().getPosition());
 
         //--------
         //BOOLEANS

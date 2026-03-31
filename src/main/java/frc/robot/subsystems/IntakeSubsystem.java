@@ -192,7 +192,7 @@ public class IntakeSubsystem extends SubsystemBase {
       /* 
       //*TESTING* Check what we want the threshold value to be before using
       if (intakeArmLeft.getEncoder().getPosition() >= 0.0 
-      || intakeArmLeft.getEncoder().getPosition() >= 0.0){
+      || intakeArmLeft.getEncoder().getPosition() <= 0.0){
         return;
       }
       intakeExtended = false;
