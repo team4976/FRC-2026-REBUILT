@@ -116,8 +116,8 @@ public class RobotContainer {
     Command repeatJidderCommand = 
         Commands.repeatingSequence(
             Commands.print("RepeatJitter Started"),
-            Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeUpCommand(0.0)),
-            Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeDownCommand(0.0))           
+            Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeUpCommand(true, 0.0)),
+            Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeDownCommand(true, 0.0))           
         );
 
     private void configureBindings() {

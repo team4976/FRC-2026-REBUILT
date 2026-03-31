@@ -78,6 +78,13 @@ public class Bindings {
 
         //Stops Intake Motor
         driverController.y().onTrue(intakeSubsystem.stopIntakeMotorCommand());
+
+        //Bring Intake Up Slowly
+        driverController.start().whileTrue(intakeSubsystem.intakeUpCommand(false, 0)).onFalse(
+                    Commands.runOnce(
+                    ()->robotContainer.intakeCommand.end(true)
+                )
+            );
     }
 
     public void operatorConfigureBindings(){

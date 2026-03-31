@@ -78,7 +78,8 @@ public class IntakeSubsystem extends SubsystemBase {
   /**
    * 
    * @param isJitter whether the method is being called for the jitter or manual
-   * @param offset the speed offset from the default of 0.45. Enter a negative value to lower the speed.
+   * @param offset the speed offset from the default of 0.45 during jitter and 0.25 in normal. 
+   * Enter a negative value to lower the speed.
   */
   //Jitter speed is different than manual speed, isJitter checks which
   //Pass a negative number for offset to lower the default speed, like in auto
@@ -115,26 +116,30 @@ public class IntakeSubsystem extends SubsystemBase {
     /**
    * Constructs a command that moves the intakes arms down
    *
-   * @param offset the speed offset from the default of 0.45. Enter a negative value to lower the speed.
+   * @param isJitter whether the method is being called for the jitter or manual
+   * @param offset the speed offset from the default of 0.45 during jitter and 0.25 in normal. 
+   * Enter a negative value to lower the speed.
    * @return the command
    */
   //Puts the intakes arms down has the same parameters as the method, in the form of a command to provide a runnable
-  public Command intakeDownCommand(double offset){
+  public Command intakeDownCommand(boolean isJitter, double offset){
     return runOnce(()-> 
-      intakeDown(true, offset)
+      intakeDown(isJitter, offset)
     );
   }
 
   /**
    * Constructs a command that moves the intakes arms up
    *
-   * @param offset the speed offset from the default of 0.45. Enter a negative value to lower the speed.
+   * @param isJitter whether the method is being called for the jitter or manual
+   * @param offset the speed offset from the default of 0.45 during jitter and 0.25 in normal. 
+   * Enter a negative value to lower the speed.
    * @return the command
    */
   //Puts the intakes arms up has the same parameters as the method, in the form of a command to provide a runnable
-  public Command intakeUpCommand(double offset){
+  public Command intakeUpCommand(boolean isJitter, double offset){
     return runOnce(()-> 
-      intakeUp(true, offset)
+      intakeUp(isJitter, offset)
     );
   }
 
@@ -153,8 +158,8 @@ public class IntakeSubsystem extends SubsystemBase {
           intakeArmRight.set(0);
         }
         //intake down is set higher, DONT USE.
-        driverController.povUp().whileTrue(intakeDownCommand(0));
-        driverController.povDown().whileTrue(intakeUpCommand(0));
+        driverController.povUp().whileTrue(intakeDownCommand(false, 0));
+        driverController.povDown().whileTrue(intakeUpCommand(false, 0));
       }
   }
 
