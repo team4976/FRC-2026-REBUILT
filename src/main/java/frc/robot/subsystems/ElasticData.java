@@ -44,7 +44,7 @@ public class ElasticData extends SubsystemBase{
     List<Pose2d> pose2ds = new ArrayList<>();
     public double currentTime;
     public double startTime;
-    private PowerDistribution PDH;
+    PowerDistribution PDH;
 
     public ElasticData(RobotContainer robotContainer){
         //-------------------
@@ -52,6 +52,7 @@ public class ElasticData extends SubsystemBase{
         //-------------------
 
         //Misc Objects
+        this.PDH = robotContainer.PDH;
         telemetry = robotContainer.logger;
         cameraDataMain = robotContainer.vision;
         cameraDataTurret = robotContainer.m_turretvision;
@@ -80,7 +81,7 @@ public class ElasticData extends SubsystemBase{
         flywheelSubsystem = robotContainer.flywheelSubsystem;
         turretSubsystem = robotContainer.turretSubsystem;
         intakeSubsystem = robotContainer.intakeSubsystem;
-        this.PDH = robotContainer.PDH;
+
 
         //-------------------
         //Non-Periodic Widgets 

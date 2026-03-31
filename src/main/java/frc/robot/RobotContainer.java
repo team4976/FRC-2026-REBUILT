@@ -71,13 +71,14 @@ public class RobotContainer {
     
 
     //elastic/smartdashboard intialization 
-    private ElasticData elasticData = new ElasticData(this);
 
     public Bindings bindings;
 
     public StringLogEntry logEntry = new StringLogEntry(DataLogManager.getLog(), "positionLog");
 
     public PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
+    
+    private ElasticData elasticData = new ElasticData(this);
 
     public Command selectedAuto;
 
