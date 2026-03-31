@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 import frc.robot.commands.Auto.FlywheelStart;
 import frc.robot.commands.Auto.FlywheelStop;
+import frc.robot.RobotContainer;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.JitterIntake;
 import frc.robot.commands.TurretScan;
@@ -25,14 +26,14 @@ import frc.robot.subsystems.TurretSubsystem;
 public class TwoCycleRight extends SequentialCommandGroup {
 
     public TwoCycleRight(
-        Autos autos
+        RobotContainer robotContainer
     ){
         
-        PhotonVision visionSubsystem = autos.vision;
-        FlywheelSubsystem flywheelSubsystem = autos.flywheelSubsystem;
-        IntakeSubsystem intakeSubsystem = autos.intakeSubsystem;
-        IndexAndSpindexSubsystem indxerSubsystem = autos.indexAndSpindexSubsystem;
-        TurretSubsystem turretMovementSubsystem = autos.turretSubsystem;
+        PhotonVision visionSubsystem = robotContainer.vision;
+        FlywheelSubsystem flywheelSubsystem = robotContainer.flywheelSubsystem;
+        IntakeSubsystem intakeSubsystem = robotContainer.intakeSubsystem;
+        IndexAndSpindexSubsystem indxerSubsystem = robotContainer.indexAndSpindexSubsystem;
+        TurretSubsystem turretMovementSubsystem = robotContainer.turretSubsystem;
 
         Command OneCycleRight = AutoBuilder.buildAuto("1 Cycle - Right");
         Command OneandHalfCycleRight = AutoBuilder.buildAuto("1.5 Cycle - Right"); 

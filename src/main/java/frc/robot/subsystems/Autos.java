@@ -13,20 +13,10 @@ import frc.robot.commands.Auto.AutoSequence.TwoCycleLeft;
 
 public class Autos {
     
-    RobotContainer robotContainer;
-    public IntakeSubsystem intakeSubsystem;
-    public PhotonVision vision;
-    public FlywheelSubsystem flywheelSubsystem;
-    public IndexAndSpindexSubsystem indexAndSpindexSubsystem;
-    public TurretSubsystem turretSubsystem;
+    public RobotContainer robotContainer;
 
     public Autos(RobotContainer robotContainer){
         this.robotContainer = robotContainer;
-        this.intakeSubsystem = robotContainer.intakeSubsystem;
-        this.vision = robotContainer.vision;
-        this.flywheelSubsystem = robotContainer.flywheelSubsystem;
-        this.indexAndSpindexSubsystem = robotContainer.indexAndSpindexSubsystem;
-        this.turretSubsystem = robotContainer.turretSubsystem;
         loadCommands();
     }
 
@@ -42,13 +32,13 @@ public class Autos {
     public Command jitterCommand2;
 
     public void loadCommands(){
-        OneCycleRight = new OneCycleRight(this); 
-        OneCycleLeft = new OneCycleLeft(this);
-        OneandHalfCycleRight = new OneandHalfCycleRight(this); 
-        OneandHalfCycleLeft = new OneandHalfCycleLeft(this); 
-        TwoCycleRight = new TwoCycleRight(this); 
-        TwoCycleLeft = new TwoCycleLeft(this); 
-        HubtoShoottoDepot = new HubtoDepottoShoot(this); 
-        HubtoShoot = new HubtoShoot(this); 
+        OneCycleRight = new OneCycleRight(robotContainer); 
+        OneCycleLeft = new OneCycleLeft(robotContainer);
+        OneandHalfCycleRight = new OneandHalfCycleRight(robotContainer); 
+        OneandHalfCycleLeft = new OneandHalfCycleLeft(robotContainer); 
+        TwoCycleRight = new TwoCycleRight(robotContainer); 
+        TwoCycleLeft = new TwoCycleLeft(robotContainer); 
+        HubtoShoottoDepot = new HubtoDepottoShoot(robotContainer); 
+        HubtoShoot = new HubtoShoot(robotContainer); 
     }
 }

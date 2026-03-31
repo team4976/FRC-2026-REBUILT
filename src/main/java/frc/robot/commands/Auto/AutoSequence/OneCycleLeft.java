@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.RobotContainer;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.JitterIntake;
 import frc.robot.commands.TurretScan;
@@ -24,13 +25,13 @@ import frc.robot.subsystems.TurretSubsystem;
 public class OneCycleLeft extends SequentialCommandGroup {
 
     public OneCycleLeft(
-        Autos autos
+        RobotContainer robotContainer
     ){
-        PhotonVision visionSubsystem = autos.vision;
-        FlywheelSubsystem flywheelSubsystem = autos.flywheelSubsystem;
-        IntakeSubsystem intakeSubsystem = autos.intakeSubsystem;
-        IndexAndSpindexSubsystem indxerSubsystem = autos.indexAndSpindexSubsystem;
-        TurretSubsystem turretSubsystem = autos.turretSubsystem;
+        PhotonVision visionSubsystem = robotContainer.vision;
+        FlywheelSubsystem flywheelSubsystem = robotContainer.flywheelSubsystem;
+        IntakeSubsystem intakeSubsystem = robotContainer.intakeSubsystem;
+        IndexAndSpindexSubsystem indxerSubsystem = robotContainer.indexAndSpindexSubsystem;
+        TurretSubsystem turretSubsystem = robotContainer.turretSubsystem;
         
         Command OneCycleLeft = AutoBuilder.buildAuto("1 Cycle - Left");
         
