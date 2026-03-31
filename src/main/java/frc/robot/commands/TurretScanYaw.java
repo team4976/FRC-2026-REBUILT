@@ -100,13 +100,13 @@ public class TurretScanYaw extends Command {
                 }
             }
 
-            double totalLockedOn = autoTurretVoltage + manualTurretVoltage;
+            double totalTurretVoltage = autoTurretVoltage + manualTurretVoltage;
 
-            if(totalLockedOn > 0.7) totalLockedOn = 0.7;
+            if(totalTurretVoltage > 0.7) totalTurretVoltage = 0.7;
 
-            else if(totalLockedOn < -0.7) totalLockedOn = -0.7;
+            else if(totalTurretVoltage < -0.7) totalTurretVoltage = -0.7;
 
-            turretSubsystem.lockedOn(totalLockedOn);
+            turretSubsystem.lockedOn(totalTurretVoltage);
         }
     }
 
