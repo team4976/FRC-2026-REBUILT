@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -43,6 +44,7 @@ public class ElasticData extends SubsystemBase{
     List<Pose2d> pose2ds = new ArrayList<>();
     public double currentTime;
     public double startTime;
+    private PowerDistribution PDH;
 
     public ElasticData(RobotContainer robotContainer){
         //-------------------
@@ -78,7 +80,7 @@ public class ElasticData extends SubsystemBase{
         flywheelSubsystem = robotContainer.flywheelSubsystem;
         turretSubsystem = robotContainer.turretSubsystem;
         intakeSubsystem = robotContainer.intakeSubsystem;
-
+        this.PDH = robotContainer.PDH;
 
         //-------------------
         //Non-Periodic Widgets 
@@ -257,6 +259,39 @@ public class ElasticData extends SubsystemBase{
         //---------
         //MISC
         //---------
+
+        //PDP/PDH
+
+        //The PDP updates voltage in 0.05 Volt increments
+        SmartDashboard.putNumber("Logging/PDH/PDH Voltage", PDH.getVoltage());
+
+        //Current
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Total Current (All Channels)", PDH.getTotalCurrent());
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 0 Current", PDH.getCurrent(0));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 1 Current", PDH.getCurrent(1));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 2 Current", PDH.getCurrent(2));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 3 Current", PDH.getCurrent(3));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 4 Current", PDH.getCurrent(4));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 5 Current", PDH.getCurrent(5));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 6 Current", PDH.getCurrent(6));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 7 Current", PDH.getCurrent(7));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 8 Current", PDH.getCurrent(8));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 9 Current", PDH.getCurrent(9));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 10 Current", PDH.getCurrent(10));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 11 Current", PDH.getCurrent(11));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 12 Current", PDH.getCurrent(12));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 13 Current", PDH.getCurrent(13));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 14 Current", PDH.getCurrent(14));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 15 Current", PDH.getCurrent(15));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 16 Current", PDH.getCurrent(16));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 17 Current", PDH.getCurrent(17));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 18 Current", PDH.getCurrent(18));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 19 Current", PDH.getCurrent(19));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 20 Current", PDH.getCurrent(20));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 21 Current", PDH.getCurrent(21));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 22 Current", PDH.getCurrent(22));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 23 Current", PDH.getCurrent(23));
+
 
         //Time
         currentTime = System.currentTimeMillis();

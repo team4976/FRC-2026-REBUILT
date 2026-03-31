@@ -77,7 +77,7 @@ public class RobotContainer {
 
     public StringLogEntry logEntry = new StringLogEntry(DataLogManager.getLog(), "positionLog");
 
-    PowerDistribution pdp = new PowerDistribution(1, ModuleType.kRev);
+    public PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
 
     public Command selectedAuto;
 
@@ -90,7 +90,7 @@ public class RobotContainer {
 
         configureBindings();
 
-        pdp.setSwitchableChannel(true);
+        PDH.setSwitchableChannel(true);
 
         //Warnings Suppression
         PhotonCamera.setVersionCheckEnabled(false);
