@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -8,10 +9,13 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Auto.FlywheelStart;
 import frc.robot.commands.Auto.FlywheelStop;
+import frc.robot.commands.FlywheelCommand;
+import frc.robot.commands.IndexAndSpindexCommand;
 import frc.robot.commands.TurretScan;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
 import frc.robot.commands.Auto.AutoSequence.HubtoDepottoShoot;
 import frc.robot.commands.Auto.AutoSequence.HubtoShoot;
+import frc.robot.commands.Auto.AutoSequence.ShoottoNeutral;
 import frc.robot.commands.Auto.AutoSequence.OneCycleLeft;
 import frc.robot.commands.Auto.AutoSequence.OneCycleRight;
 import frc.robot.commands.Auto.AutoSequence.OneandHalfCycleRight;
@@ -34,6 +38,10 @@ public class Autos {
         this.flywheelSubsystem = flywheelSubsystem;
         this.indexAndSpindexSubsystem = indexAndSpindexSubsystem;
         this.turretMovement = turretMovement;
+        
+        NamedCommands.registerCommand("IndexAndSpindex", new IndexAndSpindexCommand(indexAndSpindexSubsystem, 0, flywheelSubsystem, intakeSubsystem));
+        NamedCommands.registerCommand("flywheel", new FlywheelCommand(flywheelSubsystem,vision,false));
+
         loadCommands();
     }
 
@@ -45,9 +53,10 @@ public class Autos {
     public Command TwoCycleLeft;
     public Command HubtoShoottoDepot;
     public Command HubtoShoot;
+    public Command ShoottoNeutral;
     //public Command shootToOutpost;
-    public Command jitterCommand1;
-    public Command jitterCommand2;
+    //public Command jitterCommand1;
+    //public Command jitterCommand2;
 
     public void loadCommands(){
         OneCycleRight = new OneCycleRight(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
@@ -58,6 +67,9 @@ public class Autos {
         TwoCycleLeft = new TwoCycleLeft(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
         HubtoShoottoDepot = new HubtoDepottoShoot(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
         HubtoShoot = new HubtoShoot(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
+        ShoottoNeutral = new ShoottoNeutral(vision, flywheelSubsystem, intakeSubsystem, indexAndSpindexSubsystem, turretMovement); 
+
+
     }
     }
 
