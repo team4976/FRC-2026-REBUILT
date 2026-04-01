@@ -12,7 +12,7 @@ import frc.robot.commands.TurretScan;
 import frc.robot.commands.TurretScanYaw;
 import frc.robot.subsystems.Autos;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.JitterSubsystem;
+import frc.robot.subsystems.JitterRobot;
 
 import static frc.robot.Constants.*;
 
@@ -31,7 +31,7 @@ public class Bindings {
     public AlignedShotCommand alignedShotCommand;
     public Autos autos;
     public IntakeCommand reverseIntake;
-    public JitterSubsystem jitterSubsystem;
+    public JitterRobot jitterSubsystem;
     public IntakeSubsystem intakeSubsystem;
     public Command repeatJidderCommand;
 

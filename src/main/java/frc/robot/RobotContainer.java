@@ -19,7 +19,7 @@ import frc.robot.commands.JitterIntake;
 import frc.robot.subsystems.Autos;
 import frc.robot.subsystems.ElasticData;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.JitterSubsystem;
+import frc.robot.subsystems.JitterRobot;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.commands.HoodCommand;
 import frc.robot.commands.IndexAndSpindexCommand;
@@ -53,7 +53,7 @@ public class RobotContainer {
     public final IndexAndSpindexSubsystem indexAndSpindexSubsystem = new IndexAndSpindexSubsystem(hoodSubsystem, flywheelSubsystem);
     
     public Autos autos;
-    public JitterSubsystem jitterSubsystem = new JitterSubsystem();
+    public JitterRobot jitterSubsystem = new JitterRobot();
 
     //Command Objects
     public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, 1.0, flywheelSubsystem, intakeSubsystem);//hoodSubsystem, flywheelSubsystem);

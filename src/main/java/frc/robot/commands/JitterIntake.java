@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.JitterSubsystem;
+import frc.robot.subsystems.JitterRobot;
 
 
 public class JitterIntake extends SequentialCommandGroup {
@@ -14,7 +14,7 @@ public class JitterIntake extends SequentialCommandGroup {
      * Runs an emulated tapping of the jitter intake button using .deadline commands
      * @param intakeSubsystem the subsystem object for the intake
      * @see {@link IntakeSubsystem}
-     * @see {@link JitterSubsystem} for the drivetrain jitter
+     * @see {@link JitterRobot} for the drivetrain jitter
      */
     //Runs an emulated tapping of the jitter button.
     public JitterIntake(IntakeSubsystem intakeSubsystem){
