@@ -117,10 +117,10 @@ public class Bindings {
         //---------------
 
         //Turret
-        //Inside of the turret subystems periodic()
+        //Inside of the turret subsystems periodic()
         
         //Flywheel
-        //Inside of the flywheel subystemcs periodic()
+        //Inside of the flywheel subsystems periodic()
 
         //Hood
         //operatorController.povUp().whileTrue(manualHoodUp);
