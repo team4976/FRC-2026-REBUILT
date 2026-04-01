@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import frc.robot.commands.IntakeCommand;
@@ -27,6 +28,7 @@ import frc.robot.commands.AlignedShotCommand;
 import frc.robot.commands.FlywheelCommand;
 import frc.robot.commands.TurretScan;
 import frc.robot.commands.TurretScanYaw;
+import frc.robot.commands.Auto.AutoSequence.ShoottoNeutral;
 import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.IndexAndSpindexSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
@@ -176,6 +178,9 @@ public class RobotContainer {
                 break;
             case "Hub to Shoot":
                 selectedAuto = autos.HubtoShoot;
+                break;
+            case "Shoot to Neutral":
+                selectedAuto = autos.ShoottoNeutral;
                 break;
             case "No Auto":
                 selectedAuto = Commands.waitSeconds(1);

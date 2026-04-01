@@ -121,6 +121,7 @@ public class ElasticData extends SubsystemBase{
             autoChooser.addOption("2 Cycle - Left", new String[]{"1 Cycle - Left", "1.5 Cycle - Left", "2 Cycle - Left"});
             autoChooser.addOption("Hub to Shoot to Depot", new String[]{"Hub to Shoot", "Depot to Shoot"});
             autoChooser.addOption("Hub to Shoot", new String[]{"Hub to Shoot"});
+            autoChooser.addOption("Shoot to Nuetral", new String[]{"Shoot to Neutral"});
             autoChooser.addOption("No Auto", new String[]{"No Auto"});
 
         } catch (Exception e){

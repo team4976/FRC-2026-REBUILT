@@ -46,6 +46,7 @@ public class Autos {
         TwoCycleRight = new TwoCycleRight(robotContainer); 
         TwoCycleLeft = new TwoCycleLeft(robotContainer); 
         HubtoShoottoDepot = new HubtoDepottoShoot(robotContainer); 
-        HubtoShoot = new HubtoShoot(robotContainer); 
+        HubtoShoot = new HubtoShoot(robotContainer);
+        ShoottoNeutral = new ShoottoNeutral(robotContainer);
     }
 }
