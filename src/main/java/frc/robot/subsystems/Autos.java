@@ -1,9 +1,14 @@
 package frc.robot.subsystems;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.path.PathPlannerPath;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.commands.Auto.AutoSequence.HubtoDepottoShoot;
 import frc.robot.commands.Auto.AutoSequence.HubtoShoot;
+import frc.robot.commands.Auto.AutoSequence.ShoottoNeutral;
 import frc.robot.commands.Auto.AutoSequence.OneCycleLeft;
 import frc.robot.commands.Auto.AutoSequence.OneCycleRight;
 import frc.robot.commands.Auto.AutoSequence.OneandHalfCycleRight;
@@ -28,8 +33,10 @@ public class Autos {
     public Command TwoCycleLeft;
     public Command HubtoShoottoDepot;
     public Command HubtoShoot;
-    public Command jitterCommand1;
-    public Command jitterCommand2;
+    public Command ShoottoNeutral;
+    //public Command shootToOutpost;
+    //public Command jitterCommand1;
+    //public Command jitterCommand2;
 
     public void loadCommands(){
         OneCycleRight = new OneCycleRight(robotContainer); 

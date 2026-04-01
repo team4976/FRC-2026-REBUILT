@@ -3,13 +3,11 @@
   "robotLength": 0.6096,
   "holonomicMode": true,
   "pathFolders": [
-    "2 Cycle",
     "1 Cycle",
     "1.5 Cycle",
-    "Jitter"
+    "2 Cycle"
   ],
   "autoFolders": [
-    "Jitter",
     "not rlly sure if we should use ngl"
   ],
   "defaultMaxVel": 4.72,
