@@ -11,7 +11,9 @@ import frc.robot.commands.Auto.FlywheelStart;
 import frc.robot.commands.Auto.FlywheelStop;
 import frc.robot.commands.FlywheelCommand;
 import frc.robot.commands.IndexAndSpindexCommand;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.TurretScan;
+import frc.robot.commands.TurretScanYaw;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
 import frc.robot.commands.Auto.AutoSequence.HubtoDepottoShoot;
 import frc.robot.commands.Auto.AutoSequence.HubtoShoot;
@@ -41,6 +43,12 @@ public class Autos {
         
         NamedCommands.registerCommand("IndexAndSpindex", new IndexAndSpindexCommand(indexAndSpindexSubsystem, 0, flywheelSubsystem, intakeSubsystem));
         NamedCommands.registerCommand("flywheel", new FlywheelCommand(flywheelSubsystem,vision,false));
+        NamedCommands.registerCommand("Intake", new IntakeCommand(intakeSubsystem,false));
+        //NamedCommands.registerCommand("Vision", new VisionCommand(visionSubsystem));
+        NamedCommands.registerCommand("TurretMovement", new TurretScanYaw(vision, turretMovement));
+        
+        
+        
 
         loadCommands();
     }

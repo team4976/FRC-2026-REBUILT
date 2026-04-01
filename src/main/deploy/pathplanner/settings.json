@@ -8,6 +8,9 @@
     "2 Cycle"
   ],
   "autoFolders": [
+    "Left",
+    "Center",
+    "Right",
     "not rlly sure if we should use ngl"
   ],
   "defaultMaxVel": 4.72,
