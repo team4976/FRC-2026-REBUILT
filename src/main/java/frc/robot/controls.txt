@@ -9,6 +9,8 @@ DRIVER:
     - Reset Field Centric on "LB" (Left Bumper)
     - Shoot (Spin Index/Spindex) on "RT" (Right Trigger)
     - Intake on "X", is a Toggle
+    - Jitter the Intake is on "RB" (Right Bumper), Hold to Continuously Jitter
+    - Stop the Intake is on "Y"
 
 OPERATOR:
 
@@ -17,10 +19,10 @@ OPERATOR:
     - Shoot (Spin Index/Spindex) on "RT" (Right Trigger)
     - Auto Aim (Turret Scan) on "LT" (Left Trigger), Can Increasse/Decrease W/Right Stick
     - Manual Aim (Move Turret) on Right Stick, REQUIRES AUTO AIM TO BE OFF
-    - Manual Hood on "D-Pad" (Up/Down)
+    - Reverse Intake is on "D-Pad Down"
     - Reverse Index/Spindex on "B"
     - Aligned Shot on "X", Aligned to the Trench Line Thing
-    - Jitter Robot on "Y", Press to Jitter as Many Times as Needed
+    - Jitter Robot on "Y", Hold to Jitter as Many Times as Needed
+
     
-    - Menu Will Be Climb Once we Have a Climber
     

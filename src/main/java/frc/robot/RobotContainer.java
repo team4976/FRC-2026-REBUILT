@@ -12,15 +12,15 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.Jitter;
+import frc.robot.commands.JitterIntake;
 import frc.robot.subsystems.Autos;
-import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElasticData;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.JitterSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.JitterRobot;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.commands.HoodCommand;
 import frc.robot.commands.IndexAndSpindexCommand;
@@ -28,13 +28,12 @@ import frc.robot.commands.AlignedShotCommand;
 import frc.robot.commands.FlywheelCommand;
 import frc.robot.commands.TurretScan;
 import frc.robot.commands.TurretScanYaw;
+import frc.robot.commands.Auto.AutoSequence.ShoottoNeutral;
 import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.IndexAndSpindexSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import static frc.robot.Constants.*;
-
-import java.util.List;
 
 import org.photonvision.PhotonCamera;
 
@@ -42,30 +41,21 @@ import org.photonvision.PhotonCamera;
 
 public class RobotContainer {
     //Logging
-    private final Telemetry logger = new Telemetry(Constants.MaxSpeed);
+    public final Telemetry logger = new Telemetry(Constants.MaxSpeed);
 
     //Vision Objects, may be good idea to merge into one class and just have dif objects
-    private final PhotonVision vision = new PhotonVision("testingCamera", logger);
-    private final PhotonVision m_turretvision = new PhotonVision("testingCamera", logger);
+    public final PhotonVision vision = new PhotonVision("testingCamera", logger);
+    public final PhotonVision m_turretvision = new PhotonVision("testingCamera", logger);
 
     //Subsystem Objects/Subsystem Initialization
-    public final Intake intakeSubsystem = new Intake();
-    public final ClimberSubsystem climber = new ClimberSubsystem();
-    public final TurretSubsystem turretMovement = new TurretSubsystem();
+    public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+    public final TurretSubsystem turretSubsystem = new TurretSubsystem();
     public final FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
     public final HoodSubsystem hoodSubsystem = new HoodSubsystem();
     public final IndexAndSpindexSubsystem indexAndSpindexSubsystem = new IndexAndSpindexSubsystem(hoodSubsystem, flywheelSubsystem);
-    public final List<Subsystem> allSubsystemsList = List.of(
-        intakeSubsystem,
-        climber,
-        turretMovement,
-        flywheelSubsystem,
-        hoodSubsystem,
-        indexAndSpindexSubsystem
-    );
     
     public Autos autos;
-    public JitterSubsystem jitterSubsystem = new JitterSubsystem();
+    public JitterRobot jitterSubsystem = new JitterRobot();
 
     //Command Objects
     public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, 1.0, flywheelSubsystem, intakeSubsystem);//hoodSubsystem, flywheelSubsystem);
@@ -77,36 +67,33 @@ public class RobotContainer {
     public HoodCommand hoodCommand = new HoodCommand(hoodSubsystem, m_turretvision, false, 0);
     public HoodCommand manualHoodUp = new HoodCommand(hoodSubsystem, m_turretvision, true, 0.5);
     public HoodCommand manualHoodDown = new HoodCommand(hoodSubsystem, m_turretvision, true, -0.5);
-    public final TurretScan turretScan = new TurretScan(m_turretvision, turretMovement);
-    public final TurretScanYaw turretScanYaw = new TurretScanYaw(m_turretvision, turretMovement);
-    //public Command hoodAndFlywheel = new ParallelDeadlineGroup(flywheelCommand, hoodCommand);
+    public final TurretScan turretScan = new TurretScan(m_turretvision, turretSubsystem);
+    public final TurretScanYaw turretScanYaw = new TurretScanYaw(m_turretvision, turretSubsystem);
     public AlignedShotCommand alignedShotCommand = new AlignedShotCommand(flywheelSubsystem, hoodSubsystem);
-    //public ReverseIntake reverseIntake = new ReverseIntake(intakeSubsystem);
     
 
-
     //elastic/smartdashboard intialization 
-    private ElasticData elasticData = new ElasticData(logger, vision, m_turretvision, allSubsystemsList);
 
     public Bindings bindings;
 
     public StringLogEntry logEntry = new StringLogEntry(DataLogManager.getLog(), "positionLog");
 
-    PowerDistribution pdp = new PowerDistribution(1, ModuleType.kRev);
+    public PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
+    
+    private ElasticData elasticData = new ElasticData(this);
 
     public Command selectedAuto;
 
     public RobotContainer() {
         drivetrain.configureAutoBuilder();
 
-        autos =  new Autos(intakeSubsystem, vision, flywheelSubsystem, indexAndSpindexSubsystem, turretMovement);
+        autos =  new Autos(this);
 
-        bindings = new Bindings(indexAndSpindexCommand, reverseIndexer, intakeCommand, flywheelCommand, hoodCommand, manualHoodUp, manualHoodDown, turretScanYaw, 
-        turretScan, alignedShotCommand, autos, reverseIntake, jitterSubsystem, intakeSubsystem, repeatJidderCommand);
+        bindings = new Bindings(this);
 
         configureBindings();
 
-        pdp.setSwitchableChannel(true);
+        PDH.setSwitchableChannel(true);
 
         //Warnings Suppression
         PhotonCamera.setVersionCheckEnabled(false);
@@ -120,7 +107,7 @@ public class RobotContainer {
         hoodSubsystem.teleopInit();
         indexAndSpindexSubsystem.teleopInit();
         intakeSubsystem.teleopInit();
-        turretMovement.teleopInit();
+        turretSubsystem.teleopInit();
     }
 
     public void getOdometryPose(){
@@ -132,17 +119,9 @@ public class RobotContainer {
     Command repeatJidderCommand = 
         Commands.repeatingSequence(
             Commands.print("RepeatJitter Started"),
-            Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeUpCommand(0.0)),
-            Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeDownCommand(0.0))           
+            Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeUpCommand(true, 0.0)),
+            Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeDownCommand(true, 0.0))           
         );
-        
-    
-    public Command repeatJidderCommand2(){
-        //Commands.repeatingSequence(new Jitter());
-        
-        return repeatJidderCommand;
-
-    }
 
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
@@ -199,6 +178,9 @@ public class RobotContainer {
                 break;
             case "Hub to Shoot":
                 selectedAuto = autos.HubtoShoot;
+                break;
+            case "Shoot to Neutral":
+                selectedAuto = autos.ShoottoNeutral;
                 break;
             case "No Auto":
                 selectedAuto = Commands.waitSeconds(1);

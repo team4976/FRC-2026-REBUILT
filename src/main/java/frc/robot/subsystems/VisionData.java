@@ -43,8 +43,6 @@ public class VisionData{
     public double turretTargetAngle;
     public double hubId;
     Field2d field2d = new Field2d();
-    List<Double> idYaws;
-
 
     //the constructor, having the camera as a parameter--
     //means the methods in this class can be used dynamically--
@@ -66,13 +64,12 @@ public class VisionData{
             if (alliance.get() == Alliance.Blue) {
                 hubOrigX = BlueHubX; 
                 hubOrigY = BlueHubY;
-                
-                Constants.hubId = 26;
+                hubId = 26;
             }
             if (alliance.get() == Alliance.Red) {
                 hubOrigX = RedHubX; 
                 hubOrigY = RedHubY;
-                Constants.hubId = 10;
+                hubId = 10;
             }
         }
     }
@@ -273,9 +270,6 @@ public class VisionData{
             SmartDashboard.putString("Testing/DistanceX",""+String.format("%.2f",hubX)+" - "+String.format("%.2f",field2d.getRobotPose().getX()) +"= "+String.format("%.2f",distanceX));
             SmartDashboard.putString("Testing/DistanceY",""+String.format("%.2f",hubY)+" - "+String.format("%.2f",field2d.getRobotPose().getY()) +"= "+String.format("%.2f",distanceY));
             SmartDashboard.putString("Testing/turretDistance Split", "sqrt("+String.format("%.2f",distanceX)+"*"+String.format("%.2f",distanceX) +"+"+ String.format("%.2f",distanceY)+"*"+(String.format("%.2f",distanceY)+")=" +turretDistance));
-
-            System.err.println(hubOrigX);
-            System.err.println(hubOrigY);
 
             // calculates the angle we want to get to
             turretTargetAngle = Math.toDegrees(Math.atan2( distanceY,distanceX));

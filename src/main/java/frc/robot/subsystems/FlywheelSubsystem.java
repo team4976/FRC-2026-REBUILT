@@ -13,7 +13,6 @@ import static frc.robot.Constants.*;
 public class FlywheelSubsystem extends SubsystemBase{
     public TalonFX shooterMotorLeader;
     public TalonFX shooterMotorFollower;
-    public String shooterState = "cantShoot";
     public double targetRPS;
     final VelocityVoltage shooterVelocityVoltage = new VelocityVoltage(0).withSlot(0);
     public boolean isAutoFlywheel;
@@ -29,7 +28,7 @@ public class FlywheelSubsystem extends SubsystemBase{
         flywheelConfig.kI = 0.0; // no output for integrated error
         flywheelConfig.kD = 0.0; // no output for error derivative*/
         
-        //
+        //creates and configures the motor objects
         shooterMotorLeader = new TalonFX(Flywheel_Lead_ID);
         shooterMotorFollower = new TalonFX(Flywheel_Follower_ID);
         shooterMotorLeader.getConfigurator().apply(flywheelConfig);
@@ -42,32 +41,25 @@ public class FlywheelSubsystem extends SubsystemBase{
         isAutoFlywheel = false;
     }
 
+    /**
+     * Spins the flywheels at the desired speed
+     * @param targetRPS The Rotations Per Second to spin the flywheels at
+     */
     public void spinFlywheel(double targetRPS){
-        //System.out.println("targetRPS: " + targetRPS);
         shooterMotorLeader.setControl(shooterVelocityVoltage.withVelocity(targetRPS));
         this.targetRPS = targetRPS;
     }
 
+    /**
+     * A method to get the current speed of the flywheel motor leader
+     * @return The flywheel speed in RPS (Rotations Per Second)
+     */
     public double getShooterSpeed(){
         return shooterMotorLeader.getVelocity().getValueAsDouble();
     }
 
-    public String getShooterState(){
-        return shooterState;
-    }
-
     @Override
     public void periodic(){
-        SmartDashboard.putNumber("Testing/Ben T's Stuff/Turret Rotate", shooterMotorLeader.getVelocity().getValueAsDouble());
-        
-        if (shooterMotorLeader.getVelocity().getValueAsDouble() < targetRPS + 5 
-         && shooterMotorLeader.getVelocity().getValueAsDouble() > targetRPS - 5 && targetRPS > 0) {
-            shooterState = "readyToShoot";
-        }
-        else {
-            shooterState = "notReady";
-        }
-
         //Flywheel Override
         if (isAutoFlywheel) {
             return;

@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -25,8 +26,10 @@ import frc.robot.Constants;
 //was designed to be the only elastic subsystem/container but it isnt currently
 //the other two can be merged with this one later, gott set it up for multiple camers with some renaming
 //and gotta add all the other stuff.
+import frc.robot.RobotContainer;
 
 public class ElasticData extends SubsystemBase{
+    private RobotContainer robotContainer;
     private final Telemetry telemetry;
     private final PhotonVision cameraDataMain;
     private final PhotonVision cameraDataTurret;
@@ -34,30 +37,25 @@ public class ElasticData extends SubsystemBase{
     private final HoodSubsystem hoodSubsystem;
     private final FlywheelSubsystem flywheelSubsystem;
     private final TurretSubsystem turretSubsystem;
-    private final Intake intakeSubsystem;
+    private final IntakeSubsystem intakeSubsystem;
     public SendableChooser<String[]> autoChooser = new SendableChooser<>();
-    double turretTargetAngle; // the angle we want the turret to be at so that we are aiming at the hub
-    //double turretAngle; // the turret angle we are currently at
-    //double distance; // distance from the hub to the turret
-    double hubWidth = 0.6;
-    double radius = 3;
-    boolean fuelMakeIt = false;
-    double rotation;
     Field2d field2d;
     Optional<Alliance> alliance;
     List<Pose2d> pose2ds = new ArrayList<>();
     public double currentTime;
     public double startTime;
+    PowerDistribution PDH;
 
-    public ElasticData(Telemetry m_telemetry, PhotonVision camera1, PhotonVision camera2, List<Subsystem> subsystemList){
+    public ElasticData(RobotContainer robotContainer){
         //-------------------
         //Object Assignments
         //-------------------
 
         //Misc Objects
-        telemetry = m_telemetry;
-        cameraDataMain = camera1;
-        cameraDataTurret = camera2;
+        this.PDH = robotContainer.PDH;
+        telemetry = robotContainer.logger;
+        cameraDataMain = robotContainer.vision;
+        cameraDataTurret = robotContainer.m_turretvision;
         field2d = cameraDataMain.getRobotPos();
         alliance = DriverStation.getAlliance();
         if (alliance.isPresent()){
@@ -77,11 +75,12 @@ public class ElasticData extends SubsystemBase{
         "[Indexer] Motor Id:"+ Constants.Index_ID,"[Intake] Motor Id:"+ Constants.Intake_ID,"[PCM] Motor Id:","[Pidgeon] Motor Id:"};
 
         //Subsystem Objects
-        indexAndSpindexSubsystem = (IndexAndSpindexSubsystem) subsystemList.get(5);
-        hoodSubsystem = (HoodSubsystem) subsystemList.get(4);
-        flywheelSubsystem = (FlywheelSubsystem) subsystemList.get(3);
-        turretSubsystem = (TurretSubsystem) subsystemList.get(2);
-        intakeSubsystem = (Intake) subsystemList.get(0);
+        this.robotContainer = robotContainer;
+        indexAndSpindexSubsystem = robotContainer.indexAndSpindexSubsystem;
+        hoodSubsystem = robotContainer.hoodSubsystem;
+        flywheelSubsystem = robotContainer.flywheelSubsystem;
+        turretSubsystem = robotContainer.turretSubsystem;
+        intakeSubsystem = robotContainer.intakeSubsystem;
 
 
         //-------------------
@@ -122,6 +121,7 @@ public class ElasticData extends SubsystemBase{
             autoChooser.addOption("2 Cycle - Left", new String[]{"1 Cycle - Left", "1.5 Cycle - Left", "2 Cycle - Left"});
             autoChooser.addOption("Hub to Shoot to Depot", new String[]{"Hub to Shoot", "Depot to Shoot"});
             autoChooser.addOption("Hub to Shoot", new String[]{"Hub to Shoot"});
+            autoChooser.addOption("Shoot to Nuetral", new String[]{"Shoot to Neutral"});
             autoChooser.addOption("No Auto", new String[]{"No Auto"});
 
         } catch (Exception e){
@@ -202,6 +202,7 @@ public class ElasticData extends SubsystemBase{
                 - (0.4148098 * Math.pow(cameraDataMain.getDistance() + 0.5969, 2)));
 
 
+
         //------------- 
         //FIELD WIDGETS
         //-------------
@@ -209,38 +210,6 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putData("Fields/Turret Position Field", cameraDataTurret.getDistanceAndAngle());
         
 
-        //AC- Additional Field2d Stuff
-        /* 
-        if (turretSubsystem.turretMotor != null){
-            rotation = (cameraDataTurret.getTurretAngle()/57) + field2d.getRobotPose().getRotation().getDegrees();
-        } else {
-            rotation = 0.0;
-        }
-        SmartDashboard.putBoolean("Will the Fuel make it?", fuelMakeIt);
-    field2d.getObject("Aim").setPose(field2d.getRobotPose().getX() + (radius * (Math.cos(rotation))), field2d.getRobotPose().getY() + (radius * (Math.sin(rotation))), new Rotation2d(rotation));
-        Pose2d aimPose = field2d.getObject("Aim").getPose();
-        Pose2d hubPose = field2d.getObject("Hub").getPose();
-        if (aimPose.getX() >= (hubPose.getX() - (hubWidth/2)) && aimPose.getX() <= (hubPose.getX() + (hubWidth/2))){
-            if (aimPose.getY() >= (hubPose.getY() - hubWidth) && aimPose.getY() <= (hubPose.getY() + hubWidth)) {
-                fuelMakeIt = true;
-            } else {
-                fuelMakeIt = false;
-            }
-        } else {
-            fuelMakeIt = false;
-        } 
-            
-        
-
-
-        //Swerve Direction on Field
-        if(telemetry != null){
-                field2d.getObject("FR").setPose(field2d.getRobotPose().getX() + 0.42, field2d.getRobotPose().getY() + 0.343, new Rotation2d(telemetry.m_moduleDirections[2].getAngle()));
-                field2d.getObject("FL").setPose(field2d.getRobotPose().getX() - 0.42, field2d.getRobotPose().getY() + 0.343, new Rotation2d(telemetry.m_moduleDirections[1].getAngle()));
-                field2d.getObject("RR").setPose(field2d.getRobotPose().getX() + 0.42, field2d.getRobotPose().getY() - 0.343, new Rotation2d(telemetry.m_moduleDirections[0].getAngle()));
-                field2d.getObject("RL").setPose(field2d.getRobotPose().getX() - 0.42, field2d.getRobotPose().getY() - 0.343, new Rotation2d(telemetry.m_moduleDirections[3].getAngle()));
-        }
-                */
 
         //-------------
         //MOTOR WIDGETS
@@ -271,6 +240,8 @@ public class ElasticData extends SubsystemBase{
         //Position Widgets
         SmartDashboard.putNumber("QC/Motors/Hood/Hood Position", hoodSubsystem.HoodMotor.getPosition().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Turret/Turret Position", turretSubsystem.turretMotor.getPosition().getValueAsDouble());
+        SmartDashboard.putNumber("Intake Left Arm Encoder", intakeSubsystem.intakeArmLeft.getEncoder().getPosition());
+        SmartDashboard.putNumber("Intake Right Arm Encoder", intakeSubsystem.intakeArmRight.getEncoder().getPosition());
 
         //--------
         //BOOLEANS
@@ -291,6 +262,39 @@ public class ElasticData extends SubsystemBase{
         //MISC
         //---------
 
+        //PDP/PDH
+
+        //The PDP updates voltage in 0.05 Volt increments
+        SmartDashboard.putNumber("Logging/PDH/PDH Voltage", PDH.getVoltage());
+
+        //Current
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Total Current (All Channels)", PDH.getTotalCurrent());
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 0 Current", PDH.getCurrent(0));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 1 Current", PDH.getCurrent(1));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 2 Current", PDH.getCurrent(2));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 3 Current", PDH.getCurrent(3));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 4 Current", PDH.getCurrent(4));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 5 Current", PDH.getCurrent(5));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 6 Current", PDH.getCurrent(6));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 7 Current", PDH.getCurrent(7));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 8 Current", PDH.getCurrent(8));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 9 Current", PDH.getCurrent(9));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 10 Current", PDH.getCurrent(10));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 11 Current", PDH.getCurrent(11));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 12 Current", PDH.getCurrent(12));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 13 Current", PDH.getCurrent(13));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 14 Current", PDH.getCurrent(14));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 15 Current", PDH.getCurrent(15));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 16 Current", PDH.getCurrent(16));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 17 Current", PDH.getCurrent(17));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 18 Current", PDH.getCurrent(18));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 19 Current", PDH.getCurrent(19));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 20 Current", PDH.getCurrent(20));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 21 Current", PDH.getCurrent(21));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 22 Current", PDH.getCurrent(22));
+        SmartDashboard.putNumber("Logging/PDH/Current/PDH Channel 23 Current", PDH.getCurrent(23));
+
+
         //Time
         currentTime = System.currentTimeMillis();
         double timeDifference = currentTime - startTime;
@@ -299,7 +303,6 @@ public class ElasticData extends SubsystemBase{
 
 
         //Ben T's smartdashboard stuff
-        SmartDashboard.putString("Testing/Ben T's Stuff/shooter state", flywheelSubsystem.getShooterState());
         SmartDashboard.putNumber("Testing/Ben T's Stuff/shooter speed", flywheelSubsystem.getShooterSpeed());
         SmartDashboard.putString("Testing/Ben T's Stuff/hood State", hoodSubsystem.getHoodState());
         SmartDashboard.putNumber("Testing/Ben T's Stuff/hood position", hoodSubsystem.returnMotor().getPosition().getValueAsDouble());

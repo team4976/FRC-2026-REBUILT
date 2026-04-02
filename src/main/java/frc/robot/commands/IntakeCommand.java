@@ -9,14 +9,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakeSubsystem;
 /** The Command for the Intake
  * @param <Drive> */
 @SuppressWarnings("unused")
 public class IntakeCommand extends Command {
 
   public boolean SolenoidStatus;
-  public Intake intake;
+  public IntakeSubsystem intake;
   public boolean endCommand;
   public boolean isIntakeReversed;
   public double startingIntakeSpeed;
@@ -26,7 +26,7 @@ public class IntakeCommand extends Command {
        * @param intake The subsystem used by this command.
        */
 
-  public IntakeCommand(Intake intake, boolean isIntakeReversed) {
+  public IntakeCommand(IntakeSubsystem intake, boolean isIntakeReversed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = intake;
     this.isIntakeReversed = isIntakeReversed;
@@ -43,7 +43,7 @@ public class IntakeCommand extends Command {
       intake.runIntakeMotor(-intakeSpeed);
     } else if (!isIntakeReversed) {
       intake.runIntakeMotor(intakeSpeed);
-      intake.intakeDown();
+      intake.intakeDown(false, 0.0);
     } 
 
   }
@@ -51,8 +51,6 @@ public class IntakeCommand extends Command {
   @Override
   public void execute() {
   }
-  
-  // Called once the command ends or is interrupted.
 
   @Override
   public void end(boolean interrupted) {  
@@ -60,7 +58,7 @@ public class IntakeCommand extends Command {
       intake.runIntakeMotor(startingIntakeSpeed);
       return;
     }
-    intake.stopIntake();
+    intake.stopIntakeArms();
   }
 
 

@@ -6,9 +6,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.*;
 
-public class JitterSubsystem extends SubsystemBase{
+public class JitterRobot extends SubsystemBase{
 
-    public JitterSubsystem(){}
+    public JitterRobot(){}
 
     public Command jitterRobotForward(){
         return Commands.deadline(Commands.waitSeconds(0.1), drivetrain.applyRequest(() ->
