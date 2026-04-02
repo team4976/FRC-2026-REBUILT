@@ -54,7 +54,7 @@ public class Bindings {
         this.repeatJidderCommand = robotContainer.repeatJidderCommand;
     }
 
-     public void driverConfigureBindings(){
+    public void driverConfigureBindings(){
         //Swerve break and align
         driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
         driverController.b().whileTrue(drivetrain.applyRequest(() ->
