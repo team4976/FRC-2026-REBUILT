@@ -37,14 +37,15 @@ public class HubtoShoot extends SequentialCommandGroup {
         
         addCommands(
             new PrintCommand("Hub to Shoot Started"),
-            Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
+            //Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
             HubtoShoot,
-            new FlywheelStart(flywheelSubsystem, visionSubsystem),
-            new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
-            Commands.deadline(Commands.waitSeconds(6), new JitterIntake(intakeSubsystem)),
-            Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
-            new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem, intakeSubsystem),
-            new FlywheelStop(flywheelSubsystem, visionSubsystem)
+            //new FlywheelStart(flywheelSubsystem, visionSubsystem),
+            //new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
+            new WaitCommand(6)
+            //Commands.deadline(Commands.waitSeconds(6), new JitterIntake(intakeSubsystem)),
+            //Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
+            //new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem, intakeSubsystem),
+            //new FlywheelStop(flywheelSubsystem, visionSubsystem)
 
         );
     }
