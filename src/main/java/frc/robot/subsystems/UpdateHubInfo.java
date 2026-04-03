@@ -23,6 +23,7 @@ public class UpdateHubInfo extends SubsystemBase{
     public double hubDistance;  // Total Distance to hub
     public double hubAngle;
     public double botAngle;
+    public double hubId;
 
   public UpdateHubInfo(CommandSwerveDrivetrain swerve){
             this.swerve = swerve;
@@ -33,12 +34,12 @@ public class UpdateHubInfo extends SubsystemBase{
             if (alliance.get() == Alliance.Blue) {
                 hubOrigX = BlueHubX; 
                 hubOrigY = BlueHubY;                
-                Constants.hubId = 26;
+                hubId = 26;
             }
             if (alliance.get() == Alliance.Red) {
                 hubOrigX = RedHubX; 
                 hubOrigY = RedHubY;
-                Constants.hubId = 10;
+                hubId = 10;
             }
         }
 

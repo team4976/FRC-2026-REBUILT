@@ -33,20 +33,13 @@ public class PhotonVision extends SubsystemBase{
      * @param cameraName The name of the camera as a string. This is what differentiates different cameras so make sure it is correct.
      * @param logger The telemetry object of the project. Userd for calculations based on robot speed and positioning and the such.
      */
-    public PhotonVision(String cameraName, Telemetry logger){
-        vision = new VisionData(cameraName, logger);
+    public PhotonVision(String cameraName, Telemetry logger, CommandSwerveDrivetrain swerve, Transform3d transform3d){
+        vision = new VisionData(cameraName, logger, swerve, transform3d);
     }
 
     @Override
     public void periodic(){
         vision.update();
-    }
-
-    /**
-     * A method to get what hub we are looking for based on our alliance set in driverstation. Sets the hub IDs to be used in other methods.
-     */
-    public void getHubPose(){
-        vision.getHubPose();
     }
 
     /**
@@ -129,14 +122,6 @@ public class PhotonVision extends SubsystemBase{
         return vision.getRobotPoseVision();
     }
 
-    public List<PhotonTrackedTarget> getTargets(){
-        return vision.getTargets();
-    }
-
-    public Optional<EstimatedRobotPose> getRobotPoseVision(){
-        return vision.getRobotPoseVision();
-    }
-
     /**
      * Gets the Y rotation of the target highest in the pipeline. 
      * <p> Y rotation is a 3d rotation of the april tag on the Y rotation axis. 
@@ -182,20 +167,6 @@ public class PhotonVision extends SubsystemBase{
         return vision.getDistance();
     }
 
-    /**
-     * 
-     * @return
-     */
-    public Field2d getDistanceAndAngle(){
-        return vision.getDistanceAndAngle();
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public double getTurretAngle(){
-        return vision.getTurretAngle();
     public double getBotAngle(){
         return vision.getBotAngle();
     }

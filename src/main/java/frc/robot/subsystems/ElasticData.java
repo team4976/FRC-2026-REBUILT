@@ -15,6 +15,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.Telemetry;
 import frc.robot.generated.RebuiltTunerConstants;
 
+import static frc.robot.Constants.drivetrain;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -63,9 +65,9 @@ public class ElasticData extends SubsystemBase{
         //Misc Objects
         this.PDH = robotContainer.PDH;
         telemetry = robotContainer.logger;
-        cameraDataMain = robotContainer.vision;
-        cameraDataTurret = robotContainer.m_turretvision;
-        this.swerve = swerve;
+        cameraDataMain = robotContainer.leftBackCam;
+        cameraDataTurret = robotContainer.turretCam;
+        this.swerve = drivetrain;
         field2d = cameraDataMain.getRobotPos();
         alliance = DriverStation.getAlliance();
         if (alliance.isPresent()){

@@ -51,9 +51,9 @@ public class RobotContainer {
     public final Telemetry logger = new Telemetry(Constants.MaxSpeed);
 
     //Vision Objects, may be good idea to merge into one class and just have dif objects
-    private final PhotonVision leftBackCam = new PhotonVision("leftBackCam", logger, drivetrain, leftBackCamTransform3d);
-    private final PhotonVision rightBackCam = new PhotonVision("rightBackCam", logger, drivetrain, rightBackCamTransform3d);
-    private final PhotonVision turretCam = new PhotonVision("testingCamera", logger, drivetrain, turretCamTransform);
+    public final PhotonVision leftBackCam = new PhotonVision("leftBackCam", logger, drivetrain, leftBackCamTransform3d);
+    public final PhotonVision rightBackCam = new PhotonVision("rightBackCam", logger, drivetrain, rightBackCamTransform3d);
+    public final PhotonVision turretCam = new PhotonVision("testingCamera", logger, drivetrain, turretCamTransform);
 
     private final UpdateOdometry updateOdometryRight = new UpdateOdometry(drivetrain, rightBackCam);
     private final UpdateOdometry updateOdometryLeft = new UpdateOdometry(drivetrain, leftBackCam);
@@ -77,13 +77,13 @@ public class RobotContainer {
     public IndexAndSpindexCommand reverseIndexer = new IndexAndSpindexCommand(indexAndSpindexSubsystem, -0.8, flywheelSubsystem, intakeSubsystem);//hoodSubsystem, flywheelSubsystem);
     public IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem, false);
     public IntakeCommand reverseIntake = new IntakeCommand(intakeSubsystem, true);
-    public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem, m_turretvision, false);
-    public FlywheelCommand flywheelOverrideCommand = new FlywheelCommand(flywheelSubsystem, m_turretvision, true);
-    public HoodCommand hoodCommand = new HoodCommand(hoodSubsystem, m_turretvision, false, 0);
-    public HoodCommand manualHoodUp = new HoodCommand(hoodSubsystem, m_turretvision, true, 0.5);
-    public HoodCommand manualHoodDown = new HoodCommand(hoodSubsystem, m_turretvision, true, -0.5);
-    public final TurretScan turretScan = new TurretScan(m_turretvision, turretSubsystem);
-    public final TurretScanYaw turretScanYaw = new TurretScanYaw(m_turretvision, turretSubsystem);
+    public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem, updateHubInfo, false);
+    public FlywheelCommand flywheelOverrideCommand = new FlywheelCommand(flywheelSubsystem, updateHubInfo, true);
+    public HoodCommand hoodCommand = new HoodCommand(hoodSubsystem, updateHubInfo, false, 0);
+    public HoodCommand manualHoodUp = new HoodCommand(hoodSubsystem, updateHubInfo, true, 0.5);
+    public HoodCommand manualHoodDown = new HoodCommand(hoodSubsystem, updateHubInfo, true, -0.5);
+    public final TurretScan turretScan = new TurretScan(updateHubInfo, rightBackCam, turretSubsystem, drivetrain);
+    public final TurretScanYaw turretScanYaw = new TurretScanYaw(rightBackCam, turretSubsystem);
     public AlignedShotCommand alignedShotCommand = new AlignedShotCommand(flywheelSubsystem, hoodSubsystem);
     
 
@@ -165,8 +165,6 @@ public class RobotContainer {
 
     public void autoInit(){
         teleopInit();
-        vision.getHubPose();
-        m_turretvision.getHubPose();
 
         elasticData.autonomousInit();
         String value = elasticData.autoChooser.getSelected()[elasticData.autoChooser.getSelected().length -1];

@@ -85,6 +85,9 @@ public class Bindings {
                     ()->robotContainer.intakeCommand.end(true)
                 )
             );
+        
+        //Auto Aim
+        driverController.y().toggleOnTrue(turretScan);
     }
 
     public void operatorConfigureBindings(){
@@ -101,7 +104,7 @@ public class Bindings {
 
         //Turret scan
         operatorController.axisGreaterThan(2, 0.1).toggleOnTrue(turretScanYaw);
-        driverController.y().toggleOnTrue(turretScan);
+
         //perfect shot from the aligned spot
         operatorController.x().toggleOnTrue(robotContainer.alignedShotCommand);
 

@@ -54,15 +54,16 @@ public final class Constants {
   public static final SwerveRequest idle = new SwerveRequest.Idle();
 
   //ID constants
-  public static final int Index_ID = 31;
+  public static final int Intake_Arm_Left_ID = 51;
   public static final int Spindex_ID = 40;
   public static final int Intake_ID = 41;
   public static final int Turret_ID = 43;
   public static final int Flywheel_Lead_ID = 46;
   public static final int Flywheel_Follower_ID = 47;
   public static final int Hood_ID = 48;
-  public static final int Intake_Arm_Left_ID = 51;
   public static final int Intake_Arm_Right_ID = 50;
+  public static final int Index_ID = 31;
+
 
   //Speed Constants
   public static final double intakeSpeed = -0.95;
@@ -107,5 +108,4 @@ public final class Constants {
   public static final Transform3d leftBackCamTransform3d = new Transform3d(new Translation3d(-0.314325, 0.314325, 0.1524), new Rotation3d(0, Math.toRadians(-30), Math.toRadians(-150)));
   public static final Transform3d rightBackCamTransform3d = new Transform3d(new Translation3d(-0.314325, -0.314325, 0.1524), new Rotation3d(0, Math.toRadians(-30), Math.toRadians(150)));
   public static final Transform3d turretCamTransform = new Transform3d(new Translation3d(-0.20,-0.312 , 0.45), new Rotation3d(0, 0/*Math.toRadians(-30)*/, 0/*TurretCamYaw*/));
-  public static final double intakeSpeed = 0.70;
 }
