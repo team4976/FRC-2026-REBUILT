@@ -7,50 +7,51 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.subsystems.UpdateHubInfo;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.PhotonVision;
 import static frc.robot.Constants.*;
 
 public class TurretScan extends Command {
+    UpdateHubInfo updateHubInfo;
     PhotonVision turretVision;
     TurretSubsystem shooter;
-    boolean TurningRight = true; // flag in scan to determine if the turret should be turning right or left
-    boolean hasTargets = false; // flag to track if the turret see's an april tag
+    CommandSwerveDrivetrain swerve;
     double distance; // distance from the hub to the turret
-    boolean stopLockedOn = false; // flag to track if the turret is hitting the limit switch in lockedOn mode
-    Field2d field2d; // our estimated position on the field
+    boolean stopLockedOn = false; // flag to track if the turret is hitting the limit switch in lockedOn mode // our estimated position on the field
     double turretTargetAngle; // the angle we want the turret to be at so that we are aiming at the hub
-    double turretAngle; // the turret angle we are currently at
+    double turrettoRobotAngle; // the turret angle we are currently at relative to robot
+    double turrettoFieldAngle; //The turrent angle relative to the field
+    double botAngle;
     double turretPosition; // the encoder value of the tuurets motor
     double turretTargetPosition;
     double manualLockedOn;
     double autoLockedOn = 0.0;
+    double turretToHubRotations;
     boolean isAuto = false;
 
-    public TurretScan(PhotonVision turretVision, TurretSubsystem shooter){
+    public TurretScan(UpdateHubInfo updateHubInfo, PhotonVision turretVision, TurretSubsystem shooter, CommandSwerveDrivetrain swerve){
+        this.updateHubInfo = updateHubInfo;
         this.turretVision = turretVision;
-        addRequirements(turretVision);
-
         this.shooter = shooter;
         addRequirements(shooter);
 
-        field2d = new Field2d();
+        this.swerve = swerve;
+
     }
 
-    public TurretScan(PhotonVision turretVision, TurretSubsystem shooter, boolean isAuto){
+    public TurretScan(UpdateHubInfo updateHubInfo, PhotonVision turretVision,TurretSubsystem shooter, boolean isAuto){
+        this.updateHubInfo = updateHubInfo;
         this.turretVision = turretVision;
-        addRequirements(turretVision);
-
         this.shooter = shooter;
         addRequirements(shooter);
 
-        field2d = new Field2d();
+        //field2d = new Field2d();
         this.isAuto  = isAuto;
     }
 
     @Override
     public void initialize() {
-        TurningRight = true;
-        hasTargets = false;
         shooter.stopbutton = false;
         stopLockedOn = false;
         shooter.isAutoAiming = true;
@@ -59,54 +60,36 @@ public class TurretScan extends Command {
     @Override
     public void execute() {
         //SmartDashboard.putBoolean("TurningRight", TurningRight);
-
-        //get if the robot is seeing the april tag
-        hasTargets = turretVision.targetVisible();
         // set the yaw to what the yaw of the april tag is
+        System.out.println("TurretScan-Execute");
 
 
-        if(hasTargets == false || stopLockedOn == true){
-            stopLockedOn = false;
-            System.err.println("hasTargets = false");
-            shooter.stopTurn();
-            autoLockedOn = 0;
+        // if left or right switch is pressed turn off motor
+        if(shooter.getLeftSwitch() == false || shooter.getRightSwitch() == false ||
+           shooter.getEncoderValue() < Constants.turretLimitRight ||
+           shooter.getEncoderValue() > Constants.turretLimitLeft){
+           shooter.stopTurn();
         }
         else{
-            field2d = turretVision.getDistanceAndAngle();
-            System.err.println("hasTargets = true");
-
-            // gets the turret angle relative to the field
-            turretAngle = turretVision.getTurretAngle();
-            // gets the angle we want to be at to be facing the hub
-            turretTargetAngle = turretVision.getTurretTargetAngle();
-
-            distance = turretVision.getTurretDistance();
-
-            turretPosition = shooter.getEncoderValue();
-
-            SmartDashboard.putNumber("Test/turretDistance", distance);
-            SmartDashboard.putNumber("Test/turretPoseX", field2d.getRobotPose().getX());
-            SmartDashboard.putNumber("Test/turretPoseY", field2d.getRobotPose().getY());
-            SmartDashboard.putNumber("Test/turretRotation", field2d.getRobotPose().getRotation().getDegrees());
-            SmartDashboard.putNumber("Test/targetAngle", turretTargetAngle);
-            SmartDashboard.putNumber("Test/turretAngle", turretAngle);
-            SmartDashboard.putNumber("Test/turretTargetAngle", turretTargetAngle);
-
-             
+        // gets the angle we want to be at to be facing the hub
+        turretTargetAngle = updateHubInfo.getHubAngle();
+        //get the current (field relative) angle bot is facing
+        botAngle = updateHubInfo.getBotAngle();
+        //get (robot relative) turret angle
+        turretPosition = shooter.getEncoderValue();
+        turrettoRobotAngle = shooter.convertRotationAngle(turretPosition);        
+        //Convert from robot relative to field relative angle
+        turrettoFieldAngle = botAngle+turrettoRobotAngle;
         
-            // if left or right switch is pressed while we see a target set stopLockedOn to true
-            if(shooter.getLeftSwitch() == false || shooter.getRightSwitch() == false ||
-                shooter.getEncoderValue() < Constants.turretLimitRight ||
-                 shooter.getEncoderValue() > Constants.turretLimitLeft){
-                stopLockedOn = true;
-                //System.out.println("stopLockedOn " + stopLockedOn);
-            }
+        Double speedAdjust = 5.0;  //Coefficient to increase turrent speed
 
-        Double speedAdjust = 5.0;
-        autoLockedOn = (turretTargetAngle-turretAngle)/45*speedAdjust;
-        }
-        
-        if (operatorController.axisGreaterThan(4, 0.3).getAsBoolean()){
+        //Determines voltage to apply to motor based on distance turret angle is away from hub
+        turretToHubRotations=shooter.convertAngleRotation(turretTargetAngle-turrettoFieldAngle);///45*speedAdjust;
+        shooter.turretRotationPID(turretPosition + turretToHubRotations);
+        System.out.println(turretPosition+turretToHubRotations);
+
+        //Add adjustment due to operator override
+       /*  if (operatorController.axisGreaterThan(4, 0.3).getAsBoolean()){
             manualLockedOn = operatorController.getRightX() * -1;
         } else if (operatorController.axisLessThan(4, -0.3).getAsBoolean()) {
             if (autoLockedOn <= -0.6) {
@@ -117,15 +100,13 @@ public class TurretScan extends Command {
         }
         double totalLockedOn = autoLockedOn + manualLockedOn;
         
-        if(totalLockedOn > 0.7) totalLockedOn = 0.7;
+        if(totalLockedOn > Constants.turretScanVoltage) totalLockedOn = Constants.turretScanVoltage;
 
-        else if(totalLockedOn < -0.7) totalLockedOn = -0.7;
+        else if(totalLockedOn < -Constants.turretScanVoltage) totalLockedOn = -Constants.turretScanVoltage;
         shooter.lockedOn(totalLockedOn);
-        SmartDashboard.putNumber("Testing/Total Turret Voltage", totalLockedOn);
-        turretVision.turretAngle = turretAngle;
-        turretVision.turretTargetAngle = turretTargetAngle;
-        
-        
+        SmartDashboard.putNumber("Testing/Total Turret Voltage", totalLockedOn);  
+        } */
+        }   
     }
 
     @Override

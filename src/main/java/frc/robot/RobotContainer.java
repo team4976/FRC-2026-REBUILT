@@ -5,9 +5,13 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -33,6 +37,9 @@ import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.IndexAndSpindexSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.subsystems.UpdateHubInfo;
+import frc.robot.subsystems.UpdateOdometry;
+
 import static frc.robot.Constants.*;
 
 import org.photonvision.PhotonCamera;
@@ -44,8 +51,16 @@ public class RobotContainer {
     public final Telemetry logger = new Telemetry(Constants.MaxSpeed);
 
     //Vision Objects, may be good idea to merge into one class and just have dif objects
-    public final PhotonVision vision = new PhotonVision("testingCamera", logger);
-    public final PhotonVision m_turretvision = new PhotonVision("testingCamera", logger);
+    private final PhotonVision leftBackCam = new PhotonVision("leftBackCam", logger, drivetrain, leftBackCamTransform3d);
+    private final PhotonVision rightBackCam = new PhotonVision("rightBackCam", logger, drivetrain, rightBackCamTransform3d);
+    private final PhotonVision turretCam = new PhotonVision("testingCamera", logger, drivetrain, turretCamTransform);
+
+    private final UpdateOdometry updateOdometryRight = new UpdateOdometry(drivetrain, rightBackCam);
+    private final UpdateOdometry updateOdometryLeft = new UpdateOdometry(drivetrain, leftBackCam);
+    private final UpdateOdometry updateOdometryTurret = new UpdateOdometry(drivetrain, turretCam);
+
+    //Hub Object, use to get info on hub distance and angle
+    private final UpdateHubInfo updateHubInfo = new UpdateHubInfo(drivetrain);
 
     //Subsystem Objects/Subsystem Initialization
     public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
@@ -85,6 +100,7 @@ public class RobotContainer {
     public Command selectedAuto;
 
     public RobotContainer() {
+
         drivetrain.configureAutoBuilder();
 
         autos =  new Autos(this);

@@ -100,8 +100,8 @@ public class Bindings {
         operatorController.axisGreaterThan(3, 0.1).whileTrue(robotContainer.indexAndSpindexCommand);
 
         //Turret scan
-        operatorController.axisGreaterThan(2, 0.1).toggleOnTrue(robotContainer.turretScanYaw);
-
+        operatorController.axisGreaterThan(2, 0.1).toggleOnTrue(turretScanYaw);
+        driverController.y().toggleOnTrue(turretScan);
         //perfect shot from the aligned spot
         operatorController.x().toggleOnTrue(robotContainer.alignedShotCommand);
 

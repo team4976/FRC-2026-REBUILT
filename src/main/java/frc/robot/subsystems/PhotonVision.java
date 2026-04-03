@@ -2,22 +2,30 @@ package frc.robot.subsystems;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.function.BooleanSupplier;
 
+import org.photonvision.EstimatedRobotPose;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Telemetry;
 
 public class PhotonVision extends SubsystemBase{
     VisionData vision;
+    CommandSwerveDrivetrain swerve;
+    Transform3d transform3d;
     public Double turretTargetAngle = 0.0;
     public Double turretAngle = 0.0;
 
     public BooleanSupplier AutoShootFlag = ()->{
-        boolean hasVaildTarget = ((turretTargetAngle-turretAngle) < 2.5 && (turretTargetAngle-turretAngle) > -2.5);
-        return hasVaildTarget;
-    };
+            boolean hasVaildTarget = ((turretTargetAngle-turretAngle) < 2.5 && (turretTargetAngle-turretAngle) > -2.5);
+          //  System.out.println("Has Vaild Target: " + hasVaildTarget);
+            return hasVaildTarget;
+         };
 
     /**
      * A class containing mwthods for the different camera objects we create. 
@@ -113,6 +121,22 @@ public class PhotonVision extends SubsystemBase{
         return vision.findRobotPos();
     }
 
+    public List<PhotonTrackedTarget> getTargets(){
+        return vision.getTargets();
+    }
+
+    public Optional<EstimatedRobotPose> getRobotPoseVision(){
+        return vision.getRobotPoseVision();
+    }
+
+    public List<PhotonTrackedTarget> getTargets(){
+        return vision.getTargets();
+    }
+
+    public Optional<EstimatedRobotPose> getRobotPoseVision(){
+        return vision.getRobotPoseVision();
+    }
+
     /**
      * Gets the Y rotation of the target highest in the pipeline. 
      * <p> Y rotation is a 3d rotation of the april tag on the Y rotation axis. 
@@ -172,6 +196,8 @@ public class PhotonVision extends SubsystemBase{
      */
     public double getTurretAngle(){
         return vision.getTurretAngle();
+    public double getBotAngle(){
+        return vision.getBotAngle();
     }
 
     /**
