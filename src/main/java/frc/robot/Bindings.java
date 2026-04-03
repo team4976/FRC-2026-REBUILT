@@ -28,6 +28,7 @@ public class Bindings {
     public HoodCommand manualHoodDown;
     public TurretScan turretScan;
     public TurretScanYaw turretScanYaw;
+    
     public TurretLeft turretLeft;
     public TurretRight turretRight;
     public AlignedShotCommand alignedShotCommand;
@@ -86,7 +87,7 @@ public class Bindings {
 
         //Turret scan
         operatorController.axisGreaterThan(2, 0.1).toggleOnTrue(turretScanYaw);
-
+        driverController.y().toggleOnTrue(turretScan);
         //perfect shot from the aligned spot
         operatorController.x().toggleOnTrue(alignedShotCommand);
 

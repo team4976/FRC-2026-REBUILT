@@ -29,6 +29,7 @@ public class TurretScan extends Command {
     double turretTargetPosition;
     double manualLockedOn;
     double autoLockedOn = 0.0;
+    double turretToHubRotations;
     boolean isAuto = false;
 
     public TurretScan(UpdateHubInfo updateHubInfo, PhotonVision turretVision, TurretSubsystem shooter, CommandSwerveDrivetrain swerve){
@@ -62,6 +63,7 @@ public class TurretScan extends Command {
     public void execute() {
         //SmartDashboard.putBoolean("TurningRight", TurningRight);
         // set the yaw to what the yaw of the april tag is
+        System.out.println("TurretScan-Execute");
 
 
         // if left or right switch is pressed turn off motor
@@ -84,10 +86,12 @@ public class TurretScan extends Command {
         Double speedAdjust = 5.0;  //Coefficient to increase turrent speed
 
         //Determines voltage to apply to motor based on distance turret angle is away from hub
-        autoLockedOn = (turretTargetAngle-turrettoFieldAngle)/45*speedAdjust;
+        turretToHubRotations=shooter.convertAngleRotation(turretTargetAngle-turrettoFieldAngle);///45*speedAdjust;
+        shooter.turretRotationPID(turretPosition + turretToHubRotations);
+        System.out.println(turretPosition+turretToHubRotations);
 
         //Add adjustment due to operator override
-        if (operatorController.axisGreaterThan(4, 0.3).getAsBoolean()){
+       /*  if (operatorController.axisGreaterThan(4, 0.3).getAsBoolean()){
             manualLockedOn = operatorController.getRightX() * -1;
         } else if (operatorController.axisLessThan(4, -0.3).getAsBoolean()) {
             if (autoLockedOn <= -0.6) {
@@ -103,8 +107,8 @@ public class TurretScan extends Command {
         else if(totalLockedOn < -Constants.turretScanVoltage) totalLockedOn = -Constants.turretScanVoltage;
         shooter.lockedOn(totalLockedOn);
         SmartDashboard.putNumber("Testing/Total Turret Voltage", totalLockedOn);  
-        } 
-        
+        } */
+        }   
     }
 
     @Override

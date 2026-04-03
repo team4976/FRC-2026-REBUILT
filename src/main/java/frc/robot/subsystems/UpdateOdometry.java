@@ -6,7 +6,11 @@ import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -24,6 +28,7 @@ public class UpdateOdometry extends SubsystemBase {
     int numOfTags;
     Optional<EstimatedRobotPose> EstPose;
     Pose2d InitialPose;
+    private Matrix<N3, N1> good = VecBuilder.fill(0.1, 0.1, 6.0);
     
     public UpdateOdometry(CommandSwerveDrivetrain swerve, PhotonVision vision){
         this.swerve = swerve;
@@ -41,7 +46,7 @@ public class UpdateOdometry extends SubsystemBase {
 
     public void updateOdometryWithVision(PhotonVision vision){
 
-        double startTime = System.currentTimeMillis();
+       // double startTime = System.currentTimeMillis();
         
         Pose2d robotPos = new Pose2d();
         tagAmbiguity = -1.0;
@@ -76,18 +81,18 @@ public class UpdateOdometry extends SubsystemBase {
             // Use the multi-target pose for reliable vision poses
             if (numOfTags > 1) {
                 swerve.addVisionMeasurement(robotPos, timeStamp);
-            //    System.err.println(" 2 tags seen");
+                System.err.println(" 2 tags seen");
             } else {
                 //qualifying checks for poses gotten from a single apriltag
                 if ((Math.abs(tagAmbiguity) < Constants.maxAcceptableAmbiguity) && (numOfTags > 0) 
                     && (distanceToTag < Constants.maxAcceptableDistance)) {
-                        swerve.addVisionMeasurement(robotPos, timeStamp); 
-          //              System.err.println("1 tag seen");
+                        swerve.addVisionMeasurement(robotPos, timeStamp , good); 
+                        System.err.println("1 tag seen");
                 }
             }
             
         }
-        double endTime = System.currentTimeMillis();
+        //double endTime = System.currentTimeMillis();
 
         //System.out.println(startTime);
        // System.out.println(endTime);

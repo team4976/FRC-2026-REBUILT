@@ -24,6 +24,7 @@ public class TurretSubsystem extends SubsystemBase{
     public double RotationsPerDegree = TurretGearRatio/360;
     final PositionVoltage turretPosition = new PositionVoltage(0).withSlot(0);
     public double rStickAxis;
+    public double wantedPosition;
     public boolean isAutoAiming;
     public boolean stopbutton = false;
     public boolean flipButton = false;
@@ -54,6 +55,10 @@ public class TurretSubsystem extends SubsystemBase{
         turretMotor.setControl(turretPosition.withPosition(targetTurretPos));
     }
 
+    /*public double turretWhip(double wantedPosition){
+        if(wantedPosition)
+    }*/
+
     public double convertAngleRotation(double angle){
         return angle*RotationsPerDegree;
     }
@@ -73,6 +78,7 @@ public class TurretSubsystem extends SubsystemBase{
     }
 
     public void lockedOn(double voltage){
+        System.out.println("Locked on voltage: "+voltage);
         turretMotor.setVoltage(voltage);
     }
 
