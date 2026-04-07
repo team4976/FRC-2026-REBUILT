@@ -33,7 +33,14 @@ import frc.robot.RobotContainer;
 public class ElasticData extends SubsystemBase{
     private RobotContainer robotContainer;
     private final Telemetry telemetry;
-    private final PhotonVision cameraDataMain;
+    /**
+    * Back Left Camera Object
+    */
+    private final PhotonVision cameraDataBL;
+    /**
+    * Back Right Camera Object
+    */
+    private final PhotonVision cameraDataBR;
     private final PhotonVision cameraDataTurret;
     private final IndexAndSpindexSubsystem indexAndSpindexSubsystem;
     private final HoodSubsystem hoodSubsystem;
@@ -65,10 +72,11 @@ public class ElasticData extends SubsystemBase{
         //Misc Objects
         this.PDH = robotContainer.PDH;
         telemetry = robotContainer.logger;
-        cameraDataMain = robotContainer.leftBackCam;
+        cameraDataBL = robotContainer.leftBackCam;
+        cameraDataBR = robotContainer.rightBackCam;
         cameraDataTurret = robotContainer.turretCam;
         this.swerve = drivetrain;
-        field2d = cameraDataMain.getRobotPos();
+        field2d = cameraDataBL.getRobotPos();
         alliance = DriverStation.getAlliance();
         if (alliance.isPresent()){
             if (alliance.get() == Alliance.Blue){
@@ -174,7 +182,11 @@ public class ElasticData extends SubsystemBase{
         //--------
         
         //Non Turret Camera Variables
-        double[] targetIDs = cameraDataMain.getIDs().stream()
+        double[] targetIDsBL = cameraDataBL.getIDs().stream()
+        .mapToDouble(Double::doubleValue)
+        .toArray();
+
+        double[] targetIDsBR = cameraDataBR.getIDs().stream()
         .mapToDouble(Double::doubleValue)
         .toArray();
 
@@ -182,16 +194,27 @@ public class ElasticData extends SubsystemBase{
         //Vision Widgets
         //-------------
 
-        //Main Cam Based Vision Widgets
-        SmartDashboard.putNumber("Vision/Main Cam/Raw pitch", cameraDataMain.getAnyPitch());
-        SmartDashboard.putNumber("Vision/Main Cam/Raw yaw", cameraDataMain.getAnyYaw());
-        SmartDashboard.putNumberArray("Vision/Main Cam/Target IDs", targetIDs);
-        SmartDashboard.putBoolean("Vision/Main Cam/Target Visible", cameraDataMain.targetVisible());
-        SmartDashboard.putNumber("Vision/Main Cam/Ambiguity", cameraDataMain.getAmbiguity());
-        SmartDashboard.putNumber("Vision/Main Cam/Y Rotation", cameraDataMain.getYRotation());
-        SmartDashboard.putNumber("Vision/Main Cam/X Rotation", cameraDataMain.getXRotation());
-        SmartDashboard.putNumber("Vision/Main Cam/Z Rotation", cameraDataMain.getZRotation());
-        SmartDashboard.putNumber("Vision/Main Cam/Distance", cameraDataMain.getDistance());
+        //Back Left Cam Based Vision Widgets
+        SmartDashboard.putNumber("Vision/Back Left Cam/Raw pitch", cameraDataBL.getAnyPitch());
+        SmartDashboard.putNumber("Vision/Back Left Cam/Raw yaw", cameraDataBL.getAnyYaw());
+        SmartDashboard.putNumberArray("Vision/Back Left Cam/Target IDs", targetIDsBL);
+        SmartDashboard.putBoolean("Vision/Back Left Cam/Target Visible", cameraDataBL.targetVisible());
+        SmartDashboard.putNumber("Vision/Back Left Cam/Ambiguity", cameraDataBL.getAmbiguity());
+        SmartDashboard.putNumber("Vision/Back Left Cam/Y Rotation", cameraDataBL.getYRotation());
+        SmartDashboard.putNumber("Vision/Back Left Cam/X Rotation", cameraDataBL.getXRotation());
+        SmartDashboard.putNumber("Vision/Back Left Cam/Z Rotation", cameraDataBL.getZRotation());
+        SmartDashboard.putNumber("Vision/Back Left Cam/Distance", cameraDataBL.getDistance());
+
+        //Back Right Cam Based Vision Widgets
+        SmartDashboard.putNumber("Vision/Back Left Cam/Raw pitch", cameraDataBR.getAnyPitch());
+        SmartDashboard.putNumber("Vision/Back Left Cam/Raw yaw", cameraDataBR.getAnyYaw());
+        SmartDashboard.putNumberArray("Vision/Back Left Cam/Target IDs", targetIDsBR);
+        SmartDashboard.putBoolean("Vision/Back Left Cam/Target Visible", cameraDataBR.targetVisible());
+        SmartDashboard.putNumber("Vision/Back Left Cam/Ambiguity", cameraDataBR.getAmbiguity());
+        SmartDashboard.putNumber("Vision/Back Left Cam/Y Rotation", cameraDataBR.getYRotation());
+        SmartDashboard.putNumber("Vision/Back Left Cam/X Rotation", cameraDataBR.getXRotation());
+        SmartDashboard.putNumber("Vision/Back Left Cam/Z Rotation", cameraDataBR.getZRotation());
+        SmartDashboard.putNumber("Vision/Back Left Cam/Distance", cameraDataBR.getDistance());
 
         //Turret Based Vision Widgets
         SmartDashboard.putNumber("Vision/Turret Cam/turretDistance", cameraDataTurret.getTurretDistance());
@@ -210,49 +233,20 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putBoolean("Testing/Left Limit Switch Status", turretSubsystem.getLeftSwitch());
         SmartDashboard.putBoolean("Testing/Right Limit Switch Status", turretSubsystem.getRightSwitch());
 
-        SmartDashboard.putNumber("Testing/Calculated Flywheel Speed", 31.49597 + (10.19041 * (cameraDataMain.getDistance() + 0.5969))  
-                - (0.4148098 * Math.pow(cameraDataMain.getDistance() + 0.5969, 2)));
+        SmartDashboard.putNumber("Testing/Calculated Flywheel Speed Based on Turret", 31.49597 + (10.19041 * (cameraDataTurret.getDistance() + 0.5969))  
+                - (0.4148098 * Math.pow(cameraDataTurret.getDistance() + 0.5969, 2))
+        );
 
+        SmartDashboard.putNumber("Testing/Calculated Flywheel Speed Based on UpdateHubInfo",
+             (31.49597 + (10.19041 * (robotContainer.updateHubInfo.getHubDistance() + 0.5969))  
+                - (0.4148098 * Math.pow(robotContainer.updateHubInfo.getHubDistance()+ 0.5969, 2))) * 0.9);
 
 
         //------------- 
         //FIELD WIDGETS
         //-------------
         SmartDashboard.putData("Fields/Ideal Field", field2d);
-        SmartDashboard.putData("Fields/Robot Position Field", cameraDataMain.vision.field2dSwerve);     
-
-        //AC- Additional Field2d Stuff
-        /* 
-        if (turretSubsystem.turretMotor != null){
-            rotation = (cameraDataTurret.getTurretAngle()/57) + field2d.getRobotPose().getRotation().getDegrees();
-        } else {
-            rotation = 0.0;
-        }
-        SmartDashboard.putBoolean("Will the Fuel make it?", fuelMakeIt);
-    field2d.getObject("Aim").setPose(field2d.getRobotPose().getX() + (radius * (Math.cos(rotation))), field2d.getRobotPose().getY() + (radius * (Math.sin(rotation))), new Rotation2d(rotation));
-        Pose2d aimPose = field2d.getObject("Aim").getPose();
-        Pose2d hubPose = field2d.getObject("Hub").getPose();
-        if (aimPose.getX() >= (hubPose.getX() - (hubWidth/2)) && aimPose.getX() <= (hubPose.getX() + (hubWidth/2))){
-            if (aimPose.getY() >= (hubPose.getY() - hubWidth) && aimPose.getY() <= (hubPose.getY() + hubWidth)) {
-                fuelMakeIt = true;
-            } else {
-                fuelMakeIt = false;
-            }
-        } else {
-            fuelMakeIt = false;
-        } 
-            
-        
-
-
-        //Swerve Direction on Field
-        if(telemetry != null){
-                field2d.getObject("FR").setPose(field2d.getRobotPose().getX() + 0.42, field2d.getRobotPose().getY() + 0.343, new Rotation2d(telemetry.m_moduleDirections[2].getAngle()));
-                field2d.getObject("FL").setPose(field2d.getRobotPose().getX() - 0.42, field2d.getRobotPose().getY() + 0.343, new Rotation2d(telemetry.m_moduleDirections[1].getAngle()));
-                field2d.getObject("RR").setPose(field2d.getRobotPose().getX() + 0.42, field2d.getRobotPose().getY() - 0.343, new Rotation2d(telemetry.m_moduleDirections[0].getAngle()));
-                field2d.getObject("RL").setPose(field2d.getRobotPose().getX() - 0.42, field2d.getRobotPose().getY() - 0.343, new Rotation2d(telemetry.m_moduleDirections[3].getAngle()));
-        }
-                */
+        SmartDashboard.putData("Fields/Robot Position Field", cameraDataBL.vision.field2dSwerve);     
 
         //-------------
         //MOTOR WIDGETS
