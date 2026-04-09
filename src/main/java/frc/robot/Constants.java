@@ -54,15 +54,16 @@ public final class Constants {
   public static final SwerveRequest idle = new SwerveRequest.Idle();
 
   //ID constants
-  public static final int Index_ID = 31;
+  public static final int Intake_Arm_Left_ID = 51;
   public static final int Spindex_ID = 40;
   public static final int Intake_ID = 41;
   public static final int Turret_ID = 43;
   public static final int Flywheel_Lead_ID = 46;
   public static final int Flywheel_Follower_ID = 47;
   public static final int Hood_ID = 48;
-  public static final int Intake_Arm_Left_ID = 51;
   public static final int Intake_Arm_Right_ID = 50;
+  public static final int Index_ID = 31;
+
 
   //Speed Constants
   public static final double intakeSpeed = -0.95;
@@ -72,6 +73,21 @@ public final class Constants {
   public static final double TagHeight = 1.084;
 
   //X and Y of the hub centers I believe
+
+
+
+
+
+  public static final int kDriverControllerPort = 0;
+  public static final int LEFT_LEADER_ID = 1;
+  public static final double turretScanVoltage = 2;
+  public static final double turretManualVoltage = 1.5; //2
+  public static double yaw;
+  public static final double targetYaw = 0.0;
+  public static double currentYaw;
+  public static double currentSkew;
+// middle of the hub red: 13.0155555556, 4.41236111111
+// middle of the hub blue: 5.05861111111, 4.41236111111
   public static final double RedHubX = 11.915394;
   public static final double RedHubY = 4.042283;
   public static final double BlueHubX = 4.625594;
@@ -81,4 +97,15 @@ public final class Constants {
   public static final double turretLimitLeft = 21.7626953125; // software limits on turret motion
   public static final double turretLimitRight = -11.59228515625;
   public static final double turretDeadzoneSize = 41.667 - (Constants.turretLimitLeft - Constants.turretLimitRight);// the turret encoder position the turret cannot go
+
+  public static final double maxAcceptableAmbiguity = 0.1;
+  public static final double maxAcceptableDistance = 4;
+
+  public static double TurretCamYaw;
+
+
+  public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+  public static final Transform3d leftBackCamTransform3d = new Transform3d(new Translation3d(-0.314325, 0.314325, 0.1524), new Rotation3d(0, Math.toRadians(-30), Math.toRadians(120)));
+  public static final Transform3d rightBackCamTransform3d = new Transform3d(new Translation3d(-0.314325, -0.314325, 0.1524), new Rotation3d(0, Math.toRadians(-30), Math.toRadians(-120)));
+  public static final Transform3d turretCamTransform = new Transform3d(new Translation3d(-0.20,-0.312 , 0.45), new Rotation3d(0, 0/*Math.toRadians(-30)*/, 0/*TurretCamYaw*/));
 }

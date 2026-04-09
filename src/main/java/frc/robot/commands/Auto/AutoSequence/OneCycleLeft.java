@@ -27,7 +27,7 @@ public class OneCycleLeft extends SequentialCommandGroup {
     public OneCycleLeft(
         RobotContainer robotContainer
     ){
-        PhotonVision visionSubsystem = robotContainer.vision;
+        PhotonVision visionSubsystem = robotContainer.turretCam;
         FlywheelSubsystem flywheelSubsystem = robotContainer.flywheelSubsystem;
         IntakeSubsystem intakeSubsystem = robotContainer.intakeSubsystem;
         IndexAndSpindexSubsystem indxerSubsystem = robotContainer.indexAndSpindexSubsystem;

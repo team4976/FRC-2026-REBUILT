@@ -1,1 +1,10 @@
-{}
+{
+  "download": {
+    "deleteAfter": false,
+    "localDir": "C:\\Users\\1kenn\\Code",
+    "serverTeam": "4976"
+  },
+  "output": {
+    "outputFolder": "C:\\Users\\1kenn\\Code"
+  }
+}
