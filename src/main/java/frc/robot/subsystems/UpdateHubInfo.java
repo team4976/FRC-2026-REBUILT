@@ -10,10 +10,9 @@ import java.util.Optional;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
 public class UpdateHubInfo extends SubsystemBase{
-        CommandSwerveDrivetrain swerve;
+    CommandSwerveDrivetrain swerve;
         // Hub Information
     private Optional<Alliance> alliance;  //Team alliance (Red or Blue)
     private double distanceX; // the distance between us and the virtual hub on the X plane
@@ -26,7 +25,7 @@ public class UpdateHubInfo extends SubsystemBase{
     public double hubId;
 
   public UpdateHubInfo(CommandSwerveDrivetrain swerve){
-            this.swerve = swerve;
+    this.swerve = swerve;
 
    //Logic to determine HubX and HubY coordinates
     alliance = DriverStation.getAlliance();

@@ -10,34 +10,30 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class IndexAndSpindexSubsystem extends SubsystemBase{
-    public SparkMax indexMotor;
-    public SparkMax spindexMotor;
-    public FlywheelSubsystem flywheelSubsystem;
-    public HoodSubsystem hoodSubsystem;
+
+    public SparkMax indexMotor, spindexMotor;
     private SparkMaxConfig sparkConfig = new SparkMaxConfig();
 
-    public IndexAndSpindexSubsystem(HoodSubsystem hoodSubsystem, FlywheelSubsystem flywheelSubsystem){
-        this.flywheelSubsystem = flywheelSubsystem;
-        this.hoodSubsystem = hoodSubsystem;
+    public IndexAndSpindexSubsystem(){
+
         indexMotor = new SparkMax(Constants.Index_ID, MotorType.kBrushless);
+        spindexMotor = new SparkMax(Constants.Spindex_ID, MotorType.kBrushless);
+
         sparkConfig.inverted(true);
         indexMotor.configure(sparkConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
-        spindexMotor = new SparkMax(Constants.Spindex_ID, MotorType.kBrushless);
     }
 
     //Sets the motor to 0 for the beginning of teleop
     //could have used stopFeeder but consistency w/other subsystems
     public void teleopInit(){
-        indexMotor.set(0);
-        spindexMotor.set(0);
+        stopFeeder();
     }
 
     /**
      * A method to stop the indexer and spindexer together. Alternitively you could just call moveFeeder with 0.0 as the argument.
      */
     public void stopFeeder(){
-        indexMotor.set(0);
-        spindexMotor.set(0);
+        moveFeeder(0);
     }
 
     /**
@@ -53,3 +49,14 @@ public class IndexAndSpindexSubsystem extends SubsystemBase{
     public void periodic() {
     }
 }
+
+    //public FlywheelSubsystem flywheelSubsystem;
+    //public HoodSubsystem hoodSubsystem;        
+    //HoodSubsystem hoodSubsystem, FlywheelSubsystem flywheelSubsystem
+    //this.flywheelSubsystem = flywheelSubsystem;
+    //this.hoodSubsystem = hoodSubsystem;
+        
+
+
+        //indexMotor.set(0);
+        //spindexMotor.set(0);

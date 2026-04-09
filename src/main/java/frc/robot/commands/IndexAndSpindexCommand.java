@@ -22,7 +22,7 @@ public class IndexAndSpindexCommand extends Command{
 
     @Override
     public void initialize(){
-        startingIntakeSpeed = intakeSubsystem.currentIntakeSpeed;
+        startingIntakeSpeed = intakeSubsystem.currentIntakeSpeed.getAsDouble();
     }
     
     @Override

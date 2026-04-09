@@ -2,7 +2,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.FlywheelSubsystem;
-import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.UpdateHubInfo;
 
 import static frc.robot.Constants.*;
@@ -15,17 +14,18 @@ public class FlywheelCommand extends Command{
     public double manualFlywheelSpeed;
     public double totalFlywheelSpeed;
 
-    public FlywheelCommand(FlywheelSubsystem flywheelSubsystem, UpdateHubInfo updateHubInfo, boolean isOverriden){
-        this.flywheelSubsystem = flywheelSubsystem;
-        this.updateHubInfo= updateHubInfo;
-        this.isOverriden = isOverriden;
+    public FlywheelCommand(FlywheelSubsystem flywheelSubsystem, UpdateHubInfo updateHubInfo){
+
         addRequirements(flywheelSubsystem);
+        this.flywheelSubsystem = flywheelSubsystem;
+        this.updateHubInfo = updateHubInfo;
     }
 
     @Override
     public void initialize(){
-        flywheelSubsystem.spinFlywheel(0);
-        flywheelSubsystem.isAutoFlywheel = true;
+        //flywheelSubsystem.spinFlywheel(0);
+        flywheelSubsystem.cammeraSpeed = 0;
+        //flywheelSubsystem.isAutoFlywheel = true;
     }
 
     @Override
@@ -40,21 +40,18 @@ public class FlywheelCommand extends Command{
         }
 
         //Sets the adder/substractor to the flywheel speed
-        if (operatorController.axisGreaterThan(1, 0.1).getAsBoolean()){
-            manualFlywheelSpeed = operatorController.getLeftY() * -8;
-        } else if (operatorController.axisLessThan(1, -0.1).getAsBoolean()) {
+        if (operatorController.axisMagnitudeGreaterThan(1, 0.1).getAsBoolean()){
             manualFlywheelSpeed = operatorController.getLeftY() * -8;
         }
         
         //adds the flywheel speeds then spinds the flywheel
         totalFlywheelSpeed = manualFlywheelSpeed + autoFlywheelSpeed;
-        flywheelSubsystem.spinFlywheel(totalFlywheelSpeed);
+        flywheelSubsystem.cammeraSpeed = totalFlywheelSpeed;
     }
 
     @Override
     public void end(boolean isInterupted){
-        flywheelSubsystem.isAutoFlywheel = false;
-        flywheelSubsystem.spinFlywheel(0);
+        flywheelSubsystem.cammeraSpeed = 0;
     }
 
     @Override

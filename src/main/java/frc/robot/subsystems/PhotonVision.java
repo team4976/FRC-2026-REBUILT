@@ -9,13 +9,14 @@ import java.util.function.BooleanSupplier;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Telemetry;
 
 public class PhotonVision extends SubsystemBase{
-    VisionData vision;
+    public VisionData vision;
     CommandSwerveDrivetrain swerve;
     Transform3d transform3d;
     public Double turretTargetAngle = 0.0;
@@ -110,7 +111,11 @@ public class PhotonVision extends SubsystemBase{
      * Gets the pose of the robot based on any seen april tags. Robot pose is placed on a Field2d and can be gotten through the .getRobotPose() method.
      * @return The field2d with the robot pose. Is 0.0 if not tags are seen at time of call.
      */
-    public Field2d getRobotPos(){
+    public Pose2d getRobotPos(){
+        return vision.findRobotPos().getRobotPose();
+    }
+
+    public Field2d getRobotPosField2d(){
         return vision.findRobotPos();
     }
 

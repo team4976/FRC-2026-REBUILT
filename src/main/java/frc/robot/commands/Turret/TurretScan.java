@@ -1,16 +1,13 @@
 
 
-package frc.robot.commands;
-
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+package frc.robot.commands.Turret;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.TurretSubsystem;
-import frc.robot.subsystems.UpdateHubInfo;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.PhotonVision;
-import static frc.robot.Constants.*;
+import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.subsystems.UpdateHubInfo;
+
 
 public class TurretScan extends Command {
     UpdateHubInfo updateHubInfo;

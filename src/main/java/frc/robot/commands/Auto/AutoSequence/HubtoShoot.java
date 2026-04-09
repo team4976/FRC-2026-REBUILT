@@ -10,11 +10,11 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 import frc.robot.commands.Auto.FlywheelStart;
 import frc.robot.commands.Auto.FlywheelStop;
+import frc.robot.commands.Turret.TurretScan;
+import frc.robot.commands.Turret.TurretScanYaw;
 import frc.robot.RobotContainer;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.JitterIntake;
-import frc.robot.commands.TurretScan;
-import frc.robot.commands.TurretScanYaw;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
 import frc.robot.subsystems.Autos;
 import frc.robot.subsystems.FlywheelSubsystem;

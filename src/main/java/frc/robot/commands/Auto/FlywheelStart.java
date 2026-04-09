@@ -17,7 +17,7 @@ public class FlywheelStart extends Command{
 
     @Override
     public void initialize(){
-        flywheelSubsystem.isAutoFlywheel = true;
+        //flywheelSubsystem.isAutoFlywheel = true;
         flywheelSubsystem.spinFlywheel(50);
     }
 

@@ -1,14 +1,14 @@
 
 
-package frc.robot.commands;
+package frc.robot.commands.Turret;
 import java.util.OptionalDouble;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.PhotonVision;
+import frc.robot.subsystems.TurretSubsystem;
+
 import static frc.robot.Constants.*;
 
 public class TurretScanYaw extends Command {

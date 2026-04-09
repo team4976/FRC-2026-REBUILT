@@ -20,7 +20,7 @@ public class AlignedShotCommand extends Command{
     public void initialize(){
         hoodSubsystem.moveHood(0);
         flywheelSubsystem.spinFlywheel(0);
-        flywheelSubsystem.isAutoFlywheel = true;
+        //flywheelSubsystem.isAutoFlywheel = true;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class AlignedShotCommand extends Command{
     @Override
     public void end(boolean isInterupted){
         flywheelSubsystem.spinFlywheel(0);
-        flywheelSubsystem.isAutoFlywheel = false;
+        //flywheelSubsystem.isAutoFlywheel = false;
 
     }
 
