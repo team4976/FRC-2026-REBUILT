@@ -23,6 +23,7 @@ import frc.robot.subsystems.IndexAndSpindexSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.subsystems.UpdateHubInfo;
 
 public class OneandHalfCycleRight extends SequentialCommandGroup {
 
@@ -34,7 +35,8 @@ public class OneandHalfCycleRight extends SequentialCommandGroup {
         IntakeSubsystem intakeSubsystem = robotContainer.intakeSubsystem;
         IndexAndSpindexSubsystem indxerSubsystem = robotContainer.indexAndSpindexSubsystem;
         TurretSubsystem turretSubsystem = robotContainer.turretSubsystem;
-        
+        UpdateHubInfo updateHubInfo = robotContainer.updateHubInfo;
+
         Command OneCycleRight = AutoBuilder.buildAuto("1 Cycle - Right");
         Command OneandHalfCycleRight = AutoBuilder.buildAuto("1.5 Cycle - Right"); 
         
@@ -44,7 +46,7 @@ public class OneandHalfCycleRight extends SequentialCommandGroup {
             new WaitCommand(0.5),
             OneCycleRight,
             //Commands.deadline(new WaitCommand(1), new TurretScanYaw(visionSubsystem, turretSubsystem)),
-            new FlywheelStart(flywheelSubsystem, visionSubsystem),
+            new FlywheelStart(flywheelSubsystem, visionSubsystem, updateHubInfo),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
             new WaitCommand(6),
             //Commands.deadline(Commands.waitSeconds(6), new JitterIntake(intakeSubsystem)),
