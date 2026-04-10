@@ -2,6 +2,7 @@
 -Make sure the turret is facing the correct direction
 -Make sure it is in the correct starting pos
 -Intake facing correct direction
+-Make sure hood is down completely
 -Make sure network table is connected
 -Make sure QC is done everything
 -make sure multipose estimation is on
