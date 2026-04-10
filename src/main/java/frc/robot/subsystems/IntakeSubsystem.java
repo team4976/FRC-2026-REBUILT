@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.*;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 
@@ -23,7 +24,26 @@ public class IntakeSubsystem extends SubsystemBase {
   public SparkMax m_leftArm;
   public SparkMax m_rightArm;
 
+  public final double maxLeftEncoderPos = 0.0;
+  public final double maxRightEncoderPos = 0.0;
+  public final double minLeftEncoderPos = 0.0;
+  public final double minRightEncoderPos = 0.0;
+
   public DoubleSupplier currentIntakeSpeed = () -> m_intake.getAppliedOutput();
+  public DoubleSupplier leftArmPose = () -> m_leftArm.getEncoder().getPosition();
+  public DoubleSupplier rightArmPose = () -> m_rightArm.getEncoder().getPosition();;
+  public BooleanSupplier intakeLimitSwitch = () -> {
+    boolean isLeftLimit = leftArmPose.getAsDouble() <= minLeftEncoderPos || leftArmPose.getAsDouble() >= maxLeftEncoderPos;
+    boolean isRightLimit = rightArmPose.getAsDouble() <= minRightEncoderPos || rightArmPose.getAsDouble() >= maxRightEncoderPos;
+
+    return isLeftLimit || isRightLimit;
+  };
+  public BooleanSupplier intakeDown = () -> 
+    leftArmPose.getAsDouble() >= maxLeftEncoderPos || rightArmPose.getAsDouble() >= maxRightEncoderPos;
+  public BooleanSupplier intakeUp = () -> 
+    leftArmPose.getAsDouble() <= minLeftEncoderPos || rightArmPose.getAsDouble() <= minRightEncoderPos;
+
+
   //public double currentIntakeSpeed =0;
   //private SparkMaxConfig sparkConfig = new SparkMaxConfig();
 
@@ -108,6 +128,8 @@ public class IntakeSubsystem extends SubsystemBase {
   //Manual Control if selected in elastic, when on the normal control wont work (most likely)
   @Override
   public void periodic(){
+    if (intakeLimitSwitch.getAsBoolean()) stopIntakeArms();
+
       if (SmartDashboard.getBoolean("Manual Intake", false)) {
         if (!driverController.povUp().getAsBoolean() || !driverController.povDown().getAsBoolean()){
           stopIntakeArms();
