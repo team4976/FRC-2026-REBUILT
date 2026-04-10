@@ -43,22 +43,22 @@ public class TwoCycleRight extends SequentialCommandGroup {
         
         addCommands(
             new PrintCommand("Two Cycle Right Started"),
-            //Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
+            Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
             new WaitCommand(0.5),
             OneCycleRight,
             //Commands.deadline(new WaitCommand(1), new TurretScanYaw(visionSubsystem, turretMovementSubsystem)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem, updateHubInfo),
-            //new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
+            new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
             new WaitCommand(6),
             //Commands.deadline(Commands.waitSeconds(4), new JitterIntake(intakeSubsystem)),
             //Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
-            //new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem, intakeSubsystem),
-            //new FlywheelStop(flywheelSubsystem, visionSubsystem),
+            new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem, intakeSubsystem),
+            new FlywheelStop(flywheelSubsystem, visionSubsystem),
             OneandHalfCycleRight,
             TwoCycleRight,
             //Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
-            //new FlywheelStart(flywheelSubsystem, visionSubsystem),
-            //new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
+            new FlywheelStart(flywheelSubsystem, visionSubsystem, updateHubInfo),
+            new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
             new WaitCommand(6)
         );
     }
