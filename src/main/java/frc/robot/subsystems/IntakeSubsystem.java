@@ -63,7 +63,7 @@ public class IntakeSubsystem extends SubsystemBase {
   //Pass a negative number for offset to lower the default speed, like in auto
   public void intakeMove(boolean isJitter, double offset, boolean isDown){
     double speed = (isJitter)?0.45 + offset:0.25;
-    if(isDown) speed = speed * -1;
+    if(!isDown) speed = speed * -1;
     m_leftArm.set(speed);
     m_rightArm.set(speed);
   }

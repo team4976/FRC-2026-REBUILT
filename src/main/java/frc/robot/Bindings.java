@@ -86,8 +86,7 @@ public class Bindings {
         //Main Controls
         //------------
         //Spin up flywheels
-        //operatorController.a().toggleOnTrue(hoodCommand.withDeadline(flywheelCommand));
-        //operatorController.a().toggleOnTrue(GlobalCommands.instance.flywheelCommand);
+        operatorController.a().toggleOnTrue(GlobalCommands.instance.flywheelCommand);
         
         //Operator Shoot
         operatorController.axisGreaterThan(3, 0.1).whileTrue(GlobalCommands.instance.indexAndSpindexCommand);
