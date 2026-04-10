@@ -33,6 +33,9 @@ public class RobotContainer {
     private final UpdateOdometry updateOdometryLeft = new UpdateOdometry(drivetrain, leftBackCam);
     private final UpdateOdometry updateOdometryTurret = new UpdateOdometry(drivetrain, turretCam);
 
+    //Hub Object, use to get info on hub distance and angle
+    public final UpdateHubInfo updateHubInfo = new UpdateHubInfo(drivetrain);
+
     //Subsystem Objects/Subsystem Initialization
     public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     public final TurretSubsystem turretSubsystem = new TurretSubsystem();
