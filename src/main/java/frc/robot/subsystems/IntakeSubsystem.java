@@ -24,10 +24,10 @@ public class IntakeSubsystem extends SubsystemBase {
   public SparkMax m_leftArm;
   public SparkMax m_rightArm;
 
-  public final double maxLeftEncoderPos = 0.0;
-  public final double maxRightEncoderPos = 0.0;
-  public final double minLeftEncoderPos = 0.0;
-  public final double minRightEncoderPos = 0.0;
+  public final double maxLeftEncoderPos = -5.0;
+  public final double maxRightEncoderPos = -0.6;
+  public final double minLeftEncoderPos = -0.01;
+  public final double minRightEncoderPos = -0.01;
 
   public DoubleSupplier currentIntakeSpeed = () -> m_intake.getAppliedOutput();
   public DoubleSupplier leftArmPose = () -> m_leftArm.getEncoder().getPosition();
@@ -43,9 +43,6 @@ public class IntakeSubsystem extends SubsystemBase {
   public BooleanSupplier intakeUp = () -> 
     leftArmPose.getAsDouble() <= minLeftEncoderPos || rightArmPose.getAsDouble() <= minRightEncoderPos;
 
-
-  //public double currentIntakeSpeed =0;
-  //private SparkMaxConfig sparkConfig = new SparkMaxConfig();
 
       
   public IntakeSubsystem() {
