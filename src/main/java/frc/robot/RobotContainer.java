@@ -5,46 +5,20 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
-import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.JitterIntake;
-import frc.robot.subsystems.Autos;
-import frc.robot.subsystems.ElasticData;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.JitterRobot;
-import frc.robot.subsystems.PhotonVision;
-import frc.robot.commands.HoodCommand;
-import frc.robot.commands.IndexAndSpindexCommand;
-import frc.robot.commands.AlignedShotCommand;
-import frc.robot.commands.FlywheelCommand;
-import frc.robot.commands.TurretScan;
-import frc.robot.commands.TurretScanYaw;
-import frc.robot.commands.Auto.AutoSequence.ShoottoNeutral;
-import frc.robot.subsystems.HoodSubsystem;
-import frc.robot.subsystems.IndexAndSpindexSubsystem;
-import frc.robot.subsystems.FlywheelSubsystem;
-import frc.robot.subsystems.TurretSubsystem;
-import frc.robot.subsystems.UpdateHubInfo;
-import frc.robot.subsystems.UpdateOdometry;
 
+
+import frc.robot.subsystems.*;
 import static frc.robot.Constants.*;
-
 import org.photonvision.PhotonCamera;
-
-
 
 public class RobotContainer {
     //Logging
@@ -58,64 +32,44 @@ public class RobotContainer {
     private final UpdateOdometry updateOdometryTurret = new UpdateOdometry(drivetrain, turretCam);
     private final UpdateOdometry updateOdometryRight = new UpdateOdometry(drivetrain, rightBackCam);
     private final UpdateOdometry updateOdometryLeft = new UpdateOdometry(drivetrain, leftBackCam);
-
-    //Hub Object, use to get info on hub distance and angle
-    public final UpdateHubInfo updateHubInfo = new UpdateHubInfo(drivetrain);
+    private final UpdateOdometry updateOdometryTurret = new UpdateOdometry(drivetrain, turretCam);
 
     //Subsystem Objects/Subsystem Initialization
     public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     public final TurretSubsystem turretSubsystem = new TurretSubsystem();
-    public final FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
     public final HoodSubsystem hoodSubsystem = new HoodSubsystem();
-    public final IndexAndSpindexSubsystem indexAndSpindexSubsystem = new IndexAndSpindexSubsystem(hoodSubsystem, flywheelSubsystem);
+    public final FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
+    public final IndexAndSpindexSubsystem indexAndSpindexSubsystem = new IndexAndSpindexSubsystem();
     
-    public Autos autos;
-    public JitterRobot jitterSubsystem = new JitterRobot();
 
-    //Command Objects
-    public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, 1.0, flywheelSubsystem, intakeSubsystem);//hoodSubsystem, flywheelSubsystem);
-    public IndexAndSpindexCommand reverseIndexer = new IndexAndSpindexCommand(indexAndSpindexSubsystem, -0.8, flywheelSubsystem, intakeSubsystem);//hoodSubsystem, flywheelSubsystem);
-    public IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem, false);
-    public IntakeCommand reverseIntake = new IntakeCommand(intakeSubsystem, true);
-    public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem, updateHubInfo, false);
-    public FlywheelCommand flywheelOverrideCommand = new FlywheelCommand(flywheelSubsystem, updateHubInfo, true);
-    public HoodCommand hoodCommand = new HoodCommand(hoodSubsystem, updateHubInfo, false, 0);
-    public HoodCommand manualHoodUp = new HoodCommand(hoodSubsystem, updateHubInfo, true, 0.5);
-    public HoodCommand manualHoodDown = new HoodCommand(hoodSubsystem, updateHubInfo, true, -0.5);
-    public final TurretScan turretScan = new TurretScan(updateHubInfo, rightBackCam, turretSubsystem, drivetrain);
-    public final TurretScanYaw turretScanYaw = new TurretScanYaw(rightBackCam, turretSubsystem);
-    public AlignedShotCommand alignedShotCommand = new AlignedShotCommand(flywheelSubsystem, hoodSubsystem);
-    
+    public Bindings bindings;
+    public Autos autos;
+    public Command selectedAuto;
 
     //elastic/smartdashboard intialization 
 
-    public Bindings bindings;
-
     public StringLogEntry logEntry = new StringLogEntry(DataLogManager.getLog(), "positionLog");
-
     public PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
-    
     private ElasticData elasticData = new ElasticData(this);
 
-    public Command selectedAuto;
+
+    Command repeatJidderCommand = Commands.repeatingSequence(
+            Commands.print("RepeatJitter Started"),
+            Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeCommand(true, 0.0,false)),
+            Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeCommand(true, 0.0, false))           
+        );
+
 
     public RobotContainer() {
-
-        drivetrain.configureAutoBuilder();
-
-        autos =  new Autos(this);
-
-        bindings = new Bindings(this);
-
-        configureBindings();
-
-        PDH.setSwitchableChannel(true);
-
         //Warnings Suppression
         PhotonCamera.setVersionCheckEnabled(false);
         DriverStation.silenceJoystickConnectionWarning(true);
+        PDH.setSwitchableChannel(true);
 
+        drivetrain.configureAutoBuilder();
+        autos =  new Autos(this);
 
+        configureBindings();
     }
 
     public void teleopInit(){
@@ -131,13 +85,6 @@ public class RobotContainer {
         String currentRobotPoseString = currentRobotPose.toString();
         logEntry.append(currentRobotPoseString);
     }
-
-    Command repeatJidderCommand = 
-        Commands.repeatingSequence(
-            Commands.print("RepeatJitter Started"),
-            Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeUpCommand(true, 0.0)),
-            Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeDownCommand(true, 0.0))           
-        );
 
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
@@ -158,8 +105,10 @@ public class RobotContainer {
             drivetrain.applyRequest(() -> idle).ignoringDisable(true)
         );
 
-        bindings.driverConfigureBindings();
-        bindings.operatorConfigureBindings();
+
+        GlobalCommands.instance.init(this);
+        Bindings.driverConfigureBindings(this);
+        Bindings.operatorConfigureBindings(this);
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
@@ -211,3 +160,21 @@ public class RobotContainer {
         return selectedAuto;
     }
 }
+
+    //public JitterRobot jitterSubsystem = new JitterRobot();
+
+    //Command Objects
+    /*
+    public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, 1.0, flywheelSubsystem, intakeSubsystem);//hoodSubsystem, flywheelSubsystem);
+    public IndexAndSpindexCommand reverseIndexerCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, -0.8, flywheelSubsystem, intakeSubsystem);//hoodSubsystem, flywheelSubsystem);
+    public IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem, false);
+    public IntakeCommand reverseIntakeCommand = new IntakeCommand(intakeSubsystem, true);
+    public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem, updateHubInfo);
+    public HoodCommand hoodCommand = new HoodCommand(hoodSubsystem, updateHubInfo, false, 0);
+    public HoodCommand manualHoodUpCommand = new HoodCommand(hoodSubsystem, updateHubInfo, true, 0.5);
+    public HoodCommand manualHoodDownCommand = new HoodCommand(hoodSubsystem, updateHubInfo, true, -0.5);
+    public TurretScan turretScanCommand = new TurretScan(updateHubInfo, rightBackCam, turretSubsystem, drivetrain);
+    public TurretScanYaw turretScanYawCommand = new TurretScanYaw(rightBackCam, turretSubsystem);
+    public AlignedShotCommand alignedShotCommand = new AlignedShotCommand(flywheelSubsystem, hoodSubsystem);
+    
+*/
