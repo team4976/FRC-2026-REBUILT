@@ -37,7 +37,7 @@ public class TurretSubsystem extends SubsystemBase{
         
         var turretSpinConfig = new Slot0Configs();
         
-        turretSpinConfig.kS = 0.1;
+        turretSpinConfig.kS = 0.2;
         turretSpinConfig.kV = 0.2;
         turretSpinConfig.kP = 0.9;
         turretSpinConfig.kI = 0;

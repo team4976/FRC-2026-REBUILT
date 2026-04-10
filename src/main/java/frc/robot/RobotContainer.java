@@ -55,12 +55,12 @@ public class RobotContainer {
     public final PhotonVision rightBackCam = new PhotonVision("rightBackCam", logger, drivetrain, rightBackCamTransform3d);
     public final PhotonVision turretCam = new PhotonVision("testingCamera", logger, drivetrain, turretCamTransform);
 
+    private final UpdateOdometry updateOdometryTurret = new UpdateOdometry(drivetrain, turretCam);
     private final UpdateOdometry updateOdometryRight = new UpdateOdometry(drivetrain, rightBackCam);
     private final UpdateOdometry updateOdometryLeft = new UpdateOdometry(drivetrain, leftBackCam);
-    private final UpdateOdometry updateOdometryTurret = new UpdateOdometry(drivetrain, turretCam);
 
     //Hub Object, use to get info on hub distance and angle
-    private final UpdateHubInfo updateHubInfo = new UpdateHubInfo(drivetrain);
+    public final UpdateHubInfo updateHubInfo = new UpdateHubInfo(drivetrain);
 
     //Subsystem Objects/Subsystem Initialization
     public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();

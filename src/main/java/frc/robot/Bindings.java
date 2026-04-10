@@ -64,7 +64,7 @@ public class Bindings {
         driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
         //Regular Shooting
-        driverController.axisGreaterThan(3, 0.1).whileTrue(robotContainer.indexAndSpindexCommand);
+        driverController.axisGreaterThan(3, 0.1).whileTrue(robotContainer.indexAndSpindexCommand/* .alongWith(turretScan)*/);
 
         //Jitter the Intake
         driverController.rightBumper().whileTrue(repeatJidderCommand).onFalse(

@@ -28,6 +28,7 @@ public class TurretScan extends Command {
     double manualLockedOn;
     double autoLockedOn = 0.0;
     double turretToHubRotations;
+    double turretotargetpostition;
     boolean isAuto = false;
 
     public TurretScan(UpdateHubInfo updateHubInfo, PhotonVision turretVision, TurretSubsystem shooter, CommandSwerveDrivetrain swerve){
@@ -65,9 +66,7 @@ public class TurretScan extends Command {
 
 
         // if left or right switch is pressed turn off motor
-        if(shooter.getLeftSwitch() == false || shooter.getRightSwitch() == false ||
-           shooter.getEncoderValue() < Constants.turretLimitRight ||
-           shooter.getEncoderValue() > Constants.turretLimitLeft){
+        if(shooter.getLeftSwitch() == false || shooter.getRightSwitch() == false){
            shooter.stopTurn();
         }
         else{
@@ -85,7 +84,14 @@ public class TurretScan extends Command {
 
         //Determines voltage to apply to motor based on distance turret angle is away from hub
         turretToHubRotations=shooter.convertAngleRotation(turretTargetAngle-turrettoFieldAngle);///45*speedAdjust;
-        shooter.turretRotationPID(turretPosition + turretToHubRotations);
+        turretotargetpostition = turretPosition + turretToHubRotations;
+        if(turretotargetpostition > Constants.turretLimitLeft){
+            turretotargetpostition = Constants.turretLimitLeft - 0.1;
+        }
+        else if(turretotargetpostition < Constants.turretLimitRight){
+            turretotargetpostition = Constants.turretLimitRight + 0.1;
+        }
+        shooter.turretRotationPID(turretotargetpostition);
         System.out.println(turretPosition+turretToHubRotations);
 
         //Add adjustment due to operator override
