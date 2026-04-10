@@ -2,7 +2,6 @@ package frc.robot;
 
 import frc.robot.commands.AlignedShotCommand;
 import frc.robot.commands.FlywheelCommand;
-import frc.robot.commands.HoodCommand;
 import frc.robot.commands.IndexAndSpindexCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.JitterRobotSequence;
@@ -22,9 +21,6 @@ public class GlobalCommands {
     public IntakeCommand intakeCommand; 
     public IntakeCommand reverseIntakeCommand; 
     public FlywheelCommand flywheelCommand; 
-    public HoodCommand hoodCommand; 
-    public HoodCommand manualHoodUpCommand; 
-    public HoodCommand manualHoodDownCommand; 
     public TurretScan turretScanCommand; 
     public TurretScanYaw turretScanYawCommand; 
     public AlignedShotCommand alignedShotCommand;
@@ -41,7 +37,7 @@ public class GlobalCommands {
         flywheelCommand = new FlywheelCommand(robotContainer.flywheelSubsystem, updateHubInfo);
         turretScanCommand = new TurretScan(updateHubInfo, robotContainer.rightBackCam, robotContainer.turretSubsystem, Constants.drivetrain);
         turretScanYawCommand = new TurretScanYaw(robotContainer.rightBackCam, robotContainer.turretSubsystem);
-        alignedShotCommand= new AlignedShotCommand(robotContainer.flywheelSubsystem, robotContainer.hoodSubsystem);
+        alignedShotCommand= new AlignedShotCommand(robotContainer.flywheelSubsystem);
 
         isSetup = true;
     }

@@ -41,7 +41,6 @@ public class ElasticData extends SubsystemBase{
     private final PhotonVision cameraTurret;
 
     private final IndexAndSpindexSubsystem indexAndSpindexSubsystem;
-    private final HoodSubsystem hoodSubsystem;
     private final FlywheelSubsystem flywheelSubsystem;
     private final TurretSubsystem turretSubsystem;
     private final IntakeSubsystem intakeSubsystem;
@@ -111,7 +110,6 @@ public class ElasticData extends SubsystemBase{
         //Subsystem Objects
         //this.robotContainer = robotContainer;
         indexAndSpindexSubsystem = robotContainer.indexAndSpindexSubsystem;
-        hoodSubsystem = robotContainer.hoodSubsystem;
         flywheelSubsystem = robotContainer.flywheelSubsystem;
         turretSubsystem = robotContainer.turretSubsystem;
         intakeSubsystem = robotContainer.intakeSubsystem;
@@ -209,7 +207,6 @@ public class ElasticData extends SubsystemBase{
         //Voltage Widgets
         SmartDashboard.putNumber("QC/Motors/Indexer/Index Volatage", indexAndSpindexSubsystem.indexMotor.getAppliedOutput());
         SmartDashboard.putNumber("QC/Motors/Spindex/Spindex Volatage", indexAndSpindexSubsystem.spindexMotor.getAppliedOutput());
-        SmartDashboard.putNumber("QC/Motors/Hood/Hood Voltage", hoodSubsystem.HoodMotor.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Turret/Turret Voltage", turretSubsystem.turretMotor.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Lead/Flywheel Lead Voltage", flywheelSubsystem.fx_leader.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Follow/Flywheel Follow Voltage", flywheelSubsystem.fx_follower.getMotorVoltage().getValueAsDouble());
@@ -220,7 +217,6 @@ public class ElasticData extends SubsystemBase{
         //RPM Widgets
         SmartDashboard.putNumber("QC/Motors/Indexer/Index RPM", indexAndSpindexSubsystem.indexMotor.getEncoder().getVelocity());
         SmartDashboard.putNumber("QC/Motors/Spindex/Spindex RPM", indexAndSpindexSubsystem.spindexMotor.getEncoder().getVelocity());
-        SmartDashboard.putNumber("QC/Motors/Hood/Hood RPS", hoodSubsystem.HoodMotor.getVelocity().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Turret/Turret RPS", turretSubsystem.turretMotor.getVelocity().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Lead/Flywheel Lead RPS", flywheelSubsystem.fx_leader.getVelocity().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Follow/Flywheel Follow RPS", flywheelSubsystem.fx_follower.getVelocity().getValueAsDouble());
@@ -229,7 +225,6 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Right Speed (Raw)", intakeSubsystem.m_rightArm.getEncoder().getVelocity());
 
         //Position Widgets
-        SmartDashboard.putNumber("QC/Motors/Hood/Hood Position", hoodSubsystem.HoodMotor.getPosition().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Turret/Turret Position", turretSubsystem.turretMotor.getPosition().getValueAsDouble());
         SmartDashboard.putNumber("Intake Left Arm Encoder", intakeSubsystem.m_leftArm.getEncoder().getPosition());
         SmartDashboard.putNumber("Intake Right Arm Encoder", intakeSubsystem.m_rightArm.getEncoder().getPosition());
@@ -292,8 +287,6 @@ public class ElasticData extends SubsystemBase{
 
         //Ben T's smartdashboard stuff
         SmartDashboard.putNumber("Testing/Ben T's Stuff/shooter speed", flywheelSubsystem.shooterSpeed.getAsDouble());
-        SmartDashboard.putString("Testing/Ben T's Stuff/hood State", hoodSubsystem.getHoodState());
-        SmartDashboard.putNumber("Testing/Ben T's Stuff/hood position", hoodSubsystem.returnMotor().getPosition().getValueAsDouble());
             
         //updates the Smartdash board Values
     }

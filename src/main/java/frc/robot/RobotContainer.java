@@ -39,7 +39,6 @@ public class RobotContainer {
     //Subsystem Objects/Subsystem Initialization
     public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     public final TurretSubsystem turretSubsystem = new TurretSubsystem();
-    public final HoodSubsystem hoodSubsystem = new HoodSubsystem();
     public final FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
     public final IndexAndSpindexSubsystem indexAndSpindexSubsystem = new IndexAndSpindexSubsystem();
     
@@ -76,7 +75,6 @@ public class RobotContainer {
 
     public void teleopInit(){
         flywheelSubsystem.teleopInit();
-        hoodSubsystem.teleopInit();
         indexAndSpindexSubsystem.teleopInit();
         intakeSubsystem.teleopInit();
         turretSubsystem.teleopInit();

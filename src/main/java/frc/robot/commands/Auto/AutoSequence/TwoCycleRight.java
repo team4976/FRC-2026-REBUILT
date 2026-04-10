@@ -59,7 +59,7 @@ public class TwoCycleRight extends SequentialCommandGroup {
             OneandHalfCycleRight,
             TwoCycleRight,
             Commands.deadline(new WaitCommand(1), new TurretScan(robotContainer.updateHubInfo ,visionSubsystem, turretMovementSubsystem, drivetrain)),
-            new FlywheelStart(flywheelSubsystem, visionSubsystem),
+            new FlywheelStart(flywheelSubsystem, visionSubsystem, updateHubInfo),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
             new WaitCommand(6)
         );

@@ -23,9 +23,7 @@ public class FlywheelCommand extends Command{
 
     @Override
     public void initialize(){
-        //flywheelSubsystem.spinFlywheel(0);
         flywheelSubsystem.cammeraSpeed = 0;
-        //flywheelSubsystem.isAutoFlywheel = true;
     }
 
     @Override

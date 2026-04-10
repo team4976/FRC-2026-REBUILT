@@ -21,24 +21,15 @@ public class FlywheelStart extends Command{
 
     @Override
     public void initialize(){
-        flywheelSubsystem.isAutoFlywheel = true;
         if (updateHubInfo.getHubDistance() != 0) {
             autoFlywheelSpeed = (31.49597 + (10.19041 * (updateHubInfo.getHubDistance() + 0.5969))  
                 - (0.4148098 * Math.pow(updateHubInfo.getHubDistance()+ 0.5969, 2))) * 0.9;
         }
-        flywheelSubsystem.spinFlywheel(autoFlywheelSpeed);
+        flywheelSubsystem.cammeraSpeed = autoFlywheelSpeed;
     }
 
     @Override
     public void execute(){ 
-        /*if (flywheelSubsystem.getShooterState() == "windShooter") {
-            flywheelSubsystem.spinFlywheel(65);//SmartDashboard.getNumber("flywheelSpeed", 40));
-            SmartDashboard.putBoolean("Flywheel spinnin", true);
-        }           
-        else if (flywheelSubsystem.getShooterState() == "cantShoot") {
-            flywheelSubsystem.stopFlywheel();
-            SmartDashboard.putBoolean("Flywheel spinnin", false);
-        }*/
     }
 
     @Override
