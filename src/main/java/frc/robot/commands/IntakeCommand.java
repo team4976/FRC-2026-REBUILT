@@ -41,9 +41,8 @@ public class IntakeCommand extends Command {
       intake.runIntakeMotor(-intakeSpeed);
     } else if (!isIntakeReversed) {
       intake.runIntakeMotor(intakeSpeed);
-      intake.intakeMove(false, 0.0, false);
+      intake.intakeMove(false, 0.0, intake.intakeLimitSwitch.getAsBoolean());
     } 
-
   }
 
   @Override
