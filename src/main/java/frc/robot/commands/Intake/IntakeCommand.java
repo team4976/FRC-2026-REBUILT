@@ -35,13 +35,7 @@ public class IntakeCommand extends Command {
   @Override
   public void initialize() {  
     endCommand = false; 
-    if (intake.intakeUp.getAsBoolean()) willIntakeDown = true;
-    if (willIntakeDown) {
-      intake.intakeMove(false, 0.0, true);
-    } else {
-      intake.intakeMove(false, 0.0, false);
-    }
-    willIntakeDown = !willIntakeDown;
+    intake.intakeMove(false, 0.0, intake.getAndSwapDirection());
     endCommand = true;
   }
 

@@ -24,23 +24,27 @@ public class IntakeSubsystem extends SubsystemBase {
   public SparkMax m_leftArm;
   public SparkMax m_rightArm;
 
-  public final double maxLeftEncoderPos = -5.5;
-  public final double maxRightEncoderPos = -0.65;
-  public final double minLeftEncoderPos = -0.015;
-  public final double minRightEncoderPos = -0.015;
+  //The Encoder Positions. As the intake goes down the numbers get larger in magnitude but further into the negatives
+  //As such when it is fully down it is at the minimum and when its up its at its maximum.
+  public final double minLeftEncoderPos = -5.5;
+  public final double minRightEncoderPos = -0.65;
+  public final double maxLeftEncoderPos = -0.015;
+  public final double maxRightEncoderPos = -0.015;
+
+  public boolean willIntakeDown = false;
 
   public DoubleSupplier currentIntakeSpeed = () -> m_intake.getAppliedOutput();
   public DoubleSupplier leftArmPose = () -> m_leftArm.getEncoder().getPosition();
   public DoubleSupplier rightArmPose = () -> m_rightArm.getEncoder().getPosition();;
   public BooleanSupplier intakeLimitSwitch = () -> {
-    boolean isLeftLimit = leftArmPose.getAsDouble() >= minLeftEncoderPos || leftArmPose.getAsDouble() <= maxLeftEncoderPos;
-    boolean isRightLimit = rightArmPose.getAsDouble() >= minRightEncoderPos || rightArmPose.getAsDouble() <= maxRightEncoderPos;
+    boolean isLeftLimit = leftArmPose.getAsDouble() >= maxLeftEncoderPos || leftArmPose.getAsDouble() <= minLeftEncoderPos;
+    boolean isRightLimit = rightArmPose.getAsDouble() >= maxRightEncoderPos || rightArmPose.getAsDouble() <= minRightEncoderPos;
     return isLeftLimit || isRightLimit;
   };
   public BooleanSupplier intakeDown = () -> 
-    leftArmPose.getAsDouble() <= maxLeftEncoderPos || rightArmPose.getAsDouble() <= maxRightEncoderPos;
+    leftArmPose.getAsDouble() <= minLeftEncoderPos || rightArmPose.getAsDouble() <= minRightEncoderPos;
   public BooleanSupplier intakeUp = () -> 
-    leftArmPose.getAsDouble() >= minLeftEncoderPos || rightArmPose.getAsDouble() >= minRightEncoderPos;
+    leftArmPose.getAsDouble() >= maxLeftEncoderPos || rightArmPose.getAsDouble() >= maxRightEncoderPos;
 
 
       
@@ -52,6 +56,11 @@ public class IntakeSubsystem extends SubsystemBase {
   }   
 
   public void teleopInit(){ 
+  }
+
+  public boolean getAndSwapDirection(){
+    if (intakeUp.getAsBoolean()) return willIntakeDown = false;
+    return willIntakeDown = !willIntakeDown;
   }
   
 
@@ -112,12 +121,12 @@ public class IntakeSubsystem extends SubsystemBase {
   //Manual Control if selected in elastic, when on the normal control wont work (most likely)
   @Override
   public void periodic(){
-      if(m_leftArm.getOutputCurrent() < 0 && Math.abs(m_leftArm.getEncoder().getPosition() + maxLeftEncoderPos) < 0.1){
+      if(Math.abs(m_leftArm.getOutputCurrent()) > 0 && Math.abs(m_leftArm.getEncoder().getPosition() + minLeftEncoderPos) < 0.1){
         m_leftArm.set(0);
         m_rightArm.set(0);
         return;
       }
-      else if(m_leftArm.getOutputCurrent() > 0 && Math.abs(m_leftArm.getEncoder().getPosition() - minLeftEncoderPos) > 0.1){
+      else if(Math.abs(m_leftArm.getOutputCurrent()) > 0 && Math.abs(m_leftArm.getEncoder().getPosition() - maxLeftEncoderPos) > 0.1){
         m_leftArm.set(0);
         m_rightArm.set(0);
         return;
