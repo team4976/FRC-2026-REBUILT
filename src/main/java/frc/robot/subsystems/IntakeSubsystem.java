@@ -38,9 +38,10 @@ public class IntakeSubsystem extends SubsystemBase {
     return isLeftLimit || isRightLimit;
   };
   public BooleanSupplier intakeDown = () -> 
-    leftArmPose.getAsDouble() >= maxLeftEncoderPos || rightArmPose.getAsDouble() >= maxRightEncoderPos;
+    leftArmPose.getAsDouble() <= maxLeftEncoderPos || rightArmPose.getAsDouble() <= maxRightEncoderPos;
   public BooleanSupplier intakeUp = () -> 
-    leftArmPose.getAsDouble() <= minLeftEncoderPos || rightArmPose.getAsDouble() <= minRightEncoderPos;
+    leftArmPose.getAsDouble() >= minLeftEncoderPos || rightArmPose.getAsDouble() >= minRightEncoderPos;
+
 
       
   public IntakeSubsystem() {

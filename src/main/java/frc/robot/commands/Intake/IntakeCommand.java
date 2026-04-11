@@ -41,6 +41,7 @@ public class IntakeCommand extends Command {
     } else {
       intake.intakeMove(false, 0.0, false);
     }
+    willIntakeDown = !willIntakeDown;
     endCommand = true;
   }
 
