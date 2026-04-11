@@ -228,6 +228,8 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("QC/Motors/Turret/Turret Position", turretSubsystem.turretMotor.getPosition().getValueAsDouble());
         SmartDashboard.putNumber("Intake Left Arm Encoder", intakeSubsystem.m_leftArm.getEncoder().getPosition());
         SmartDashboard.putNumber("Intake Right Arm Encoder", intakeSubsystem.m_rightArm.getEncoder().getPosition());
+        SmartDashboard.putNumber("Intake Left Arm Encoder 2", intakeSubsystem.leftArmPose.getAsDouble());
+        SmartDashboard.putNumber("Intake Right Arm Encoder 2", intakeSubsystem.rightArmPose.getAsDouble());
 
         //--------
         //BOOLEANS
@@ -295,6 +297,7 @@ public class ElasticData extends SubsystemBase{
     @Override
     public void periodic(){
         try{
+            addDataToSmartDashBoard();
         //--------
         //Variables
         //--------

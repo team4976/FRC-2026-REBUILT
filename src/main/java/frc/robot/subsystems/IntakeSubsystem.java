@@ -24,25 +24,23 @@ public class IntakeSubsystem extends SubsystemBase {
   public SparkMax m_leftArm;
   public SparkMax m_rightArm;
 
-  public final double maxLeftEncoderPos = -5.0;
-  public final double maxRightEncoderPos = -0.6;
-  public final double minLeftEncoderPos = -0.01;
-  public final double minRightEncoderPos = -0.01;
+  public final double maxLeftEncoderPos = -5.5;
+  public final double maxRightEncoderPos = -0.65;
+  public final double minLeftEncoderPos = -0.015;
+  public final double minRightEncoderPos = -0.015;
 
   public DoubleSupplier currentIntakeSpeed = () -> m_intake.getAppliedOutput();
   public DoubleSupplier leftArmPose = () -> m_leftArm.getEncoder().getPosition();
   public DoubleSupplier rightArmPose = () -> m_rightArm.getEncoder().getPosition();;
   public BooleanSupplier intakeLimitSwitch = () -> {
-    boolean isLeftLimit = leftArmPose.getAsDouble() <= minLeftEncoderPos || leftArmPose.getAsDouble() >= maxLeftEncoderPos;
-    boolean isRightLimit = rightArmPose.getAsDouble() <= minRightEncoderPos || rightArmPose.getAsDouble() >= maxRightEncoderPos;
-
+    boolean isLeftLimit = leftArmPose.getAsDouble() >= minLeftEncoderPos || leftArmPose.getAsDouble() <= maxLeftEncoderPos;
+    boolean isRightLimit = rightArmPose.getAsDouble() >= minRightEncoderPos || rightArmPose.getAsDouble() <= maxRightEncoderPos;
     return isLeftLimit || isRightLimit;
   };
   public BooleanSupplier intakeDown = () -> 
     leftArmPose.getAsDouble() >= maxLeftEncoderPos || rightArmPose.getAsDouble() >= maxRightEncoderPos;
   public BooleanSupplier intakeUp = () -> 
     leftArmPose.getAsDouble() <= minLeftEncoderPos || rightArmPose.getAsDouble() <= minRightEncoderPos;
-
 
       
   public IntakeSubsystem() {
@@ -73,14 +71,14 @@ public class IntakeSubsystem extends SubsystemBase {
   /**
    * 
    * @param isJitter whether the method is being called for the jitter or manual
-   * @param offset the speed offset from the default of 0.45 during jitter and 0.25 in normal. 
-   * Enter a negative value to lower the speed.
+   * @param offset the speed offset from the default of 0.45 during jitter and 0.25 in normal. Enter a negative value to lower the speed.
+   * @param isDown whether the intake should be going down. pass true if you want the intake to go down and false if not.
   */
   //Jitter speed is different than manual speed, isJitter checks which
   //Pass a negative number for offset to lower the default speed, like in auto
   public void intakeMove(boolean isJitter, double offset, boolean isDown){
     double speed = (isJitter)?0.45 + offset:0.25;
-    if(!isDown) speed = speed * -1;
+    if(isDown) speed = speed * -1;
     m_leftArm.set(speed);
     m_rightArm.set(speed);
   }
@@ -89,19 +87,7 @@ public class IntakeSubsystem extends SubsystemBase {
   //Intake Command Methods:
   //-----------------------
 
-  //Stops the intakes arms from moving, in the form of a command to provide a runnable
-  public Command stopIntakeArmsCommand(){
-    return runOnce(()->
-      stopIntakeArms()
-    );
-  }
 
-  //Stops the intake bar motor from moving, in the form of a command to provide a runnable
-  public Command stopIntakeMotorCommand(){
-    return runOnce(()-> 
-      stopIntakeMotor()
-    );
-  }
 
     /**
    * Constructs a command that moves the intakes arms down
@@ -125,7 +111,17 @@ public class IntakeSubsystem extends SubsystemBase {
   //Manual Control if selected in elastic, when on the normal control wont work (most likely)
   @Override
   public void periodic(){
-    if (intakeLimitSwitch.getAsBoolean()) stopIntakeArms();
+      if(m_leftArm.getOutputCurrent() < 0 && Math.abs(m_leftArm.getEncoder().getPosition() + maxLeftEncoderPos) < 0.1){
+        m_leftArm.set(0);
+        m_rightArm.set(0);
+        return;
+      }
+      else if(m_leftArm.getOutputCurrent() > 0 && Math.abs(m_leftArm.getEncoder().getPosition() - minLeftEncoderPos) > 0.1){
+        m_leftArm.set(0);
+        m_rightArm.set(0);
+        return;
+      }
+      //if (intakeLimitSwitch.getAsBoolean()) stopIntakeArms();
 
       if (SmartDashboard.getBoolean("Manual Intake", false)) {
         if (!driverController.povUp().getAsBoolean() || !driverController.povDown().getAsBoolean()){

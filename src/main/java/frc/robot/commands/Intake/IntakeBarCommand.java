@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.Intake;
 
 import static frc.robot.Constants.intakeSpeed;
 
@@ -13,20 +13,19 @@ import frc.robot.subsystems.IntakeSubsystem;
 /** The Command for the Intake
  * @param <Drive> */
 @SuppressWarnings("unused")
-public class IntakeCommand extends Command {
+public class IntakeBarCommand extends Command {
 
-  public boolean SolenoidStatus;
   public IntakeSubsystem intake;
   public boolean endCommand;
   public boolean isIntakeReversed;
-  public double startingIntakeSpeed;
+
   /**
        * Creates a new IntakeCommand
        *
        * @param intake The subsystem used by this command.
        */
 
-  public IntakeCommand(IntakeSubsystem intake, boolean isIntakeReversed) {
+  public IntakeBarCommand(IntakeSubsystem intake, boolean isIntakeReversed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = intake;
     this.isIntakeReversed = isIntakeReversed;
@@ -34,15 +33,16 @@ public class IntakeCommand extends Command {
   }
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {  
-    endCommand = false; 
-    startingIntakeSpeed = intake.currentIntakeSpeed.getAsDouble();
-    if (isIntakeReversed) {
-      intake.runIntakeMotor(-intakeSpeed);
-    } else if (!isIntakeReversed) {
-      intake.runIntakeMotor(intakeSpeed);
-      intake.intakeMove(false, 0.0, intake.intakeLimitSwitch.getAsBoolean());
-    } 
+  public void initialize() {
+    endCommand = false;
+    if (isIntakeReversed){
+      double setIntakeSpeed = (intake.currentIntakeSpeed.getAsDouble() >= 0.0)?-1:0;
+      intake.runIntakeMotor(setIntakeSpeed);
+    } else {
+      double setIntakeSpeed = (intake.currentIntakeSpeed.getAsDouble() <= 0.0)?1:0;
+      intake.runIntakeMotor(setIntakeSpeed);
+    }
+    endCommand = true;
   }
 
   @Override
@@ -51,11 +51,6 @@ public class IntakeCommand extends Command {
 
   @Override
   public void end(boolean interrupted) {  
-    if (isIntakeReversed) {
-      intake.runIntakeMotor(startingIntakeSpeed);
-      return;
-    }
-    intake.stopIntakeArms();
   }
 
 

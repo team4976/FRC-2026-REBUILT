@@ -12,11 +12,11 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 import frc.robot.commands.Auto.FlywheelStart;
 import frc.robot.commands.Auto.FlywheelStop;
+import frc.robot.commands.Intake.IntakeCommand;
+import frc.robot.commands.Jitter.JitterIntake;
 import frc.robot.commands.Turret.TurretScan;
 import frc.robot.commands.Turret.TurretScanYaw;
 import frc.robot.RobotContainer;
-import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.JitterIntake;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
 import frc.robot.subsystems.Autos;
 import frc.robot.subsystems.FlywheelSubsystem;
@@ -45,7 +45,7 @@ public class TwoCycleRight extends SequentialCommandGroup {
         
         addCommands(
             new PrintCommand("Two Cycle Right Started"),
-            Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
+            Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem)),
             new WaitCommand(0.5),
             OneCycleRight,
             //Commands.deadline(new WaitCommand(1), new TurretScanYaw(visionSubsystem, turretMovementSubsystem)),

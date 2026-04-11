@@ -2,7 +2,8 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.commands.JitterRobotSequence;
+import frc.robot.commands.Jitter.JitterIntake;
+import frc.robot.commands.Jitter.JitterRobotSequence;
 
 import static frc.robot.Constants.*;
 
@@ -27,10 +28,12 @@ public class Bindings {
             );
         
         //Intake
-        driverController.x().onTrue(Commands.deadline(Commands.waitSeconds(0.2), GlobalCommands.instance.intakeCommand));
+        driverController.x().onTrue(GlobalCommands.instance.intakeCommand);
+        
+        //driverController.start(new JitterIntake());
 
         //Stops Intake Motor
-        driverController.y().onTrue(robotContainer.intakeSubsystem.stopIntakeMotorCommand());
+        driverController.y().onTrue(GlobalCommands.instance.intakeBarCommand);
 
         //Bring Intake Up Slowly
         driverController.start().whileTrue(robotContainer.intakeSubsystem.intakeCommand(false, 0, false)).onFalse(
@@ -39,8 +42,7 @@ public class Bindings {
                 )
             );
         
-        //Auto Aim
-        driverController.y().toggleOnTrue(GlobalCommands.instance.turretScanCommand);
+        
     }
 
     public static void operatorConfigureBindings(RobotContainer robotContainer){
@@ -55,8 +57,7 @@ public class Bindings {
         operatorController.axisGreaterThan(3, 0.1).whileTrue(GlobalCommands.instance.indexAndSpindexCommand);
 
         //Turret scan
-        operatorController.axisGreaterThan(2, 0.1).toggleOnTrue(GlobalCommands.instance.turretScanYawCommand);
-
+        operatorController.axisGreaterThan(2, 0.1).toggleOnTrue(GlobalCommands.instance.turretScanCommand);
         //perfect shot from the aligned spot
         operatorController.x().toggleOnTrue(GlobalCommands.instance.alignedShotCommand);
 
