@@ -1,26 +1,20 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
-
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.RadiansPerSecond;
-import static edu.wpi.first.units.Units.RotationsPerSecond;
-
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.generated.RebuiltTunerConstants;
-//import frc.robot.generated.TurretTunerConstants;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
+import static edu.wpi.first.units.Units.RadiansPerSecond;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.apriltag.AprilTagFields;
+
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.generated.RebuiltTunerConstants;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -31,10 +25,6 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
-  }
-
   //Controller Objects
   public static final CommandXboxController driverController = new CommandXboxController(0);
   public static final CommandXboxController operatorController = new CommandXboxController(1);
@@ -54,7 +44,7 @@ public final class Constants {
   public static final SwerveRequest idle = new SwerveRequest.Idle();
 
   //ID constants
-  public static final int Intake_Arm_Left_ID = 51;
+  public static final int Index_ID = 31;
   public static final int Spindex_ID = 40;
   public static final int Intake_ID = 41;
   public static final int Turret_ID = 43;
@@ -62,30 +52,30 @@ public final class Constants {
   public static final int Flywheel_Follower_ID = 47;
   public static final int Hood_ID = 48;
   public static final int Intake_Arm_Right_ID = 50;
-  public static final int Index_ID = 31;
+  public static final int Intake_Arm_Left_ID = 51;
+
 
 
   //Speed Constants
   public static final double intakeSpeed = -0.95;
+  public static final double turretScanVoltage = 2;
+  public static final double turretManualVoltage = 1.5; //2
 
   //Unsed and potentially no longer accurate but I left for refernce just in case.
   public static final double turretCameraHeight = 0.4826;
   public static final double TagHeight = 1.084;
 
+  //Auto aim stuff, Some of this should NOT be constants but whatever
   // converts from motor rotations to flywheel rotations
   public static final double flywheelGearRatio = 1/1.667;
   
 
   public static final int kDriverControllerPort = 0;
   public static final int LEFT_LEADER_ID = 1;
-  public static final double turretScanVoltage = 2;
-  public static final double turretManualVoltage = 1.5; //2
   public static double yaw;
   public static final double targetYaw = 0.0;
   public static double currentYaw;
   public static double currentSkew;
-// middle of the hub red: 13.0155555556, 4.41236111111
-// middle of the hub blue: 5.05861111111, 4.41236111111
   public static final double RedHubX = 11.915394;
   public static final double RedHubY = 4.042283;
   public static final double BlueHubX = 4.625594;
@@ -100,7 +90,6 @@ public final class Constants {
   public static final double maxAcceptableDistance = 4;
 
   public static double TurretCamYaw;
-
 
   public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
   public static final Transform3d leftBackCamTransform3d = new Transform3d(new Translation3d(-0.314325, 0.314325, 0.1524), new Rotation3d(0, Math.toRadians(-30), Math.toRadians(150)));

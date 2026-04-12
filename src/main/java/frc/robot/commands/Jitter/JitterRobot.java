@@ -3,11 +3,14 @@ package frc.robot.commands.Jitter;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import static frc.robot.Constants.*;
+
 public class JitterRobot extends Command {
     boolean isForward = false;
+    
     public JitterRobot(boolean isForward){
         this.isForward = isForward;
     }
+
    @Override
     public void initialize(){
         drivetrain.applyRequest(()->{

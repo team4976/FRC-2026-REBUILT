@@ -1,52 +1,44 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.FlywheelSubsystem;
+
 import frc.robot.subsystems.IndexAndSpindexSubsystem;
+import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
 public class IndexAndSpindexCommand extends Command{
-    public IndexAndSpindexSubsystem InSSubsystem;
-    public double speed;
-    public FlywheelSubsystem flywheelSubsystem;
+    public IndexAndSpindexSubsystem s_indexAndSpindex;
+    public FlywheelSubsystem s_flywheel;
+    public IntakeSubsystem s_intake;
+
     public double startingIntakeSpeed;
-    public IntakeSubsystem intakeSubsystem;
+    public double speed;
     
-    public IndexAndSpindexCommand(IndexAndSpindexSubsystem InSSubsystem, double speed, FlywheelSubsystem flywheelSubsystem, IntakeSubsystem intakeSubsystem){
-        this.InSSubsystem = InSSubsystem;
-        this.flywheelSubsystem = flywheelSubsystem;
-        this.intakeSubsystem = intakeSubsystem;
+    public IndexAndSpindexCommand(IndexAndSpindexSubsystem s_indexAndSpindex, double speed, FlywheelSubsystem s_flywheel, IntakeSubsystem s_intake){
+        this.s_indexAndSpindex = s_indexAndSpindex;
+        this.s_flywheel = s_flywheel;
+        this.s_intake = s_intake;
         this.speed = speed;
-        addRequirements(InSSubsystem);
+        addRequirements(s_indexAndSpindex);
     }
 
     @Override
     public void initialize(){
-        startingIntakeSpeed = intakeSubsystem.currentIntakeSpeed.getAsDouble();
+        startingIntakeSpeed = s_intake.currentIntakeSpeed.getAsDouble();
     }
     
     @Override
     public void execute() {
-        /* 
-        if (speed < 0) {
-            InSSubsystem.moveFeeder(speed);
-        } else {
-            if (flywheelSubsystem.shooterMotorLeader.getMotorVoltage().getValueAsDouble() > 0) {
-              InSSubsystem.moveFeeder(speed);
-              intakeSubsystem.runIntakeMotor(-0.90);
-            }
-        }   
-            */
-        InSSubsystem.moveFeeder(speed);
+        s_indexAndSpindex.moveFeeder(speed);
         if (speed > 0){
-            intakeSubsystem.runIntakeMotor(-0.90);
+            s_intake.runIntakeMotor(-0.90);
         }
     }
 
     @Override
     public void end(boolean interrupted) {
-        InSSubsystem.moveFeeder(0.0);
-        intakeSubsystem.runIntakeMotor(startingIntakeSpeed);
+        s_indexAndSpindex.moveFeeder(0.0);
+        s_intake.runIntakeMotor(startingIntakeSpeed);
     }
 
     @Override

@@ -1,22 +1,26 @@
 package frc.robot.subsystems;
+
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.MotorAlignmentValue;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.*;
 
 public class FlywheelSubsystem extends SubsystemBase{
-    public TalonFX fx_leader, fx_follower;
-    final VelocityVoltage shooterVelocityVoltage = new VelocityVoltage(0).withSlot(0);
+    public TalonFX m_flywheelLeader, m_flywheelFollower;
+
+    public final VelocityVoltage shooterVelocityVoltage = new VelocityVoltage(0).withSlot(0);
     public double cammeraSpeed = 0.0;
+
     public BooleanSupplier isAutoFlywheel = () -> cammeraSpeed > 0;
+    public DoubleSupplier shooterSpeed = () -> m_flywheelLeader.getVelocity().getValueAsDouble();
 
     public FlywheelSubsystem(){
         //the PID of the flywheel
@@ -28,12 +32,12 @@ public class FlywheelSubsystem extends SubsystemBase{
         flywheelConfig.kD = 0.0; // no output for error derivative*/
         
         //creates and configures the motor objects
-        fx_leader = new TalonFX(Flywheel_Lead_ID);
-        fx_leader.getConfigurator().apply(flywheelConfig);
+        m_flywheelLeader = new TalonFX(Flywheel_Lead_ID);
+        m_flywheelLeader.getConfigurator().apply(flywheelConfig);
 
-        fx_follower = new TalonFX(Flywheel_Follower_ID);
-        fx_follower.getConfigurator().apply(flywheelConfig);
-        fx_follower.setControl(new Follower(fx_leader.getDeviceID(), MotorAlignmentValue.Aligned));
+        m_flywheelFollower = new TalonFX(Flywheel_Follower_ID);
+        m_flywheelFollower.getConfigurator().apply(flywheelConfig);
+        m_flywheelFollower.setControl(new Follower(m_flywheelLeader.getDeviceID(), MotorAlignmentValue.Aligned));
     }
 
     public void teleopInit(){
@@ -45,13 +49,9 @@ public class FlywheelSubsystem extends SubsystemBase{
      * @param targetRPS The Rotations Per Second to spin the flywheels at
      */
     public void spinFlywheel(double targetRPS){
-        fx_leader.setControl(shooterVelocityVoltage.withVelocity(targetRPS));
+        m_flywheelLeader.setControl(shooterVelocityVoltage.withVelocity(targetRPS));
     }
 
-    /**
-     * A method to get the current speed of the flywheel motor leader
-     * @return The flywheel speed in RPS (Rotations Per Second)
-     */
     @Override 
     public void periodic(){
         double _targetRPS = 0;
@@ -62,6 +62,4 @@ public class FlywheelSubsystem extends SubsystemBase{
         }
         spinFlywheel(_targetRPS);
     }
-
-    public DoubleSupplier shooterSpeed = () -> fx_leader.getVelocity().getValueAsDouble();
 }

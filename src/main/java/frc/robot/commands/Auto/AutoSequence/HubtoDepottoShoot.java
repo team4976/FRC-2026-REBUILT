@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 import frc.robot.commands.Auto.FlywheelStart;
 import frc.robot.commands.Auto.FlywheelStop;
-import frc.robot.commands.Intake.IntakeCommand;
+import frc.robot.commands.Intake.IntakeArmsCommand;
 import frc.robot.commands.Jitter.JitterIntake;
 import frc.robot.commands.Turret.TurretScan;
 import frc.robot.commands.Turret.TurretScanYaw;
@@ -27,18 +27,18 @@ public class HubtoDepottoShoot extends SequentialCommandGroup {
     public HubtoDepottoShoot(
         RobotContainer robotContainer
     ){
-        PhotonVision visionSubsystem = robotContainer.turretCam;
-        FlywheelSubsystem flywheelSubsystem = robotContainer.flywheelSubsystem;
-        IntakeSubsystem intakeSubsystem = robotContainer.intakeSubsystem;
-        IndexAndSpindexSubsystem indxerSubsystem = robotContainer.indexAndSpindexSubsystem;
-        TurretSubsystem turretSubsystem = robotContainer.turretSubsystem;
+        PhotonVision visionSubsystem = robotContainer.s_turretCam;
+        FlywheelSubsystem flywheelSubsystem = robotContainer.s_flywheel;
+        IntakeSubsystem intakeSubsystem = robotContainer.s_intake;
+        IndexAndSpindexSubsystem indxerSubsystem = robotContainer.s_indexAndSpindex;
+        TurretSubsystem turretSubsystem = robotContainer.s_turret;
         
         Command HubtoShoot = AutoBuilder.buildAuto("Hub to Shoot");
         Command DepottoShoot = AutoBuilder.buildAuto("Depot to Shoot");
         
         addCommands(
             new PrintCommand("Hub to Depot to Shoot Started"),
-            Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem)),
+            Commands.deadline(new WaitCommand(0.2), new IntakeArmsCommand(intakeSubsystem)),
             HubtoShoot.alongWith(new TurretScan(null, visionSubsystem, turretSubsystem, isScheduled())),
             //Commands.deadline(new WaitCommand(1),new TurretScanYaw(visionSubsystem, turretMovementSubsystem)),
             //new FlywheelStart(flywheelSubsystem, visionSubsystem),

@@ -5,13 +5,12 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.hardware.TalonFX;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 import static frc.robot.Constants.*;
 
@@ -126,7 +125,7 @@ public class TurretSubsystem extends SubsystemBase{
         if (!rightSwitch.get() || getEncoderValue() < turretLimitRight){
             turnLeft(0);
             return;
-        } else if (!leftSwitch.get() || getEncoderValue() > Constants.turretLimitLeft) {
+        } else if (!leftSwitch.get() || getEncoderValue() > turretLimitLeft) {
             turnLeft(0);
             return;
         }
@@ -144,11 +143,7 @@ public class TurretSubsystem extends SubsystemBase{
             } else {
                 turnLeft(0);
             }
-        }
-        
-        Constants.TurretCamYaw = convertRotationAngle(getEncoderValue());
-
-
+        } 
+        TurretCamYaw = convertRotationAngle(getEncoderValue());
     }
-
 }

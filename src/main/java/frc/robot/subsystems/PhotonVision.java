@@ -1,21 +1,25 @@
 package frc.robot.subsystems;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalDouble;
 import java.util.function.BooleanSupplier;
+import java.util.OptionalDouble;
+import java.util.Optional;
+import java.util.List;
 
-import org.photonvision.EstimatedRobotPose;
 import org.photonvision.targeting.PhotonTrackedTarget;
+import org.photonvision.EstimatedRobotPose;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Pose2d;
+
 import frc.robot.Telemetry;
 
 public class PhotonVision extends SubsystemBase{
+    //The definition of redundancy is this class.
+    //many methods were made before we knew what we needed so its filled with unused methods.
+    //npt only that but because the origonal class wasnt a subsystem it didnt have access to a periodic and instead of just extending subsystembase and putting the frame updates in the periodic I made a wrapper class which was a very bad idea.
+
     public VisionData vision;
     CommandSwerveDrivetrain swerve;
     Transform3d transform3d;
@@ -24,7 +28,6 @@ public class PhotonVision extends SubsystemBase{
 
     public BooleanSupplier AutoShootFlag = ()->{
             boolean hasVaildTarget = ((turretTargetAngle-turretAngle) < 2.5 && (turretTargetAngle-turretAngle) > -2.5);
-          //  System.out.println("Has Vaild Target: " + hasVaildTarget);
             return hasVaildTarget;
          };
 

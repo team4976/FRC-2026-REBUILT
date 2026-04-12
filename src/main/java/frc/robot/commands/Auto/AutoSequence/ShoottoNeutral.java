@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
 import frc.robot.commands.Auto.FlywheelStart;
-import frc.robot.commands.Intake.IntakeCommand;
+import frc.robot.commands.Intake.IntakeArmsCommand;
 import frc.robot.commands.Jitter.JitterIntake;
 //import frc.robot.commands.Auto.IntakeExtend;
 import frc.robot.commands.Turret.TurretScan;
@@ -28,11 +28,11 @@ public class ShoottoNeutral extends SequentialCommandGroup {
         RobotContainer robotContainer
     ){
         
-        PhotonVision visionSubsystem = robotContainer.turretCam;
-        FlywheelSubsystem flywheelSubsystem = robotContainer.flywheelSubsystem;
-        IntakeSubsystem intakeSubsystem = robotContainer.intakeSubsystem;
-        IndexAndSpindexSubsystem indxerSubsystem = robotContainer.indexAndSpindexSubsystem;
-        TurretSubsystem turretSubsystem = robotContainer.turretSubsystem;
+        PhotonVision visionSubsystem = robotContainer.s_turretCam;
+        FlywheelSubsystem flywheelSubsystem = robotContainer.s_flywheel;
+        IntakeSubsystem intakeSubsystem = robotContainer.s_intake;
+        IndexAndSpindexSubsystem indxerSubsystem = robotContainer.s_indexAndSpindex;
+        TurretSubsystem turretSubsystem = robotContainer.s_turret;
 
         Command shoottoNeutralCommand = AutoBuilder.buildAuto("Shoot to Neutral");
         

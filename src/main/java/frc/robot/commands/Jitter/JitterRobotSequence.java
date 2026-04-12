@@ -1,7 +1,7 @@
 package frc.robot.commands.Jitter;
 
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.Commands;
 
 public class JitterRobotSequence extends SequentialCommandGroup {
     public JitterRobotSequence(){

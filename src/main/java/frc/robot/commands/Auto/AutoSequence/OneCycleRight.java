@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
 import frc.robot.commands.Auto.FlywheelStart;
-import frc.robot.commands.Intake.IntakeCommand;
+import frc.robot.commands.Intake.IntakeArmsCommand;
 import frc.robot.commands.Turret.TurretScanYaw;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.IndexAndSpindexSubsystem;
@@ -25,18 +25,18 @@ public class OneCycleRight extends SequentialCommandGroup {
     public OneCycleRight(
         RobotContainer robotContainer
     ){
-        PhotonVision visionSubsystem = robotContainer.turretCam;
-        FlywheelSubsystem flywheelSubsystem = robotContainer.flywheelSubsystem;
-        IntakeSubsystem intakeSubsystem = robotContainer.intakeSubsystem;
-        IndexAndSpindexSubsystem indxerSubsystem = robotContainer.indexAndSpindexSubsystem;
-        TurretSubsystem turretSubsystem = robotContainer.turretSubsystem;
-        UpdateHubInfo updateHubInfo = robotContainer.updateHubInfo;
+        PhotonVision visionSubsystem = robotContainer.s_turretCam;
+        FlywheelSubsystem flywheelSubsystem = robotContainer.s_flywheel;
+        IntakeSubsystem intakeSubsystem = robotContainer.s_intake;
+        IndexAndSpindexSubsystem indxerSubsystem = robotContainer.s_indexAndSpindex;
+        TurretSubsystem turretSubsystem = robotContainer.s_turret;
+        UpdateHubInfo updateHubInfo = robotContainer.s_updateHubInfo;
         
         Command OneCycleRight = AutoBuilder.buildAuto("1 Cycle - Right");
         
         addCommands(
             new PrintCommand("Neutral Right Start Far Started"),
-            Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem)),
+            Commands.deadline(new WaitCommand(0.2), new IntakeArmsCommand(intakeSubsystem)),
             new WaitCommand(0.5),
             OneCycleRight,
             //Commands.deadline(new WaitCommand(6), new TurretScanYaw(visionSubsystem, turretSubsystem)),

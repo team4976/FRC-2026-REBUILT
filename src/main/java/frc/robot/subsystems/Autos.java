@@ -1,12 +1,14 @@
 package frc.robot.subsystems;
+
 import edu.wpi.first.wpilibj2.command.Command;
 
-import frc.robot.RobotContainer;
 import frc.robot.commands.Auto.AutoSequence.*;
+import frc.robot.RobotContainer;
 
 public class Autos {
     
     public RobotContainer robotContainer;
+
     public Command OneCycleRight;
     public Command OneCycleLeft;
     public Command OneandHalfCycleRight;
@@ -19,7 +21,7 @@ public class Autos {
     
     public Autos(RobotContainer robotContainer){
         this.robotContainer = robotContainer;
-        //loadCommands();
+        loadCommands();
     }
     
     public void loadCommands(){

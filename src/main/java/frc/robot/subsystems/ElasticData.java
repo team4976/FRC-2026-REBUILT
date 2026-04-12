@@ -1,82 +1,84 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.math.geometry.Rotation2d;
-import frc.robot.Telemetry;
-import frc.robot.generated.RebuiltTunerConstants;
-
-import static frc.robot.Constants.drivetrain;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.math.geometry.Pose2d;
 
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
-import frc.robot.Constants;
-import frc.robot.Functions;
-//was designed to be the only elastic subsystem/container but it isnt currently
-//the other two can be merged with this one later, gott set it up for multiple camers with some renaming
-//and gotta add all the other stuff.
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.HashMap;
+import java.util.List;
+
+import frc.robot.generated.RebuiltTunerConstants;
+import static frc.robot.Constants.*;
 import frc.robot.RobotContainer;
+import frc.robot.Telemetry;
+import frc.robot.Functions;
 
 public class ElasticData extends SubsystemBase{
     private final Telemetry telemetry;
-    /**
-    * Back Left Camera Objects
-    */
+
+    //Camera Objects
     private final PhotonVision cameraBackLeft;
     private final PhotonVision cameraBackRight;
     private final PhotonVision cameraTurret;
 
-    private final IndexAndSpindexSubsystem indexAndSpindexSubsystem;
-    private final FlywheelSubsystem flywheelSubsystem;
-    private final TurretSubsystem turretSubsystem;
-    private final IntakeSubsystem intakeSubsystem;
-    private final CommandSwerveDrivetrain swerve;
+    //Subsystem Objects
+    private final IndexAndSpindexSubsystem s_indexAndSpindex;
+    private final CommandSwerveDrivetrain s_swerve;
+    private final FlywheelSubsystem s_flywheel;
+    private final TurretSubsystem s_turret;
+    private final IntakeSubsystem s_intake;
+
+    private PowerDistribution PDH;
+
+    //misc fields
     public SendableChooser<String[]> autoChooser = new SendableChooser<>();
-    double turretTargetAngle; // the angle we want the turret to be at so that we are aiming at the hub
-    //double turretAngle; // the turret angle we are currently at
-    //double distance; // distance from the hub to the turret
-    double hubWidth = 0.6;
-    double radius = 3;
-    boolean fuelMakeIt = false;
-    double rotation;
-    Pose2d robotPose;
-    Field2d field2d = new Field2d();
-    Optional<Alliance> alliance;
-    List<Pose2d> pose2ds = new ArrayList<>();
+
+    public String[] selectedAutoPath = new String[0];
+    public List<Pose2d> pose2ds = new ArrayList<>();
+    public Field2d field2d = new Field2d();
+    public Optional<Alliance> alliance;
     public double currentTime;
     public double startTime;
-    PowerDistribution PDH;
-
-    String[] selectedAutoPath = new String[0];
 
     public ElasticData(RobotContainer robotContainer){
         //-------------------
         //Object Assignments
         //-------------------
 
+        //Subsystem Objects
+        this.s_indexAndSpindex = robotContainer.s_indexAndSpindex;
+        this.s_flywheel = robotContainer.s_flywheel;
+        this.s_turret = robotContainer.s_turret;
+        this.s_intake = robotContainer.s_intake;
+        this.s_swerve = drivetrain;
+
+        //camera objects
+        this.cameraBackRight = robotContainer.s_rightBackCam;
+        this.cameraBackLeft = robotContainer.s_leftBackCam;
+        this.cameraTurret = robotContainer.s_turretCam;
+
         //Misc Objects
+        this.telemetry = robotContainer.logger;
         this.PDH = robotContainer.PDH;
-        telemetry = robotContainer.logger;
-        cameraBackLeft = robotContainer.leftBackCam;
-        cameraBackRight = robotContainer.rightBackCam;
-        cameraTurret = robotContainer.turretCam;
-        this.swerve = drivetrain;
+
+        //misc field assignments
         field2d = cameraBackLeft.getRobotPosField2d();
         alliance = DriverStation.getAlliance();
+
+        //sets the hub to appear on elastic based on our team colour.
         double hubX = 4.6;
         if (alliance.isPresent()){
             if (alliance.get() == Alliance.Red){
@@ -84,35 +86,6 @@ public class ElasticData extends SubsystemBase{
             }
         }
         field2d.getObject("Hub").setPose(hubX, 4,Rotation2d.kZero);
-        
-
-        //Motor id List
-        String[] motorIDs = {
-            "[FRS Swerve] Motor Id:"+ RebuiltTunerConstants.kFrontRightSteerMotorId,
-            "[FRD Swerve] Motor Id:" + RebuiltTunerConstants.kFrontRightDriveMotorId,
-            "[FLS Swerve] Motor Id:"+RebuiltTunerConstants.kFrontLeftSteerMotorId,
-            "[FLD Swerve] Motor Id:"+RebuiltTunerConstants.kFrontLeftDriveMotorId,
-            "[RRS Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightSteerMotorId,
-            "[RRD Swerve] Motor Id:"+RebuiltTunerConstants.kBackRightDriveMotorId,
-            "[RLS Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftSteerMotorId,
-            "[RLD Swerve] Motor Id:"+RebuiltTunerConstants.kBackLeftDriveMotorId,
-            "[Turret] Motor Id:"+ 1,
-            "[Hood] Motor Id:"+ 2,
-            "[Flywheel Lead] Motor Id:"+ Constants.Flywheel_Lead_ID,
-            "[Flywheel Follow] Motor Id:"+ Constants.Flywheel_Follower_ID,
-            "[Spindex] Motor Id:"+ Constants.Spindex_ID,
-            "[Indexer] Motor Id:"+ Constants.Index_ID,
-            "[Intake] Motor Id:"+ Constants.Intake_ID,
-            "[PCM] Motor Id:",
-            "[Pidgeon] Motor Id:"
-        };
-
-        //Subsystem Objects
-        //this.robotContainer = robotContainer;
-        indexAndSpindexSubsystem = robotContainer.indexAndSpindexSubsystem;
-        flywheelSubsystem = robotContainer.flywheelSubsystem;
-        turretSubsystem = robotContainer.turretSubsystem;
-        intakeSubsystem = robotContainer.intakeSubsystem;
 
 
         //-------------------
@@ -188,11 +161,10 @@ public class ElasticData extends SubsystemBase{
     public void addDataToSmartDashBoard(){
 
         // Turret Limit Switches
-        SmartDashboard.putBoolean("Testing/Left Limit Switch Status", turretSubsystem.getLeftSwitch());
-        SmartDashboard.putBoolean("Testing/Right Limit Switch Status", turretSubsystem.getRightSwitch());
+        SmartDashboard.putBoolean("Testing/Left Limit Switch Status", s_turret.getLeftSwitch());
+        SmartDashboard.putBoolean("Testing/Right Limit Switch Status", s_turret.getRightSwitch());
 
         SmartDashboard.putNumber("Testing/Calculated Flywheel Speed Based on Turret", Functions.GetCalculatedFlywheelSpeed(cameraTurret));
-
         SmartDashboard.putNumber("Testing/Calculated Flywheel Speed Based on UpdateHubInfo", Functions.GetCalculatedFlywheelSpeed(cameraTurret, 0.9));
 
         //------------- 
@@ -205,43 +177,42 @@ public class ElasticData extends SubsystemBase{
         //MOTOR WIDGETS
         //-------------
         //Voltage Widgets
-        SmartDashboard.putNumber("QC/Motors/Indexer/Index Volatage", indexAndSpindexSubsystem.indexMotor.getAppliedOutput());
-        SmartDashboard.putNumber("QC/Motors/Spindex/Spindex Volatage", indexAndSpindexSubsystem.spindexMotor.getAppliedOutput());
-        SmartDashboard.putNumber("QC/Motors/Turret/Turret Voltage", turretSubsystem.turretMotor.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Motors/Flywheel Lead/Flywheel Lead Voltage", flywheelSubsystem.fx_leader.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Motors/Flywheel Follow/Flywheel Follow Voltage", flywheelSubsystem.fx_follower.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Motors/Intake/Intake Voltage", intakeSubsystem.m_intake.getAppliedOutput());
-        SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Left Voltage", intakeSubsystem.m_leftArm.getAppliedOutput());
-        SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Right Voltage", intakeSubsystem.m_rightArm.getAppliedOutput());
+        SmartDashboard.putNumber("QC/Motors/Indexer/Index Volatage", s_indexAndSpindex.m_index.getAppliedOutput());
+        SmartDashboard.putNumber("QC/Motors/Spindex/Spindex Volatage", s_indexAndSpindex.m_spindex.getAppliedOutput());
+        SmartDashboard.putNumber("QC/Motors/Turret/Turret Voltage", s_turret.turretMotor.getMotorVoltage().getValueAsDouble());
+        SmartDashboard.putNumber("QC/Motors/Flywheel Lead/Flywheel Lead Voltage", s_flywheel.m_flywheelLeader.getMotorVoltage().getValueAsDouble());
+        SmartDashboard.putNumber("QC/Motors/Flywheel Follow/Flywheel Follow Voltage", s_flywheel.m_flywheelFollower.getMotorVoltage().getValueAsDouble());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Voltage", s_intake.m_intake.getAppliedOutput());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Left Voltage", s_intake.m_leftArm.getAppliedOutput());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Right Voltage", s_intake.m_rightArm.getAppliedOutput());
 
         //RPM Widgets
-        SmartDashboard.putNumber("QC/Motors/Indexer/Index RPM", indexAndSpindexSubsystem.indexMotor.getEncoder().getVelocity());
-        SmartDashboard.putNumber("QC/Motors/Spindex/Spindex RPM", indexAndSpindexSubsystem.spindexMotor.getEncoder().getVelocity());
-        SmartDashboard.putNumber("QC/Motors/Turret/Turret RPS", turretSubsystem.turretMotor.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Motors/Flywheel Lead/Flywheel Lead RPS", flywheelSubsystem.fx_leader.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Motors/Flywheel Follow/Flywheel Follow RPS", flywheelSubsystem.fx_follower.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Motors/Intake/Intake Speed (Raw)", intakeSubsystem.m_intake.getEncoder().getVelocity());
-        SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Left Speed (Raw)", intakeSubsystem.m_leftArm.getEncoder().getVelocity());
-        SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Right Speed (Raw)", intakeSubsystem.m_rightArm.getEncoder().getVelocity());
+        SmartDashboard.putNumber("QC/Motors/Indexer/Index RPM", s_indexAndSpindex.m_index.getEncoder().getVelocity());
+        SmartDashboard.putNumber("QC/Motors/Spindex/Spindex RPM", s_indexAndSpindex.m_spindex.getEncoder().getVelocity());
+        SmartDashboard.putNumber("QC/Motors/Turret/Turret RPS", s_turret.turretMotor.getVelocity().getValueAsDouble());
+        SmartDashboard.putNumber("QC/Motors/Flywheel Lead/Flywheel Lead RPS", s_flywheel.m_flywheelLeader.getVelocity().getValueAsDouble());
+        SmartDashboard.putNumber("QC/Motors/Flywheel Follow/Flywheel Follow RPS", s_flywheel.m_flywheelFollower.getVelocity().getValueAsDouble());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Speed (Raw)", s_intake.m_intake.getEncoder().getVelocity());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Left Speed (Raw)", s_intake.m_leftArm.getEncoder().getVelocity());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Right Speed (Raw)", s_intake.m_rightArm.getEncoder().getVelocity());
 
         //Position Widgets
-        SmartDashboard.putNumber("QC/Motors/Turret/Turret Position", turretSubsystem.turretMotor.getPosition().getValueAsDouble());
-        SmartDashboard.putNumber("Intake Left Arm Encoder", intakeSubsystem.m_leftArm.getEncoder().getPosition());
-        SmartDashboard.putNumber("Intake Right Arm Encoder", intakeSubsystem.m_rightArm.getEncoder().getPosition());
-        SmartDashboard.putNumber("Intake Left Arm Encoder 2", intakeSubsystem.leftArmPose.getAsDouble());
-        SmartDashboard.putNumber("Intake Right Arm Encoder 2", intakeSubsystem.rightArmPose.getAsDouble());
+        SmartDashboard.putNumber("QC/Motors/Turret/Turret Position", s_turret.turretMotor.getPosition().getValueAsDouble());
+        SmartDashboard.putNumber("Intake Left Arm Encoder", s_intake.m_leftArm.getEncoder().getPosition());
+        SmartDashboard.putNumber("Intake Right Arm Encoder", s_intake.m_rightArm.getEncoder().getPosition());
+        SmartDashboard.putNumber("Intake Left Arm Encoder 2", s_intake.leftArmPose.getAsDouble());
+        SmartDashboard.putNumber("Intake Right Arm Encoder 2", s_intake.rightArmPose.getAsDouble());
 
         //--------
         //BOOLEANS
         //--------
 
         //Limit Switch Pressed Widgets (not technically motor stuff but whatever)
-        SmartDashboard.putBoolean("QC/Limit Switch Left", turretSubsystem.getLeftSwitch());
-        SmartDashboard.putBoolean("QC/Limit Switch Right", turretSubsystem.getRightSwitch());
+        SmartDashboard.putBoolean("QC/Limit Switch Left", s_turret.getLeftSwitch());
+        SmartDashboard.putBoolean("QC/Limit Switch Right", s_turret.getRightSwitch());
 
         //Boolean Widgets
-        SmartDashboard.putBoolean("QC/Is Auto Aiming", turretSubsystem.isAutoAiming);
-        //SmartDashboard.putBoolean("QC/Is Auto Flywheel", flywheelSubsystem.isAutoFlywheel);
+        SmartDashboard.putBoolean("QC/Is Auto Aiming", s_turret.isAutoAiming);
 
         //---------
         //MISC
@@ -288,7 +259,7 @@ public class ElasticData extends SubsystemBase{
 
 
         //Ben T's smartdashboard stuff
-        SmartDashboard.putNumber("Testing/Ben T's Stuff/shooter speed", flywheelSubsystem.shooterSpeed.getAsDouble());
+        SmartDashboard.putNumber("Testing/Ben T's Stuff/shooter speed", s_flywheel.shooterSpeed.getAsDouble());
             
         //updates the Smartdash board Values
     }
@@ -344,10 +315,10 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Vision/Turret Cam/targetAngle", cameraTurret.getTurretTargetAngle());
         SmartDashboard.putNumber("Vision/Turret Cam/turretAngle", cameraTurret.getBotAngle());
         SmartDashboard.putNumber("Vision/Turret Cam/Turret Distance Test", cameraTurret.vision.turretDistance);
-        SmartDashboard.putNumber("Vision/Turret Cam/Turret PoseX Test", swerve.getState().Pose.getX());
-        SmartDashboard.putNumber("Vision/Turret Cam/Turret PoseY Test", swerve.getState().Pose.getY());
+        SmartDashboard.putNumber("Vision/Turret Cam/Turret PoseX Test", s_swerve.getState().Pose.getX());
+        SmartDashboard.putNumber("Vision/Turret Cam/Turret PoseY Test", s_swerve.getState().Pose.getY());
         SmartDashboard.putNumber("Vision/Turret Cam/turretTargetAngle", cameraTurret.getTurretTargetAngle());
-        SmartDashboard.putNumber("Vision/Turret Cam/Turret Target Position", turretSubsystem.convertAngleRotation(cameraTurret.getTurretTargetAngle() - cameraTurret.getBotAngle()));
+        SmartDashboard.putNumber("Vision/Turret Cam/Turret Target Position", s_turret.convertAngleRotation(cameraTurret.getTurretTargetAngle() - cameraTurret.getBotAngle()));
 
         SmartDashboard.updateValues();
 

@@ -1,46 +1,46 @@
 package frc.robot.commands.Intake;
 
-import static frc.robot.Constants.intakeSpeed;
-
 import javax.naming.LimitExceededException;
 
 import com.revrobotics.spark.config.LimitSwitchConfig;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
+
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.Command;
+
 import frc.robot.subsystems.IntakeSubsystem;
-/** The Command for the Intake
- * @param <Drive> */
+import frc.robot.Constants;
+
+
+/** The Command for the Intake Bar */
 @SuppressWarnings("unused")
 public class IntakeBarCommand extends Command {
 
-  public IntakeSubsystem intake;
-  public boolean endCommand;
+  public IntakeSubsystem s_intake;
+
   public boolean isIntakeReversed;
+  public boolean endCommand;
 
   /**
-       * Creates a new IntakeCommand
-       *
-       * @param intake The subsystem used by this command.
-       */
-
-  public IntakeBarCommand(IntakeSubsystem intake, boolean isIntakeReversed) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    this.intake = intake;
+   * The Intake Bar Command, used to toggle the state of the intake bar (Spinning/not spinning)
+   * @param s_intake The s_intake object that our code base uses.
+   * @param isIntakeReversed whether the intake bar should be reversed. one object for yes and one for no.
+  */
+  public IntakeBarCommand(IntakeSubsystem s_intake, boolean isIntakeReversed) {
     this.isIntakeReversed = isIntakeReversed;
-    addRequirements(intake);  
+    this.s_intake = s_intake;
+    addRequirements(s_intake);  
   }
-  // Called when the command is initially scheduled.
+
   @Override
   public void initialize() {
     endCommand = false;
     if (isIntakeReversed){
-      double setIntakeSpeed = (intake.currentIntakeSpeed.getAsDouble() >= 0.0)?-1:0;
-      intake.runIntakeMotor(setIntakeSpeed);
+      double setIntakeSpeed = (s_intake.currentIntakeSpeed.getAsDouble() >= 0.0)?-1:0;
+      s_intake.runIntakeMotor(setIntakeSpeed);
     } else {
-      double setIntakeSpeed = (intake.currentIntakeSpeed.getAsDouble() <= 0.0)?1:0;
-      intake.runIntakeMotor(setIntakeSpeed);
+      double setIntakeSpeed = (s_intake.currentIntakeSpeed.getAsDouble() <= 0.0)?1:0;
+      s_intake.runIntakeMotor(setIntakeSpeed);
     }
     endCommand = true;
   }
