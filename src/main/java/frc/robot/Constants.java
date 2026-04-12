@@ -96,7 +96,7 @@ public final class Constants {
   //Important turret limits
   public static final double turretLimitLeft = 21.7626953125; // software limits on turret motion
   public static final double turretLimitRight = -11.59228515625;
-  public static final double turretDeadzoneSize = 41.667 - (Constants.turretLimitLeft - Constants.turretLimitRight);// the turret encoder position the turret cannot go
+  public static final double manualNudgeLimit = 5; // maximum degrees manual turretMovement moves
 
   public static final double maxAcceptableAmbiguity = 0.1;
   public static final double maxAcceptableDistance = 4;

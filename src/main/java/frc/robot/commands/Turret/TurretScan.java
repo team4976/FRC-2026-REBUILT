@@ -2,11 +2,12 @@
 
 package frc.robot.commands.Turret;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
+//import frc.robot.Constants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.UpdateHubInfo;
+import static frc.robot.Constants.*;
 
 
 public class TurretScan extends Command {
@@ -33,6 +34,7 @@ public class TurretScan extends Command {
         this.turretVision = turretVision;
         this.shooter = shooter;
         addRequirements(shooter);
+
 
         this.swerve = swerve;
 
@@ -76,41 +78,30 @@ public class TurretScan extends Command {
         turrettoRobotAngle = shooter.convertRotationAngle(turretPosition);        
         //Convert from robot relative to field relative angle
         turrettoFieldAngle = botAngle+turrettoRobotAngle;
-        
-        Double speedAdjust = 5.0;  //Coefficient to increase turrent speed
 
         //Determines voltage to apply to motor based on distance turret angle is away from hub
-        turretToHubRotations=shooter.convertAngleRotation(turretTargetAngle-turrettoFieldAngle);///45*speedAdjust;
+        turretToHubRotations=shooter.convertAngleRotation(turretTargetAngle-turrettoFieldAngle);
         turretotargetpostition = turretPosition + turretToHubRotations;
-        if(turretotargetpostition > Constants.turretLimitLeft){
-            turretotargetpostition = Constants.turretLimitLeft - 0.1;
+        if(turretotargetpostition > turretLimitLeft){
+            turretotargetpostition = turretLimitLeft - 0.1;
         }
-        else if(turretotargetpostition < Constants.turretLimitRight){
-            turretotargetpostition = Constants.turretLimitRight + 0.1;
+        else if(turretotargetpostition < turretLimitRight){
+            turretotargetpostition = turretLimitRight + 0.1;
         }
-        shooter.turretRotationPID(turretotargetpostition);
-        System.out.println(turretPosition+turretToHubRotations);
 
         //Add adjustment due to operator override
-       /*  if (operatorController.axisGreaterThan(4, 0.3).getAsBoolean()){
-            manualLockedOn = operatorController.getRightX() * -1;
+        if (operatorController.axisGreaterThan(4, 0.3).getAsBoolean()){
+            manualLockedOn = -(operatorController.getRightX()-0.3)/(0.7/manualNudgeLimit);
         } else if (operatorController.axisLessThan(4, -0.3).getAsBoolean()) {
-            if (autoLockedOn <= -0.6) {
-                manualLockedOn = operatorController.getRightX() * -2;
-            } else if (autoLockedOn > -0.5) {
-                manualLockedOn = operatorController.getRightX() * -1;
-            }
+            manualLockedOn = (operatorController.getRightX()-0.3)/(0.7/manualNudgeLimit);
         }
-        double totalLockedOn = autoLockedOn + manualLockedOn;
-        
-        if(totalLockedOn > Constants.turretScanVoltage) totalLockedOn = Constants.turretScanVoltage;
 
-        else if(totalLockedOn < -Constants.turretScanVoltage) totalLockedOn = -Constants.turretScanVoltage;
-        shooter.lockedOn(totalLockedOn);
-        SmartDashboard.putNumber("Testing/Total Turret Voltage", totalLockedOn);  
-        } */
-        }   
-    }
+        manualLockedOn = shooter.convertAngleRotation(manualLockedOn);
+
+        shooter.turretRotationPID(turretotargetpostition + manualLockedOn);
+        }
+    } 
+    
 
     @Override
     public void end(boolean interrupted) {
