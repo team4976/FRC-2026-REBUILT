@@ -9,6 +9,7 @@ import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -68,7 +69,7 @@ public final class Constants {
   //Auto aim stuff, Some of this should NOT be constants but whatever
   // converts from motor rotations to flywheel rotations
   public static final double flywheelGearRatio = 1/1.667;
-  
+  public static final double flywheelRadius = Units.inchesToMeters(2);  
 
   public static final int kDriverControllerPort = 0;
   public static final int LEFT_LEADER_ID = 1;
