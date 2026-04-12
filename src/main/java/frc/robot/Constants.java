@@ -72,11 +72,9 @@ public final class Constants {
   public static final double turretCameraHeight = 0.4826;
   public static final double TagHeight = 1.084;
 
-  //X and Y of the hub centers I believe
-
-
-
-
+  // converts from motor rotations to flywheel rotations
+  public static final double flywheelGearRatio = 1/1.667;
+  
 
   public static final int kDriverControllerPort = 0;
   public static final int LEFT_LEADER_ID = 1;
