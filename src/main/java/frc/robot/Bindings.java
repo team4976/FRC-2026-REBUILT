@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.math.geometry.Rotation2d;
 
 import frc.robot.commands.Jitter.JitterRobotSequence;
+import frc.robot.commands.ExampleIntake.IntakeSwap;
 import frc.robot.commands.Jitter.JitterIntake;
 import static frc.robot.Constants.*;
 
@@ -34,8 +35,10 @@ public class Bindings {
         //Intake in/out Toggle
         driverController.x().onTrue(GlobalCommands.instance.c_intakeArms);
         
+        driverController.start().onTrue(new IntakeSwap(robotContainer.s_intakeExample));
+
         //TESTING REMOVE BEFORE COMP, jitter intake command used in auto, only mapped for testing rn.
-        driverController.start().whileTrue(new JitterIntake(robotContainer.s_intake));
+        //driverController.start().whileTrue(new JitterIntake(robotContainer.s_intake));
 
         //Intake Bar Motor Toggle
         driverController.y().onTrue(GlobalCommands.instance.c_intakeBar);

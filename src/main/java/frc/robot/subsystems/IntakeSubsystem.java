@@ -21,8 +21,8 @@ public class IntakeSubsystem extends SubsystemBase {
   //As such when it is fully down it is at the minimum and when its up its at its maximum.
   public final double minLeftEncoderPos = -5.5;
   public final double minRightEncoderPos = -0.65;
-  public final double maxLeftEncoderPos = -0.015;
-  public final double maxRightEncoderPos = -0.015;
+  public final double maxLeftEncoderPos = -2.15;
+  public final double maxRightEncoderPos = -2.15;
 
   public boolean willIntakeDown = false;
 
@@ -42,9 +42,11 @@ public class IntakeSubsystem extends SubsystemBase {
 
       
   public IntakeSubsystem() {
+    /* 
     m_intake = new SparkMax(Intake_ID, MotorType.kBrushed);
     m_leftArm = new SparkMax(Intake_Arm_Left_ID, MotorType.kBrushless);
     m_rightArm = new SparkMax(Intake_Arm_Right_ID, MotorType.kBrushless);
+     */
   }   
 
   public void teleopInit(){ 
@@ -114,7 +116,8 @@ public class IntakeSubsystem extends SubsystemBase {
     //NOT YET WORKING, NOTES ON WHAT I CHANGED WHILE IT STILL DIDNT WORK ARE BELOW.
     //We shouldnt need the differential thing where we check whether the intake goes a little past the limit in either direction if we also use current checks.
     //This is because the hitting the limit check should only pass if the current being passed also would move the intake in the direction that it would try to go past the limit.
-      if(m_leftArm.getOutputCurrent() < 0 && m_leftArm.getEncoder().getPosition() <= minLeftEncoderPos){
+    /*
+      if(m_leftArm.getOutputCurrent() > 0 && m_leftArm.getEncoder().getPosition() <= minLeftEncoderPos){
         m_leftArm.set(0);
         m_rightArm.set(0);
         return;
@@ -123,6 +126,7 @@ public class IntakeSubsystem extends SubsystemBase {
         m_rightArm.set(0);
         return;
       }
+       */
   }
 }
 

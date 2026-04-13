@@ -48,8 +48,8 @@ public class Example_IntakeSubsystem extends SubsystemBase{
     final double encoder_LeftMax = -5.5;
     final double encoder_LeftMin = -0.15; // Home Location
     final DoubleSupplier encoder_LeftArm = () -> m_LeftArm.getEncoder().getPosition();
-    public BooleanSupplier armLimit_LeftMin = () -> encoder_LeftArm.getAsDouble() <= encoder_LeftMax;
-    public BooleanSupplier armLimit_LeftMax = () -> encoder_LeftArm.getAsDouble() >= encoder_LeftMin;
+    public BooleanSupplier armLimit_LeftMax = () -> encoder_LeftArm.getAsDouble() <= encoder_LeftMax;
+    public BooleanSupplier armLimit_LeftMin = () -> encoder_LeftArm.getAsDouble() >= encoder_LeftMin;
     public Trigger trigger_LeftMax = new Trigger(armLimit_LeftMax);
     public Trigger trigger_LeftMin = new Trigger(armLimit_LeftMin);
 
@@ -74,12 +74,12 @@ public class Example_IntakeSubsystem extends SubsystemBase{
     public IntakeStates getIntakeMotorState (){ return state_IntakeMotor;}
 
     public Example_IntakeSubsystem(){
-        //NOTE: uncomment if using, can have two Sparks with same ID
-        /*
+        //NOTE: uncomment if using, cant have two Sparks with same ID
+        
         m_Intake = new SparkMax(Intake_ID, MotorType.kBrushed);
         m_LeftArm = new SparkMax(Intake_Arm_Left_ID, MotorType.kBrushed);
         m_RightArm = new SparkMax(Intake_Arm_Right_ID, MotorType.kBrushed);
-        */
+        
     }
 
     public void teleopInit(){

@@ -42,6 +42,7 @@ public class RobotContainer {
     public final FlywheelSubsystem s_flywheel = new FlywheelSubsystem();
     public final IndexAndSpindexSubsystem s_indexAndSpindex = new IndexAndSpindexSubsystem();
     public Autos s_autos;
+    public final Example_IntakeSubsystem s_intakeExample = new Example_IntakeSubsystem();
 
     public Bindings bindings;
     public Command selectedAuto;

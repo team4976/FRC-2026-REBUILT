@@ -79,7 +79,7 @@ public class Robot extends TimedRobot {
         if (autoRan){
             return;
         }
-        m_robotContainer.s_intake.stopIntakeMotor();
+        //m_robotContainer.s_intake.stopIntakeMotor();
     }
 
     @Override

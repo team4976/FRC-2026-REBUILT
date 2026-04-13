@@ -4,6 +4,7 @@ import frc.robot.commands.Jitter.JitterRobotSequence;
 import frc.robot.commands.Intake.IntakeArmsCommand;
 import frc.robot.commands.Intake.IntakeBarCommand;
 import frc.robot.commands.IndexAndSpindexCommand;
+import frc.robot.commands.ExampleIntake.IntakeSwap;
 import frc.robot.commands.Turret.TurretScanYaw;
 import frc.robot.commands.AlignedShotCommand;
 import frc.robot.commands.Turret.TurretScan;
@@ -21,6 +22,7 @@ public class GlobalCommands {
     public IntakeBarCommand c_reverseIntakeBar; 
     public IntakeBarCommand c_intakeBar;
     public IntakeArmsCommand c_intakeArms; 
+    public IntakeSwap c_intakeSwap;
     public FlywheelCommand c_flywheel; 
     public TurretScanYaw c_turretScanYaw; 
     public TurretScan c_turretScan; 
@@ -39,6 +41,8 @@ public class GlobalCommands {
         c_turretScan = new TurretScan(robotContainer.s_updateHubInfo, robotContainer.s_rightBackCam, robotContainer.s_turret, Constants.drivetrain);
         c_turretScanYaw = new TurretScanYaw(robotContainer.s_rightBackCam, robotContainer.s_turret);
         c_alignedShot = new AlignedShotCommand(robotContainer.s_flywheel);
+
+        c_intakeSwap = new IntakeSwap(robotContainer.s_intakeExample);
 
         isSetup = true;
     }

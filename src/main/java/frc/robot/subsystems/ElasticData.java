@@ -150,7 +150,7 @@ public class ElasticData extends SubsystemBase{
             if(pose2ds != null) 
                 field2d.getObject("AutoPath").setPoses(pose2ds);
         });
-        addDataToSmartDashBoard();
+        //addDataToSmartDashBoard();
     }
 
     public void autonomousInit(){
@@ -158,8 +158,10 @@ public class ElasticData extends SubsystemBase{
         selectedAutoPath = autoChooser.getSelected();
     }
 
+    /* 
     public void addDataToSmartDashBoard(){
 
+        
         // Turret Limit Switches
         SmartDashboard.putBoolean("Testing/Left Limit Switch Status", s_turret.getLeftSwitch());
         SmartDashboard.putBoolean("Testing/Right Limit Switch Status", s_turret.getRightSwitch());
@@ -326,5 +328,6 @@ public class ElasticData extends SubsystemBase{
             
         }
     }
+        */
 
 }
