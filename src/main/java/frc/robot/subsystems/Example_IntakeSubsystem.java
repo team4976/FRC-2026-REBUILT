@@ -45,25 +45,39 @@ public class Example_IntakeSubsystem extends SubsystemBase{
 
     //TODO: validate Left and right Min
     //Left Arm
-    final double encoder_LeftMax = -5.5;
-    final double encoder_LeftMin = -0.15; // Home Location
-    final double encoder_LeftArm () {
+    final double encoder_LeftMax = -0.025;
+    final double encoder_LeftMin = -0.005; // Home Location
+    final DoubleSupplier encoder_LeftArm = () -> m_LeftArm.getEncoder().getPosition();
+    public BooleanSupplier armLimit_LeftMax = () -> encoder_LeftArm.getAsDouble() <= encoder_LeftMax;
+    public BooleanSupplier armLimit_LeftMin = () -> encoder_LeftArm.getAsDouble() >= encoder_LeftMin;
+        final double encoder_LeftArm () {
         return m_LeftArm.getEncoder().getPosition();
     }
+    /*
+    final double encoder_LeftMax = -5.5;
+    final double encoder_LeftMin = -0.15; // Home Location
     public BooleanSupplier armLimit_LeftMax = () -> encoder_LeftArm() <= encoder_LeftMax;
     public BooleanSupplier armLimit_LeftMin = () -> encoder_LeftArm() >= encoder_LeftMin;
+     */
     public Trigger trigger_LeftMax = new Trigger(armLimit_LeftMax);
     public Trigger trigger_LeftMin = new Trigger(armLimit_LeftMin);
 
 
     //Right Arm
-    final double encoder_RightMax = -0.65;
-    final double encoder_RightMin = -0.15; // Home Location
-    final double encoder_RightArm (){
+    final double encoder_RightMax = 0.004;
+    final double encoder_RightMin = 0.001; // Home Location
+    final DoubleSupplier encoder_RightArm = () -> m_RightArm.getEncoder().getPosition();
+    public BooleanSupplier armLimit_RightMax = () -> encoder_RightArm.getAsDouble() >= encoder_RightMax;
+    public BooleanSupplier armLimit_RightMin = () -> encoder_RightArm.getAsDouble() <= encoder_RightMin;
+        final double encoder_RightArm (){
         return m_RightArm.getEncoder().getPosition();
     }
+    /* 
+    final double encoder_RightMax = -0.65;
+    final double encoder_RightMin = -0.15; // Home Location
     public BooleanSupplier armLimit_RightMax = () -> encoder_RightArm() <= encoder_RightMax;
     public BooleanSupplier armLimit_RightMin = () -> encoder_RightArm() >= encoder_RightMin;
+    */
     public Trigger trigger_RightMax = new Trigger(armLimit_RightMax);
     public Trigger trigger_RightMin = new Trigger(armLimit_RightMin);
 

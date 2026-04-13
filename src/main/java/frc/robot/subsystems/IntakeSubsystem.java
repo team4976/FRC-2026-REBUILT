@@ -121,7 +121,7 @@ public class IntakeSubsystem extends SubsystemBase {
         m_leftArm.set(0);
         m_rightArm.set(0);
         return;
-      } else if (m_leftArm.getOutputCurrent() > 0 && m_leftArm.getEncoder().getPosition() >= maxLeftEncoderPos){
+      } else if (m_leftArm.getOutputCurrent() < 0 && m_leftArm.getEncoder().getPosition() >= maxLeftEncoderPos){
         m_leftArm.set(0);
         m_rightArm.set(0);
         return;
