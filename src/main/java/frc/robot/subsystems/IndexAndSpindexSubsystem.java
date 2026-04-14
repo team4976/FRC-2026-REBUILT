@@ -32,7 +32,8 @@ public class IndexAndSpindexSubsystem extends SubsystemBase{
      * A method to stop the indexer and spindexer together. Alternitively you could just call moveFeeder with 0.0 as the argument.
      */
     public void stopFeeder(){
-        moveFeeder(0);
+        m_index.set(0);
+        m_spindex.set(0);
     }
 
     /**

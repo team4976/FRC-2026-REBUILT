@@ -33,7 +33,7 @@ public class IndexAndSpindexCommand extends Command{
 
     @Override
     public void end(boolean interrupted) {
-        s_indexAndSpindex.moveFeeder(0.0);
+        s_indexAndSpindex.stopFeeder();
     }
 
     @Override
