@@ -1,32 +1,30 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+
 import frc.robot.subsystems.FlywheelSubsystem;
 
 public class AlignedShotCommand extends Command{
-    public FlywheelSubsystem flywheelSubsystem;
+    public FlywheelSubsystem s_flywheel;
 
-
-    public AlignedShotCommand(FlywheelSubsystem flywheelSubsystem){
-        this.flywheelSubsystem = flywheelSubsystem;
-        addRequirements(flywheelSubsystem);
+    public AlignedShotCommand(FlywheelSubsystem s_flywheel){
+        this.s_flywheel = s_flywheel;
+        addRequirements(s_flywheel);
     }
 
     @Override
     public void initialize(){
-        flywheelSubsystem.cammeraSpeed = 0;
+        s_flywheel.cammeraSpeed = 0;
     }
 
     @Override
     public void execute(){ 
-        flywheelSubsystem.cammeraSpeed = 65;
+        s_flywheel.cammeraSpeed = 65;
     }
 
     @Override
     public void end(boolean isInterupted){
-        flywheelSubsystem.cammeraSpeed = 0;
-        //flywheelSubsystem.isAutoFlywheel = false;
-
+        s_flywheel.cammeraSpeed = 0;
     }
 
     @Override

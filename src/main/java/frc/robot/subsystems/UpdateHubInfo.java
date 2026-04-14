@@ -5,6 +5,7 @@ import static frc.robot.Constants.BlueHubY;
 import static frc.robot.Constants.RedHubX;
 import static frc.robot.Constants.RedHubY;
 import static frc.robot.Constants.flywheelGearRatio;
+import static frc.robot.Constants.flywheelRadius;
 
 import java.util.Optional;
 
@@ -32,7 +33,8 @@ public class UpdateHubInfo extends SubsystemBase{
     public double ballAirTime;
     public double ballVelocity;
     public double ballVelocityX;
-    public double FlywheelSpeed;
+    public double FlywheelMotorSpeed;
+    public double AngularFlywheelSpeed;
 
   public UpdateHubInfo(CommandSwerveDrivetrain swerve){
     this.swerve = swerve;
@@ -63,13 +65,13 @@ public class UpdateHubInfo extends SubsystemBase{
         distanceY = hubY - swerve.getState().Pose.getY();
 
         hubDistance = Math.sqrt(distanceX*distanceX + distanceY*distanceY);
-
-        /*for (int i = 0; i < 5; i++){
+     /*  for (int i = 0; i < 5; i++){
             // calculation to know what the flywheel will be set to given the distance
-           FlywheelSpeed = (31.49597 + (10.19041 * (hubDistance + 0.5969))  
+           FlywheelMotorSpeed = (31.49597 + (10.19041 * (hubDistance + 0.5969))  
                 - (0.4148098 * Math.pow(hubDistance+ 0.5969, 2))) * 0.9;
+           AngularFlywheelSpeed = Math.toRadians(FlywheelMotorSpeed*Constants.flywheelGearRatio*360);  //Units radians/sec
             //equation to get the velocity of the ball from the velocity of the flywheel
-            ballVelocity = FlywheelSpeed*Constants.flywheelGearRatio*360*0.0508*0.5;
+            ballVelocity = flywheelRadius*AngularFlywheelSpeed*0.5;
             //the ball gets around 50% of the velocity of the flywheel
             //getting the velocity of the ball in the x direction
             ballVelocityX = ballVelocity*Math.cos(Math.toRadians(60));

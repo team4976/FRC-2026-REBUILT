@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 import frc.robot.commands.Auto.FlywheelStart;
 import frc.robot.commands.Auto.FlywheelStop;
-import frc.robot.commands.Intake.IntakeCommand;
+import frc.robot.commands.Intake.IntakeArmsCommand;
 import frc.robot.commands.Jitter.JitterIntake;
 import frc.robot.commands.Turret.TurretScan;
 import frc.robot.commands.Turret.TurretScanYaw;
@@ -30,19 +30,19 @@ public class OneandHalfCycleRight extends SequentialCommandGroup {
     public OneandHalfCycleRight(
         RobotContainer robotContainer
     ){
-        PhotonVision visionSubsystem = robotContainer.turretCam;
-        FlywheelSubsystem flywheelSubsystem = robotContainer.flywheelSubsystem;
-        IntakeSubsystem intakeSubsystem = robotContainer.intakeSubsystem;
-        IndexAndSpindexSubsystem indxerSubsystem = robotContainer.indexAndSpindexSubsystem;
-        TurretSubsystem turretSubsystem = robotContainer.turretSubsystem;
-        UpdateHubInfo updateHubInfo = robotContainer.updateHubInfo;
+        PhotonVision visionSubsystem = robotContainer.s_turretCam;
+        FlywheelSubsystem flywheelSubsystem = robotContainer.s_flywheel;
+        IntakeSubsystem intakeSubsystem = robotContainer.s_intake;
+        IndexAndSpindexSubsystem indxerSubsystem = robotContainer.s_indexAndSpindex;
+        TurretSubsystem turretSubsystem = robotContainer.s_turret;
+        UpdateHubInfo updateHubInfo = robotContainer.s_updateHubInfo;
 
         Command OneCycleRight = AutoBuilder.buildAuto("1 Cycle - Right");
         Command OneandHalfCycleRight = AutoBuilder.buildAuto("1.5 Cycle - Right"); 
         
         addCommands(
             new PrintCommand("One and a Half Cycle Right Started"),
-            Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem)),
+            Commands.deadline(new WaitCommand(0.2), new IntakeArmsCommand(intakeSubsystem)),
             new WaitCommand(0.5),
             OneCycleRight,
             //Commands.deadline(new WaitCommand(1), new TurretScanYaw(visionSubsystem, turretSubsystem)),
@@ -52,7 +52,7 @@ public class OneandHalfCycleRight extends SequentialCommandGroup {
             //Commands.deadline(Commands.waitSeconds(6), new JitterIntake(intakeSubsystem)),
             //Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem, intakeSubsystem),
-            new FlywheelStop(flywheelSubsystem, visionSubsystem),
+            new FlywheelStop(flywheelSubsystem),
             OneandHalfCycleRight
         );
     }

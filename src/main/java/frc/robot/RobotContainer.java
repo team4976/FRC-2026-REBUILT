@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 
-
 import frc.robot.subsystems.*;
 import static frc.robot.Constants.*;
 import org.photonvision.PhotonCamera;
@@ -24,40 +23,37 @@ public class RobotContainer {
     //Logging
     public final Telemetry logger = new Telemetry(Constants.MaxSpeed);
 
-    //Vision Objects, may be good idea to merge into one class and just have dif objects
-    public final PhotonVision leftBackCam = new PhotonVision("leftBackCam", logger, drivetrain, leftBackCamTransform3d);
-    public final PhotonVision rightBackCam = new PhotonVision("rightBackCam", logger, drivetrain, rightBackCamTransform3d);
-    public final PhotonVision turretCam = new PhotonVision("testingCamera", logger, drivetrain, turretCamTransform);
+    //Vision Objects
+    public final PhotonVision s_leftBackCam = new PhotonVision("leftBackCam", logger, drivetrain, leftBackCamTransform3d);
+    public final PhotonVision s_rightBackCam = new PhotonVision("rightBackCam", logger, drivetrain, rightBackCamTransform3d);
+    public final PhotonVision s_turretCam = new PhotonVision("testingCamera", logger, drivetrain, turretCamTransform);
 
-    private final UpdateOdometry updateOdometryRight = new UpdateOdometry(drivetrain, rightBackCam);
-    private final UpdateOdometry updateOdometryLeft = new UpdateOdometry(drivetrain, leftBackCam);
-    private final UpdateOdometry updateOdometryTurret = new UpdateOdometry(drivetrain, turretCam);
+    //update odometry objects for each camera
+    private final UpdateOdometry s_updateOdometryRight = new UpdateOdometry(drivetrain, s_rightBackCam);
+    private final UpdateOdometry s_updateOdometryLeft = new UpdateOdometry(drivetrain, s_leftBackCam);
+    private final UpdateOdometry s_updateOdometryTurret = new UpdateOdometry(drivetrain, s_turretCam);
 
     //Hub Object, use to get info on hub distance and angle
-    public final UpdateHubInfo updateHubInfo = new UpdateHubInfo(drivetrain);
+    public final UpdateHubInfo s_updateHubInfo = new UpdateHubInfo(drivetrain);
 
     //Subsystem Objects/Subsystem Initialization
-    public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-    public final TurretSubsystem turretSubsystem = new TurretSubsystem();
-    public final FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
-    public final IndexAndSpindexSubsystem indexAndSpindexSubsystem = new IndexAndSpindexSubsystem();
-    
+    public final IntakeSubsystem s_intake = new IntakeSubsystem();
+    public final TurretSubsystem s_turret = new TurretSubsystem();
+    public final FlywheelSubsystem s_flywheel = new FlywheelSubsystem();
+    public final IndexAndSpindexSubsystem s_indexAndSpindex = new IndexAndSpindexSubsystem();
+    public Autos s_autos;
+    public final Example_IntakeSubsystem s_intakeExample = new Example_IntakeSubsystem();
 
     public Bindings bindings;
-    public Autos autos;
     public Command selectedAuto;
-
-    //elastic/smartdashboard intialization 
-
     public StringLogEntry logEntry = new StringLogEntry(DataLogManager.getLog(), "positionLog");
     public PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
     private ElasticData elasticData = new ElasticData(this);
 
-
     Command repeatJidderCommand = Commands.repeatingSequence(
             Commands.print("RepeatJitter Started"),
-            Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeCommand(true, 0.0,false)),
-            Commands.deadline(Commands.waitSeconds(0.20), intakeSubsystem.intakeCommand(true, 0.0, false))           
+            Commands.deadline(Commands.waitSeconds(0.20), s_intake.intakeCommand(true, 0.0,false)),
+            Commands.deadline(Commands.waitSeconds(0.20), s_intake.intakeCommand(true, 0.0, false))           
         );
 
 
@@ -68,17 +64,17 @@ public class RobotContainer {
         PDH.setSwitchableChannel(true);
 
         drivetrain.configureAutoBuilder();
-        autos =  new Autos(this);
+        s_autos =  new Autos(this);
 
         configureBindings();
         System.out.println("print worked robotContainer");
     }
 
     public void teleopInit(){
-        flywheelSubsystem.teleopInit();
-        indexAndSpindexSubsystem.teleopInit();
-        intakeSubsystem.teleopInit();
-        turretSubsystem.teleopInit();
+        s_flywheel.teleopInit();
+        s_indexAndSpindex.teleopInit();
+        s_intake.teleopInit();
+        s_turret.teleopInit();
     }
 
     public void getOdometryPose(){
@@ -120,31 +116,31 @@ public class RobotContainer {
         String value = elasticData.autoChooser.getSelected()[elasticData.autoChooser.getSelected().length -1];
         switch(value){
             case "1 Cycle - Right":
-                selectedAuto = autos.OneCycleRight;
+                selectedAuto = s_autos.OneCycleRight;
                 break;
             case "1 Cycle - Left":
-                selectedAuto = autos.OneCycleLeft;
+                selectedAuto = s_autos.OneCycleLeft;
                 break;
             case "1.5 Cycle - Right":
-                selectedAuto = autos.OneandHalfCycleRight;
+                selectedAuto = s_autos.OneandHalfCycleRight;
                 break;
             case "1.5 Cycle - Left":
-                selectedAuto = autos.OneandHalfCycleLeft;
+                selectedAuto = s_autos.OneandHalfCycleLeft;
                 break;
             case "2 Cycle - Right":
-                selectedAuto = autos.TwoCycleRight;
+                selectedAuto = s_autos.TwoCycleRight;
                 break;
             case "2 Cycle - Left":
-                selectedAuto = autos.TwoCycleLeft;
+                selectedAuto = s_autos.TwoCycleLeft;
                 break;
             case "Depot to Shoot":
-                selectedAuto = autos.HubtoShoottoDepot;
+                selectedAuto = s_autos.HubtoShoottoDepot;
                 break;
             case "Hub to Shoot":
-                selectedAuto = autos.HubtoShoot;
+                selectedAuto = s_autos.HubtoShoot;
                 break;
             case "Shoot to Neutral":
-                selectedAuto = autos.ShoottoNeutral;
+                selectedAuto = s_autos.ShoottoNeutral;
                 break;
             case "No Auto":
                 selectedAuto = Commands.waitSeconds(1);
@@ -157,25 +153,6 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() { 
-    
         return selectedAuto;
     }
 }
-
-    //public JitterRobot jitterSubsystem = new JitterRobot();
-
-    //Command Objects
-    /*
-    public IndexAndSpindexCommand indexAndSpindexCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, 1.0, flywheelSubsystem, intakeSubsystem);//hoodSubsystem, flywheelSubsystem);
-    public IndexAndSpindexCommand reverseIndexerCommand = new IndexAndSpindexCommand(indexAndSpindexSubsystem, -0.8, flywheelSubsystem, intakeSubsystem);//hoodSubsystem, flywheelSubsystem);
-    public IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem, false);
-    public IntakeCommand reverseIntakeCommand = new IntakeCommand(intakeSubsystem, true);
-    public FlywheelCommand flywheelCommand = new FlywheelCommand(flywheelSubsystem, updateHubInfo);
-    public HoodCommand hoodCommand = new HoodCommand(hoodSubsystem, updateHubInfo, false, 0);
-    public HoodCommand manualHoodUpCommand = new HoodCommand(hoodSubsystem, updateHubInfo, true, 0.5);
-    public HoodCommand manualHoodDownCommand = new HoodCommand(hoodSubsystem, updateHubInfo, true, -0.5);
-    public TurretScan turretScanCommand = new TurretScan(updateHubInfo, rightBackCam, turretSubsystem, drivetrain);
-    public TurretScanYaw turretScanYawCommand = new TurretScanYaw(rightBackCam, turretSubsystem);
-    public AlignedShotCommand alignedShotCommand = new AlignedShotCommand(flywheelSubsystem, hoodSubsystem);
-    
-*/

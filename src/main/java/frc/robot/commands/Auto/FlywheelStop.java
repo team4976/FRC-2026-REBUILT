@@ -1,22 +1,22 @@
 package frc.robot.commands.Auto;
 
 import edu.wpi.first.wpilibj2.command.Command;
+
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.PhotonVision;
 
 public class FlywheelStop extends Command{
-    public FlywheelSubsystem flywheelSubsystem;
-    public PhotonVision photonVision;
+    public FlywheelSubsystem s_flywheel;
+    public PhotonVision s_photonVision;
 
-    public FlywheelStop(FlywheelSubsystem flywheelSubsystem, PhotonVision photonVision){
-        this.flywheelSubsystem = flywheelSubsystem;
-        this.photonVision = photonVision;
-        addRequirements(flywheelSubsystem);
+    public FlywheelStop(FlywheelSubsystem s_flywheel){
+        this.s_flywheel = s_flywheel;
+        addRequirements(s_flywheel);
     }
 
     @Override
     public void initialize(){
-        flywheelSubsystem.cammeraSpeed = 0;
+        s_flywheel.cammeraSpeed = 0;
     }
 
     @Override
