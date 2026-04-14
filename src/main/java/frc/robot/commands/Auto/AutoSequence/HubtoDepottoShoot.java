@@ -1,5 +1,7 @@
 package frc.robot.commands.Auto.AutoSequence;
 
+import static frc.robot.Constants.drivetrain;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -39,7 +41,7 @@ public class HubtoDepottoShoot extends SequentialCommandGroup {
         addCommands(
             new PrintCommand("Hub to Depot to Shoot Started"),
             Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem)),
-            HubtoShoot.alongWith(new TurretScan(null, visionSubsystem, turretSubsystem, isScheduled())),
+            HubtoShoot.alongWith(new TurretScan(null, turretSubsystem)),
             //Commands.deadline(new WaitCommand(1),new TurretScanYaw(visionSubsystem, turretMovementSubsystem)),
             //new FlywheelStart(flywheelSubsystem, visionSubsystem),
             //new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),

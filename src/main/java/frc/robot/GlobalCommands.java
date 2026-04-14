@@ -28,17 +28,16 @@ public class GlobalCommands {
     public AlignedShotCommand alignedShotCommand;
     public JitterRobotSequence jitterRobotSequence= new JitterRobotSequence();
 
-    public void init(RobotContainer robotContainer){
+    public void init(RobotContainer robotContainer){ System.out.println("print works GlobalCommand");
         if(isSetup) return;
-        updateHubInfo = new UpdateHubInfo(Constants.drivetrain);
-        turretScanCommand = new TurretScan(updateHubInfo, robotContainer.turretCam, robotContainer.turretSubsystem , false);
+        //turretScanCommand = new TurretScan(updateHubInfo, robotContainer.turretCam, robotContainer.turretSubsystem , false);
         indexAndSpindexCommand = new IndexAndSpindexCommand(robotContainer.indexAndSpindexSubsystem, 1.0, robotContainer.flywheelSubsystem, robotContainer.intakeSubsystem);
         reverseIndexerCommand = new IndexAndSpindexCommand(robotContainer.indexAndSpindexSubsystem, -0.8, robotContainer.flywheelSubsystem, robotContainer.intakeSubsystem);
         intakeCommand = new IntakeCommand(robotContainer.intakeSubsystem);
         reverseIntakeCommand = new IntakeBarCommand(robotContainer.intakeSubsystem, true);
         intakeBarCommand = new IntakeBarCommand(robotContainer.intakeSubsystem, false);
-        flywheelCommand = new FlywheelCommand(robotContainer.flywheelSubsystem, updateHubInfo);
-        turretScanCommand = new TurretScan(updateHubInfo, robotContainer.rightBackCam, robotContainer.turretSubsystem, Constants.drivetrain);
+        flywheelCommand = new FlywheelCommand(robotContainer.flywheelSubsystem, robotContainer.updateHubInfo);
+        turretScanCommand = new TurretScan(robotContainer.updateHubInfo, robotContainer.turretSubsystem);
         turretScanYawCommand = new TurretScanYaw(robotContainer.rightBackCam, robotContainer.turretSubsystem);
         alignedShotCommand= new AlignedShotCommand(robotContainer.flywheelSubsystem);
 

@@ -1,9 +1,9 @@
 
 
 package frc.robot.commands.Turret;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 //import frc.robot.Constants;
-import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.UpdateHubInfo;
@@ -12,9 +12,7 @@ import static frc.robot.Constants.*;
 
 public class TurretScan extends Command {
     UpdateHubInfo updateHubInfo;
-    PhotonVision turretVision;
     TurretSubsystem shooter;
-    CommandSwerveDrivetrain swerve;
     double distance; // distance from the hub to the turret
     boolean stopLockedOn = false; // flag to track if the turret is hitting the limit switch in lockedOn mode // our estimated position on the field
     double turretTargetAngle; // the angle we want the turret to be at so that we are aiming at the hub
@@ -27,27 +25,14 @@ public class TurretScan extends Command {
     double autoLockedOn = 0.0;
     double turretToHubRotations;
     double turretotargetpostition;
-    boolean isAuto = false;
 
-    public TurretScan(UpdateHubInfo updateHubInfo, PhotonVision turretVision, TurretSubsystem shooter, CommandSwerveDrivetrain swerve){
+    public TurretScan(UpdateHubInfo updateHubInfo, TurretSubsystem shooter){
         this.updateHubInfo = updateHubInfo;
-        this.turretVision = turretVision;
         this.shooter = shooter;
         addRequirements(shooter);
 
+        System.out.println("print works turret");
 
-        this.swerve = swerve;
-
-    }
-
-    public TurretScan(UpdateHubInfo updateHubInfo, PhotonVision turretVision,TurretSubsystem shooter, boolean isAuto){
-        this.updateHubInfo = updateHubInfo;
-        this.turretVision = turretVision;
-        this.shooter = shooter;
-        addRequirements(shooter);
-
-        //field2d = new Field2d();
-        this.isAuto  = isAuto;
     }
 
     @Override
@@ -98,6 +83,8 @@ public class TurretScan extends Command {
 
         manualLockedOn = shooter.convertAngleRotation(manualLockedOn);
 
+        System.out.println("turretotargetposition: " + turretotargetpostition);
+        System.out.println("manualLockedOn: " + manualLockedOn);
         shooter.turretRotationPID(turretotargetpostition + manualLockedOn);
         }
     } 
@@ -112,17 +99,8 @@ public class TurretScan extends Command {
 
     @Override
     public boolean isFinished() {
-        // if rightTrigger is pressed or stopLocked = true then end command
-        if(isAuto) return turretVision.AutoShootFlag.getAsBoolean();
         
-        //return m_turretVision.AutoShootFlag.getAsBoolean();
-        
-         if(shooter.stopbutton == true){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return false;
     }
     
 }

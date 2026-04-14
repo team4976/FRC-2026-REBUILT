@@ -32,7 +32,7 @@ public class RobotContainer {
     private final UpdateOdometry updateOdometryRight = new UpdateOdometry(drivetrain, rightBackCam);
     private final UpdateOdometry updateOdometryLeft = new UpdateOdometry(drivetrain, leftBackCam);
     private final UpdateOdometry updateOdometryTurret = new UpdateOdometry(drivetrain, turretCam);
-      
+
     //Hub Object, use to get info on hub distance and angle
     public final UpdateHubInfo updateHubInfo = new UpdateHubInfo(drivetrain);
 
@@ -71,6 +71,7 @@ public class RobotContainer {
         autos =  new Autos(this);
 
         configureBindings();
+        System.out.println("print worked robotContainer");
     }
 
     public void teleopInit(){

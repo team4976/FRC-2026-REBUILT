@@ -19,6 +19,8 @@ public class FlywheelCommand extends Command{
         addRequirements(flywheelSubsystem);
         this.flywheelSubsystem = flywheelSubsystem;
         this.updateHubInfo = updateHubInfo;
+
+        System.out.println("print worked flywheel");
     }
 
     @Override
