@@ -4,15 +4,12 @@ import static frc.robot.Constants.BlueHubX;
 import static frc.robot.Constants.BlueHubY;
 import static frc.robot.Constants.RedHubX;
 import static frc.robot.Constants.RedHubY;
-import static frc.robot.Constants.flywheelGearRatio;
-import static frc.robot.Constants.flywheelRadius;
 
 import java.util.Optional;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
 public class UpdateHubInfo extends SubsystemBase{
     CommandSwerveDrivetrain swerve;

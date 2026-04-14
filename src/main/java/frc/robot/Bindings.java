@@ -6,8 +6,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.commands.Jitter.JitterRobotSequence;
 import frc.robot.commands.ExampleIntake.Intake;
 import frc.robot.commands.ExampleIntake.IntakeEject;
-import frc.robot.commands.ExampleIntake.IntakeSwap;
-//import frc.robot.commands.Jitter.JitterIntake;
 import static frc.robot.Constants.*;
 
 public class Bindings {

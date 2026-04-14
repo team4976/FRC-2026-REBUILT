@@ -17,14 +17,11 @@ import com.pathplanner.lib.path.PathPlannerPath;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.HashMap;
 import java.util.List;
 
-import frc.robot.generated.RebuiltTunerConstants;
 import static frc.robot.Constants.*;
 import frc.robot.RobotContainer;
 import frc.robot.Telemetry;
-import frc.robot.Functions;
 
 public class ElasticData extends SubsystemBase{
     private final Telemetry telemetry;

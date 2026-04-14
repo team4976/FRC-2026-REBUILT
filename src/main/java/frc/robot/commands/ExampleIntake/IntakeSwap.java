@@ -1,7 +1,5 @@
 package frc.robot.commands.ExampleIntake;
 
-import static frc.robot.Constants.driverController;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Example_IntakeSubsystem;
 import frc.robot.subsystems.Example_IntakeSubsystem.IntakeStates;
