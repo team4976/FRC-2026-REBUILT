@@ -180,7 +180,7 @@ public class ElasticData extends SubsystemBase{
         //-------------
         //Voltage Widgets
         SmartDashboard.putNumber("QC/Motors/Indexer/Index Volatage", s_indexAndSpindex.m_index.getAppliedOutput());
-        SmartDashboard.putNumber("QC/Motors/Spindex/Spindex Volatage", s_indexAndSpindex.m_spindex.getAppliedOutput());
+        SmartDashboard.putNumber("QC/Motors/Spindex/Spindex Volatage", s_indexAndSpindex.m_spindex.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Turret/Turret Voltage", s_turret.turretMotor.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Lead/Flywheel Lead Voltage", s_flywheel.m_flywheelLeader.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Follow/Flywheel Follow Voltage", s_flywheel.m_flywheelFollower.getMotorVoltage().getValueAsDouble());
@@ -190,7 +190,7 @@ public class ElasticData extends SubsystemBase{
 
         //RPM Widgets
         SmartDashboard.putNumber("QC/Motors/Indexer/Index RPM", s_indexAndSpindex.m_index.getEncoder().getVelocity());
-        SmartDashboard.putNumber("QC/Motors/Spindex/Spindex RPM", s_indexAndSpindex.m_spindex.getEncoder().getVelocity());
+        SmartDashboard.putNumber("QC/Motors/Spindex/Spindex RPM", s_indexAndSpindex.m_spindex.getVelocity().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Turret/Turret RPS", s_turret.turretMotor.getVelocity().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Lead/Flywheel Lead RPS", s_flywheel.m_flywheelLeader.getVelocity().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Follow/Flywheel Follow RPS", s_flywheel.m_flywheelFollower.getVelocity().getValueAsDouble());

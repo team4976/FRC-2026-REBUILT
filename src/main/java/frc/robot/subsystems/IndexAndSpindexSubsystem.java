@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkMax;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 
@@ -11,13 +13,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.*;
 
 public class IndexAndSpindexSubsystem extends SubsystemBase{
-    public SparkMax m_index, m_spindex;
+    public SparkMax m_index;//, m_spindex;
+    public TalonFX m_spindex;
+
     private SparkMaxConfig sparkConfig = new SparkMaxConfig();
 
     public IndexAndSpindexSubsystem(){
 
         m_index = new SparkMax(Index_ID, MotorType.kBrushless);
-        m_spindex = new SparkMax(Spindex_ID, MotorType.kBrushless);
+        m_spindex = new TalonFX(Spindex_ID);
 
         sparkConfig.inverted(true);
         m_index.configure(sparkConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
@@ -42,7 +46,7 @@ public class IndexAndSpindexSubsystem extends SubsystemBase{
      */
     public void moveFeeder(double speed){
         m_index.set(speed);
-        m_spindex.set(speed - 20);
+        m_spindex.set(speed);
     }
 
     @Override
