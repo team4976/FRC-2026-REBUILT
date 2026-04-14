@@ -24,6 +24,9 @@ public class IntakeSwap extends Command {
             s_intake.bothArmsAtMin.getAsBoolean()){
                 s_intake.extend();
         }
+        else if(s_intake.armBetweenMaxAndMin.getAsBoolean()){
+            s_intake.extend();
+        }
         super.initialize();
     }
 
@@ -37,7 +40,6 @@ public class IntakeSwap extends Command {
     public boolean isFinished() {
         return (s_intake.getArmIntakeState() == IntakeStates.idle || 
             (s_intake.bothArmsAtMax.getAsBoolean() &&  s_intake.getArmIntakeState() == IntakeStates.extending) ||
-            (s_intake.bothArmsAtMin.getAsBoolean() &&  s_intake.getArmIntakeState() == IntakeStates.retracting)) || 
-                driverController.x().getAsBoolean();
+            (s_intake.bothArmsAtMin.getAsBoolean() &&  s_intake.getArmIntakeState() == IntakeStates.retracting));
     }
 }
