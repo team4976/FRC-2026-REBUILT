@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.Command;
 
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.Example_IntakeSubsystem;
 import frc.robot.Constants;
 
 
@@ -16,7 +16,7 @@ import frc.robot.Constants;
 @SuppressWarnings("unused")
 public class IntakeBarCommand extends Command {
 
-  public IntakeSubsystem s_intake;
+  public Example_IntakeSubsystem s_intake;
 
   public boolean isIntakeReversed;
   public boolean endCommand;
@@ -26,7 +26,7 @@ public class IntakeBarCommand extends Command {
    * @param s_intake The s_intake object that our code base uses.
    * @param isIntakeReversed whether the intake bar should be reversed. one object for yes and one for no.
   */
-  public IntakeBarCommand(IntakeSubsystem s_intake, boolean isIntakeReversed) {
+  public IntakeBarCommand(Example_IntakeSubsystem s_intake, boolean isIntakeReversed) {
     this.isIntakeReversed = isIntakeReversed;
     this.s_intake = s_intake;
     addRequirements(s_intake);  
@@ -36,11 +36,11 @@ public class IntakeBarCommand extends Command {
   public void initialize() {
     endCommand = false;
     if (isIntakeReversed){
-      double setIntakeSpeed = (s_intake.currentIntakeSpeed.getAsDouble() >= 0.0)?-1:0;
-      s_intake.runIntakeMotor(setIntakeSpeed);
+      //double setIntakeSpeed = (s_intake.currentIntakeSpeed.getAsDouble() >= 0.0)?-1:0;
+      //s_intake.runIntakeMotor(setIntakeSpeed);
     } else {
-      double setIntakeSpeed = (s_intake.currentIntakeSpeed.getAsDouble() <= 0.0)?1:0;
-      s_intake.runIntakeMotor(setIntakeSpeed);
+      //double setIntakeSpeed = (s_intake.currentIntakeSpeed.getAsDouble() <= 0.0)?1:0;
+      //s_intake.runIntakeMotor(setIntakeSpeed);
     }
     endCommand = true;
   }

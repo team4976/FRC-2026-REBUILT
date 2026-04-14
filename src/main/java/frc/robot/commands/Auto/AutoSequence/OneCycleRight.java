@@ -13,9 +13,10 @@ import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
 import frc.robot.commands.Auto.FlywheelStart;
 import frc.robot.commands.Intake.IntakeArmsCommand;
 import frc.robot.commands.Turret.TurretScanYaw;
+import frc.robot.subsystems.Example_IntakeSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.IndexAndSpindexSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
+
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.UpdateHubInfo;
@@ -27,7 +28,7 @@ public class OneCycleRight extends SequentialCommandGroup {
     ){
         PhotonVision visionSubsystem = robotContainer.s_turretCam;
         FlywheelSubsystem flywheelSubsystem = robotContainer.s_flywheel;
-        IntakeSubsystem intakeSubsystem = robotContainer.s_intake;
+        Example_IntakeSubsystem intakeSubsystem = robotContainer.s_intake;
         IndexAndSpindexSubsystem indxerSubsystem = robotContainer.s_indexAndSpindex;
         TurretSubsystem turretSubsystem = robotContainer.s_turret;
         UpdateHubInfo updateHubInfo = robotContainer.s_updateHubInfo;
@@ -36,7 +37,7 @@ public class OneCycleRight extends SequentialCommandGroup {
         
         addCommands(
             new PrintCommand("Neutral Right Start Far Started"),
-            Commands.deadline(new WaitCommand(0.2), new IntakeArmsCommand(intakeSubsystem)),
+           // Commands.deadline(new WaitCommand(0.2), new IntakeArmsCommand(intakeSubsystem)),
             new WaitCommand(0.5),
             OneCycleRight,
             //Commands.deadline(new WaitCommand(6), new TurretScanYaw(visionSubsystem, turretSubsystem)),

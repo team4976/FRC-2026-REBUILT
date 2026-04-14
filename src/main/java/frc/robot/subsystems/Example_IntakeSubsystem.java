@@ -1,8 +1,6 @@
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.Intake_Arm_Left_ID;
-import static frc.robot.Constants.Intake_Arm_Right_ID;
-import static frc.robot.Constants.Intake_ID;
+import static frc.robot.Constants.*;
 import static frc.robot.Constants.intakeSpeed;
 
 import java.util.function.BooleanSupplier;

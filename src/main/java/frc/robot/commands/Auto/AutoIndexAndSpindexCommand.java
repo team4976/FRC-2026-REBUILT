@@ -3,17 +3,17 @@ package frc.robot.commands.Auto;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.subsystems.IndexAndSpindexSubsystem;
+import frc.robot.subsystems.Example_IntakeSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
 
 public class AutoIndexAndSpindexCommand extends Command{
     public IndexAndSpindexSubsystem s_indexAndSpinex;
     public double speed;
     public FlywheelSubsystem s_flywheel;
-    public IntakeSubsystem s_intake;
+    public Example_IntakeSubsystem s_intake;
     public double currentIntakeSpeed;
     
-    public AutoIndexAndSpindexCommand(IndexAndSpindexSubsystem InSSubsystem, double speed, FlywheelSubsystem flywheelSubsystem, IntakeSubsystem intakeSubsystem){
+    public AutoIndexAndSpindexCommand(IndexAndSpindexSubsystem InSSubsystem, double speed, FlywheelSubsystem flywheelSubsystem, Example_IntakeSubsystem intakeSubsystem){
         this.s_indexAndSpinex = InSSubsystem;
         this.s_flywheel = flywheelSubsystem;
         this.speed = speed;
@@ -25,9 +25,9 @@ public class AutoIndexAndSpindexCommand extends Command{
     @Override
     public void initialize(){
         s_indexAndSpinex.moveFeeder(speed);
-        currentIntakeSpeed = s_intake.currentIntakeSpeed.getAsDouble();
+        //currentIntakeSpeed = s_intake.currentIntakeSpeed.getAsDouble();
         if (s_flywheel.m_flywheelLeader.getMotorVoltage().getValueAsDouble() > 0) {
-            s_intake.runIntakeMotor(-0.95);
+            //s_intake.runIntakeMotor(-0.95);
         }
     }
     

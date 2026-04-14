@@ -39,7 +39,7 @@ public class ElasticData extends SubsystemBase{
     private final CommandSwerveDrivetrain s_swerve;
     private final FlywheelSubsystem s_flywheel;
     private final TurretSubsystem s_turret;
-    private final IntakeSubsystem s_intake;
+    private final Example_IntakeSubsystem s_intake;
 
     private PowerDistribution PDH;
 

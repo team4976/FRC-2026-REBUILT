@@ -37,12 +37,11 @@ public class RobotContainer {
     public final UpdateHubInfo s_updateHubInfo = new UpdateHubInfo(drivetrain);
 
     //Subsystem Objects/Subsystem Initialization
-    public final IntakeSubsystem s_intake = new IntakeSubsystem();
+    public final Example_IntakeSubsystem s_intake = new Example_IntakeSubsystem();
     public final TurretSubsystem s_turret = new TurretSubsystem();
     public final FlywheelSubsystem s_flywheel = new FlywheelSubsystem();
     public final IndexAndSpindexSubsystem s_indexAndSpindex = new IndexAndSpindexSubsystem();
     public Autos s_autos;
-    public final Example_IntakeSubsystem s_intakeExample = new Example_IntakeSubsystem();
 
     public Bindings bindings;
     public Command selectedAuto;
@@ -50,11 +49,13 @@ public class RobotContainer {
     public PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
     private ElasticData elasticData = new ElasticData(this);
 
+    /*
     Command repeatJidderCommand = Commands.repeatingSequence(
             Commands.print("RepeatJitter Started"),
             Commands.deadline(Commands.waitSeconds(0.20), s_intake.intakeCommand(true, 0.0,false)),
             Commands.deadline(Commands.waitSeconds(0.20), s_intake.intakeCommand(true, 0.0, false))           
         );
+        */
 
 
     public RobotContainer() {
