@@ -22,7 +22,7 @@ public class Bindings {
 
 
         //Regular Shooting
-        //driverController.axisGreaterThan(3, 0.1).whileTrue(GlobalCommands.instance.c_indexAndSpindex);
+        driverController.axisGreaterThan(3, 0.1).whileTrue(GlobalCommands.instance.c_indexAndSpindex);
 
 
         //Intake Mappings
@@ -58,7 +58,7 @@ public class Bindings {
         operatorController.a().toggleOnTrue(GlobalCommands.instance.c_flywheel);
         
         //Operator Shoot
-        //operatorController.axisGreaterThan(3, 0.1).whileTrue(GlobalCommands.instance.c_indexAndSpindex);
+        operatorController.axisGreaterThan(3, 0.1).whileTrue(GlobalCommands.instance.c_indexAndSpindex);
 
         //Turret scan
         operatorController.axisGreaterThan(2, 0.1).toggleOnTrue(GlobalCommands.instance.c_turretScan);
@@ -82,7 +82,7 @@ public class Bindings {
         //Inside of the flywheel subsystems periodic()
 
         //Indexer
-        //operatorController.b().whileTrue(GlobalCommands.instance.c_reverseIndexer);
+        operatorController.b().whileTrue(GlobalCommands.instance.c_reverseIndexer);
 
         //Reverse Intake
         operatorController.povDown().whileTrue(new IntakeEject(robotContainer.s_intake));
