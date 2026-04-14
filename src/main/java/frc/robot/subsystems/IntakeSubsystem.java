@@ -19,10 +19,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
   //The max/min Encoder Positions. As the intake goes down the numbers get larger in magnitude but further into the negatives
   //As such when it is fully down it is at the minimum and when its up its at its maximum.
-  public final double minLeftEncoderPos = -5.5;
-  public final double minRightEncoderPos = -0.65;
-  public final double maxLeftEncoderPos = -2.15;
-  public final double maxRightEncoderPos = -2.15;
+  public final double minLeftEncoderPos = -4.6;
+  public final double minRightEncoderPos = -0.50;
+  public final double maxLeftEncoderPos = -0.1;
+  public final double maxRightEncoderPos = -0.006;
 
   public boolean willIntakeDown = false;
 

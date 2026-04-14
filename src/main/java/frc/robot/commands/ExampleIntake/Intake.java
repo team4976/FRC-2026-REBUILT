@@ -14,7 +14,13 @@ public class Intake extends Command {
 
     @Override
     public void initialize() {
-        s_intake.intake();
+        if(s_intake.getIntakeMotorState() == IntakeStates.intaking){
+            s_intake.stopIntakeMotor();
+        }
+        else if(s_intake.getIntakeMotorState() == IntakeStates.idle ||
+            s_intake.getIntakeMotorState() == IntakeStates.ejecting){
+                s_intake.intake();
+        }
         super.initialize();
     }
 
@@ -26,6 +32,6 @@ public class Intake extends Command {
 
     @Override
     public boolean isFinished() {
-        return s_intake.getIntakeMotorState() != IntakeStates.ejecting;
+        return true;
     }
 }

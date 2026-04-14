@@ -64,7 +64,7 @@ public class TurretScanYaw extends Command {
 
         if (hasTargets == false || stopLockedOn == true){
             stopLockedOn = false;
-            System.err.println("hasTargets = false");
+            //System.err.println("hasTargets = false");
             turretSubsystem.stopTurn();
         } else {
             System.err.println("hasTargets = true");

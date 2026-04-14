@@ -81,13 +81,13 @@ public class UpdateOdometry extends SubsystemBase {
             // Use the multi-target pose for reliable vision poses
             if (numOfTags > 1) {
                 swerve.addVisionMeasurement(robotPos, timeStamp, good);
-                System.err.println(" 2 tags seen");
+                //System.err.println(" 2 tags seen");
             } else {
                 //qualifying checks for poses gotten from a single apriltag
                 if ((Math.abs(tagAmbiguity) < Constants.maxAcceptableAmbiguity) && (numOfTags > 0) 
                     && (distanceToTag < Constants.maxAcceptableDistance)) {
                         swerve.addVisionMeasurement(robotPos, timeStamp , good); 
-                        System.err.println("1 tag seen");
+                        //System.err.println("1 tag seen");
                 }
             }
             

@@ -54,7 +54,7 @@ public class TurretScan extends Command {
 
     @Override
     public void execute() {
-        System.out.println("TurretScan-Execute");
+        //System.out.println("TurretScan-Execute");
 
         // if left or right switch is pressed turn off motor
         if(s_shooter.getLeftSwitch() == false || s_shooter.getRightSwitch() == false){

@@ -39,14 +39,14 @@ public class Example_IntakeSubsystem extends SubsystemBase{
 
     //Intake Arms
     SparkMax m_LeftArm, m_RightArm;
-    double armsSeed = 0.45;
+    double armsSeed = 0.25;
     double jitterSpeed = 0.25;
     boolean isJittering = false;
 
     //TODO: validate Left and right Min
     //Left Arm
-    final double encoder_LeftMax = -0.025;
-    final double encoder_LeftMin = -0.005; // Home Location
+    final double encoder_LeftMax = -4.6;
+    final double encoder_LeftMin = -0.1; // Home Location
     final DoubleSupplier encoder_LeftArm = () -> m_LeftArm.getEncoder().getPosition();
     public BooleanSupplier armLimit_LeftMax = () -> encoder_LeftArm.getAsDouble() <= encoder_LeftMax;
     public BooleanSupplier armLimit_LeftMin = () -> encoder_LeftArm.getAsDouble() >= encoder_LeftMin;
@@ -64,11 +64,11 @@ public class Example_IntakeSubsystem extends SubsystemBase{
 
 
     //Right Arm
-    final double encoder_RightMax = 0.004;
-    final double encoder_RightMin = 0.001; // Home Location
+    final double encoder_RightMax = -0.50;
+    final double encoder_RightMin = -0.006; // Home Location
     final DoubleSupplier encoder_RightArm = () -> m_RightArm.getEncoder().getPosition();
-    public BooleanSupplier armLimit_RightMax = () -> encoder_RightArm.getAsDouble() >= encoder_RightMax;
-    public BooleanSupplier armLimit_RightMin = () -> encoder_RightArm.getAsDouble() <= encoder_RightMin;
+    public BooleanSupplier armLimit_RightMax = () -> encoder_RightArm.getAsDouble() <= encoder_RightMax;
+    public BooleanSupplier armLimit_RightMin = () -> encoder_RightArm.getAsDouble() >= encoder_RightMin;
         final double encoder_RightArm (){
         return m_RightArm.getEncoder().getPosition();
     }
@@ -93,10 +93,12 @@ public class Example_IntakeSubsystem extends SubsystemBase{
 
     public Example_IntakeSubsystem(){
         //NOTE: uncomment if using, cant have two Sparks with same ID
-        
         m_Intake = new SparkMax(Intake_ID, MotorType.kBrushed);
-        m_LeftArm = new SparkMax(Intake_Arm_Left_ID, MotorType.kBrushed);
-        m_RightArm = new SparkMax(Intake_Arm_Right_ID, MotorType.kBrushed);
+        m_LeftArm = new SparkMax(Intake_Arm_Left_ID, MotorType.kBrushless);
+        m_RightArm = new SparkMax(Intake_Arm_Right_ID, MotorType.kBrushless);
+
+        m_LeftArm.getEncoder().setPosition(0);
+        m_RightArm.getEncoder().setPosition(0);
         
     }
 
@@ -116,8 +118,8 @@ public class Example_IntakeSubsystem extends SubsystemBase{
         if(trigger_LeftMax.getAsBoolean()) return;
         state_Arms = IntakeStates.extending;
         double speed = (isJittering)? jitterSpeed : armsSeed;
-        if(speed > 0) speed *= -1;
-        setIntakeArmsSpeed(speed);
+        //if(speed > 0) speed *= -1;
+        setIntakeArmsSpeed(-speed);
     }
     public void extend(double speed){
         if(trigger_LeftMax.getAsBoolean()) return;
@@ -129,7 +131,7 @@ public class Example_IntakeSubsystem extends SubsystemBase{
         if(trigger_LeftMin.getAsBoolean()) return;
         state_Arms = IntakeStates.retracting;
         double speed = (isJittering)? jitterSpeed : armsSeed;
-        if(speed < 0) speed *= -1;
+        //if(speed < 0) speed *= -1;
         setIntakeArmsSpeed(speed);
     }
     public void retract(double speed){
@@ -139,6 +141,7 @@ public class Example_IntakeSubsystem extends SubsystemBase{
     }
 
     public void stopIntakeArms(){
+        if(m_LeftArm.getAppliedOutput() != 0) System.out.println("STOP MOTOR");
         state_Arms = IntakeStates.idle;
         setIntakeArmsSpeed(0);
     }    
@@ -177,6 +180,7 @@ public class Example_IntakeSubsystem extends SubsystemBase{
         m_Intake.set(speed);
     }
     public void stopIntakeMotor(){
+        
         state_IntakeMotor = IntakeStates.idle;
         m_Intake.set(0);
     }
@@ -189,10 +193,20 @@ public class Example_IntakeSubsystem extends SubsystemBase{
             if(state_IntakeMotor == IntakeStates.idle) stopIntakeMotor();
             if(state_Arms == IntakeStates.idle) stopIntakeArms();
             else if(state_Arms != IntakeStates.idle){
-                if(armLimit_LeftMax.getAsBoolean() && state_Arms == IntakeStates.ejecting ) m_LeftArm.set(0);
-                if(armLimit_LeftMin.getAsBoolean()&& state_Arms == IntakeStates.retracting ) m_LeftArm.set(0);
-                if(armLimit_RightMax.getAsBoolean()&& state_Arms == IntakeStates.ejecting ) m_RightArm.set(0);
-                if(armLimit_RightMin.getAsBoolean()&& state_Arms == IntakeStates.retracting ) m_RightArm.set(0);
+                if(armLimit_LeftMax.getAsBoolean() && state_Arms == IntakeStates.extending )
+                {
+                    m_LeftArm.set(0);
+                }
+                if(armLimit_LeftMin.getAsBoolean()&& state_Arms == IntakeStates.retracting ){
+                    m_LeftArm.set(0);
+                }
+                if(armLimit_RightMax.getAsBoolean()&& state_Arms == IntakeStates.extending ){
+                 m_RightArm.set(0);
+                }
+                if(armLimit_RightMin.getAsBoolean()&& state_Arms == IntakeStates.retracting )
+                {
+                    m_RightArm.set(0);
+                }
             }
         }catch(Exception e){
             System.out.println(e.getMessage());
