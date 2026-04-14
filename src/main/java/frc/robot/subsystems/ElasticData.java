@@ -180,21 +180,21 @@ public class ElasticData extends SubsystemBase{
         //-------------
         //Voltage Widgets
         SmartDashboard.putNumber("QC/Motors/Indexer/Index Volatage", s_indexAndSpindex.m_index.getAppliedOutput());
-        SmartDashboard.putNumber("QC/Motors/Spindex/Spindex Volatage", s_indexAndSpindex.m_spindex.getAppliedOutput());
+        SmartDashboard.putNumber("QC/Motors/Spindex/Spindex Volatage", s_indexAndSpindex.m_spindex.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Turret/Turret Voltage", s_turret.turretMotor.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Lead/Flywheel Lead Voltage", s_flywheel.m_flywheelLeader.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Follow/Flywheel Follow Voltage", s_flywheel.m_flywheelFollower.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Motors/Intake/Intake Voltage", s_intake.m_Intake.getAppliedOutput());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Voltage", s_intake.m_Intake.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Left Voltage", s_intake.m_LeftArm.getAppliedOutput());
         SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Right Voltage", s_intake.m_RightArm.getAppliedOutput());
 
         //RPM Widgets
         SmartDashboard.putNumber("QC/Motors/Indexer/Index RPM", s_indexAndSpindex.m_index.getEncoder().getVelocity());
-        SmartDashboard.putNumber("QC/Motors/Spindex/Spindex RPM", s_indexAndSpindex.m_spindex.getEncoder().getVelocity());
+        SmartDashboard.putNumber("QC/Motors/Spindex/Spindex RPM", s_indexAndSpindex.m_spindex.getVelocity().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Turret/Turret RPS", s_turret.turretMotor.getVelocity().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Lead/Flywheel Lead RPS", s_flywheel.m_flywheelLeader.getVelocity().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Follow/Flywheel Follow RPS", s_flywheel.m_flywheelFollower.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Motors/Intake/Intake Speed (Raw)", s_intake.m_Intake.getEncoder().getVelocity());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Speed (Raw)", s_intake.m_Intake.getVelocity().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Left Speed (Raw)", s_intake.m_LeftArm.getEncoder().getVelocity());
         SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Right Speed (Raw)", s_intake.m_RightArm.getEncoder().getVelocity());
 

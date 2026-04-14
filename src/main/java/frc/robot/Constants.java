@@ -58,7 +58,7 @@ public final class Constants {
 
 
   //Speed Constants
-  public static final double intakeSpeed = 0.95;
+  public static final double intakeSpeed = -0.30;
   public static final double turretScanVoltage = 2;
   public static final double turretManualVoltage = 1.5; //2
 
@@ -94,6 +94,6 @@ public final class Constants {
 
   public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
   public static final Transform3d leftBackCamTransform3d = new Transform3d(new Translation3d(-0.314325, 0.314325, 0.1524), new Rotation3d(0, Math.toRadians(-30), Math.toRadians(120)));
-  public static final Transform3d rightBackCamTransform3d = new Transform3d(new Translation3d(-0.314325, -0.314325, 0.1524), new Rotation3d(0, Math.toRadians(-30), Math.toRadians(-150)));
+  public static final Transform3d rightBackCamTransform3d = new Transform3d(new Translation3d(-0.314325, -0.314325, 0.1524), new Rotation3d(0, Math.toRadians(-30), Math.toRadians(-120)));
   public static final Transform3d turretCamTransform = new Transform3d(new Translation3d(-0.20,-0.312 , 0.45), new Rotation3d(0, 0/*Math.toRadians(-30)*/, 0/*TurretCamYaw*/));
 }

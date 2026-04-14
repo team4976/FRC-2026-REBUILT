@@ -67,21 +67,20 @@ public class TurretScan extends Command {
         }
         manualTurretRotations = s_shooter.convertAngleRotation(manualTurretRotations);
 
+        turretotargetpostition = turretotargetpostition + manualTurretRotations;
         System.out.println("turretotargetposition: " + turretotargetpostition);
         System.out.println("manualLockedOn: " + manualTurretRotations);
 
         //Check if past software limits and if so reset turret slightly inside these limits
         if(turretotargetpostition > turretLimitLeft){
             turretotargetpostition = turretLimitLeft - 0.1;
-            manualTurretRotations = 0;
         } 
         else if (turretotargetpostition < turretLimitRight){
             turretotargetpostition = turretLimitRight + 0.1;
-            manualTurretRotations=0;
         }
         
         //Setting final turret rotation position
-        s_shooter.turretRotationPID(turretotargetpostition + manualTurretRotations);
+        s_shooter.turretRotationPID(turretotargetpostition);
         }
     } 
     
