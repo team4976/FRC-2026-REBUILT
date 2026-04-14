@@ -6,6 +6,7 @@ import static frc.robot.Constants.intakeSpeed;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
@@ -31,8 +32,8 @@ public class IntakeSubsystem extends SubsystemBase{
     }
 
     //Intake Wheel
-    SparkMax m_Intake;
-    DoubleSupplier currentIntakeSpeed = () -> m_Intake.getAppliedOutput();
+    TalonFX m_Intake;
+    DoubleSupplier currentIntakeSpeed = () -> m_Intake.getVelocity().getValueAsDouble();
 
 
     //Intake Arms
@@ -92,7 +93,7 @@ public class IntakeSubsystem extends SubsystemBase{
 
     public IntakeSubsystem(){
         //NOTE: uncomment if using, cant have two Sparks with same ID
-        m_Intake = new SparkMax(Intake_ID, MotorType.kBrushed);
+        m_Intake = new TalonFX(Intake_ID);
         m_LeftArm = new SparkMax(Intake_Arm_Left_ID, MotorType.kBrushless);
         m_RightArm = new SparkMax(Intake_Arm_Right_ID, MotorType.kBrushless);
 
@@ -242,9 +243,9 @@ public class IntakeSubsystem extends SubsystemBase{
 
         //intake Motor
         String path = "SubSystems/Intake/Intake_Motor";
-        SmartDashboard.putNumber(path+"/Applied-Output", m_Intake.getAppliedOutput());
-        SmartDashboard.putNumber(path+"/Voltage", m_Intake.getBusVoltage());
-        SmartDashboard.putNumber(path+"/Output-Current", m_Intake.getOutputCurrent());
+        //SmartDashboard.putNumber(path+"/Applied-Output", m_Intake.getAppliedControl());
+        SmartDashboard.putNumber(path+"/Voltage", m_Intake.getMotorVoltage().getValueAsDouble());
+        SmartDashboard.putNumber(path+"/Output-Current", m_Intake.getSupplyCurrent().getValueAsDouble());
         
         path = "SubSystems/Intake/Left_Arm";
         SmartDashboard.putNumber(path+"/Applied-Output", m_LeftArm.getAppliedOutput());
