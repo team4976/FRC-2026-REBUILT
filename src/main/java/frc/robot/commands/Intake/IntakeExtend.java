@@ -1,31 +1,31 @@
-package frc.robot.commands.ExampleIntake;
+package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.IntakeSubsystem.IntakeStates;
 
-public class IntakeEject extends Command {
+public class IntakeExtend extends Command {
+
     public IntakeSubsystem s_intake;
 
-    public IntakeEject(IntakeSubsystem intakeSubsystem){
+    public IntakeExtend(IntakeSubsystem intakeSubsystem){
         this.s_intake = intakeSubsystem;
         addRequirements(s_intake);
     }
 
     @Override
     public void initialize() {
-        s_intake.eject();
+        s_intake.extend();
         super.initialize();
     }
 
     @Override
     public void end(boolean interrupted) {  
-        if(s_intake.getIntakeMotorState() == IntakeStates.idle)
-            s_intake.stopIntakeMotor();
+        s_intake.stopIntakeArms();
     }
 
     @Override
     public boolean isFinished() {
-        return s_intake.getIntakeMotorState() != IntakeStates.ejecting;
+        return s_intake.bothArmsAtMax.getAsBoolean();
     }
+    
 }

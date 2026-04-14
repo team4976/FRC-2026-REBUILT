@@ -2,10 +2,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.math.geometry.Rotation2d;
-
+import frc.robot.commands.Intake.Intake;
+import frc.robot.commands.Intake.IntakeEject;
 import frc.robot.commands.Jitter.JitterRobotSequence;
-import frc.robot.commands.ExampleIntake.Intake;
-import frc.robot.commands.ExampleIntake.IntakeEject;
+
 import static frc.robot.Constants.*;
 
 public class Bindings {

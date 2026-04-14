@@ -2,7 +2,7 @@ package frc.robot;
 
 import frc.robot.commands.Jitter.JitterRobotSequence;
 import frc.robot.commands.IndexAndSpindexCommand;
-import frc.robot.commands.ExampleIntake.IntakeSwap;
+import frc.robot.commands.Intake.IntakeSwap;
 import frc.robot.commands.Turret.TurretScanYaw;
 import frc.robot.commands.AlignedShotCommand;
 import frc.robot.commands.Turret.TurretScan;
