@@ -39,7 +39,7 @@ public class Bindings {
         //Intake in/out Toggle
         //driverController.x().onTrue(GlobalCommands.instance.c_intakeArms);
         
-        driverController.x().onTrue(new IntakeSwap(robotContainer.s_intakeExample));
+        driverController.x().onTrue(GlobalCommands.instance.c_intakeSwap);
 
         driverController.y().onTrue(new Intake(robotContainer.s_intakeExample));
         //TESTING REMOVE BEFORE COMP, jitter intake command used in auto, only mapped for testing rn.

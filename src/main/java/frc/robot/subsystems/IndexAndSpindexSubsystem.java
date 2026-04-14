@@ -42,7 +42,7 @@ public class IndexAndSpindexSubsystem extends SubsystemBase{
      */
     public void moveFeeder(double speed){
         m_index.set(speed);
-        m_spindex.set(speed);
+        m_spindex.set(speed - 20);
     }
 
     @Override
