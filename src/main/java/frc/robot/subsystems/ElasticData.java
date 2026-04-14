@@ -16,10 +16,13 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.List;
 
 import static frc.robot.Constants.*;
+
+import frc.robot.Functions;
 import frc.robot.RobotContainer;
 import frc.robot.Telemetry;
 
@@ -36,7 +39,7 @@ public class ElasticData extends SubsystemBase{
     private final CommandSwerveDrivetrain s_swerve;
     private final FlywheelSubsystem s_flywheel;
     private final TurretSubsystem s_turret;
-    private final Example_IntakeSubsystem s_intake;
+    private final IntakeSubsystem s_intake;
 
     private PowerDistribution PDH;
 
@@ -155,7 +158,7 @@ public class ElasticData extends SubsystemBase{
         selectedAutoPath = autoChooser.getSelected();
     }
 
-    /* 
+     
     public void addDataToSmartDashBoard(){
 
         
@@ -181,9 +184,9 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("QC/Motors/Turret/Turret Voltage", s_turret.turretMotor.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Lead/Flywheel Lead Voltage", s_flywheel.m_flywheelLeader.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Follow/Flywheel Follow Voltage", s_flywheel.m_flywheelFollower.getMotorVoltage().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Motors/Intake/Intake Voltage", s_intake.m_intake.getAppliedOutput());
-        SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Left Voltage", s_intake.m_leftArm.getAppliedOutput());
-        SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Right Voltage", s_intake.m_rightArm.getAppliedOutput());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Voltage", s_intake.m_Intake.getAppliedOutput());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Left Voltage", s_intake.m_LeftArm.getAppliedOutput());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Right Voltage", s_intake.m_RightArm.getAppliedOutput());
 
         //RPM Widgets
         SmartDashboard.putNumber("QC/Motors/Indexer/Index RPM", s_indexAndSpindex.m_index.getEncoder().getVelocity());
@@ -191,16 +194,16 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("QC/Motors/Turret/Turret RPS", s_turret.turretMotor.getVelocity().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Lead/Flywheel Lead RPS", s_flywheel.m_flywheelLeader.getVelocity().getValueAsDouble());
         SmartDashboard.putNumber("QC/Motors/Flywheel Follow/Flywheel Follow RPS", s_flywheel.m_flywheelFollower.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("QC/Motors/Intake/Intake Speed (Raw)", s_intake.m_intake.getEncoder().getVelocity());
-        SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Left Speed (Raw)", s_intake.m_leftArm.getEncoder().getVelocity());
-        SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Right Speed (Raw)", s_intake.m_rightArm.getEncoder().getVelocity());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Speed (Raw)", s_intake.m_Intake.getEncoder().getVelocity());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Left Speed (Raw)", s_intake.m_LeftArm.getEncoder().getVelocity());
+        SmartDashboard.putNumber("QC/Motors/Intake/Intake Arm Right Speed (Raw)", s_intake.m_RightArm.getEncoder().getVelocity());
 
         //Position Widgets
         SmartDashboard.putNumber("QC/Motors/Turret/Turret Position", s_turret.turretMotor.getPosition().getValueAsDouble());
-        SmartDashboard.putNumber("Intake Left Arm Encoder", s_intake.m_leftArm.getEncoder().getPosition());
-        SmartDashboard.putNumber("Intake Right Arm Encoder", s_intake.m_rightArm.getEncoder().getPosition());
-        SmartDashboard.putNumber("Intake Left Arm Encoder 2", s_intake.leftArmPose.getAsDouble());
-        SmartDashboard.putNumber("Intake Right Arm Encoder 2", s_intake.rightArmPose.getAsDouble());
+        SmartDashboard.putNumber("Intake Left Arm Encoder", s_intake.m_LeftArm.getEncoder().getPosition());
+        SmartDashboard.putNumber("Intake Right Arm Encoder", s_intake.m_RightArm.getEncoder().getPosition());
+        SmartDashboard.putNumber("Intake Left Arm Encoder 2", s_intake.encoder_LeftArm.getAsDouble());
+        SmartDashboard.putNumber("Intake Right Arm Encoder 2", s_intake.encoder_RightArm.getAsDouble());
 
         //--------
         //BOOLEANS
@@ -325,6 +328,6 @@ public class ElasticData extends SubsystemBase{
             
         }
     }
-        */
+        
 
 }

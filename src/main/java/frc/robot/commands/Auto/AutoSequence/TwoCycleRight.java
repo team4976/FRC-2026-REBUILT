@@ -12,7 +12,7 @@ import frc.robot.commands.Auto.FlywheelStop;
 import frc.robot.commands.ExampleIntake.IntakeExtend;
 import frc.robot.RobotContainer;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
-import frc.robot.subsystems.Example_IntakeSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.IndexAndSpindexSubsystem;
 import frc.robot.subsystems.PhotonVision;
@@ -27,7 +27,7 @@ public class TwoCycleRight extends SequentialCommandGroup {
         
         PhotonVision visionSubsystem = robotContainer.s_turretCam;
         FlywheelSubsystem flywheelSubsystem = robotContainer.s_flywheel;
-        Example_IntakeSubsystem intakeSubsystem = robotContainer.s_intake;
+        IntakeSubsystem intakeSubsystem = robotContainer.s_intake;
         IndexAndSpindexSubsystem indxerSubsystem = robotContainer.s_indexAndSpindex;
         TurretSubsystem turretMovementSubsystem = robotContainer.s_turret;
         UpdateHubInfo updateHubInfo = robotContainer.s_updateHubInfo;

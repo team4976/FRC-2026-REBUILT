@@ -37,7 +37,7 @@ public class RobotContainer {
     public final UpdateHubInfo s_updateHubInfo = new UpdateHubInfo(drivetrain);
 
     //Subsystem Objects/Subsystem Initialization
-    public final Example_IntakeSubsystem s_intake = new Example_IntakeSubsystem();
+    public final IntakeSubsystem s_intake = new IntakeSubsystem();
     public final TurretSubsystem s_turret = new TurretSubsystem();
     public final FlywheelSubsystem s_flywheel = new FlywheelSubsystem();
     public final IndexAndSpindexSubsystem s_indexAndSpindex = new IndexAndSpindexSubsystem();

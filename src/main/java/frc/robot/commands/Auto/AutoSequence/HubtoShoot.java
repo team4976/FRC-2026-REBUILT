@@ -10,14 +10,12 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 import frc.robot.commands.Auto.FlywheelStart;
 import frc.robot.commands.Auto.FlywheelStop;
-import frc.robot.commands.Intake.IntakeArmsCommand;
-//import frc.robot.commands.Jitter.JitterIntake;
 import frc.robot.commands.Turret.TurretScan;
 import frc.robot.commands.Turret.TurretScanYaw;
 import frc.robot.RobotContainer;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
 import frc.robot.subsystems.Autos;
-import frc.robot.subsystems.Example_IntakeSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.IndexAndSpindexSubsystem;
 
@@ -30,7 +28,7 @@ public class HubtoShoot extends SequentialCommandGroup {
     ){
         PhotonVision visionSubsystem = robotContainer.s_turretCam;
         FlywheelSubsystem flywheelSubsystem = robotContainer.s_flywheel;
-        Example_IntakeSubsystem intakeSubsystem = robotContainer.s_intake;
+        IntakeSubsystem intakeSubsystem = robotContainer.s_intake;
         IndexAndSpindexSubsystem indxerSubsystem = robotContainer.s_indexAndSpindex;
         TurretSubsystem turretMovementSubsystem = robotContainer.s_turret;
 
