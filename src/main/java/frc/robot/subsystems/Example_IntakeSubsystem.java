@@ -83,6 +83,7 @@ public class Example_IntakeSubsystem extends SubsystemBase{
 
     public BooleanSupplier bothArmsAtMax = () -> armLimit_LeftMax.getAsBoolean() && armLimit_RightMax.getAsBoolean();
     public BooleanSupplier bothArmsAtMin = () -> armLimit_LeftMin.getAsBoolean() && armLimit_RightMin.getAsBoolean();
+    public BooleanSupplier armBetweenMaxAndMin = () -> !bothArmsAtMax.getAsBoolean() && !bothArmsAtMin.getAsBoolean();
 
     //Direction
     IntakeStates state_Arms = IntakeStates.idle;
