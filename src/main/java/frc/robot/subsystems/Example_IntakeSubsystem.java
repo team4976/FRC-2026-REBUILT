@@ -173,7 +173,7 @@ public class Example_IntakeSubsystem extends SubsystemBase{
     }
     public void eject(){
         state_IntakeMotor = IntakeStates.ejecting;
-        m_Intake.set(Math.abs(intakeSpeed));
+        m_Intake.set(-intakeSpeed);
     }
     public void eject(double speed){
         state_IntakeMotor = IntakeStates.ejecting;

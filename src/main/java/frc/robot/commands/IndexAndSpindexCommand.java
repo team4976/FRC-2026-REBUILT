@@ -24,21 +24,16 @@ public class IndexAndSpindexCommand extends Command{
 
     @Override
     public void initialize(){
-        startingIntakeSpeed = s_intake.currentIntakeSpeed.getAsDouble();
     }
     
     @Override
     public void execute() {
         s_indexAndSpindex.moveFeeder(speed);
-        if (speed > 0){
-            s_intake.runIntakeMotor(-0.90);
-        }
     }
 
     @Override
     public void end(boolean interrupted) {
         s_indexAndSpindex.moveFeeder(0.0);
-        s_intake.runIntakeMotor(startingIntakeSpeed);
     }
 
     @Override
