@@ -28,11 +28,13 @@ public class Bindings {
         //Intake Mappings
 
         //Jitter the Intake (DEPRACATED)
+        /*
         driverController.rightBumper().whileTrue(robotContainer.repeatJidderCommand).onFalse(
                 Commands.runOnce(
                     ()->GlobalCommands.instance.c_intakeArms.end(true)
                 )
             );
+             */
 
         //Intake in/out Toggle
         //driverController.x().onTrue(GlobalCommands.instance.c_intakeArms);
