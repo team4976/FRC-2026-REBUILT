@@ -42,7 +42,8 @@ public class TurretScan extends Command {
         // if left or right switch is pressed turn off motor
         if(s_shooter.getLeftSwitch() == false || s_shooter.getRightSwitch() == false){
            s_shooter.stopTurn();
-        } else {
+        } 
+        else {
         // gets the angle we want to be at to be facing the hub
         double turretTargetAngle = s_updateHubInfo.getHubAngle();
         //get the current (field relative) angle bot is facing
@@ -52,30 +53,35 @@ public class TurretScan extends Command {
         double turretToRobotAngle = s_shooter.convertRotationAngle(turretPosition);        
         //Convert from robot relative to field relative angle
         double turretToFieldAngle = botAngle+turretToRobotAngle;
-
-        //Determines voltage to apply to motor based on distance turret angle is away from hub
+        //Convert from delta angle to rotations
         turretToHubRotations=s_shooter.convertAngleRotation(turretTargetAngle - turretToFieldAngle);
+        //Obtain encoder position to move turret to
         turretotargetpostition = turretPosition + turretToHubRotations;
-        if(turretotargetpostition > turretLimitLeft){
-            turretotargetpostition = turretLimitLeft - 0.1;
-        } else if (turretotargetpostition < turretLimitRight){
-            turretotargetpostition = turretLimitRight + 0.1;
-        }
 
         //Add adjustment due to operator override
-        double manualTurretVoltage =0;
-        double manualLockedOn = 0;
+        double manualTurretRotations =0;
         if (operatorController.axisGreaterThan(4, 0.3).getAsBoolean()){
-            manualTurretVoltage = -(operatorController.getRightX()-0.3)/(0.7/manualNudgeLimit);
+            manualTurretRotations = -((operatorController.getRightX()-0.3)/(0.7))*(s_shooter.convertAngleRotation(manualNudgeLimit));
         } else if (operatorController.axisLessThan(4, -0.3).getAsBoolean()) {
-            manualTurretVoltage = (operatorController.getRightX()-0.3)/(0.7/manualNudgeLimit);
+            manualTurretRotations = -((operatorController.getRightX()+0.3)/(0.7))*(s_shooter.convertAngleRotation(manualNudgeLimit));
         }
-
-        manualTurretVoltage = s_shooter.convertAngleRotation(manualTurretVoltage);
+        manualTurretRotations = s_shooter.convertAngleRotation(manualTurretRotations);
 
         System.out.println("turretotargetposition: " + turretotargetpostition);
-        System.out.println("manualLockedOn: " + manualLockedOn);
-        s_shooter.turretRotationPID(turretotargetpostition + manualLockedOn);
+        System.out.println("manualLockedOn: " + manualTurretRotations);
+
+        //Check if past software limits and if so reset turret slightly inside these limits
+        if(turretotargetpostition > turretLimitLeft){
+            turretotargetpostition = turretLimitLeft - 0.1;
+            manualTurretRotations = 0;
+        } 
+        else if (turretotargetpostition < turretLimitRight){
+            turretotargetpostition = turretLimitRight + 0.1;
+            manualTurretRotations=0;
+        }
+        
+        //Setting final turret rotation position
+        s_shooter.turretRotationPID(turretotargetpostition + manualTurretRotations);
         }
     } 
     
