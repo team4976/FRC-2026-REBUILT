@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 import frc.robot.commands.Auto.FlywheelStart;
 import frc.robot.commands.Auto.FlywheelStop;
+import frc.robot.commands.Intake.Intake;
+import frc.robot.commands.Intake.IntakeSwap;
 import frc.robot.commands.Turret.TurretScan;
 import frc.robot.commands.Turret.TurretScanYaw;
 import frc.robot.RobotContainer;
@@ -21,6 +23,7 @@ import frc.robot.subsystems.IndexAndSpindexSubsystem;
 
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.subsystems.UpdateHubInfo;
 
 public class HubtoShoot extends SequentialCommandGroup {
     public HubtoShoot(
@@ -30,21 +33,22 @@ public class HubtoShoot extends SequentialCommandGroup {
         FlywheelSubsystem flywheelSubsystem = robotContainer.s_flywheel;
         IntakeSubsystem intakeSubsystem = robotContainer.s_intake;
         IndexAndSpindexSubsystem indxerSubsystem = robotContainer.s_indexAndSpindex;
-        TurretSubsystem turretMovementSubsystem = robotContainer.s_turret;
+        TurretSubsystem turretSubsystem = robotContainer.s_turret;
+        UpdateHubInfo updateHubInfo = robotContainer.s_updateHubInfo;
 
         Command HubtoShoot = AutoBuilder.buildAuto("Hub to Shoot");
         
         addCommands(
             new PrintCommand("Hub to Shoot Started"),
-            //Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
-            HubtoShoot,
-            //new FlywheelStart(flywheelSubsystem, visionSubsystem),
-            //new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
-            new WaitCommand(6)
+            Commands.deadline(new WaitCommand(0.2), new IntakeSwap(intakeSubsystem)), new Intake(intakeSubsystem),
+            HubtoShoot.alongWith(new TurretScan(null, turretSubsystem)),
+            new FlywheelStart(flywheelSubsystem, visionSubsystem, updateHubInfo),
+            new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
+            new WaitCommand(6),
             //Commands.deadline(Commands.waitSeconds(6), new JitterIntake(intakeSubsystem)),
             //Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
-            //new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem, intakeSubsystem),
-            //new FlywheelStop(flywheelSubsystem, visionSubsystem)
+            new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem, intakeSubsystem),
+            new FlywheelStop(flywheelSubsystem)
 
         );
     }

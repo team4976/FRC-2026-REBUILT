@@ -7,12 +7,13 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-
+import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
 import frc.robot.commands.Auto.FlywheelStart;
 import frc.robot.commands.Auto.FlywheelStop;
 import frc.robot.commands.Intake.Intake;
 import frc.robot.commands.Intake.IntakeExtend;
 import frc.robot.commands.Intake.IntakeSwap;
+import frc.robot.commands.Turret.TurretScan;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
@@ -41,20 +42,20 @@ public class TwoCycleLeft extends SequentialCommandGroup {
             new PrintCommand("Two Cycle Left Started"),
             Commands.deadline(new WaitCommand(0.2), new IntakeSwap(intakeSubsystem)), new Intake(intakeSubsystem),
             new WaitCommand(0.5),
-            OneCycleLeft,
+            OneCycleLeft.alongWith(new TurretScan(null, turretSubsystem)),
             //Commands.deadline(new WaitCommand(1), new TurretScanYaw(visionSubsystem, turretMovementSubsystem)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem, updateHubInfo),
-            //new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
+            new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
             new WaitCommand(6),
             //Commands.deadline(Commands.waitSeconds(4), new JitterIntake(intakeSubsystem)),
             //Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
-            //new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem, intakeSubsystem),
+            new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem, intakeSubsystem),
             new FlywheelStop(flywheelSubsystem),
-            OneandHalfCycleLeft,
-            TwoCycleLeft,
+            OneandHalfCycleLeft.alongWith(new TurretScan(null, turretSubsystem)),
+            TwoCycleLeft.alongWith(new TurretScan(null, turretSubsystem)),
             //Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem, updateHubInfo),
-            //new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
+            new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
             new WaitCommand(6)
         );
     }

@@ -52,7 +52,7 @@ public class OneandHalfCycleLeft extends SequentialCommandGroup {
             new PrintCommand("One and a Half Cycle Left Started"),
             Commands.deadline(new WaitCommand(0.2), new IntakeSwap(intakeSubsystem)), new Intake(intakeSubsystem),
             new WaitCommand(0.5),
-            OneCycleLeft,
+            OneCycleLeft.alongWith(new TurretScan(null, turretSubsystem)),
             //Commands.deadline(new WaitCommand(1), new TurretScanYaw(visionSubsystem, turretSubsystem)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem, updateHubInfo),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
@@ -61,7 +61,7 @@ public class OneandHalfCycleLeft extends SequentialCommandGroup {
             //Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem, intakeSubsystem),
             new FlywheelStop(flywheelSubsystem),
-            OneandHalfCycleLeft
+            OneandHalfCycleLeft.alongWith(new TurretScan(null, turretSubsystem))
         );
     }
 }
