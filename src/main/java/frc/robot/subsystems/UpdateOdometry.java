@@ -55,7 +55,12 @@ public class UpdateOdometry extends SubsystemBase {
         if(EstPose.isEmpty()){
             return;
         }
-
+        if(EstPose.get().estimatedPose.getX() < 0 || EstPose.get().estimatedPose.getX() > 16.54 ||
+            EstPose.get().estimatedPose.getY() < 0 || EstPose.get().estimatedPose.getY() > 8.069326 ||
+             EstPose.get().estimatedPose.getZ() < 0 || EstPose.get().estimatedPose.getZ() > 0.5){
+                return;
+                // if the bot is outside the field of play do not accept the parameter
+             }
         // set robotPose(Pose2d) to the EstPose
         robotPos = EstPose.get().estimatedPose.toPose2d();
         tagAmbiguity = vision.getAmbiguity();

@@ -1,5 +1,6 @@
 package frc.robot.commands.Turret;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 //import frc.robot.Constants;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.TurretSubsystem;
@@ -42,6 +43,12 @@ public class TurretScan extends Command {
         // if left or right switch is pressed turn off motor
         if(s_shooter.getLeftSwitch() == false || s_shooter.getRightSwitch() == false){
            s_shooter.stopTurn();
+           if(s_shooter.getRightSwitch() == false){
+            s_shooter.turretMotor.setPosition(Constants.turretLimitRight);
+           }
+           else{
+            s_shooter.turretMotor.setPosition(Constants.turretLimitLeft);
+           }
         } 
         else {
         // gets the angle we want to be at to be facing the hub
