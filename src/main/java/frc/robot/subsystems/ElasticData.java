@@ -95,9 +95,6 @@ public class ElasticData extends SubsystemBase{
         //Non-Periodic Widgets 
         //-------------------
 
-        //REMOVE LATER
-        SmartDashboard.putNumber("Testing Distance Value", 0);
-
         //swerve widget based on the values gained from telemetry, 100% needs to be tuned
         //and maybe even needs to use different telemtry variables. havent gotten a chance to figure that out yet.
         SmartDashboard.putData("Drive/Swerve Drive", new Sendable() {
@@ -272,7 +269,7 @@ public class ElasticData extends SubsystemBase{
         
         SmartDashboard.putNumber("Calc Distance From Hub", s_UpdateHubInfo.getHubDistance());
 
-        SmartDashboard.putNumber("Calc Flywheel Speed", s_flywheel.speedTable.get(SmartDashboard.getNumber("Testing Distance Value", 0)));
+        SmartDashboard.putNumber("Calc Flywheel Speed", s_flywheel.speedTable.get(s_UpdateHubInfo.getHubDistance()));
 
         //updates the Smartdash board Values
         } catch (Exception e) {
