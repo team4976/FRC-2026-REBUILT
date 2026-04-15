@@ -167,6 +167,7 @@ public class ElasticData extends SubsystemBase{
      
     public void addDataToSmartDashBoard(){
 
+        try {
         
         // Turret Limit Switches
         SmartDashboard.putBoolean("Testing/Left Limit Switch Status", s_turret.getLeftSwitch());
@@ -274,6 +275,8 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Calc Flywheel Speed", s_flywheel.speedTable.get(SmartDashboard.getNumber("Testing Distance Value", 0)));
 
         //updates the Smartdash board Values
+        } catch (Exception e) {
+        }
 
     }
 

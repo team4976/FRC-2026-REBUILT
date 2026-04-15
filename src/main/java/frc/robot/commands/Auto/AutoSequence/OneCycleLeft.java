@@ -44,7 +44,7 @@ public class OneCycleLeft extends SequentialCommandGroup {
             OneCycleLeft,
             //Commands.deadline(new WaitCommand(6), new TurretScanYaw(visionSubsystem, turretSubsystem)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem, updateHubInfo),
-            new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
+            new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8),
             new WaitCommand(6)
             //Commands.deadline(Commands.waitSeconds(6), new JitterIntake(intakeSubsystem)),
             //Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false))
