@@ -14,7 +14,15 @@ public class IntakeEject extends Command {
 
     @Override
     public void initialize() {
-        s_intake.eject();
+        if(s_intake.getIntakeMotorState() == IntakeStates.ejecting){
+            s_intake.stopIntakeMotor();
+        }
+        else if(s_intake.getIntakeMotorState() == IntakeStates.intaking){
+            s_intake.eject();
+        }
+        else{
+            s_intake.eject();
+        }
         super.initialize();
     }
 
@@ -26,6 +34,6 @@ public class IntakeEject extends Command {
 
     @Override
     public boolean isFinished() {
-        return s_intake.getIntakeMotorState() != IntakeStates.ejecting;
+        return true;
     }
 }

@@ -58,7 +58,7 @@ public final class Constants {
 
 
   //Speed Constants
-  public static final double intakeSpeed = -0.65;
+  public static final double intakeSpeed = -0.50;
   public static final double turretScanVoltage = 2;
   public static final double turretManualVoltage = 1.5; //2
 

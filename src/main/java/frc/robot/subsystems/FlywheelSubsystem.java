@@ -9,6 +9,7 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.*;
@@ -22,7 +23,18 @@ public class FlywheelSubsystem extends SubsystemBase{
     public BooleanSupplier isAutoFlywheel = () -> cammeraSpeed > 0;
     public DoubleSupplier shooterSpeed = () -> m_flywheelLeader.getVelocity().getValueAsDouble();
 
+    public InterpolatingDoubleTreeMap speedTable = new InterpolatingDoubleTreeMap();
+
+
     public FlywheelSubsystem(){
+        speedTable.put(0.0, 0.0);
+        speedTable.put(1.4, 46.0);
+        speedTable.put(2.3, 50.0);
+        speedTable.put(2.9, 53.0);
+        speedTable.put(3.67, 56.0);
+        speedTable.put(4.6, 65.0);
+        speedTable.put(5.28, 75.0);
+
         //the PID of the flywheel
         Slot0Configs flywheelConfig = new Slot0Configs();
         flywheelConfig.kS = 0.1; // Add 0.1 V output to overcome static friction

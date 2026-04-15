@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 import frc.robot.commands.Auto.FlywheelStart;
 import frc.robot.commands.Auto.FlywheelStop;
+import frc.robot.commands.Intake.Intake;
+import frc.robot.commands.Intake.IntakeSwap;
 //import frc.robot.commands.Jitter.JitterIntake;
 import frc.robot.commands.Turret.TurretScan;
 import frc.robot.commands.Turret.TurretScanYaw;
@@ -42,18 +44,18 @@ public class OneandHalfCycleRight extends SequentialCommandGroup {
         
         addCommands(
             new PrintCommand("One and a Half Cycle Right Started"),
-            //Commands.deadline(new WaitCommand(0.2), new IntakeArmsCommand(intakeSubsystem)),
+            Commands.deadline(new WaitCommand(0.2), new IntakeSwap(intakeSubsystem)), new Intake(intakeSubsystem),
             new WaitCommand(0.5),
-            OneCycleRight,
+            OneCycleRight.alongWith(new TurretScan(null, turretSubsystem)),
             //Commands.deadline(new WaitCommand(1), new TurretScanYaw(visionSubsystem, turretSubsystem)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem, updateHubInfo),
-            new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8, flywheelSubsystem, intakeSubsystem),
+            new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8),
             new WaitCommand(6),
             //Commands.deadline(Commands.waitSeconds(6), new JitterIntake(intakeSubsystem)),
             //Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
-            new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0, flywheelSubsystem, intakeSubsystem),
+            new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0),
             new FlywheelStop(flywheelSubsystem),
-            OneandHalfCycleRight
+            OneandHalfCycleRight.alongWith(new TurretScan(null, turretSubsystem))
         );
     }
 }
