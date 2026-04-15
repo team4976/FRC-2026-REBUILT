@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.commands.Auto.AutoIndexAndSpindexCommand;
 import frc.robot.commands.Auto.FlywheelStart;
+import frc.robot.commands.Intake.Intake;
+import frc.robot.commands.Intake.IntakeSwap;
+import frc.robot.commands.Turret.TurretScan;
 import frc.robot.commands.Turret.TurretScanYaw;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
@@ -36,9 +39,9 @@ public class OneCycleRight extends SequentialCommandGroup {
         
         addCommands(
             new PrintCommand("Neutral Right Start Far Started"),
-           // Commands.deadline(new WaitCommand(0.2), new IntakeArmsCommand(intakeSubsystem)),
+            Commands.deadline(new WaitCommand(0.2), new IntakeSwap(intakeSubsystem)), new Intake(intakeSubsystem),
             new WaitCommand(0.5),
-            OneCycleRight,
+            OneCycleRight.alongWith(new TurretScan(null, turretSubsystem)),
             //Commands.deadline(new WaitCommand(6), new TurretScanYaw(visionSubsystem, turretSubsystem)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem, updateHubInfo),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8),
