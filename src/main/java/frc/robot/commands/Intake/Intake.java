@@ -17,17 +17,18 @@ public class Intake extends Command {
         if(s_intake.getIntakeMotorState() == IntakeStates.intaking){
             s_intake.stopIntakeMotor();
         }
-        else if(s_intake.getIntakeMotorState() == IntakeStates.idle ||
-            s_intake.getIntakeMotorState() == IntakeStates.ejecting){
-                s_intake.intake();
+        else if(s_intake.getIntakeMotorState() == IntakeStates.ejecting){
+            s_intake.intake();
+        }
+        else{
+            s_intake.intake();
         }
         super.initialize();
     }
 
     @Override
     public void end(boolean interrupted) {  
-        if(s_intake.getIntakeMotorState() == IntakeStates.idle)
-            s_intake.stopIntakeMotor();
+        if(s_intake.getIntakeMotorState() == IntakeStates.idle) s_intake.stopIntakeMotor();
     }
 
     @Override

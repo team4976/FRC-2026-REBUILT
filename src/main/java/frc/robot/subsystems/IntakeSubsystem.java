@@ -189,8 +189,10 @@ public class IntakeSubsystem extends SubsystemBase{
     public void periodic(){
         try{
             stateChecking();
+            
             if(state_IntakeMotor == IntakeStates.idle) stopIntakeMotor();
             if(state_Arms == IntakeStates.idle) stopIntakeArms();
+
             else if(state_Arms != IntakeStates.idle){
                 if(armLimit_LeftMax.getAsBoolean() && state_Arms == IntakeStates.extending )
                 {
@@ -200,7 +202,7 @@ public class IntakeSubsystem extends SubsystemBase{
                     m_LeftArm.set(0);
                 }
                 if(armLimit_RightMax.getAsBoolean()&& state_Arms == IntakeStates.extending ){
-                 m_RightArm.set(0);
+                    m_RightArm.set(0);
                 }
                 if(armLimit_RightMin.getAsBoolean()&& state_Arms == IntakeStates.retracting )
                 {
