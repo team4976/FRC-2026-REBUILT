@@ -23,6 +23,7 @@ import java.util.List;
 import static frc.robot.Constants.*;
 
 import frc.robot.Functions;
+import frc.robot.GlobalCommands;
 import frc.robot.RobotContainer;
 import frc.robot.Telemetry;
 
@@ -40,6 +41,7 @@ public class ElasticData extends SubsystemBase{
     private final FlywheelSubsystem s_flywheel;
     private final TurretSubsystem s_turret;
     private final IntakeSubsystem s_intake;
+    private final UpdateHubInfo s_UpdateHubInfo;
 
     private PowerDistribution PDH;
 
@@ -64,6 +66,7 @@ public class ElasticData extends SubsystemBase{
         this.s_turret = robotContainer.s_turret;
         this.s_intake = robotContainer.s_intake;
         this.s_swerve = drivetrain;
+        this.s_UpdateHubInfo = robotContainer.s_updateHubInfo;
 
         //camera objects
         this.cameraBackRight = robotContainer.s_rightBackCam;
@@ -91,6 +94,9 @@ public class ElasticData extends SubsystemBase{
         //-------------------
         //Non-Periodic Widgets 
         //-------------------
+
+        //REMOVE LATER
+        SmartDashboard.putNumber("Testing Distance Value", 0);
 
         //swerve widget based on the values gained from telemetry, 100% needs to be tuned
         //and maybe even needs to use different telemtry variables. havent gotten a chance to figure that out yet.
@@ -262,8 +268,13 @@ public class ElasticData extends SubsystemBase{
 
         //Ben T's smartdashboard stuff
         SmartDashboard.putNumber("Testing/Ben T's Stuff/shooter speed", s_flywheel.shooterSpeed.getAsDouble());
-            
+        
+        SmartDashboard.putNumber("Calc Distance From Hub", s_UpdateHubInfo.getHubDistance());
+
+        SmartDashboard.putNumber("Calc Flywheel Speed", s_flywheel.speedTable.get(SmartDashboard.getNumber("Testing Distance Value", 0)));
+
         //updates the Smartdash board Values
+
     }
 
 

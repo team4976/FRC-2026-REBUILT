@@ -64,7 +64,7 @@ public class IntakeSubsystem extends SubsystemBase{
 
     //Right Arm
     final double encoder_RightMax = -0.50;
-    final double encoder_RightMin = -0.006; // Home Location
+    final double encoder_RightMin = -0.25; // Home Location
     final DoubleSupplier encoder_RightArm = () -> m_RightArm.getEncoder().getPosition();
     public BooleanSupplier armLimit_RightMax = () -> encoder_RightArm.getAsDouble() <= encoder_RightMax;
     public BooleanSupplier armLimit_RightMin = () -> encoder_RightArm.getAsDouble() >= encoder_RightMin;
@@ -98,8 +98,7 @@ public class IntakeSubsystem extends SubsystemBase{
         m_RightArm = new SparkMax(Intake_Arm_Right_ID, MotorType.kBrushless);
 
         m_LeftArm.getEncoder().setPosition(0);
-        m_RightArm.getEncoder().setPosition(0);
-        
+        m_RightArm.getEncoder().setPosition(0); 
     }
 
     public void teleopInit(){
@@ -246,6 +245,7 @@ public class IntakeSubsystem extends SubsystemBase{
         //SmartDashboard.putNumber(path+"/Applied-Output", m_Intake.getAppliedControl());
         SmartDashboard.putNumber(path+"/Voltage", m_Intake.getMotorVoltage().getValueAsDouble());
         SmartDashboard.putNumber(path+"/Output-Current", m_Intake.getSupplyCurrent().getValueAsDouble());
+        SmartDashboard.putNumber(path+"/Temp", m_Intake.getDeviceTemp().getValueAsDouble());
         
         path = "SubSystems/Intake/Left_Arm";
         SmartDashboard.putNumber(path+"/Applied-Output", m_LeftArm.getAppliedOutput());
