@@ -13,11 +13,9 @@ public class AutoIndexAndSpindexCommand extends Command{
     public IntakeSubsystem s_intake;
     public double currentIntakeSpeed;
     
-    public AutoIndexAndSpindexCommand(IndexAndSpindexSubsystem InSSubsystem, double speed, FlywheelSubsystem flywheelSubsystem, IntakeSubsystem intakeSubsystem){
+    public AutoIndexAndSpindexCommand(IndexAndSpindexSubsystem InSSubsystem, double speed){
         this.s_indexAndSpinex = InSSubsystem;
-        this.s_flywheel = flywheelSubsystem;
         this.speed = speed;
-        this.s_intake = intakeSubsystem;
         
         addRequirements(InSSubsystem);
     }
@@ -25,10 +23,6 @@ public class AutoIndexAndSpindexCommand extends Command{
     @Override
     public void initialize(){
         s_indexAndSpinex.moveFeeder(speed);
-        //currentIntakeSpeed = s_intake.currentIntakeSpeed.getAsDouble();
-        if (s_flywheel.m_flywheelLeader.getMotorVoltage().getValueAsDouble() > 0) {
-            //s_intake.runIntakeMotor(-0.95);
-        }
     }
     
     

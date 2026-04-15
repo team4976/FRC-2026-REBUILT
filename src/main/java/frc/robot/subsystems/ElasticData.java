@@ -23,6 +23,7 @@ import java.util.List;
 import static frc.robot.Constants.*;
 
 import frc.robot.Functions;
+import frc.robot.GlobalCommands;
 import frc.robot.RobotContainer;
 import frc.robot.Telemetry;
 
@@ -40,6 +41,7 @@ public class ElasticData extends SubsystemBase{
     private final FlywheelSubsystem s_flywheel;
     private final TurretSubsystem s_turret;
     private final IntakeSubsystem s_intake;
+    private final UpdateHubInfo s_UpdateHubInfo;
 
     private PowerDistribution PDH;
 
@@ -64,6 +66,7 @@ public class ElasticData extends SubsystemBase{
         this.s_turret = robotContainer.s_turret;
         this.s_intake = robotContainer.s_intake;
         this.s_swerve = drivetrain;
+        this.s_UpdateHubInfo = robotContainer.s_updateHubInfo;
 
         //camera objects
         this.cameraBackRight = robotContainer.s_rightBackCam;
@@ -161,6 +164,7 @@ public class ElasticData extends SubsystemBase{
      
     public void addDataToSmartDashBoard(){
 
+        try {
         
         // Turret Limit Switches
         SmartDashboard.putBoolean("Testing/Left Limit Switch Status", s_turret.getLeftSwitch());
@@ -262,8 +266,15 @@ public class ElasticData extends SubsystemBase{
 
         //Ben T's smartdashboard stuff
         SmartDashboard.putNumber("Testing/Ben T's Stuff/shooter speed", s_flywheel.shooterSpeed.getAsDouble());
-            
+        
+        SmartDashboard.putNumber("Calc Distance From Hub", s_UpdateHubInfo.getHubDistance());
+
+        SmartDashboard.putNumber("Calc Flywheel Speed", s_flywheel.speedTable.get(s_UpdateHubInfo.getHubDistance()));
+
         //updates the Smartdash board Values
+        } catch (Exception e) {
+        }
+
     }
 
 

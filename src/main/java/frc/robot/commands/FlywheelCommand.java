@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.subsystems.FlywheelSubsystem;
@@ -34,8 +35,11 @@ public class FlywheelCommand extends Command{
         //the y is the flywheel speed and the x is the distance from the target 
         //(if we dont use a turret camera then the x needs to be changed to the calculated distance of the robot from the hub)
         if (s_updateHubInfo.getHubDistance() != 0) {
+            /* 
             autoFlywheelSpeed = (31.49597 + (10.19041 * (s_updateHubInfo.getHubDistance() + 0.5969))  
                 - (0.4148098 * Math.pow(s_updateHubInfo.getHubDistance()+ 0.5969, 2))) * 0.9;
+                */
+            autoFlywheelSpeed = s_flywheel.speedTable.get(s_updateHubInfo.getHubDistance());
         }
 
         //Sets the adder/substractor to the flywheel speed
