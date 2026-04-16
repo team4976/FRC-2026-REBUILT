@@ -40,7 +40,7 @@ public class OneCycleLeft extends SequentialCommandGroup {
         Command OneCycleLeft = AutoBuilder.buildAuto("1 Cycle - Left");
         
         addCommands(
-            new PrintCommand("Neutral Left Start Far Started"),
+            new PrintCommand("One Cycle on the Left"),
             Commands.deadline(new WaitCommand(0.8), new IntakeSwap(intakeSubsystem)), new Intake(intakeSubsystem),
             //new WaitCommand(0.7),
             Commands.deadline(OneCycleLeft, new TurretScan(updateHubInfo, turretSubsystem)),

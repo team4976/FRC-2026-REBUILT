@@ -41,7 +41,7 @@ public class TwoCycleRight extends SequentialCommandGroup {
         Command TwoCycleRight = AutoBuilder.buildAuto("2 Cycle - Right");
         
         addCommands(
-            new PrintCommand("Neutral Right Start Far Started"),
+            new PrintCommand("Two Cycles on the Right"),
             Commands.deadline(new WaitCommand(0.8), new IntakeSwap(intakeSubsystem)), new Intake(intakeSubsystem),
             //new WaitCommand(0.7),
             Commands.deadline(OneCycleRight, new TurretScan(updateHubInfo, turretSubsystem)),

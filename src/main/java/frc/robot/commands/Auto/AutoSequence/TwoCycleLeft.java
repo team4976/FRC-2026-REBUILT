@@ -39,7 +39,7 @@ public class TwoCycleLeft extends SequentialCommandGroup {
         Command TwoCycleLeft = AutoBuilder.buildAuto("2 Cycle - Left");
         
         addCommands(
-            new PrintCommand("Neutral Left Start Far Started"),
+            new PrintCommand("Two Cycles on the Left"),
             Commands.deadline(new WaitCommand(0.8), new IntakeSwap(intakeSubsystem)), new Intake(intakeSubsystem),
             //new WaitCommand(0.7),
             Commands.deadline(OneCycleLeft, new TurretScan(updateHubInfo, turretSubsystem)),

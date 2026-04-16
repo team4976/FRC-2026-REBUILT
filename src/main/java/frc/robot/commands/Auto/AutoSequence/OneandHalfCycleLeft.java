@@ -49,7 +49,7 @@ public class OneandHalfCycleLeft extends SequentialCommandGroup {
         
         
         addCommands(   
-            new PrintCommand("Neutral Left Start Far Started"),
+            new PrintCommand("One and a Half Cycle on the Left"),
             Commands.deadline(new WaitCommand(0.8), new IntakeSwap(intakeSubsystem)), new Intake(intakeSubsystem),
             //new WaitCommand(2),
             Commands.deadline(OneCycleLeft, new TurretScan(updateHubInfo, turretSubsystem)),

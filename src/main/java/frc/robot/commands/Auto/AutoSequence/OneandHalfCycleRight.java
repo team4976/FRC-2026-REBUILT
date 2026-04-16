@@ -43,7 +43,7 @@ public class OneandHalfCycleRight extends SequentialCommandGroup {
         Command OneandHalfCycleRight = AutoBuilder.buildAuto("1.5 Cycle - Right"); 
         
         addCommands(
-            new PrintCommand("Neutral Right Start Far Started"),
+            new PrintCommand("One and a Half Cycle on the Right"),
             Commands.deadline(new WaitCommand(0.8), new IntakeSwap(intakeSubsystem)), new Intake(intakeSubsystem),
             //new WaitCommand(0.7),
             Commands.deadline(OneCycleRight, new TurretScan(updateHubInfo, turretSubsystem)),
