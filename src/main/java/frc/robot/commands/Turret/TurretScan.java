@@ -72,8 +72,7 @@ public class TurretScan extends Command {
         } else if (operatorController.axisLessThan(4, -0.3).getAsBoolean()) {
             manualTurretRotations = -((operatorController.getRightX()+0.3)/(0.7))*(s_shooter.convertAngleRotation(manualNudgeLimit));
         }
-        manualTurretRotations = s_shooter.convertAngleRotation(manualTurretRotations);
-
+        
         turretotargetpostition = turretotargetpostition + manualTurretRotations;
         System.out.println("turretotargetposition: " + turretotargetpostition);
         System.out.println("manualLockedOn: " + manualTurretRotations);

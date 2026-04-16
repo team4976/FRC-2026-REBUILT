@@ -45,6 +45,9 @@ public class UpdateOdometry extends SubsystemBase {
     public void updateOdometryWithVision(PhotonVision vision){
 
        // double startTime = System.currentTimeMillis();
+       if(DriverStation.isAutonomousEnabled()){
+            return;
+        }
         
         Pose2d robotPos = new Pose2d();
         tagAmbiguity = -1.0;
@@ -75,12 +78,8 @@ public class UpdateOdometry extends SubsystemBase {
         ///System.err.println("made it past !targets.isEmpty");
 
         // if bot is disabled reset the pose to a position you get off of april tags
-        if(DriverStation.isDisabled()) {
-            InitialPose = robotPos;
-            swerve.resetPose(InitialPose); // link to auto
-        }
 
-        if(DriverStation.isEnabled()) {
+        if(DriverStation.isTeleopEnabled()) {
             // Use the multi-target pose for reliable vision poses
             if (numOfTags > 1) {
                 swerve.addVisionMeasurement(robotPos, timeStamp, good);
@@ -95,6 +94,7 @@ public class UpdateOdometry extends SubsystemBase {
             }
             
         }
+
         //double endTime = System.currentTimeMillis();
 
         //System.out.println(startTime);
