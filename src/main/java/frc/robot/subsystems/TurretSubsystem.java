@@ -106,6 +106,10 @@ public class TurretSubsystem extends SubsystemBase{
         return turretMotor.getPosition().getValueAsDouble();
     }
 
+    public void resetEncoder(){
+        turretMotor.setPosition(0);
+    }
+
     // returns the stopButton to be true
     public boolean getStopCommand(){
         return stopbutton = true;
