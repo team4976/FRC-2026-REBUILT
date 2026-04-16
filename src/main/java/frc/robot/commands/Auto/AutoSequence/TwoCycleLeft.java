@@ -39,20 +39,20 @@ public class TwoCycleLeft extends SequentialCommandGroup {
         Command TwoCycleLeft = AutoBuilder.buildAuto("2 Cycle - Left");
         
         addCommands(
-            new PrintCommand("Two Cycle Left Started"),
+            new PrintCommand("Neutral Left Start Far Started"),
             Commands.deadline(new WaitCommand(0.2), new IntakeSwap(intakeSubsystem)), new Intake(intakeSubsystem),
-            new WaitCommand(0.5),
-            OneCycleLeft.alongWith(new TurretScan(null, turretSubsystem)),
-            //Commands.deadline(new WaitCommand(1), new TurretScanYaw(visionSubsystem, turretMovementSubsystem)),
+            new WaitCommand(0.7),
+            Commands.deadline(OneCycleLeft, new TurretScan(updateHubInfo, turretSubsystem)),
+            //Commands.deadline(new WaitCommand(6), new TurretScanYaw(visionSubsystem, turretSubsystem)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem, updateHubInfo),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8),
             new WaitCommand(6),
-            //Commands.deadline(Commands.waitSeconds(4), new JitterIntake(intakeSubsystem)),
-            //Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
+            //Commands.deadline(Commands.waitSeconds(6), new JitterIntake(intakeSubsystem)),
+            //Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false))
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0),
             new FlywheelStop(flywheelSubsystem),
-            OneandHalfCycleLeft.alongWith(new TurretScan(null, turretSubsystem)),
-            TwoCycleLeft.alongWith(new TurretScan(null, turretSubsystem)),
+            Commands.deadline(OneandHalfCycleLeft,new TurretScan(updateHubInfo, turretSubsystem)),
+            Commands.deadline(TwoCycleLeft,new TurretScan(updateHubInfo, turretSubsystem)),
             //Commands.deadline(new WaitCommand(1),new TurretScan(visionSubsystem, turretMovementSubsystem, true)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem, updateHubInfo),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8),

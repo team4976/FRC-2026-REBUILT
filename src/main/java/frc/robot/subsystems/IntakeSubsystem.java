@@ -140,7 +140,7 @@ public class IntakeSubsystem extends SubsystemBase{
     }
 
     public void stopIntakeArms(){
-        if(m_LeftArm.getAppliedOutput() != 0) System.out.println("STOP MOTOR");
+        //if(m_LeftArm.getAppliedOutput() != 0) System.out.println("STOP MOTOR");
         state_Arms = IntakeStates.idle;
         setIntakeArmsSpeed(0);
     }    

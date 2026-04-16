@@ -97,26 +97,27 @@ public class ElasticData extends SubsystemBase{
 
         //swerve widget based on the values gained from telemetry, 100% needs to be tuned
         //and maybe even needs to use different telemtry variables. havent gotten a chance to figure that out yet.
-        SmartDashboard.putData("Drive/Swerve Drive", new Sendable() {
-            @Override      
-            public void initSendable(SendableBuilder builder) {
-                builder.setSmartDashboardType("SwerveDrive");
+        
+        // SmartDashboard.putData("Drive/Swerve Drive", new Sendable() {
+        //     @Override      
+        //     public void initSendable(SendableBuilder builder) {
+        //         builder.setSmartDashboardType("SwerveDrive");
       
-                builder.addDoubleProperty("Front Left Angle", () -> telemetry.m_moduleDirections[1].getAngle() /* * 2 * Math.PI */, null);
-                builder.addDoubleProperty("Front Left Velocity", () -> telemetry.m_moduleSpeeds[1].getLength() / 3, null);
+        //         builder.addDoubleProperty("Front Left Angle", () -> telemetry.m_moduleDirections[1].getAngle() /* * 2 * Math.PI */, null);
+        //         builder.addDoubleProperty("Front Left Velocity", () -> telemetry.m_moduleSpeeds[1].getLength() / 3, null);
       
-                builder.addDoubleProperty("Front Right Angle", () -> telemetry.m_moduleDirections[2].getAngle() /* * 2 * Math.PI */, null);
-                builder.addDoubleProperty("Front Right Velocity", ()  -> telemetry.m_moduleSpeeds[2].getLength() / 3, null);
+        //         builder.addDoubleProperty("Front Right Angle", () -> telemetry.m_moduleDirections[2].getAngle() /* * 2 * Math.PI */, null);
+        //         builder.addDoubleProperty("Front Right Velocity", ()  -> telemetry.m_moduleSpeeds[2].getLength() / 3, null);
       
-                builder.addDoubleProperty("Back Left Angle", () -> telemetry.m_moduleDirections[3].getAngle() /*  * 2 * Math.PI */, null);
-                builder.addDoubleProperty("Back Left Velocity", () -> telemetry.m_moduleSpeeds[3].getLength() / 3, null);
+        //         builder.addDoubleProperty("Back Left Angle", () -> telemetry.m_moduleDirections[3].getAngle() /*  * 2 * Math.PI */, null);
+        //         builder.addDoubleProperty("Back Left Velocity", () -> telemetry.m_moduleSpeeds[3].getLength() / 3, null);
       
-                builder.addDoubleProperty("Back Right Angle", () -> telemetry.m_moduleDirections[0].getAngle() /*  * 2 * Math.PI */, null);
-                builder.addDoubleProperty("Back Right Velocity", () -> telemetry.m_moduleSpeeds[0].getLength() / 3, null);
+        //         builder.addDoubleProperty("Back Right Angle", () -> telemetry.m_moduleDirections[0].getAngle() /*  * 2 * Math.PI */, null);
+        //         builder.addDoubleProperty("Back Right Velocity", () -> telemetry.m_moduleSpeeds[0].getLength() / 3, null);
       
-                builder.addDoubleProperty("Robot Angle", () -> telemetry.m_poseArray[2], null);
-            } 
-        });
+        //         builder.addDoubleProperty("Robot Angle", () -> telemetry.m_poseArray[2], null);
+        //     } 
+        // });
 
         //Auto Field Chooser 
         SmartDashboard.putData("Autos/Auto Select", autoChooser);
@@ -280,6 +281,7 @@ public class ElasticData extends SubsystemBase{
 
     @Override
     public void periodic(){
+        /*
         try{
             addDataToSmartDashBoard();
         //--------
@@ -338,6 +340,7 @@ public class ElasticData extends SubsystemBase{
         }catch(Exception e){
             
         }
+        */
     }
         
 
