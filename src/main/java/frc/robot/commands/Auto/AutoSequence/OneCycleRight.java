@@ -39,8 +39,8 @@ public class OneCycleRight extends SequentialCommandGroup {
         
         addCommands(
             new PrintCommand("Neutral Right Start Far Started"),
-            Commands.deadline(new WaitCommand(0.2), new IntakeSwap(intakeSubsystem)), new Intake(intakeSubsystem),
-            new WaitCommand(0.7),
+            Commands.deadline(new WaitCommand(0.8), new IntakeSwap(intakeSubsystem)), new Intake(intakeSubsystem),
+            //new WaitCommand(0.7),
             Commands.deadline(OneCycleRight, new TurretScan(updateHubInfo, turretSubsystem)),
             //Commands.deadline(new WaitCommand(6), new TurretScanYaw(visionSubsystem, turretSubsystem)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem, updateHubInfo),
