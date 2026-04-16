@@ -281,7 +281,7 @@ public class ElasticData extends SubsystemBase{
 
     @Override
     public void periodic(){
-        /*
+        
         try{
             addDataToSmartDashBoard();
         //--------
@@ -340,7 +340,7 @@ public class ElasticData extends SubsystemBase{
         }catch(Exception e){
             
         }
-        */
+        
     }
         
 
