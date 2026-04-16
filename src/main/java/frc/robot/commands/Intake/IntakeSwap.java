@@ -31,13 +31,14 @@ public class IntakeSwap extends Command {
 
     @Override
     public void end(boolean interrupted) {  
-        s_intake.stopIntakeArms();    
+        //s_intake.stopIntakeArms();    
     }
 
     @Override
     public boolean isFinished() {
-        return (s_intake.getArmIntakeState() == IntakeStates.idle || 
+        return true;/*(s_intake.getArmIntakeState() == IntakeStates.idle || 
             (s_intake.bothArmsAtMax.getAsBoolean() &&  s_intake.getArmIntakeState() == IntakeStates.extending) ||
             (s_intake.bothArmsAtMin.getAsBoolean() &&  s_intake.getArmIntakeState() == IntakeStates.retracting));
+        */
     }
 }
