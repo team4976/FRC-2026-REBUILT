@@ -39,7 +39,7 @@ public class FlywheelCommand extends Command{
             autoFlywheelSpeed = (31.49597 + (10.19041 * (s_updateHubInfo.getHubDistance() + 0.5969))  
                 - (0.4148098 * Math.pow(s_updateHubInfo.getHubDistance()+ 0.5969, 2))) * 0.9;
                 */
-            autoFlywheelSpeed = s_flywheel.speedTable.get(s_updateHubInfo.getHubDistance());
+            autoFlywheelSpeed = s_flywheel.speedTable.get(s_updateHubInfo.getHubDistance()) * 0.9;
         }
 
         //Sets the adder/substractor to the flywheel speed
