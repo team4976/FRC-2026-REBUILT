@@ -22,7 +22,7 @@ public class IntakeSwap extends Command {
             s_intake.bothArmsAtMin.getAsBoolean()){
                 s_intake.extend();
         }
-        else if(s_intake.armBetweenMaxAndMin.getAsBoolean()){
+        else if(!s_intake.bothArmsAtMax.getAsBoolean()){
             s_intake.extend();
         }
         super.initialize();
