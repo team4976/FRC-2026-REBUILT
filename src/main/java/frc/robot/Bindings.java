@@ -18,7 +18,7 @@ public class Bindings {
             point.withModuleDirection(new Rotation2d(-driverController.getLeftY(), -driverController.getLeftX()))
         ));
         // Reset the field-centric heading on left bumper press.
-        driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric).alongWith(robotContainer.s_turret.runOnce(()->robotContainer.s_turret.resetEncoder())));
+        driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));//.alongWith(robotContainer.s_turret.runOnce(()->robotContainer.s_turret.resetEncoder())));
 
 
         //Regular Shooting

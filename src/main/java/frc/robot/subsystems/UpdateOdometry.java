@@ -79,7 +79,7 @@ public class UpdateOdometry extends SubsystemBase {
 
         // if bot is disabled reset the pose to a position you get off of april tags
 
-        if(DriverStation.isTeleopEnabled()) {
+        if(!DriverStation.isAutonomous()) {
             // Use the multi-target pose for reliable vision poses
             if (numOfTags > 1) {
                 swerve.addVisionMeasurement(robotPos, timeStamp, good);
