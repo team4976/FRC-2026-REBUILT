@@ -40,8 +40,8 @@ public class HubtoShoot extends SequentialCommandGroup {
         
         addCommands(
             new PrintCommand("Hub to Shoot Started"),
-            Commands.deadline(new WaitCommand(0.2), new IntakeSwap(intakeSubsystem)), new Intake(intakeSubsystem),
-            HubtoShoot.alongWith(new TurretScan(null, turretSubsystem)),
+            Commands.deadline(new WaitCommand(0.7), new IntakeSwap(intakeSubsystem)), new Intake(intakeSubsystem),
+            Commands.deadline(HubtoShoot, new TurretScan(updateHubInfo, turretSubsystem)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem, updateHubInfo),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8),
             new WaitCommand(6),
