@@ -41,7 +41,8 @@ public class OneCycleLeft extends SequentialCommandGroup {
         
         addCommands(
             new PrintCommand("One Cycle on the Left"),
-            Commands.deadline(new WaitCommand(0.8), new IntakeSwap(intakeSubsystem)), new Intake(intakeSubsystem),
+            Commands.deadline(new WaitCommand(0.8), new IntakeSwap(intakeSubsystem)), 
+            new Intake(intakeSubsystem),
             //new WaitCommand(0.7),
             Commands.deadline(OneCycleLeft, new TurretScan(updateHubInfo, turretSubsystem)),
             //Commands.deadline(new WaitCommand(6), new TurretScanYaw(visionSubsystem, turretSubsystem)),

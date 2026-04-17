@@ -1,18 +1,22 @@
 package frc.robot.subsystems;
 
 import static frc.robot.Constants.*;
-import static frc.robot.Constants.intakeSpeed;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.Intake.IntakeExtend;
 
 /* 
 Robot Container:
@@ -35,6 +39,9 @@ public class IntakeSubsystem extends SubsystemBase{
     TalonFX m_Intake;
     DoubleSupplier currentIntakeSpeed = () -> m_Intake.getVelocity().getValueAsDouble();
 
+    private SparkMaxConfig sparkConfigBrake = new SparkMaxConfig();
+    private SparkMaxConfig sparkConfigCoast = new SparkMaxConfig();
+
 
     //Intake Arms
     SparkMax m_LeftArm, m_RightArm;
@@ -49,9 +56,9 @@ public class IntakeSubsystem extends SubsystemBase{
     final DoubleSupplier encoder_LeftArm = () -> m_LeftArm.getEncoder().getPosition();
     public BooleanSupplier armLimit_LeftMax = () -> encoder_LeftArm.getAsDouble() <= encoder_LeftMax;
     public BooleanSupplier armLimit_LeftMin = () -> encoder_LeftArm.getAsDouble() >= encoder_LeftMin;
-        final double encoder_LeftArm () {
+    /*final double encoder_LeftArm () {
         return m_LeftArm.getEncoder().getPosition();
-    }
+    }*/
     /*
     final double encoder_LeftMax = -5.5;
     final double encoder_LeftMin = -0.15; // Home Location
@@ -68,9 +75,10 @@ public class IntakeSubsystem extends SubsystemBase{
     final DoubleSupplier encoder_RightArm = () -> m_RightArm.getEncoder().getPosition();
     public BooleanSupplier armLimit_RightMax = () -> encoder_RightArm.getAsDouble() <= encoder_RightMax;
     public BooleanSupplier armLimit_RightMin = () -> encoder_RightArm.getAsDouble() >= encoder_RightMin;
-        final double encoder_RightArm (){
+    /*
+    final double encoder_RightArm (){
         return m_RightArm.getEncoder().getPosition();
-    }
+    }*/
     /* 
     final double encoder_RightMax = -0.65;
     final double encoder_RightMin = -0.15; // Home Location
@@ -98,7 +106,14 @@ public class IntakeSubsystem extends SubsystemBase{
         m_RightArm = new SparkMax(Intake_Arm_Right_ID, MotorType.kBrushless);
 
         m_LeftArm.getEncoder().setPosition(0);
-        m_RightArm.getEncoder().setPosition(0); 
+        m_RightArm.getEncoder().setPosition(0);
+        
+        sparkConfigBrake.idleMode(IdleMode.kBrake);
+        sparkConfigCoast.idleMode(IdleMode.kCoast);
+
+        m_LeftArm.configure(sparkConfigCoast, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+        m_RightArm.configure(sparkConfigCoast, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+        
     }
 
     public void teleopInit(){
@@ -115,10 +130,12 @@ public class IntakeSubsystem extends SubsystemBase{
     }
     public void extend(){
         if(trigger_LeftMax.getAsBoolean()) return;
-        state_Arms = IntakeStates.extending;
         double speed = (isJittering)? jitterSpeed : armsSeed;
         //if(speed > 0) speed *= -1;
         setIntakeArmsSpeed(-speed);
+        state_Arms = IntakeStates.extending;
+        m_LeftArm.configure(sparkConfigBrake, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+        m_RightArm.configure(sparkConfigBrake, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
     }
     public void extend(double speed){
         if(trigger_LeftMax.getAsBoolean()) return;
@@ -127,11 +144,15 @@ public class IntakeSubsystem extends SubsystemBase{
     }
 
     public void retract(){
-        if(trigger_LeftMin.getAsBoolean()) return;
-        state_Arms = IntakeStates.retracting;
+        state_Arms = IntakeStates.idle;
+        if(bothArmsAtMin.getAsBoolean()) return;
         double speed = (isJittering)? jitterSpeed : armsSeed;
         //if(speed < 0) speed *= -1;
         setIntakeArmsSpeed(speed);
+        state_Arms = IntakeStates.retracting;
+        m_LeftArm.configure(sparkConfigCoast, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+        m_RightArm.configure(sparkConfigCoast, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+        
     }
     public void retract(double speed){
         if(trigger_LeftMin.getAsBoolean()) return;
@@ -156,8 +177,8 @@ public class IntakeSubsystem extends SubsystemBase{
         if(state_Arms == IntakeStates.extending){
             retract(speed);
         }
-        else if(state_Arms == IntakeStates.extending){
-            retract(speed);
+        else if(state_Arms == IntakeStates.retracting){
+            extend(speed);
         }
     }
 
@@ -188,21 +209,22 @@ public class IntakeSubsystem extends SubsystemBase{
     @Override
     public void periodic(){
         try{
-            stateChecking();
+            //stateChecking();
             
+            //if(state_Arms == IntakeStates.extending && armBetweenMaxAndMin.getAsBoolean()) extend();
             if(state_IntakeMotor == IntakeStates.idle) stopIntakeMotor();
-            if(state_Arms == IntakeStates.idle) stopIntakeArms();
+            //if(state_Arms == IntakeStates.idle) stopIntakeArms();
 
-            else if(state_Arms != IntakeStates.idle){
-                if(armLimit_LeftMax.getAsBoolean() && state_Arms == IntakeStates.extending )
+            if(state_Arms != IntakeStates.idle){
+                if(armLimit_LeftMax.getAsBoolean() && state_Arms == IntakeStates.extending)
                 {
-                    m_LeftArm.set(0);
+                    m_LeftArm.set(-0.10);
                 }
-                if(armLimit_LeftMin.getAsBoolean()&& state_Arms == IntakeStates.retracting ){
+                if(armLimit_LeftMin.getAsBoolean()&& state_Arms == IntakeStates.retracting){
                     m_LeftArm.set(0);
                 }
                 if(armLimit_RightMax.getAsBoolean()&& state_Arms == IntakeStates.extending ){
-                    m_RightArm.set(0);
+                    m_RightArm.set(-0.10);
                 }
                 if(armLimit_RightMin.getAsBoolean()&& state_Arms == IntakeStates.retracting )
                 {
@@ -216,7 +238,9 @@ public class IntakeSubsystem extends SubsystemBase{
         diagnostics();
     }
 
+     
     void stateChecking() throws Exception{
+        /* 
         if( state_Arms == IntakeStates.extending &&
             (m_LeftArm.getAppliedOutput() > 0 || m_RightArm.getAppliedOutput() > 0)){
                 stopIntakeArms();
@@ -226,6 +250,7 @@ public class IntakeSubsystem extends SubsystemBase{
                     " Output:"+m_LeftArm.getAppliedOutput()
                 );
         }
+                */
         if(state_Arms == IntakeStates.retracting &&
             (m_LeftArm.getAppliedOutput() < 0 || m_RightArm.getAppliedOutput() < 0)){
                 stopIntakeArms();
@@ -235,7 +260,7 @@ public class IntakeSubsystem extends SubsystemBase{
                     " Output:"+m_LeftArm.getAppliedOutput()
                 );
         }
-    }
+    } 
 
     void diagnostics(){
         try{
@@ -253,7 +278,7 @@ public class IntakeSubsystem extends SubsystemBase{
         SmartDashboard.putNumber(path+"/Applied-Output", m_LeftArm.getAppliedOutput());
         SmartDashboard.putNumber(path+"/Voltage", m_LeftArm.getBusVoltage());
         SmartDashboard.putNumber(path+"/Output-Current", m_LeftArm.getOutputCurrent());
-        SmartDashboard.putNumber(path+"/Pos", encoder_LeftArm());
+        SmartDashboard.putNumber(path+"/Pos", encoder_LeftArm.getAsDouble());
         SmartDashboard.putNumber(path+"/Max", encoder_LeftMax);
         SmartDashboard.putNumber(path+"/Min", encoder_LeftMin);
         SmartDashboard.putBoolean(path+"/Max_Hit", armLimit_LeftMax.getAsBoolean());
@@ -263,7 +288,7 @@ public class IntakeSubsystem extends SubsystemBase{
         SmartDashboard.putNumber(path+"/Applied-Output", m_RightArm.getAppliedOutput());
         SmartDashboard.putNumber(path+"/Voltage", m_RightArm.getBusVoltage());
         SmartDashboard.putNumber(path+"/Output-Current", m_RightArm.getOutputCurrent());
-        SmartDashboard.putNumber(path+"/Pos", encoder_RightArm());
+        SmartDashboard.putNumber(path+"/Pos", encoder_RightArm.getAsDouble());
         SmartDashboard.putNumber(path+"/Max", encoder_RightMax);
         SmartDashboard.putNumber(path+"/Min", encoder_RightMin);
         SmartDashboard.putBoolean(path+"/Max_Hit", armLimit_RightMax.getAsBoolean());

@@ -39,22 +39,23 @@ public class UpdateHubInfo extends SubsystemBase{
     this.swerve = swerve;
 
    //Logic to determine HubX and HubY coordinates
-    alliance = DriverStation.getAlliance();
-        if (alliance.isPresent()) {
-            if (alliance.get() == Alliance.Blue) {
-                hubOrigX = BlueHubX; 
-                hubOrigY = BlueHubY;                
-                hubId = 26;
-            }
-            if (alliance.get() == Alliance.Red) {
-                hubOrigX = RedHubX; 
-                hubOrigY = RedHubY;
-                hubId = 10;
-            }
-        }
-
   }  
 
+   public void hubInit(){
+        alliance = DriverStation.getAlliance();
+            if (alliance.isPresent()) {
+                if (alliance.get() == Alliance.Blue) {
+                    hubOrigX = BlueHubX; 
+                    hubOrigY = BlueHubY;                
+                    hubId = 26;
+                }
+                if (alliance.get() == Alliance.Red) {
+                    hubOrigX = RedHubX; 
+                    hubOrigY = RedHubY;
+                    hubId = 10;
+                }
+            }
+    }
     public double getHubDistance(){
         double hubX = hubOrigX;
         double hubY = hubOrigY;

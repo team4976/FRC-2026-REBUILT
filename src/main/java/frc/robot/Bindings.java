@@ -77,7 +77,7 @@ public class Bindings {
 
         //Turret
         //Inside of the turret subsystems periodic()
-        operatorController.start().onTrue(robotContainer.s_turret.runOnce(()->robotContainer.s_turret.resetEncoder()));
+        operatorController.start().onTrue(GlobalCommands.instance.c_turretReset);
         
         //Flywheel
         //Inside of the flywheel subsystems periodic()

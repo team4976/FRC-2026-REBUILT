@@ -122,7 +122,8 @@ public class ElasticData extends SubsystemBase{
         //Auto Field Chooser 
         SmartDashboard.putData("Autos/Auto Select", autoChooser);
         try{
-            autoChooser.setDefaultOption("1 Cycle - Right", new String[]{"1 Cycle - Right"});
+            autoChooser.setDefaultOption("No Auto", new String[]{"No Auto"});
+            autoChooser.addOption("1 Cycle - Right", new String[]{"1 Cycle - Right"});
             autoChooser.addOption("1 Cycle - Left", new String[]{"1 Cycle - Left"});
             autoChooser.addOption("1.5 Cycle - Right", new String[]{"1 Cycle - Right", "1.5 Cycle - Right"});
             autoChooser.addOption("1.5 Cycle - Left", new String[]{"1 Cycle - Left", "1.5 Cycle - Left"});
@@ -131,7 +132,6 @@ public class ElasticData extends SubsystemBase{
             autoChooser.addOption("Hub to Shoot to Depot", new String[]{"Hub to Shoot", "Depot to Shoot"});
             autoChooser.addOption("Hub to Shoot", new String[]{"Hub to Shoot"});
             autoChooser.addOption("Shoot to Nuetral", new String[]{"Shoot to Neutral"});
-            autoChooser.addOption("No Auto", new String[]{"No Auto"});
 
         } catch (Exception e){
             System.out.print(e.getMessage());
@@ -294,6 +294,8 @@ public class ElasticData extends SubsystemBase{
             .mapToDouble(Double::doubleValue).toArray());
         targets.put("cameraBackRight", cameraBackRight.getIDs().stream()
             .mapToDouble(Double::doubleValue).toArray());
+        targets.put("cameraTurret", cameraTurret.getIDs().stream()
+            .mapToDouble(Double::doubleValue).toArray());
 
 
         //-------------
@@ -312,28 +314,29 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Vision/Back Left Cam/Distance", cameraBackLeft.getDistance());
 
         //Back Right Cam Based Vision Widgets
-        SmartDashboard.putNumber("Vision/Back Left Cam/Raw pitch", cameraBackRight.getAnyPitch());
-        SmartDashboard.putNumber("Vision/Back Left Cam/Raw yaw", cameraBackRight.getAnyYaw());
-        SmartDashboard.putNumberArray("Vision/Back Left Cam/Target IDs", targets.get("cameraBackLeft"));
-        SmartDashboard.putBoolean("Vision/Back Left Cam/Target Visible", cameraBackRight.targetVisible());
-        SmartDashboard.putNumber("Vision/Back Left Cam/Ambiguity", cameraBackRight.getAmbiguity());
-        SmartDashboard.putNumber("Vision/Back Left Cam/Y Rotation", cameraBackRight.getYRotation());
-        SmartDashboard.putNumber("Vision/Back Left Cam/X Rotation", cameraBackRight.getXRotation());
-        SmartDashboard.putNumber("Vision/Back Left Cam/Z Rotation", cameraBackRight.getZRotation());
-        SmartDashboard.putNumber("Vision/Back Left Cam/Distance", cameraBackRight.getDistance());
+        SmartDashboard.putNumber("Vision/Back Right Cam/Raw pitch", cameraBackRight.getAnyPitch());
+        SmartDashboard.putNumber("Vision/Back Right Cam/Raw yaw", cameraBackRight.getAnyYaw());
+        SmartDashboard.putNumberArray("Vision/Back Right Cam/Target IDs", targets.get("cameraBackLeft"));
+        SmartDashboard.putBoolean("Vision/Back Right Cam/Target Visible", cameraBackRight.targetVisible());
+        SmartDashboard.putNumber("Vision/Back Right Cam/Ambiguity", cameraBackRight.getAmbiguity());
+        SmartDashboard.putNumber("Vision/Back Right Cam/Y Rotation", cameraBackRight.getYRotation());
+        SmartDashboard.putNumber("Vision/Back Right Cam/X Rotation", cameraBackRight.getXRotation());
+        SmartDashboard.putNumber("Vision/Back Right Cam/Z Rotation", cameraBackRight.getZRotation());
+        SmartDashboard.putNumber("Vision/Back Right Cam/Distance", cameraBackRight.getDistance());
 
         //Turret Based Vision Widgets
-        SmartDashboard.putNumber("Vision/Turret Cam/turretDistance", cameraTurret.getTurretDistance());
-        SmartDashboard.putNumber("Vision/Turret Cam/turretPoseX", cameraTurret.getRobotPos().getX());
-        SmartDashboard.putNumber("Vision/Turret Cam/turretPoseY",  cameraTurret.getRobotPos().getY());
-        SmartDashboard.putNumber("Vision/Turret Cam/turretRotation", cameraTurret.getRobotPos().getRotation().getDegrees());
-        SmartDashboard.putNumber("Vision/Turret Cam/targetAngle", cameraTurret.getTurretTargetAngle());
-        SmartDashboard.putNumber("Vision/Turret Cam/turretAngle", cameraTurret.getBotAngle());
-        SmartDashboard.putNumber("Vision/Turret Cam/Turret Distance Test", cameraTurret.vision.turretDistance);
-        SmartDashboard.putNumber("Vision/Turret Cam/Turret PoseX Test", s_swerve.getState().Pose.getX());
-        SmartDashboard.putNumber("Vision/Turret Cam/Turret PoseY Test", s_swerve.getState().Pose.getY());
-        SmartDashboard.putNumber("Vision/Turret Cam/turretTargetAngle", cameraTurret.getTurretTargetAngle());
-        SmartDashboard.putNumber("Vision/Turret Cam/Turret Target Position", s_turret.convertAngleRotation(cameraTurret.getTurretTargetAngle() - cameraTurret.getBotAngle()));
+        SmartDashboard.putNumber("Vision/Turret Cam/Raw pitch", cameraTurret.getAnyPitch());
+        SmartDashboard.putNumber("Vision/Turret Cam/Raw yaw", cameraTurret.getAnyYaw());
+        SmartDashboard.putNumberArray("Vision/Turret Cam/Target IDs", targets.get("cameraTurret"));
+        SmartDashboard.putBoolean("Vision/Turret Cam/Target Visible", cameraTurret.targetVisible());
+        SmartDashboard.putNumber("Vision/Turret Cam/Ambiguity", cameraTurret.getAmbiguity());
+        SmartDashboard.putNumber("Vision/Turret Cam/Y Rotation", cameraTurret.getYRotation());
+        SmartDashboard.putNumber("Vision/Turret Cam/X Rotation", cameraTurret.getXRotation());
+        SmartDashboard.putNumber("Vision/Turret Cam/Z Rotation", cameraTurret.getZRotation());
+        SmartDashboard.putNumber("Vision/Turret Cam/Distance", cameraTurret.getDistance());
+
+        SmartDashboard.putNumber("Selected Hub (Hub Orig X)", s_UpdateHubInfo.hubOrigX);
+        SmartDashboard.putNumber("Selected Hub (Hub Orig Y)", s_UpdateHubInfo.hubOrigY);
 
         SmartDashboard.updateValues();
 

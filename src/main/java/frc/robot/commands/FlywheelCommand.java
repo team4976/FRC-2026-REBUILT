@@ -4,23 +4,27 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.subsystems.FlywheelSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.UpdateHubInfo;
 import static frc.robot.Constants.*;
 
 public class FlywheelCommand extends Command{
     public UpdateHubInfo s_updateHubInfo;
     public FlywheelSubsystem s_flywheel;
+    public TurretSubsystem s_turret;
 
     public double manualFlywheelSpeed;
     public double totalFlywheelSpeed;
     public double autoFlywheelSpeed;
 
-    public FlywheelCommand(FlywheelSubsystem flywheelSubsystem, UpdateHubInfo updateHubInfo){
+
+    public FlywheelCommand(FlywheelSubsystem flywheelSubsystem, UpdateHubInfo updateHubInfo, TurretSubsystem s_turret){
         this.s_flywheel = flywheelSubsystem;
         this.s_updateHubInfo = updateHubInfo;
         addRequirements(flywheelSubsystem);
         this.s_flywheel = flywheelSubsystem;
         this.s_updateHubInfo = updateHubInfo;
+        this. s_turret = s_turret;
     }
 
     @Override
@@ -34,12 +38,18 @@ public class FlywheelCommand extends Command{
         //this equation is for the quadratic made by the relation of the distance to flywheel speed. 
         //the y is the flywheel speed and the x is the distance from the target 
         //(if we dont use a turret camera then the x needs to be changed to the calculated distance of the robot from the hub)
-        if (s_updateHubInfo.getHubDistance() != 0) {
-            /* 
-            autoFlywheelSpeed = (31.49597 + (10.19041 * (s_updateHubInfo.getHubDistance() + 0.5969))  
-                - (0.4148098 * Math.pow(s_updateHubInfo.getHubDistance()+ 0.5969, 2))) * 0.9;
-                */
-            autoFlywheelSpeed = s_flywheel.speedTable.get(s_updateHubInfo.getHubDistance()) * 0.9;
+
+
+        if(s_turret.isAutoAiming) {
+            //if (s_updateHubInfo.getHubDistance() != 0) {
+                /* 
+                autoFlywheelSpeed = (31.49597 + (10.19041 * (s_updateHubInfo.getHubDistance() + 0.5969))  
+                    - (0.4148098 * Math.pow(s_updateHubInfo.getHubDistance()+ 0.5969, 2))) * 0.9;
+                    */
+                autoFlywheelSpeed = s_flywheel.speedTable.get(s_updateHubInfo.getHubDistance());
+            //}
+        } else {
+            autoFlywheelSpeed = s_flywheel.speedTable.get(2.9);
         }
 
         //Sets the adder/substractor to the flywheel speed
@@ -50,6 +60,8 @@ public class FlywheelCommand extends Command{
         //adds the flywheel speeds then sends it to the subsystem
         totalFlywheelSpeed = manualFlywheelSpeed + autoFlywheelSpeed;
         s_flywheel.cammeraSpeed = totalFlywheelSpeed;
+    
+        
     }
 
     @Override

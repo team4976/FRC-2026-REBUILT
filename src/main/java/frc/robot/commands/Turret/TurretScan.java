@@ -1,4 +1,6 @@
 package frc.robot.commands.Turret;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 //import frc.robot.Constants;
@@ -43,18 +45,12 @@ public class TurretScan extends Command {
         // if left or right switch is pressed turn off motor
         if(s_shooter.getLeftSwitch() == false || s_shooter.getRightSwitch() == false){
            s_shooter.stopTurn();
-           if(s_shooter.getRightSwitch() == false){
-            s_shooter.turretMotor.setPosition(Constants.turretLimitRight);
-           }
-           else{
-            s_shooter.turretMotor.setPosition(Constants.turretLimitLeft);
-           }
         } 
         else {
         // gets the angle we want to be at to be facing the hub
         double turretTargetAngle = s_updateHubInfo.getHubAngle();
         //get the current (field relative) angle bot is facing
-        double botAngle = s_updateHubInfo.getBotAngle();
+        double botAngle = Math.toDegrees(MathUtil.angleModulus(Math.toRadians(s_updateHubInfo.getBotAngle() - s_shooter.angle_sign)));
         //get (robot relative) turret angle
         double turretPosition = s_shooter.getEncoderValue();
         double turretToRobotAngle = s_shooter.convertRotationAngle(turretPosition);        
@@ -66,7 +62,7 @@ public class TurretScan extends Command {
         turretotargetpostition = turretPosition + turretToHubRotations;
 
         //Add adjustment due to operator override
-        double manualTurretRotations =0;
+        double manualTurretRotations = 0;
         if (operatorController.axisGreaterThan(4, 0.3).getAsBoolean()){
             manualTurretRotations = -((operatorController.getRightX()-0.3)/(0.7))*(s_shooter.convertAngleRotation(manualNudgeLimit));
         } else if (operatorController.axisLessThan(4, -0.3).getAsBoolean()) {
@@ -87,6 +83,9 @@ public class TurretScan extends Command {
         
         //Setting final turret rotation position
         s_shooter.turretRotationPID(turretotargetpostition);
+        SmartDashboard.putNumber("SubSystems/Turret/turret to target postition", turretotargetpostition);
+        SmartDashboard.putNumber("SubSystems/Turret/Turret Position", turretPosition);
+        
         }
     } 
     

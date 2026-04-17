@@ -17,16 +17,22 @@ import static frc.robot.Constants.*;
 public class FlywheelSubsystem extends SubsystemBase{
     public TalonFX m_flywheelLeader, m_flywheelFollower;
 
+    public TurretSubsystem s_turret;
+
     public final VelocityVoltage shooterVelocityVoltage = new VelocityVoltage(0).withSlot(0);
     public double cammeraSpeed = 0.0;
 
     public BooleanSupplier isAutoFlywheel = () -> cammeraSpeed > 0;
+    public BooleanSupplier isAutoFlywheelAndAim = () -> cammeraSpeed > 0 && s_turret.isAutoAiming;
+    public BooleanSupplier isAutoFlywheelNotAim = () -> cammeraSpeed > 0 && !s_turret.isAutoAiming;
+
     public DoubleSupplier shooterSpeed = () -> m_flywheelLeader.getVelocity().getValueAsDouble();
 
     public InterpolatingDoubleTreeMap speedTable = new InterpolatingDoubleTreeMap();
 
+    public FlywheelSubsystem(TurretSubsystem s_turret){
+        this.s_turret = s_turret;
 
-    public FlywheelSubsystem(){
         speedTable.put(0.0, 0.0);
         speedTable.put(1.4, 46.0);
         speedTable.put(2.3, 50.0);
@@ -69,7 +75,8 @@ public class FlywheelSubsystem extends SubsystemBase{
         double _targetRPS = 0;
         if(isAutoFlywheel.getAsBoolean()) 
             _targetRPS = cammeraSpeed;
-        else if (operatorController.axisMagnitudeGreaterThan(1, 0.3).getAsBoolean()){
+        else if (operatorController.axisMagnitudeGreaterThan(1, 0.3).getAsBoolean() /*||
+            isAutoFlywheelNotAim.getAsBoolean()*/){
             _targetRPS = operatorController.getLeftY() * 65;
         }
         spinFlywheel(_targetRPS);

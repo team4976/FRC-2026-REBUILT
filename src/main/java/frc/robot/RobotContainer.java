@@ -39,7 +39,7 @@ public class RobotContainer {
     //Subsystem Objects/Subsystem Initialization
     public final IntakeSubsystem s_intake = new IntakeSubsystem();
     public final TurretSubsystem s_turret = new TurretSubsystem();
-    public final FlywheelSubsystem s_flywheel = new FlywheelSubsystem();
+    public final FlywheelSubsystem s_flywheel = new FlywheelSubsystem(s_turret);
     public final IndexAndSpindexSubsystem s_indexAndSpindex = new IndexAndSpindexSubsystem();
     public Autos s_autos;
 
@@ -76,6 +76,8 @@ public class RobotContainer {
         s_indexAndSpindex.teleopInit();
         s_intake.teleopInit();
         s_turret.teleopInit();
+        s_updateHubInfo.hubInit();
+        s_turret.angle_sign = 180;
     }
 
     public void getOdometryPose(){
@@ -111,7 +113,11 @@ public class RobotContainer {
     }
 
     public void autoInit(){
-        teleopInit();
+        s_flywheel.teleopInit();
+        s_indexAndSpindex.teleopInit();
+        s_intake.teleopInit();
+        s_turret.teleopInit();
+        s_updateHubInfo.hubInit();
 
         elasticData.autonomousInit();
         String value = elasticData.autoChooser.getSelected()[elasticData.autoChooser.getSelected().length -1];

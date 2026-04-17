@@ -23,9 +23,10 @@ public class TurretSubsystem extends SubsystemBase{
     final PositionVoltage turretPosition = new PositionVoltage(0).withSlot(0);
     public double rStickAxis;
     public double wantedPosition;
-    public boolean isAutoAiming;
+    public boolean isAutoAiming = false;
     public boolean stopbutton = false;
     public boolean flipButton = false;
+    public int angle_sign = 0;
 
     public TurretSubsystem(){
         turretMotor = new TalonFX(Turret_ID); 
