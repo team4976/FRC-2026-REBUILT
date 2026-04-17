@@ -79,10 +79,10 @@ public class TurretScan extends Command {
 
         //Check if past software limits and if so reset turret slightly inside these limits
         if(turretotargetpostition > turretLimitLeft){
-            turretotargetpostition = turretLimitLeft - 0.1;
+            turretotargetpostition = turretLimitLeft - 0.5;
         } 
         else if (turretotargetpostition < turretLimitRight){
-            turretotargetpostition = turretLimitRight + 0.1;
+            turretotargetpostition = turretLimitRight + 0.5;
         }
         
         //Setting final turret rotation position

@@ -44,8 +44,8 @@ public class HubtoDepottoShoot extends SequentialCommandGroup {
         
         addCommands(
             new PrintCommand("Hub to Depot to Shoot Started"),
-            Commands.deadline(new WaitCommand(0.2), new IntakeSwap(intakeSubsystem)), new Intake(intakeSubsystem),
-            HubtoShoot.alongWith(new TurretScan(null, turretSubsystem)),
+            Commands.deadline(new WaitCommand(0.7), new IntakeSwap(intakeSubsystem)), new Intake(intakeSubsystem),
+            Commands.deadline(HubtoShoot, new TurretScan(updateHubInfo, turretSubsystem)),
             //Commands.deadline(new WaitCommand(1),new TurretScanYaw(visionSubsystem, turretMovementSubsystem)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem,updateHubInfo),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8),
@@ -54,7 +54,7 @@ public class HubtoDepottoShoot extends SequentialCommandGroup {
             //Commands.deadline(new WaitCommand(0.2), new IntakeCommand(intakeSubsystem, false)),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.0),
             new FlywheelStop(flywheelSubsystem),
-            DepottoShoot.alongWith(new TurretScan(null, turretSubsystem)),
+            Commands.deadline(DepottoShoot, new TurretScan(updateHubInfo, turretSubsystem)),
             new FlywheelStart(flywheelSubsystem, visionSubsystem,updateHubInfo),
             new AutoIndexAndSpindexCommand(indxerSubsystem, 0.8),
             new WaitCommand(6)
