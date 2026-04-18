@@ -44,10 +44,12 @@ public class TurretScan extends Command {
         //System.out.println("TurretScan-Execute");
 
         // if left or right switch is pressed turn off motor
+        /* 
         if(s_shooter.getLeftSwitch() == false || s_shooter.getRightSwitch() == false){
            s_shooter.stopTurn();
         } 
         else {
+        */
         // gets the angle we want to be at to be facing the hub
         double turretTargetAngle = s_updateHubInfo.getHubAngle();
         //get the current (field relative) angle bot is facing
@@ -70,10 +72,11 @@ public class TurretScan extends Command {
 
         //Add adjustment due to operator override
         double manualTurretRotations = 0;
+        double sensitivity = 0.25; // 0.7, origonal 
         if (operatorController.axisGreaterThan(4, 0.3).getAsBoolean()){
-            manualTurretRotations = -((operatorController.getRightX()-0.3)/(0.7))*(s_shooter.convertAngleRotation(manualNudgeLimit));
+            manualTurretRotations = -((operatorController.getRightX()-0.3)/(sensitivity))*(s_shooter.convertAngleRotation(manualNudgeLimit));
         } else if (operatorController.axisLessThan(4, -0.3).getAsBoolean()) {
-            manualTurretRotations = -((operatorController.getRightX()+0.3)/(0.7))*(s_shooter.convertAngleRotation(manualNudgeLimit));
+            manualTurretRotations = -((operatorController.getRightX()+0.3)/(sensitivity))*(s_shooter.convertAngleRotation(manualNudgeLimit));
         }
         
         turretotargetpostition = turretotargetpostition + manualTurretRotations;
@@ -95,12 +98,14 @@ public class TurretScan extends Command {
         }
         SmartDashboard.putBoolean("SubSystems/Turret/Hit Software Limit", HitDigitalLimit);      
         
+        if (turretotargetpostition < turretLimitRight || turretLimitLeft < turretotargetpostition) return;
+
         //Setting final turret rotation position
         s_shooter.turretRotationPID(turretotargetpostition);
         SmartDashboard.putNumber("SubSystems/Turret/turret to target postition (final pose add)", turretotargetpostition);
         SmartDashboard.putNumber("SubSystems/Turret/Turret Position", turretPosition);
         
-        }
+        //}
     } 
     
 

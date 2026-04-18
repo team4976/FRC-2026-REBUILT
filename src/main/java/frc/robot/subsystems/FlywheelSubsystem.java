@@ -37,7 +37,7 @@ public class FlywheelSubsystem extends SubsystemBase{
         speedTable.put(1.4, 46.0);
         speedTable.put(2.3, 50.0);
         speedTable.put(2.9, 53.0);
-        speedTable.put(3.67, 56.0);
+        speedTable.put(3.67, 56.0);//56.0);
         speedTable.put(4.6, 65.0);
         speedTable.put(5.28, 75.0);
 

@@ -41,13 +41,11 @@ public class FlywheelCommand extends Command{
 
 
         if(s_turret.isAutoAiming) {
-            //if (s_updateHubInfo.getHubDistance() != 0) {
                 /* 
                 autoFlywheelSpeed = (31.49597 + (10.19041 * (s_updateHubInfo.getHubDistance() + 0.5969))  
                     - (0.4148098 * Math.pow(s_updateHubInfo.getHubDistance()+ 0.5969, 2))) * 0.9;
                     */
                 autoFlywheelSpeed = s_flywheel.speedTable.get(s_updateHubInfo.getHubDistance());
-            //}
         } else {
             autoFlywheelSpeed = s_flywheel.speedTable.get(2.9);
         }

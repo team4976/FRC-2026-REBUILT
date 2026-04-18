@@ -28,6 +28,7 @@ public class TurretSubsystem extends SubsystemBase{
     public boolean stopbutton = false;
     public boolean flipButton = false;
     public int angle_sign = 0;
+    public double turnVoltage = 0;
 
     public TurretSubsystem(){
         turretMotor = new TalonFX(Turret_ID); 
@@ -131,28 +132,43 @@ public class TurretSubsystem extends SubsystemBase{
     @Override
     public void periodic(){
         //Check for Hitting Limit Switch Before the Override
-        if (!rightSwitch.get() || getEncoderValue() < turretLimitRight){
+        boolean skipCheck = false;
+        double limitOffset = 0.5; // .25 might work better we will see ;)
+        if ((!rightSwitch.get() || getEncoderValue() < turretLimitRight)){
+            System.out.println("Right switch hit with voltage of:" + turnVoltage);
             turnLeft(0);
-            return;
-        } else if (!leftSwitch.get() || getEncoderValue() > turretLimitLeft) {
+            Double encoderPose = turretLimitRight + limitOffset;
+            turretRotationPID(encoderPose);
+            skipCheck = true;
+        } else if ((!leftSwitch.get() || getEncoderValue() > turretLimitLeft)) {
+            System.out.println("Left switch hit with voltage of:" + turnVoltage);
             turnLeft(0);
-            return;
+            Double encoderPose = turretLimitLeft - limitOffset;
+            turretRotationPID(encoderPose);
+            skipCheck = true;
         }
 
         //Turret Override
         if (isAutoAiming) {
             return;
-        } else if (!isAutoAiming){
+        } else if (!isAutoAiming && !skipCheck){
             if (operatorController.axisGreaterThan(4, 0.3).getAsBoolean()){
                 rStickAxis = operatorController.getRightX();
-                turnLeft(rStickAxis * -2);
+                turnVoltage = rStickAxis * -2;
+                turnLeft(turnVoltage);
+                System.out.println("Spinning Turret at" + turnVoltage);
             } else if (operatorController.axisLessThan(4, -0.3).getAsBoolean()){
                 rStickAxis = operatorController.getRightX();
-                turnLeft(rStickAxis * -2);
+                turnVoltage = rStickAxis * -2;
+                turnLeft(turnVoltage);
             } else {
-                turnLeft(0);
+                turnVoltage = 0;
+                turnLeft(turnVoltage);
             }
         } 
         TurretCamYaw = convertRotationAngle(getEncoderValue());
+        SmartDashboard.putNumber("Voltage State Turret", turnVoltage);
+        SmartDashboard.putBoolean("Digital Limit Right Hit", getEncoderValue() < turretLimitRight);
+        SmartDashboard.putBoolean("Digital Limit Left Hit", getEncoderValue() > turretLimitLeft);
     }
 }

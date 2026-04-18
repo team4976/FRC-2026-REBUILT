@@ -58,7 +58,7 @@ public final class Constants {
 
 
   //Speed Constants
-  public static final double intakeSpeed = -0.60;
+  public static final double intakeSpeed = -0.75;
   public static final double turretScanVoltage = 2;
   public static final double turretManualVoltage = 1.5; //2
 
@@ -83,8 +83,8 @@ public final class Constants {
   public static final double BlueHubY = 4.042283;
 
   //Important turret limits
-  public static final double turretLimitLeft = 21.7626953125; // software limits on turret motion
-  public static final double turretLimitRight = -11.59228515625;
+  public static final double turretLimitLeft = 24.5; // software limits on turret motion
+  public static final double turretLimitRight = -16.0;
   public static final double manualNudgeLimit = 10; // maximum degrees manual turretMovement moves
 
   public static final double maxAcceptableAmbiguity = 0.1;
