@@ -11,6 +11,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static frc.robot.Constants.*;
 
@@ -42,6 +43,8 @@ public class TurretSubsystem extends SubsystemBase{
         turretSpinConfig.kI = 0;
         turretSpinConfig.kD = 0;
         turretMotor.getConfigurator().apply(turretSpinConfig);
+
+        SmartDashboard.putNumber("Starting (Base) Turret Position", getEncoderValue());
     }
 
     public void teleopInit(){
@@ -109,6 +112,7 @@ public class TurretSubsystem extends SubsystemBase{
 
     public void resetEncoder(){
         turretMotor.setPosition(0);
+        SmartDashboard.putNumber("Starting (Base) Turret Position", getEncoderValue());
     }
 
     // returns the stopButton to be true

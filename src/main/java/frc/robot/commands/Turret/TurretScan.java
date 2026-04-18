@@ -21,6 +21,7 @@ public class TurretScan extends Command {
     boolean stopLockedOn = false; // flag to track if the turret is hitting the limit switch in lockedOn mode // our estimated position on the field
     double turretTargetPosition;
     double turretToHubRotations;
+    boolean HitDigitalLimit = false;
 
     public TurretScan(UpdateHubInfo updateHubInfo, TurretSubsystem shooter){
         this.s_updateHubInfo = updateHubInfo;
@@ -50,16 +51,22 @@ public class TurretScan extends Command {
         // gets the angle we want to be at to be facing the hub
         double turretTargetAngle = s_updateHubInfo.getHubAngle();
         //get the current (field relative) angle bot is facing
-        double botAngle = Math.toDegrees(MathUtil.angleModulus(Math.toRadians(s_updateHubInfo.getBotAngle() - s_shooter.angle_sign)));
+        double botAngle = s_updateHubInfo.getBotAngle();
+        //double botAngle = Math.toDegrees(MathUtil.angleModulus(Math.toRadians(s_updateHubInfo.getBotAngle() - s_shooter.angle_sign)));
+        SmartDashboard.putNumber("SubSystems/Turret/Bot Angle (Post Subtractor)", botAngle);
         //get (robot relative) turret angle
         double turretPosition = s_shooter.getEncoderValue();
-        double turretToRobotAngle = s_shooter.convertRotationAngle(turretPosition);        
+        double turretToRobotAngle = s_shooter.convertRotationAngle(turretPosition);  
+        SmartDashboard.putNumber("SubSystems/Turret/Turret to Robot Angle", turretToRobotAngle);      
         //Convert from robot relative to field relative angle
         double turretToFieldAngle = botAngle+turretToRobotAngle;
+        SmartDashboard.putNumber("SubSystems/Turret/Turret to Field Angle", turretToFieldAngle);      
         //Convert from delta angle to rotations
         turretToHubRotations=s_shooter.convertAngleRotation(turretTargetAngle - turretToFieldAngle);
+        SmartDashboard.putNumber("SubSystems/Turret/Turret to Hub Rotations", turretToHubRotations);      
         //Obtain encoder position to move turret to
         turretotargetpostition = turretPosition + turretToHubRotations;
+        SmartDashboard.putNumber("SubSystems/Turret/Turret to Target Position", turretotargetpostition);      
 
         //Add adjustment due to operator override
         double manualTurretRotations = 0;
@@ -73,17 +80,24 @@ public class TurretScan extends Command {
         System.out.println("turretotargetposition: " + turretotargetpostition);
         System.out.println("manualLockedOn: " + manualTurretRotations);
 
+        SmartDashboard.putNumber("SubSystems/Turret/turret to target postition (pre pose add)", turretotargetpostition);
+
         //Check if past software limits and if so reset turret slightly inside these limits
         if(turretotargetpostition > turretLimitLeft){
-            turretotargetpostition = turretLimitLeft - 0.5;
+            //turretotargetpostition = turretLimitLeft - 0.5;
+            HitDigitalLimit = true;
+            return;
         } 
         else if (turretotargetpostition < turretLimitRight){
-            turretotargetpostition = turretLimitRight + 0.5;
+            //turretotargetpostition = turretLimitRight + 0.5;
+            HitDigitalLimit = true;
+            return;
         }
+        SmartDashboard.putBoolean("SubSystems/Turret/Hit Software Limit", HitDigitalLimit);      
         
         //Setting final turret rotation position
         s_shooter.turretRotationPID(turretotargetpostition);
-        SmartDashboard.putNumber("SubSystems/Turret/turret to target postition", turretotargetpostition);
+        SmartDashboard.putNumber("SubSystems/Turret/turret to target postition (final pose add)", turretotargetpostition);
         SmartDashboard.putNumber("SubSystems/Turret/Turret Position", turretPosition);
         
         }

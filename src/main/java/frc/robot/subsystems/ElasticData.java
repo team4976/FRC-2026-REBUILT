@@ -272,6 +272,9 @@ public class ElasticData extends SubsystemBase{
 
         SmartDashboard.putNumber("Calc Flywheel Speed", s_flywheel.speedTable.get(s_UpdateHubInfo.getHubDistance()));
 
+        SmartDashboard.putNumber("SubSystems/Turret/Hub Angle", s_UpdateHubInfo.getHubAngle());
+        SmartDashboard.putNumber("SubSystems/Turret/Bot Angle", s_UpdateHubInfo.getBotAngle());
+
         //updates the Smartdash board Values
         } catch (Exception e) {
         }

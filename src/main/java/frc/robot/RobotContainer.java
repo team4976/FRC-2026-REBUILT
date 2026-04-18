@@ -118,6 +118,7 @@ public class RobotContainer {
         s_intake.teleopInit();
         s_turret.teleopInit();
         s_updateHubInfo.hubInit();
+        s_turret.resetEncoder();
 
         elasticData.autonomousInit();
         String value = elasticData.autoChooser.getSelected()[elasticData.autoChooser.getSelected().length -1];
