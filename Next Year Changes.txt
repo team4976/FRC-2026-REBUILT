@@ -1,0 +1,26 @@
+<Tip> If reading in vs code (most likely) you can make this file actually readable by going to the command pallet and enabling: >View: toggle word wrap
+
+TLDR; Enable: >View: toggle word wrap
+
+-----------------------------
+Modifications from this year:
+-----------------------------
+
+Elastic (The Big One):
+
+    - The ElasticData class seemed like a good idea originally since it makes it the one stop shop for elastic stuff. But the execution this year was not done super well (My fault, lack of foresight. - Ben R). The main reason is the Periodic() would run for too long causing an error, it would also crash the whole code if the file crashed even though it wasnt necessary, this was later fixed by putting it in a try-catch but it was very messy and bad by this point. 
+
+    - Solutions: 
+    Option #1:
+        We can keep a file that holds all the easy Smartdashboard stuff so that finding stuff is easy. This time though the file will only contain the ElasticInit() or SmartDashboardInit() of all the various files. these will be put in the try-catch inside the periodic. And all of the misc stuff can have its actual code in this file (Something non specific to a subsystem ot a whole lot fits this category)
+    Option #2 (My Preffered One - Ben R):
+        We can just have a method in each subsystem Called ElasticData() & ElasticDataPeriodic() (or something in a similar vein) and have the  normal method called in the contructor or init and the periodic one in the periodic, this is due to only some info needing to be in a periodic and some stuff doesnt/shouldnt be. IMPORTANT, With this the best plan for organizing our widgets would be to put the widgets in a Subsystem/"Subsystem Name"/"Purpose" path where "subsystem name" is the file it is in. This is so that it is really easy to know where a widget is in the code and easy to find your created widgets in elastic based on what they incorporate.
+
+
+-------------------------------------------
+Things from this year to do from the start:
+-------------------------------------------
+
+-----------------
+New things to do:
+-----------------

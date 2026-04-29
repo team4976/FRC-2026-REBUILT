@@ -1,4 +1,0 @@
-Controller 1 is 0.04 drift
-Controller 2 is 0.02 drift
-Controller 3 is 0.1 drift
-Controller 4 is 0.03 drift
