@@ -15,11 +15,26 @@ Elastic (The Big One):
         We can keep a file that holds all the easy Smartdashboard stuff so that finding stuff is easy. This time though the file will only contain the ElasticInit() or SmartDashboardInit() of all the various files. these will be put in the try-catch inside the periodic. And all of the misc stuff can have its actual code in this file (Something non specific to a subsystem ot a whole lot fits this category)
     Option #2 (My Preffered One - Ben R):
         We can just have a method in each subsystem Called ElasticData() & ElasticDataPeriodic() (or something in a similar vein) and have the  normal method called in the contructor or init and the periodic one in the periodic, this is due to only some info needing to be in a periodic and some stuff doesnt/shouldnt be. IMPORTANT, With this the best plan for organizing our widgets would be to put the widgets in a Subsystem/"Subsystem Name"/"Purpose" path where "subsystem name" is the file it is in. This is so that it is really easy to know where a widget is in the code and easy to find your created widgets in elastic based on what they incorporate.
+    
+Autos:
+    - This is partially commands as well but we should focus largely on making sure all of our commands can just be popped into the auto command sequence without needing to make an auto varient of a command just to have an auto, this makes everything worse.
+
+Commands:
+    - Be careful about doing the subsystem built in commands.
+    - Dont be shy about making multiple commands for different purpouses of a subsystem and then combining them into one command that uses both of them. or just creating multiple for multiple purposes if it makes it more readable/easier/more understandable. just put the commands in their own named folder for organization. 
+
+RobotContainer:
+    - RobotContainer this year is really messy and hard to get around, this is a really easy pitfall considering its a file that is supposed to handle and contain the majority of our code, resulting in a lot getting added. We should focus a lot on maintaining RobotContainer next year.
 
 
 -------------------------------------------
 Things from this year to do from the start:
 -------------------------------------------
+
+    - Golobal Commands was really cool and made everything a lot easier in that regard.
+    - Having a Bindings file made locating and changing the controls a lot easier this year and was a really good move. Especially due to the cluttered RobotContainer.
+    - Autos in their own subsystem from the start, add the auto selector minus the RobotContainer main selection to this subsystem. 
+    - Name everything using the shorthand standardized nameing of letter_name. it made everything way better this year. s_ for susbsytem, c_ for command, m_ for motor, etc.
 
 -----------------
 New things to do:
