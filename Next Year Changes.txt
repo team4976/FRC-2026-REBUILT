@@ -20,7 +20,7 @@ Autos:
     - This is partially commands as well but we should focus largely on making sure all of our commands can just be popped into the auto command sequence without needing to make an auto varient of a command just to have an auto, this makes everything worse.
 
 Commands:
-    - Be careful about doing the subsystem built in commands.
+    - Be careful about doing the subsystem built in commands. Eg. public Command(){"runnable"};
     - Dont be shy about making multiple commands for different purpouses of a subsystem and then combining them into one command that uses both of them. or just creating multiple for multiple purposes if it makes it more readable/easier/more understandable. just put the commands in their own named folder for organization. 
 
 RobotContainer:
@@ -31,11 +31,14 @@ RobotContainer:
 Things from this year to do from the start:
 -------------------------------------------
 
-    - Golobal Commands was really cool and made everything a lot easier in that regard.
+    - Global Commands was really cool and made everything a lot easier in that regard.
     - Having a Bindings file made locating and changing the controls a lot easier this year and was a really good move. Especially due to the cluttered RobotContainer.
     - Autos in their own subsystem from the start, add the auto selector minus the RobotContainer main selection to this subsystem. 
     - Name everything using the shorthand standardized nameing of letter_name. it made everything way better this year. s_ for susbsytem, c_ for command, m_ for motor, etc.
+    - Trello was a good idea and I think we could have gotten somewhere with it if we integrated it earlier on.
 
 -----------------
 New things to do:
 -----------------
+
+    - We should probably have some sort of subteam discord so that we can communicate better, though that was already fin this year so maybe it isnt necessary.
